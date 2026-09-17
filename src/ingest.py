@@ -7,6 +7,7 @@ Uso:
   python3 src/ingest.py --reclasificar     # vuelve a aplicar las reglas a lo no revisado a mano
   python3 src/ingest.py --pendientes       # lista lo que queda por revisar
   python3 src/ingest.py set ID TIPO CATEGORIA [AMBITO] [NOTA]   # corrige un movimiento a mano (estado=revisado)
+  python3 src/ingest.py --overrides        # aplica data/overrides.json (correcciones hechas desde el dashboard)
 """
 import hashlib
 import pathlib
@@ -64,7 +65,7 @@ def clasificar(mov, reglas, categorias):
             continue
         cat = r.get("categoria")
         ambito = r.get("ambito") or categorias.get(cat, {}).get("ambito", "Personal")
-        return {"tipo": r["tipo"], "categoria": cat, "ambito": ambito,
+        return {"tipo": r["tipo"], "categoria": cat, "ambito": ambito, "participacion": r.get("participacion"),
                 "estado": r.get("estado", "auto"), "regla": r["id"], "nota": r.get("nota")}
     # sin regla: gasto si sale dinero. Lo pequeño (<30 €) va a IMPREVISTOS sin molestar; lo grande queda pendiente.
     if mov["importe"] < 0 and abs(mov["importe"]) < 30:
@@ -92,7 +93,7 @@ def importar(path, con, reglas, cuentas, categorias):
             c["nota"] = None
         else:
             c = clasificar(f, reglas, categorias)
-        p = 1.0 if c["tipo"] in ("Traspaso",) else part
+        p = 1.0 if c["tipo"] in ("Traspaso",) else (c.get("participacion") or part)
         con.execute(
             """INSERT INTO movimientos (hash,cuenta,fecha,mes,concepto,importe,saldo,tipo,categoria,ambito,participacion,estado,regla,nota,fuente)
                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
@@ -116,13 +117,58 @@ def reclasificar(con, reglas, cuentas, categorias):
     cambios = 0
     for row in con.execute("SELECT * FROM movimientos WHERE estado != 'revisado' AND cuenta != 'Histórico'").fetchall():
         c = clasificar(dict(row), reglas, categorias)
-        part = 1.0 if c["tipo"] == "Traspaso" else cuentas.get(row["cuenta"], {}).get("participacion", 1.0)
-        if (c["tipo"], c["categoria"], c["ambito"], c["estado"], c["regla"]) != (row["tipo"], row["categoria"], row["ambito"], row["estado"], row["regla"]):
+        part = 1.0 if c["tipo"] == "Traspaso" else (c.get("participacion") or cuentas.get(row["cuenta"], {}).get("participacion", 1.0))
+        if (c["tipo"], c["categoria"], c["ambito"], c["estado"], c["regla"], part) != (row["tipo"], row["categoria"], row["ambito"], row["estado"], row["regla"], row["participacion"]):
             con.execute("UPDATE movimientos SET tipo=?,categoria=?,ambito=?,estado=?,regla=?,nota=?,participacion=? WHERE id=?",
                         (c["tipo"], c["categoria"], c["ambito"], c["estado"], c["regla"], c["nota"], part, row["id"]))
             cambios += 1
     con.commit()
     return cambios
+
+
+def importar_ajustes(con):
+    """Movimientos manuales de config/ajustes.yaml (cuenta 'Ajustes'). Idempotente por contenido."""
+    path = CONFIG / "ajustes.yaml"
+    if not path.exists():
+        return 0
+    nuevas = 0
+    for a in yaml.safe_load(path.read_text(encoding="utf-8")) or []:
+        fecha = str(a["fecha"])
+        h = hash_mov("Ajustes", f"{fecha}|{a['concepto']}|{a['importe']}")
+        if con.execute("SELECT 1 FROM movimientos WHERE hash=?", (h,)).fetchone():
+            continue
+        con.execute(
+            """INSERT INTO movimientos (hash,cuenta,fecha,mes,concepto,importe,saldo,tipo,categoria,ambito,participacion,estado,regla,nota,fuente)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (h, "Ajustes", fecha, fecha[:7], a["concepto"], float(a["importe"]), None, a["tipo"], a["categoria"],
+             a.get("ambito", "Personal"), 1.0, "revisado", "ajuste_manual", a.get("nota"), "ajustes.yaml"))
+        nuevas += 1
+    con.commit()
+    return nuevas
+
+
+OVERRIDES = ROOT / "data" / "overrides.json"
+
+
+def aplicar_overrides(con):
+    """Correcciones hechas desde el dashboard (data/overrides.json: {id: {categoria, tipo, ambito, nota, participacion, mes}})."""
+    import json
+    if not OVERRIDES.exists():
+        return 0
+    data = json.loads(OVERRIDES.read_text(encoding="utf-8") or "{}")
+    n = 0
+    for id_, o in data.items():
+        row = con.execute("SELECT * FROM movimientos WHERE id=?", (int(id_),)).fetchone()
+        if not row:
+            continue
+        campos = {k: o[k] for k in ("categoria", "tipo", "ambito", "nota", "participacion", "mes") if k in o and o[k] not in (None, "")}
+        if not campos:
+            continue
+        sets = ", ".join(f"{k}=?" for k in campos) + ", estado='revisado', regla='dashboard'"
+        con.execute(f"UPDATE movimientos SET {sets} WHERE id=?", (*campos.values(), int(id_)))
+        n += 1
+    con.commit()
+    return n
 
 
 def pendientes(con):
@@ -151,13 +197,18 @@ def main(argv):
         return
     if argv and argv[0] == "--reclasificar":
         print("reclasificados:", reclasificar(con, reglas, cuentas, categorias))
+        print("ajustes nuevos:", importar_ajustes(con), "| overrides aplicados:", aplicar_overrides(con))
         pendientes(con)
+        return
+    if argv and argv[0] == "--overrides":
+        print("overrides aplicados:", aplicar_overrides(con))
         return
     files = [pathlib.Path(a) for a in argv] or sorted(p for p in INBOX.iterdir() if p.suffix.lower() in (".csv", ".pdf", ".xlsx", ".xls"))
     for f in files:
         cuenta, n, nuevas, fmin, fmax = importar(str(f), con, reglas, cuentas, categorias)
         print(f"{f.name}: {cuenta} {n} filas, {nuevas} nuevas ({fmin} .. {fmax})")
     print("reclasificados:", reclasificar(con, reglas, cuentas, categorias))
+    print("ajustes nuevos:", importar_ajustes(con), "| overrides aplicados:", aplicar_overrides(con))
     tot = con.execute("SELECT COUNT(*) c, SUM(estado='pendiente') p FROM movimientos").fetchone()
     print(f"total en base: {tot['c']} movimientos, {tot['p']} pendientes")
 

@@ -1,0 +1,12 @@
+# Movimientos manuales (cuenta "Ajustes"). Sirven para reflejar la realidad cuando el banco no la cuenta bien.
+# Se importan en cada ejecución de ingest (idempotente). importe con signo; negativo = gasto.
+- fecha: 2026-06-30
+  concepto: "Mitad del alquiler de junio (lo pagó Kate entero; se liquidó por Tricount)"
+  importe: -600
+  tipo: Gasto
+  categoria: ALQUILER
+- fecha: 2026-06-30
+  concepto: "Compensación: la mitad del alquiler de junio ya está dentro de los ajustes con Kate"
+  importe: 600
+  tipo: Gasto
+  categoria: AJUSTES PAREJA

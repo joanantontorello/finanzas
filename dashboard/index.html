@@ -84,6 +84,16 @@
   .muted { color: var(--text-3); }
   .defs { font-size: 12px; color: var(--text-3); white-space: pre-line; margin-top: 8px; }
   .up { color: var(--good); } .down { color: var(--bad); }
+  select.edit { padding: 3px 6px; border-radius: 6px; font-size: 12px; max-width: 170px; }
+  select.edit.changed { background: var(--tint-yellow); }
+  button.amb { border: 0; background: var(--surface-2); color: var(--text-2); border-radius: 999px; padding: 2px 8px; font-size: 11px; cursor: pointer; }
+  button.amb.T { background: var(--tint-violet); color: var(--text); }
+  .savebar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; display: none; gap: 12px; align-items: center; z-index: 20; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
+  .savebar button { border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; cursor: pointer; background: var(--s1); color: #fff; font-weight: 600; }
+  .savebar button.sec { background: transparent; color: var(--bg); }
+  .pend div { grid-template-columns: 78px 1fr auto auto; }
+  .tok { font-size: 12px; color: var(--text-3); margin-top: 8px; }
+  .tok a { color: var(--s1); cursor: pointer; }
 </style>
 </head>
 <body>
@@ -144,6 +154,7 @@
       <div class="hint">Último saldo del extracto importado.</div>
       <div class="kv" id="cuentas"></div>
       <div class="defs" id="defs"></div>
+      <div class="tok" id="tok"></div>
     </div>
   </div>
 
@@ -159,21 +170,84 @@
   </div>
 </div>
 <div class="tip" id="tip"></div>
+<div class="savebar" id="savebar"><span id="savemsg"></span><button class="sec" id="discard">Descartar</button><button id="save">Guardar en GitHub</button></div>
 
 <script>
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const fmt = n => (n == null ? '–' : new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', maximumFractionDigits:0}).format(n));
 const fmt2 = n => new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', minimumFractionDigits:2}).format(n);
-const pct = x => x == null ? '–' : Math.round(x*100) + ' %';
+const pct = x => (x == null || Math.abs(x) > 5) ? '–' : Math.round(x*100) + ' %';
 const mesLabel = m => MESES[+m.slice(5,7)-1] + ' ' + m.slice(2,4);
 
 let D, state = { year: null, ambito: 'Todo', cuenta: '', mes: null, cat: '', tipo: '', q: '' };
 const $ = id => document.getElementById(id);
+const GH = { repo: 'joanantontorello/finanzas', path: 'data/overrides.json' };
+let overrides = {}, ovSha = null, cambios = {};
+const catTipo = {};
 
-fetch('data.json').then(r => r.json()).then(d => { D = d; init(); });
+fetch('data.json').then(r => r.json()).then(async d => { D = d; D.categorias.forEach(c => catTipo[c.nombre] = c.tipo); await cargarOverrides(); init(); });
+
+// ---- correcciones hechas desde aquí: se guardan en GitHub (data/overrides.json) y se aplican a la base en el próximo cierre
+function token() { try { return localStorage.getItem('gh_token') || ''; } catch (e) { return ''; } }
+function ghHeaders() { return { Authorization: 'Bearer ' + token(), Accept: 'application/vnd.github+json' }; }
+async function cargarOverrides() {
+  if (!token()) return;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${GH.repo}/contents/${GH.path}`, { headers: ghHeaders() });
+    if (r.status === 404) { overrides = {}; ovSha = null; return; }
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json(); ovSha = j.sha;
+    overrides = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))) || '{}');
+    aplicar(overrides);
+  } catch (e) { console.warn('overrides', e); }
+}
+function aplicar(ov) {
+  for (const m of D.movimientos) {
+    const o = ov[m.id]; if (!o) continue;
+    if (o.categoria) { m.categoria = o.categoria; m.tipo = catTipo[o.categoria] || m.tipo; }
+    if (o.tipo) m.tipo = o.tipo;
+    if (o.ambito) m.ambito = o.ambito;
+    if (o.participacion != null) { m.part = o.participacion; m.mio = Math.round(m.importe * m.part * 100) / 100; }
+    if (o.mes) m.mes = o.mes;
+    if (o.nota) m.nota = o.nota;
+    m.estado = 'revisado';
+  }
+  D.pendientes = D.pendientes.filter(p => !ov[p.id]);
+}
+function editar(id, campo, valor) {
+  const m = D.movimientos.find(x => x.id === id); if (!m) return;
+  cambios[id] = Object.assign({}, overrides[id] || {}, cambios[id] || {}, { [campo]: valor });
+  aplicar({ [id]: cambios[id] });
+  const n = Object.keys(cambios).length;
+  $('savemsg').textContent = n + (n === 1 ? ' cambio sin guardar' : ' cambios sin guardar');
+  $('savebar').style.display = 'flex';
+  render();
+}
+async function guardar() {
+  if (!token()) { pedirToken(); if (!token()) return; }
+  const merged = Object.assign({}, overrides, cambios);
+  const body = { message: 'Correcciones desde el dashboard (' + Object.keys(cambios).length + ')', content: btoa(unescape(encodeURIComponent(JSON.stringify(merged, null, 1)))) };
+  if (ovSha) body.sha = ovSha;
+  const r = await fetch(`https://api.github.com/repos/${GH.repo}/contents/${GH.path}`, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders()), body: JSON.stringify(body) });
+  if (!r.ok) { alert('No se pudo guardar en GitHub (' + r.status + '). Revisa el token: necesita permiso Contents: Read and write sobre el repo finanzas.'); return; }
+  const j = await r.json(); ovSha = j.content.sha; overrides = merged; cambios = {};
+  $('savebar').style.display = 'none';
+  $('meta').textContent = 'Correcciones guardadas. Se aplican a la base en el próximo cierre.';
+}
+function pedirToken() {
+  const t = prompt('Pega un token de GitHub (fine-grained, solo el repo finanzas, permiso Contents: Read and write). Se guarda solo en este navegador.');
+  if (t) { try { localStorage.setItem('gh_token', t.trim()); } catch (e) {} }
+}
+function selCat(m) {
+  const opts = D.categorias.map(c => `<option ${c.nombre === m.categoria ? 'selected' : ''}>${c.nombre}</option>`).join('');
+  return `<select class="edit ${cambios[m.id] ? 'changed' : ''}" data-id="${m.id}"><option value="" ${!m.categoria ? 'selected' : ''}>– sin categoría –</option>${opts}</select>`;
+}
+function ambBtn(m) { return `<button class="amb ${m.ambito === 'Trabajo' ? 'T' : ''}" data-amb="${m.id}" title="Personal / Trabajo">${m.ambito === 'Trabajo' ? 'Trabajo' : 'Personal'}</button>`; }
+document.addEventListener('change', e => { if (e.target.matches('select.edit')) editar(+e.target.dataset.id, 'categoria', e.target.value); });
+document.addEventListener('click', e => { const b = e.target.closest('button.amb'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.amb); editar(m.id, 'ambito', m.ambito === 'Trabajo' ? 'Personal' : 'Trabajo'); } });
 
 function init() {
-  const years = [...new Set(D.movimientos.map(m => m.fecha.slice(0,4)))].sort();
+  const years = [...new Set(D.movimientos.map(m => m.mes.slice(0,4)))].sort();
   state.year = years[years.length-1];
   $('years').innerHTML = years.map(y => `<button data-v="${y}" class="${y===state.year?'on':''}">${y}</button>`).join('');
   $('years').onclick = e => { if (e.target.dataset.v) { state.year = e.target.dataset.v; state.mes = null; seg('years', state.year); render(); } };
@@ -187,6 +261,12 @@ function init() {
   $('q').oninput = e => { state.q = e.target.value.toLowerCase(); renderTable(); };
   $('clear').onclick = () => { state.cat=''; state.tipo=''; state.q=''; state.mes=null; $('fcat').value=''; $('ftipo').value=''; $('q').value=''; render(); };
   $('meta').textContent = 'Actualizado ' + D.generado + ' · ' + D.movimientos.length + ' movimientos';
+  $('save').onclick = guardar;
+  $('discard').onclick = () => location.reload();
+  $('tok').innerHTML = token() ? 'Token de GitHub configurado · <a id="deltok">quitar</a>' : 'Para guardar correcciones desde aquí hace falta un token de GitHub · <a id="settok">configurar</a>';
+  const st = $('settok'), dt = $('deltok');
+  if (st) st.onclick = () => { pedirToken(); location.reload(); };
+  if (dt) dt.onclick = () => { try { localStorage.removeItem('gh_token'); } catch (e) {} location.reload(); };
   $('defs').textContent = D.definiciones;
   render();
 }
@@ -195,7 +275,7 @@ function seg(id, v) { [...$(id).children].forEach(b => b.classList.toggle('on', 
 // ---- filtro base (año + ámbito + cuenta), sin traspasos
 function base(mesOnly) {
   return D.movimientos.filter(m => m.tipo && m.tipo !== 'Traspaso'
-    && m.fecha.startsWith(mesOnly || state.year)
+    && m.mes.startsWith(mesOnly || state.year)
     && (state.ambito === 'Todo' || m.ambito === state.ambito)
     && (!state.cuenta || m.cuenta === state.cuenta));
 }
@@ -217,16 +297,16 @@ function agg(rows) {
 
 function render() {
   const rowsY = base();
-  const meses = [...new Set(rowsY.map(m => m.fecha.slice(0,7)))].sort();
-  const porMes = meses.map(mes => ({ mes, ...agg(rowsY.filter(m => m.fecha.startsWith(mes))) }));
+  const meses = [...new Set(rowsY.map(m => m.mes))].sort();
+  const porMes = meses.map(mes => ({ mes, ...agg(rowsY.filter(m => m.mes === mes)) }));
   const sel = state.mes ? porMes.find(p => p.mes === state.mes) : agg(rowsY);
   const n = state.mes ? 1 : Math.max(meses.length, 1);
   const periodo = state.mes ? mesLabel(state.mes) : state.year + (state.ambito!=='Todo' ? ' · ' + state.ambito : '');
 
   // año anterior para comparar medias
   const prevY = String(+state.year - 1);
-  const prevRows = D.movimientos.filter(m => m.tipo && m.tipo !== 'Traspaso' && m.fecha.startsWith(prevY) && (state.ambito === 'Todo' || m.ambito === state.ambito) && (!state.cuenta || m.cuenta === state.cuenta));
-  const prevN = new Set(prevRows.map(m => m.fecha.slice(0,7))).size;
+  const prevRows = D.movimientos.filter(m => m.tipo && m.tipo !== 'Traspaso' && m.mes.startsWith(prevY) && (state.ambito === 'Todo' || m.ambito === state.ambito) && (!state.cuenta || m.cuenta === state.cuenta));
+  const prevN = new Set(prevRows.map(m => m.mes)).size;
   const prev = prevN ? agg(prevRows) : null;
   const delta = (cur, key) => { if (!prev || state.mes) return ''; const p = prev[key]/prevN, c = cur/n; if (!p) return ''; const d = (c-p)/Math.abs(p); return `<span class="${(key==='gasto'? d<0 : d>0)?'up':'down'}">${d>0?'+':''}${Math.round(d*100)} % vs ${prevY}</span>`; };
 
@@ -235,8 +315,9 @@ function render() {
     ['Gasto neto', sel.gasto, 'orange', `${fmt(sel.gasto/n)} / mes · fijos ${fmt(sel.fijos)} ` + delta(sel.gasto, 'gasto')],
     ['Ahorro', sel.ahorro, sel.ahorro >= 0 ? 'aqua' : 'orange', `tasa ${pct(sel.tasa)} · ${fmt(sel.ahorro/n)} / mes`],
     ['Invertido', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes · aportaciones netas`],
-    ['Liquidez', sel.liq, 'yellow', 'ahorro menos inversión'],
+    ['Variación de caja', sel.liq, 'yellow', 'ahorro menos invertido: cuánto ha subido o bajado tu dinero en cuentas'],
   ];
+  if (!state.mes && !state.cuenta) t.push(['Saldo en cuentas hoy', D.saldo_total, '', 'suma de los últimos extractos, conjunta al 50 %']);
   if (state.ambito === 'Todo') t.push(['Beneficio trabajo', sel.ingT - sel.gasT, '', `sueldo ${fmt(sel.ingT)} − gastos ${fmt(sel.gasT)}`]);
   $('tiles').innerHTML = t.map(([l,v,c,s]) => `<div class="tile ${c}"><div class="lbl">${l} · ${periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
 
@@ -325,13 +406,13 @@ function renderConjunta() {
 function renderPend() {
   const p = D.pendientes;
   $('npend').textContent = p.length;
-  $('pend').innerHTML = p.length ? p.map(x => `<div><span class="muted">${x.fecha.slice(5)} · ${x.cuenta.slice(0,3)}</span><span class="c">${x.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,60)}<br><small class="muted">${x.nota || (x.categoria ? 'sugerido: ' + x.categoria : 'sin categoría')}</small></span><b>${fmt2(x.importe)}</b></div>`).join('') : '<p class="muted">Nada pendiente. Todo clasificado.</p>';
+  $('pend').innerHTML = p.length ? p.map(x => { const m = D.movimientos.find(z => z.id === x.id) || x; return `<div><span class="muted">${x.fecha.slice(5)} · ${x.cuenta.slice(0,3)}</span><span class="c">${x.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,60)}<br><small class="muted">${x.nota || (x.categoria ? 'sugerido: ' + x.categoria : 'sin categoría')}</small></span>${selCat(m)}<b>${fmt2(x.importe)}</b></div>`; }).join('') : '<p class="muted">Nada pendiente. Todo clasificado.</p>';
 }
 function renderCuentas() {
   $('cuentas').innerHTML = D.cuentas.map(c => `<span>${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('');
 }
 function renderTable() {
-  let rows = D.movimientos.filter(m => m.fecha.startsWith(state.mes || state.year)
+  let rows = D.movimientos.filter(m => m.mes.startsWith(state.mes || state.year)
     && (state.ambito === 'Todo' || m.ambito === state.ambito)
     && (!state.cuenta || m.cuenta === state.cuenta)
     && (!state.cat || (m.categoria || 'SIN CATEGORÍA') === state.cat)
@@ -339,7 +420,7 @@ function renderTable() {
     && (!state.q || m.concepto.toLowerCase().includes(state.q) || (m.categoria||'').toLowerCase().includes(state.q)));
   rows.sort((a,b) => b.fecha.localeCompare(a.fecha) || b.id - a.id);
   $('nmov').textContent = rows.length + (state.cat ? ' · ' + state.cat : '') + (state.mes ? ' · ' + mesLabel(state.mes) : '');
-  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}</td><td>${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.slice(0,58)}</td><td>${m.categoria || '<span class="muted">–</span>'}</td><td><span class="pill ${m.ambito}">${m.tipo || '?'}${m.ambito==='Trabajo'?' · T':''}</span></td><td class="n ${m.importe<0?'neg':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
+  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}</td><td>${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.slice(0,58)}</td><td>${m.cuenta === 'Histórico' ? (m.categoria || '–') : selCat(m)}</td><td><span class="pill">${m.tipo || '?'}</span> ${m.cuenta === 'Histórico' ? '' : ambBtn(m)}</td><td class="n ${m.importe<0?'neg':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
     + (rows.length > 600 ? `<tr><td colspan="8" class="muted">… ${rows.length-600} más. Filtra para verlos.</td></tr>` : '');
 }
 </script>

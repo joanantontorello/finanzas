@@ -130,9 +130,10 @@ def main():
     pend = [{"id": x["id"], "fecha": x["fecha"], "cuenta": x["cuenta"], "concepto": x["concepto"], "importe": x["importe"],
              "tipo": x["tipo"], "categoria": x["categoria"], "nota": x["nota"]} for x in rows if x["estado"] == "pendiente"]
 
-    movs = [{"id": x["id"], "fecha": x["fecha"], "cuenta": x["cuenta"], "concepto": x["concepto"], "importe": x["importe"],
-             "mio": x["mio"], "tipo": x["tipo"], "categoria": x["categoria"], "ambito": x["ambito"], "estado": x["estado"],
+    movs = [{"id": x["id"], "fecha": x["fecha"], "mes": x["mes"], "cuenta": x["cuenta"], "concepto": x["concepto"], "importe": x["importe"],
+             "mio": x["mio"], "part": x["participacion"], "tipo": x["tipo"], "categoria": x["categoria"], "ambito": x["ambito"], "estado": x["estado"],
              "nota": x["nota"]} for x in rows]
+    saldo_total = sum((c["saldo"] or 0) * (0.5 if c["cuenta"] == "Conjunta" else 1.0) for c in cuentas)
 
     data = {
         "generado": datetime.now().strftime("%Y-%m-%d %H:%M"),
@@ -141,6 +142,7 @@ def main():
         "anios": anios,
         "categorias": cat_list,
         "cuentas": cuentas,
+        "saldo_total": r2(saldo_total),
         "conjunta": conjunta,
         "pendientes": pend,
         "movimientos": movs,

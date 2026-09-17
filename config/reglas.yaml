@@ -14,6 +14,10 @@
 - {id: tr_from_joan,       cuenta: Trade Republic, match: "Incoming transfer from Joan Anton",                       tipo: Traspaso, categoria: TRASPASO}
 - {id: tr_to_joan,         cuenta: Trade Republic, match: "Outgoing transfer for Joan Anton",                        tipo: Traspaso, categoria: TRASPASO, nota: a BBVA}
 - {id: bbva_from_joan,     cuenta: BBVA,     match: "Transferencia recibida \\| Joan anton",                         tipo: Traspaso, categoria: TRASPASO}
+- {id: bbva_t_trimestre,   cuenta: BBVA,     match: "Transferencia recibida \\| T\\d ",                               tipo: Reembolso, categoria: IMPUESTOS, ambito: Trabajo, nota: te ingresan el IRPF trimestral}
+- {id: bbva_regalo,        cuenta: BBVA,     match: "Transferencia recibida \\| Regalo",                                tipo: Ingreso, categoria: OTROS/EXTRAS}
+- {id: bbva_transfer_in,   cuenta: BBVA,     match: "Transferencia recibida", signo: "+",                                 tipo: Reembolso, categoria: REEMBOLSOS}
+- {id: godaddy,            match: "GODADDY|Godaddy",                                                                  tipo: Gasto, categoria: SUBSCRIPCIONES, ambito: Trabajo}
 
 # ---------------------------------------------------------------- 2. Ingresos
 - {id: sueldo_fidelio,     match: "Incoming transfer from FIDELIO",                                                  tipo: Ingreso, categoria: SUELDO, ambito: Trabajo}
@@ -36,8 +40,9 @@
 - {id: formacion_llados,   match: "LLADOS UNIVERSITY",                                                              tipo: Inversion, categoria: FORMACIÓN / MENTORÍA}
 
 # ---------------------------------------------------------------- 5. Fijos y trabajo
-- {id: alquiler_nautante,  match: "Grupo Nautante",                                                                 tipo: Gasto, categoria: ALQUILER}
-- {id: alquiler_kate_pre,  cuenta: Revolut, match: "Bizum payment to: Kateryna", min: 500, hasta: "2026-05-31",      tipo: Gasto, categoria: ALQUILER, nota: tu mitad del alquiler antes de la conjunta}
+- {id: alquiler_nautante,  match: "Grupo Nautante", participacion: 0.5,                                               tipo: Gasto, categoria: ALQUILER, nota: "alquiler 1.200 € a medias con Kate"}
+- {id: alquiler_kate_ene,  cuenta: Revolut, match: "Bizum payment to: Kateryna", min: 800, hasta: "2026-01-31",      tipo: Gasto, categoria: ALQUILER, nota: alquiler piso anterior}
+- {id: piso_kate_600,      cuenta: Revolut, match: "Bizum payment to: Kateryna", min: 500, max: 700, hasta: "2026-05-31", tipo: Gasto, categoria: HOGAR, estado: pendiente, nota: "600 € a Kate, probablemente del piso (¿fianza?)"}
 - {id: luz_octopus,        match: "OCTOPUS ENERGY",                                                                 tipo: Gasto, categoria: LUZ}
 - {id: internet_digi,      match: "DIGI SPAIN",                                                                     tipo: Gasto, categoria: INTERNET}
 - {id: gestoria,           cuenta: BBVA,     match: "jaime carrasco",                                                tipo: Gasto, categoria: GESTORIA, ambito: Trabajo}

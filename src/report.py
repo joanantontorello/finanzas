@@ -148,8 +148,29 @@ def main():
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
-    # CSV espejo (para consultarlo desde el móvil con el conector de Drive)
+    # CSV espejo completo + resumen compacto mes x categoría (el resumen es el que se sube a Drive)
     import csv
+    anio_actual = datetime.now().strftime("%Y")
+    meses_a = [m for m in meses if m["mes"].startswith(anio_actual)]
+    cats_a = sorted({c for m in meses_a for c in m["categorias"]} | {c for m in meses_a for c in m["inversiones"]})
+    with open(ROOT / "data" / "resumen.csv", "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["concepto"] + [m["mes"] for m in meses_a] + ["total " + anio_actual, "media mensual"])
+        def fila(nombre, vals):
+            w.writerow([nombre] + [round(v, 2) for v in vals] + [round(sum(vals), 2), round(sum(vals) / max(len(vals), 1), 2)])
+        for k, label in [("ingresos", "INGRESOS"), ("gasto_neto", "GASTO NETO"), ("ahorro", "AHORRO"), ("inversion", "INVERTIDO"), ("liquidez", "LIQUIDEZ"), ("beneficio_trabajo", "BENEFICIO TRABAJO")]:
+            fila(label, [m.get(k, 0) or 0 for m in meses_a])
+        w.writerow(["TASA AHORRO"] + [f"{(m['tasa_ahorro'] or 0)*100:.0f}%" for m in meses_a] + ["", ""])
+        w.writerow([])
+        w.writerow(["POR CATEGORÍA (gastos netos e inversiones, tu parte)"])
+        for c in cats_a:
+            fila(c, [m["categorias"].get(c, m["inversiones"].get(c, 0)) for m in meses_a])
+        w.writerow([])
+        w.writerow(["PENDIENTES DE REVISAR", "fecha", "cuenta", "importe", "concepto"])
+        for x in pend:
+            w.writerow(["", x["fecha"], x["cuenta"], x["importe"], x["concepto"]])
+        w.writerow([])
+        w.writerow(["Generado", data["generado"], "Dashboard", "https://finanzas-kappa-gold.vercel.app"])
     with open(ROOT / "data" / "movimientos.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["fecha", "cuenta", "concepto", "importe", "tu_parte", "tipo", "categoria", "ambito", "estado"])

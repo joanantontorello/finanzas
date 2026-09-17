@@ -82,8 +82,10 @@
   .cats .fill { height: 100%; background: var(--seq); border-radius: 4px; } .cats .fill.neg { background: var(--s3); }
   .cats .num { text-align: right; font-variant-numeric: tabular-nums; }
   .kv { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; font-size: 13px; } .kv b { font-variant-numeric: tabular-nums; }
-  .pend { font-size: 13px; } .pend div { display: grid; grid-template-columns: 78px 1fr auto auto; gap: 10px; padding: 8px 0; border-top: 1px solid var(--surface-2); align-items: center; }
-  .pend .c { color: var(--text-2); }
+  .pend { font-size: 13px; } .pend > div { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto auto; gap: 12px; padding: 10px 0; border-top: 1px solid var(--surface-2); align-items: center; }
+  @media (max-width: 700px) { .pend > div { grid-template-columns: 1fr; } }
+  .pend .c { color: var(--text-2); line-height: 1.4; }
+  button.ok { background: var(--tint-aqua); color: var(--text); }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th, td { text-align: left; padding: 7px 8px; border-top: 1px solid var(--surface-2); white-space: nowrap; }
   th { color: var(--text-2); font-weight: 600; font-size: 12px; position: sticky; top: 0; background: var(--surface); }
@@ -538,11 +540,25 @@ function renderConjunta() {
     <span class="muted" style="grid-column:1/-1;margin-top:6px">Por mes (tú / Kate / gasto)</span>
     ${meses.map(([m,v]) => `<span>${mesLabel(m)}</span><b class="muted">${fmt(v.joan)} / ${fmt(v.kate)} / ${fmt(v.gasto)}</b>`).join('')}`;
 }
+const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+function fechaLarga(f) { const d = new Date(f + 'T12:00:00'); return DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES_L[d.getMonth()].toLowerCase() + ' ' + d.getFullYear(); }
 function renderPend() {
   const p = D.pendientes;
   $('npend').textContent = p.length || '';
-  $('pend').innerHTML = p.length ? p.map(x => { const m = D.movimientos.find(z => z.id === x.id) || x; return `<div><span class="muted">${x.fecha.slice(5)} · ${x.cuenta.slice(0,3)}</span><span class="c">${x.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,70)}<br><small class="muted">${x.nota || (x.categoria ? 'sugerido: ' + x.categoria : 'sin categoría')}</small></span>${selCat(m)}<b>${fmt2(x.importe)}</b></div>`; }).join('') : '<p class="muted">Nada pendiente. Todo clasificado.</p>';
+  $('pend').innerHTML = p.length ? p.map(x => {
+    const m = D.movimientos.find(z => z.id === x.id) || x;
+    const tipoBanco = (x.concepto.match(/^\[([^\]]+)\]/) || [,''])[1];
+    const texto = x.concepto.replace(/^\[[^\]]+\]\s*/, '');
+    const mismoDia = D.movimientos.filter(z => z.fecha === x.fecha && z.id !== x.id && (z.tipo === 'Gasto' || z.tipo === 'Reembolso') && z.cuenta !== 'Histórico').slice(0, 5)
+      .map(z => `${z.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0, 32)} ${fmt(z.importe)}${z.categoria ? ' (' + z.categoria.toLowerCase() + ')' : ''}`).join(' · ');
+    return `<div>
+      <span class="muted">${fechaLarga(x.fecha)}<br>${x.cuenta}${tipoBanco ? '<br>' + tipoBanco : ''}</span>
+      <span class="c"><b style="color:var(--text)">${texto}</b><br><small class="muted">${x.nota || (x.categoria ? 'sugerido: ' + x.categoria : 'sin categoría')}${x.part && x.part !== 1 ? ' · tu parte ' + fmt2(x.importe * x.part) : ''}</small>${mismoDia ? `<br><small class="muted">Ese día también: ${mismoDia}</small>` : ''}</span>
+      <span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${selCat(m)}${m.categoria ? `<button class="amb ok" data-ok="${x.id}" title="La categoría sugerida es correcta">✓ Es correcto</button>` : ''}</span>
+      <b>${fmt2(x.importe)}</b></div>`;
+  }).join('') : '<p class="muted">Nada pendiente. Todo clasificado.</p>';
 }
+document.addEventListener('click', e => { const b = e.target.closest('button.ok'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.ok); if (m && m.categoria) editar(m.id, 'categoria', m.categoria); } });
 function renderCuentas() {
   $('cuentas').innerHTML = D.cuentas.map(c => `<span>${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('') + `<span style="margin-top:6px"><b>Total (conjunta al 50 %)</b></span><b style="margin-top:6px">${fmt2(D.saldo_total)}</b>`;
 }

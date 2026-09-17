@@ -85,6 +85,6 @@
 - {id: langre,             match: "Posada Playa de Langre|Playa de Langre",                                          tipo: Gasto, categoria: VIAJES, nota: Cantabria ago 2026}
 - {id: rest_extra,         match: "PIZZERIA|Tyler Restauraciones|Almafer",                                          tipo: Gasto, categoria: RESTAURANTES}
 - {id: loomis_vending,     match: "Loomisp|LOOMIS",                                                                 tipo: Gasto, categoria: CAFÉ}
-- {id: sumup_gimenez,      match: "SumUp \\*Julian Gimenez",                                                        tipo: Gasto, categoria: IMPREVISTOS, estado: pendiente, nota: "70 € semanales por SumUp, ¿qué es?"}
+- {id: psicologo,          match: "Julian Gimenez",                                                                  tipo: Gasto, categoria: PSICOLOGA, nota: psicólogo, 70 € por sesión}
 - {id: bizum_out_grande,   cuenta: Revolut,  match: "Bizum payment to: ", min: 30,                                   tipo: Gasto, categoria: OCIO, estado: pendiente, nota: "Bizum a un amigo, ¿de qué?"}
 - {id: bizum_out_amigos,   cuenta: Revolut,  match: "Bizum payment to: ",                                            tipo: Gasto, categoria: OCIO, nota: Bizum pequeño a un amigo}

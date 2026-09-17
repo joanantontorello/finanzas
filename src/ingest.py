@@ -171,6 +171,62 @@ def aplicar_overrides(con):
     return n
 
 
+def _clave_aprendizaje(concepto):
+    """Extrae del concepto la parte estable que identifica al comercio o persona (sin códigos ni fechas)."""
+    c = re.sub(r"^\[[^\]]+\]\s*", "", concepto).strip()
+    m = re.match(r"(Bizum payment to: .+|Outgoing transfer for [^(]+|Incoming transfer from [^(]+|Transfer to .+|Transfer from .+|Payment from .+)", c)
+    if m:
+        return m.group(1).strip()
+    c = c.split("|")[0]  # BBVA: quedarse con el concepto principal
+    palabras = [w for w in re.split(r"[\s,*]+", c) if w and not re.search(r"\d", w) and len(w) > 1]
+    return " ".join(palabras[:3]) if palabras else None
+
+
+def aprender(con, categorias):
+    """Convierte las correcciones del dashboard en reglas nuevas (config/reglas.yaml, sección 'aprendidas').
+    Solo si el patrón no lo cubre ya una regla y ningún movimiento revisado a mano lo contradice."""
+    import json
+    if not OVERRIDES.exists():
+        return 0
+    data = json.loads(OVERRIDES.read_text(encoding="utf-8") or "{}")
+    reglas_txt = (CONFIG / "reglas.yaml").read_text(encoding="utf-8")
+    reglas = cargar_reglas()
+    nuevas = []
+    for id_, o in data.items():
+        cat = o.get("categoria")
+        row = con.execute("SELECT * FROM movimientos WHERE id=?", (int(id_),)).fetchone()
+        if not cat or not row or row["cuenta"] in ("Histórico", "Ajustes"):
+            continue
+        clave = _clave_aprendizaje(row["concepto"])
+        if not clave or len(clave) < 5:
+            continue
+        # ¿ya hay una regla que da esa categoría a este concepto?
+        c = clasificar(dict(row), reglas, categorias)
+        if c["categoria"] == cat and c["estado"] == "auto":
+            continue
+        # ¿contradice a algo revisado a mano con otra categoría?
+        like = "%" + clave.lower() + "%"
+        conflicto = con.execute("SELECT COUNT(*) FROM movimientos WHERE estado='revisado' AND lower(concepto) LIKE ? AND categoria != ?", (like, cat)).fetchone()[0]
+        if conflicto:
+            continue
+        slug = re.sub(r"[^a-z0-9]+", "_", clave.lower()).strip("_")[:40]
+        if f"id: auto_{slug}" in reglas_txt or any(r["id"] == f"auto_{slug}" for r in nuevas):
+            continue
+        tipo = categorias.get(cat, {}).get("tipo", row["tipo"] or "Gasto")
+        ambito = o.get("ambito") or categorias.get(cat, {}).get("ambito", "Personal")
+        nuevas.append({"id": f"auto_{slug}", "match": re.escape(clave), "tipo": tipo, "categoria": cat, "ambito": ambito,
+                       "nota": f"aprendida de la corrección #{id_}"})
+    if nuevas:
+        marca = "# --- aprendidas de las correcciones del dashboard (van antes que las genéricas para ganarles)\n"
+        if marca not in reglas_txt:
+            ancla = "# ---------------------------------------------------------------- 6. Viajes"
+            reglas_txt = reglas_txt.replace(ancla, marca + "\n" + ancla) if ancla in reglas_txt else reglas_txt.rstrip("\n") + "\n\n" + marca
+        bloque = "".join("- " + json.dumps(r, ensure_ascii=False) + "\n" for r in nuevas)
+        reglas_txt = reglas_txt.replace(marca, marca + bloque)
+        (CONFIG / "reglas.yaml").write_text(reglas_txt, encoding="utf-8")
+    return len(nuevas)
+
+
 def pendientes(con):
     rows = con.execute("SELECT id,cuenta,fecha,importe,concepto,tipo,categoria,nota FROM movimientos WHERE estado='pendiente' ORDER BY fecha").fetchall()
     for r in rows:
@@ -198,10 +254,17 @@ def main(argv):
     if argv and argv[0] == "--reclasificar":
         print("reclasificados:", reclasificar(con, reglas, cuentas, categorias))
         print("ajustes nuevos:", importar_ajustes(con), "| overrides aplicados:", aplicar_overrides(con))
+        n = aprender(con, categorias)
+        if n:
+            print("reglas aprendidas:", n, "| reclasificados:", reclasificar(con, cargar_reglas(), cuentas, categorias))
         pendientes(con)
         return
     if argv and argv[0] == "--overrides":
         print("overrides aplicados:", aplicar_overrides(con))
+        n = aprender(con, categorias)
+        print("reglas aprendidas:", n)
+        if n:
+            print("reclasificados:", reclasificar(con, cargar_reglas(), cuentas, categorias))
         return
     files = [pathlib.Path(a) for a in argv] or sorted(p for p in INBOX.iterdir() if p.suffix.lower() in (".csv", ".pdf", ".xlsx", ".xls"))
     for f in files:
@@ -209,6 +272,9 @@ def main(argv):
         print(f"{f.name}: {cuenta} {n} filas, {nuevas} nuevas ({fmin} .. {fmax})")
     print("reclasificados:", reclasificar(con, reglas, cuentas, categorias))
     print("ajustes nuevos:", importar_ajustes(con), "| overrides aplicados:", aplicar_overrides(con))
+    n = aprender(con, categorias)
+    if n:
+        print("reglas aprendidas:", n, "| reclasificados:", reclasificar(con, cargar_reglas(), cuentas, categorias))
     tot = con.execute("SELECT COUNT(*) c, SUM(estado='pendiente') p FROM movimientos").fetchone()
     print(f"total en base: {tot['c']} movimientos, {tot['p']} pendientes")
 

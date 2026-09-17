@@ -1,0 +1,41 @@
+# Categorías por tipo. "fijo" = gasto recurrente mensual (para separar fijos de variables en el dashboard).
+Ingreso:
+  SUELDO: {ambito: Trabajo}
+  PAGA: {}
+  INTERESES: {}
+  OTROS/EXTRAS: {}
+Reembolso:
+  REEMBOLSOS: {}          # Bizums de amigos, devoluciones: restan del gasto, no son ingreso
+Gasto:
+  ALQUILER: {fijo: true}
+  LUZ: {fijo: true}
+  AGUA: {fijo: true}
+  INTERNET: {fijo: true}
+  SUBSCRIPCIONES: {fijo: true}
+  GESTORIA: {fijo: true, ambito: Trabajo}
+  IMPUESTOS: {fijo: true, ambito: Trabajo}
+  DEPORTE: {}
+  SALUD: {}
+  PSICOLOGA: {}
+  COMIDA: {}
+  RESTAURANTES: {}
+  CAFÉ: {}
+  TRANSPORTE: {}
+  OCIO: {}
+  CITAS/PAREJA: {}
+  AJUSTES PAREJA: {}      # transferencias con Kate que no son alquiler ni aportación a la conjunta
+  ROPA: {}
+  RUSO: {}
+  HOGAR: {}
+  VIAJES: {}
+  EFECTIVO: {}            # retiradas de cajero (no se sigue el efectivo)
+  IMPREVISTOS: {}
+  TRABAJO: {ambito: Trabajo}   # solo histórico 2025
+Inversion:
+  FONDOS INDEXADOS / ETF: {}
+  ACCIONES: {}
+  CRYPTOMONEDAS: {}
+  FORMACIÓN / MENTORÍA: {}
+Traspaso:
+  TRASPASO: {}            # entre tus propias cuentas
+  APORTACIÓN KATE: {}     # dinero que Kate mete en la conjunta (no es tuyo)

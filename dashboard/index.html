@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finanzas Joan</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f4f4f2; --surface: #fcfcfb; --surface-2: #ecebe7; --surface-3: #e2e1dc;
+    --text: #0b0b0b; --text-2: #52514e; --text-3: #8a8985;
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s7: #4a3aa7;
+    --seq: #2a78d6; --seq-light: #cde2fb;
+    --good: #0ca30c; --bad: #d03b3b; --warn: #fab219;
+    --tint-blue: #e3eefb; --tint-orange: #fde9e0; --tint-aqua: #dff4ec; --tint-violet: #e8e5f7; --tint-yellow: #fcf0d4;
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #121211; --surface: #1a1a19; --surface-2: #242423; --surface-3: #2f2f2d;
+      --text: #ffffff; --text-2: #c3c2b7; --text-3: #8a8985;
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s7: #9085e9;
+      --seq: #3987e5; --seq-light: #1c3d63;
+      --tint-blue: #1b2c42; --tint-orange: #3d2419; --tint-aqua: #163229; --tint-violet: #272444; --tint-yellow: #3a2e12;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px 16px 60px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-bottom: 18px; }
+  header h1 { font-size: 22px; margin: 0; font-weight: 700; letter-spacing: -0.01em; }
+  header .meta { color: var(--text-3); font-size: 12px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+  .seg { display: inline-flex; background: var(--surface-2); border-radius: 999px; padding: 3px; }
+  .seg button { border: 0; background: transparent; color: var(--text-2); padding: 6px 12px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 13px; }
+  .seg button.on { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  select { border: 0; background: var(--surface-2); color: var(--text); padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 13px; }
+  .grid { display: grid; gap: 14px; }
+  .tiles { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-bottom: 14px; }
+  .tile { background: var(--surface); border-radius: var(--radius); padding: 14px 16px; }
+  .tile .lbl { color: var(--text-2); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  .tile .val { font-size: 24px; font-weight: 700; margin-top: 4px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .tile .sub { color: var(--text-3); font-size: 12px; margin-top: 2px; }
+  .tile.blue { background: var(--tint-blue); } .tile.orange { background: var(--tint-orange); } .tile.aqua { background: var(--tint-aqua); } .tile.violet { background: var(--tint-violet); } .tile.yellow { background: var(--tint-yellow); }
+  .cards { grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .cards.two { grid-template-columns: 3fr 2fr; } }
+  .card { background: var(--surface); border-radius: var(--radius); padding: 16px 18px; min-width: 0; }
+  .card h2 { font-size: 15px; margin: 0 0 4px; font-weight: 650; }
+  .card .hint { color: var(--text-3); font-size: 12px; margin-bottom: 10px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--text-2); margin-bottom: 8px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  svg { display: block; width: 100%; height: auto; }
+  .bar { cursor: pointer; }
+  .bar:hover { opacity: .85; }
+  .axis { fill: var(--text-3); font-size: 11px; }
+  .gridline { stroke: var(--surface-3); stroke-width: 1; }
+  .cats .row { display: grid; grid-template-columns: 150px 1fr 90px; align-items: center; gap: 10px; padding: 4px 0; font-size: 13px; cursor: pointer; }
+  .cats .row:hover { background: var(--surface-2); border-radius: 6px; }
+  .cats .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cats .name small { color: var(--text-3); margin-left: 4px; }
+  .cats .track { height: 14px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+  .cats .fill { height: 100%; background: var(--seq); border-radius: 4px; }
+  .cats .fill.neg { background: var(--s3); }
+  .cats .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .kv { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; font-size: 13px; }
+  .kv b { font-variant-numeric: tabular-nums; }
+  .pend { font-size: 13px; }
+  .pend div { display: grid; grid-template-columns: 78px 1fr auto; gap: 10px; padding: 6px 0; border-top: 1px solid var(--surface-2); }
+  .pend .c { color: var(--text-2); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 8px; border-top: 1px solid var(--surface-2); white-space: nowrap; }
+  th { color: var(--text-2); font-weight: 600; font-size: 12px; position: sticky; top: 0; background: var(--surface); }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  td.neg { color: var(--text); } td.pos { color: var(--good); }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; background: var(--surface-2); color: var(--text-2); }
+  .pill.pendiente { background: var(--tint-yellow); color: var(--text); }
+  .pill.Trabajo { background: var(--tint-violet); }
+  .tablewrap { overflow: auto; max-height: 520px; }
+  .tfilters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .tfilters input { border: 0; background: var(--surface-2); color: var(--text); padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 13px; min-width: 200px; }
+  .tip { position: fixed; pointer-events: none; background: var(--text); color: var(--bg); padding: 8px 10px; border-radius: 8px; font-size: 12px; opacity: 0; transition: opacity .1s; z-index: 10; white-space: nowrap; }
+  .tip b { display: block; margin-bottom: 2px; }
+  .muted { color: var(--text-3); }
+  .defs { font-size: 12px; color: var(--text-3); white-space: pre-line; margin-top: 8px; }
+  .up { color: var(--good); } .down { color: var(--bad); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Finanzas</h1>
+      <div class="meta" id="meta"></div>
+    </div>
+    <div class="filters">
+      <div class="seg" id="years"></div>
+      <div class="seg" id="ambitos">
+        <button data-v="Todo" class="on">Todo</button>
+        <button data-v="Personal">Personal</button>
+        <button data-v="Trabajo">Trabajo</button>
+      </div>
+      <select id="cuenta"><option value="">Todas las cuentas</option></select>
+    </div>
+  </header>
+
+  <div class="grid tiles" id="tiles"></div>
+
+  <div class="grid cards two">
+    <div class="card">
+      <h2 id="mesesTitle">Por mes</h2>
+      <div class="hint">Haz clic en un mes para ver sus categorías y movimientos. Clic otra vez para volver al año.</div>
+      <div class="legend"><span><i style="background:var(--s1)"></i>Ingresos</span><span><i style="background:var(--s2)"></i>Gasto neto</span><span><i style="background:var(--s3)"></i>Invertido</span></div>
+      <div id="chartMeses"></div>
+    </div>
+    <div class="card">
+      <h2 id="catsTitle">Gasto por categoría</h2>
+      <div class="hint" id="catsHint">Neto: los reembolsos restan. Clic filtra la tabla.</div>
+      <div class="cats" id="cats"></div>
+    </div>
+  </div>
+
+  <div class="grid cards two" style="margin-top:14px">
+    <div class="card">
+      <h2>Ahorro mensual</h2>
+      <div class="hint">Ingresos menos gasto neto. La línea punteada es la media del periodo.</div>
+      <div id="chartAhorro"></div>
+    </div>
+    <div class="card">
+      <h2>Cuenta conjunta con Kate</h2>
+      <div class="hint">Cada gasto de la conjunta te cuenta al 50 %. Las aportaciones no son gasto.</div>
+      <div class="kv" id="conjunta"></div>
+    </div>
+  </div>
+
+  <div class="grid cards two" style="margin-top:14px">
+    <div class="card">
+      <h2>Pendientes de revisar <span class="pill pendiente" id="npend"></span></h2>
+      <div class="hint">Movimientos que las reglas no supieron clasificar con seguridad. Se resuelven en el cierre mensual.</div>
+      <div class="pend" id="pend"></div>
+    </div>
+    <div class="card">
+      <h2>Cuentas</h2>
+      <div class="hint">Último saldo del extracto importado.</div>
+      <div class="kv" id="cuentas"></div>
+      <div class="defs" id="defs"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h2>Movimientos <span class="muted" id="nmov"></span></h2>
+    <div class="tfilters">
+      <input id="q" placeholder="Buscar concepto…">
+      <select id="fcat"><option value="">Todas las categorías</option></select>
+      <select id="ftipo"><option value="">Todos los tipos</option><option>Ingreso</option><option>Gasto</option><option>Reembolso</option><option>Inversion</option><option>Traspaso</option></select>
+      <button class="pill" id="clear" style="cursor:pointer;border:0">Limpiar filtros</button>
+    </div>
+    <div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Cuenta</th><th>Concepto</th><th>Categoría</th><th>Tipo</th><th style="text-align:right">Importe</th><th style="text-align:right">Tu parte</th><th>Estado</th></tr></thead><tbody id="tbody"></tbody></table></div>
+  </div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const fmt = n => (n == null ? '–' : new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', maximumFractionDigits:0}).format(n));
+const fmt2 = n => new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', minimumFractionDigits:2}).format(n);
+const pct = x => x == null ? '–' : Math.round(x*100) + ' %';
+const mesLabel = m => MESES[+m.slice(5,7)-1] + ' ' + m.slice(2,4);
+
+let D, state = { year: null, ambito: 'Todo', cuenta: '', mes: null, cat: '', tipo: '', q: '' };
+const $ = id => document.getElementById(id);
+
+fetch('data.json').then(r => r.json()).then(d => { D = d; init(); });
+
+function init() {
+  const years = [...new Set(D.movimientos.map(m => m.fecha.slice(0,4)))].sort();
+  state.year = years[years.length-1];
+  $('years').innerHTML = years.map(y => `<button data-v="${y}" class="${y===state.year?'on':''}">${y}</button>`).join('');
+  $('years').onclick = e => { if (e.target.dataset.v) { state.year = e.target.dataset.v; state.mes = null; seg('years', state.year); render(); } };
+  $('ambitos').onclick = e => { if (e.target.dataset.v) { state.ambito = e.target.dataset.v; seg('ambitos', state.ambito); render(); } };
+  const cuentas = [...new Set(D.movimientos.map(m => m.cuenta))].sort();
+  $('cuenta').innerHTML += cuentas.map(c => `<option>${c}</option>`).join('');
+  $('cuenta').onchange = e => { state.cuenta = e.target.value; render(); };
+  $('fcat').innerHTML += D.categorias.map(c => `<option>${c.nombre}</option>`).join('');
+  $('fcat').onchange = e => { state.cat = e.target.value; renderTable(); };
+  $('ftipo').onchange = e => { state.tipo = e.target.value; renderTable(); };
+  $('q').oninput = e => { state.q = e.target.value.toLowerCase(); renderTable(); };
+  $('clear').onclick = () => { state.cat=''; state.tipo=''; state.q=''; state.mes=null; $('fcat').value=''; $('ftipo').value=''; $('q').value=''; render(); };
+  $('meta').textContent = 'Actualizado ' + D.generado + ' · ' + D.movimientos.length + ' movimientos';
+  $('defs').textContent = D.definiciones;
+  render();
+}
+function seg(id, v) { [...$(id).children].forEach(b => b.classList.toggle('on', b.dataset.v === v)); }
+
+// ---- filtro base (año + ámbito + cuenta), sin traspasos
+function base(mesOnly) {
+  return D.movimientos.filter(m => m.tipo && m.tipo !== 'Traspaso'
+    && m.fecha.startsWith(mesOnly || state.year)
+    && (state.ambito === 'Todo' || m.ambito === state.ambito)
+    && (!state.cuenta || m.cuenta === state.cuenta));
+}
+function agg(rows) {
+  const a = { ingresos:0, gasto:0, bruto:0, reemb:0, inv:0, cats:{}, fijos:0, ingT:0, gasT:0 };
+  const fijos = new Set(D.categorias.filter(c => c.fijo).map(c => c.nombre));
+  for (const m of rows) {
+    if (m.tipo === 'Ingreso') { a.ingresos += m.mio; if (m.ambito==='Trabajo') a.ingT += m.mio; }
+    else if (m.tipo === 'Gasto' || m.tipo === 'Reembolso') {
+      a.gasto -= m.mio; if (m.tipo==='Gasto' && m.mio<0) a.bruto -= m.mio; else a.reemb += m.mio;
+      const c = m.categoria || 'SIN CATEGORÍA'; a.cats[c] = (a.cats[c]||0) - m.mio;
+      if (fijos.has(m.categoria)) a.fijos -= m.mio;
+      if (m.ambito==='Trabajo') a.gasT -= m.mio;
+    } else if (m.tipo === 'Inversion') a.inv -= m.mio;
+  }
+  a.ahorro = a.ingresos - a.gasto; a.liq = a.ahorro - a.inv; a.tasa = a.ingresos ? a.ahorro/a.ingresos : null;
+  return a;
+}
+
+function render() {
+  const rowsY = base();
+  const meses = [...new Set(rowsY.map(m => m.fecha.slice(0,7)))].sort();
+  const porMes = meses.map(mes => ({ mes, ...agg(rowsY.filter(m => m.fecha.startsWith(mes))) }));
+  const sel = state.mes ? porMes.find(p => p.mes === state.mes) : agg(rowsY);
+  const n = state.mes ? 1 : Math.max(meses.length, 1);
+  const periodo = state.mes ? mesLabel(state.mes) : state.year + (state.ambito!=='Todo' ? ' · ' + state.ambito : '');
+
+  // año anterior para comparar medias
+  const prevY = String(+state.year - 1);
+  const prevRows = D.movimientos.filter(m => m.tipo && m.tipo !== 'Traspaso' && m.fecha.startsWith(prevY) && (state.ambito === 'Todo' || m.ambito === state.ambito) && (!state.cuenta || m.cuenta === state.cuenta));
+  const prevN = new Set(prevRows.map(m => m.fecha.slice(0,7))).size;
+  const prev = prevN ? agg(prevRows) : null;
+  const delta = (cur, key) => { if (!prev || state.mes) return ''; const p = prev[key]/prevN, c = cur/n; if (!p) return ''; const d = (c-p)/Math.abs(p); return `<span class="${(key==='gasto'? d<0 : d>0)?'up':'down'}">${d>0?'+':''}${Math.round(d*100)} % vs ${prevY}</span>`; };
+
+  const t = [
+    ['Ingresos', sel.ingresos, 'blue', `${fmt(sel.ingresos/n)} / mes ` + delta(sel.ingresos, 'ingresos')],
+    ['Gasto neto', sel.gasto, 'orange', `${fmt(sel.gasto/n)} / mes · fijos ${fmt(sel.fijos)} ` + delta(sel.gasto, 'gasto')],
+    ['Ahorro', sel.ahorro, sel.ahorro >= 0 ? 'aqua' : 'orange', `tasa ${pct(sel.tasa)} · ${fmt(sel.ahorro/n)} / mes`],
+    ['Invertido', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes · aportaciones netas`],
+    ['Liquidez', sel.liq, 'yellow', 'ahorro menos inversión'],
+  ];
+  if (state.ambito === 'Todo') t.push(['Beneficio trabajo', sel.ingT - sel.gasT, '', `sueldo ${fmt(sel.ingT)} − gastos ${fmt(sel.gasT)}`]);
+  $('tiles').innerHTML = t.map(([l,v,c,s]) => `<div class="tile ${c}"><div class="lbl">${l} · ${periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
+
+  chartMeses(porMes);
+  chartAhorro(porMes);
+  renderCats(sel, periodo);
+  renderConjunta();
+  renderPend();
+  renderCuentas();
+  renderTable();
+}
+
+// ---- gráfico de barras agrupadas por mes
+function chartMeses(pm) {
+  $('mesesTitle').textContent = 'Por mes · ' + state.year;
+  if (!pm.length) { $('chartMeses').innerHTML = '<p class="muted">Sin datos</p>'; return; }
+  const W = 640, H = 240, padL = 48, padB = 26, padT = 10;
+  const max = Math.max(...pm.flatMap(p => [p.ingresos, p.gasto, p.inv]), 1);
+  const step = niceStep(max), top = Math.ceil(max/step)*step;
+  const y = v => padT + (H-padT-padB) * (1 - v/top);
+  const gw = (W-padL) / pm.length, bw = Math.min(16, (gw-10)/3);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ingresos, gasto neto e inversión por mes">`;
+  for (let v = 0; v <= top; v += step) s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL-6}" y="${y(v)+4}" text-anchor="end">${fmtK(v)}</text>`;
+  pm.forEach((p, i) => {
+    const x0 = padL + i*gw + (gw - 3*bw - 4)/2;
+    const on = !state.mes || state.mes === p.mes;
+    [[p.ingresos,'var(--s1)','Ingresos'],[p.gasto,'var(--s2)','Gasto neto'],[p.inv,'var(--s3)','Invertido']].forEach(([v,c,l],k) => {
+      const h = Math.max(0, y(0)-y(v));
+      s += `<rect class="bar" data-mes="${p.mes}" data-tip="${mesLabel(p.mes)}|${l}: ${fmt2(v)}" x="${x0+k*(bw+2)}" y="${y(v)}" width="${bw}" height="${h}" rx="3" fill="${c}" opacity="${on?1:.35}"/>`;
+    });
+    s += `<text class="axis" x="${padL + i*gw + gw/2}" y="${H-8}" text-anchor="middle" style="cursor:pointer;font-weight:${state.mes===p.mes?700:400}" data-mes="${p.mes}">${mesLabel(p.mes)}${p.pendientes?'':''}</text>`;
+  });
+  $('chartMeses').innerHTML = s + '</svg>';
+  $('chartMeses').onclick = e => { const m = e.target.dataset.mes; if (m) { state.mes = state.mes === m ? null : m; render(); } };
+  hoverTips($('chartMeses'));
+}
+function chartAhorro(pm) {
+  if (!pm.length) { $('chartAhorro').innerHTML = ''; return; }
+  const W = 640, H = 200, padL = 48, padB = 26, padT = 10;
+  const vals = pm.map(p => p.ahorro), media = vals.reduce((a,b)=>a+b,0)/vals.length;
+  const lo = Math.min(0, ...vals), hi = Math.max(0, ...vals), step = niceStep(Math.max(hi, -lo, 1));
+  const top = Math.ceil(hi/step)*step, bot = Math.floor(lo/step)*step;
+  const y = v => padT + (H-padT-padB) * (1 - (v-bot)/(top-bot || 1));
+  const gw = (W-padL)/pm.length, bw = Math.min(28, gw-10);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ahorro por mes">`;
+  for (let v = bot; v <= top; v += step) s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL-6}" y="${y(v)+4}" text-anchor="end">${fmtK(v)}</text>`;
+  pm.forEach((p, i) => {
+    const x = padL + i*gw + (gw-bw)/2, v = p.ahorro;
+    s += `<rect class="bar" data-tip="${mesLabel(p.mes)}|Ahorro: ${fmt2(v)} (${pct(p.tasa)})" x="${x}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.abs(y(v)-y(0))}" rx="3" fill="${v>=0?'var(--s3)':'var(--s2)'}"/>`;
+    s += `<text class="axis" x="${x+bw/2}" y="${H-8}" text-anchor="middle">${mesLabel(p.mes)}</text>`;
+  });
+  s += `<line x1="${padL}" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--text-3)" stroke-width="1"/>`;
+  s += `<line x1="${padL}" x2="${W}" y1="${y(media)}" y2="${y(media)}" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="4 4"/><text class="axis" x="${W-2}" y="${y(media)-4}" text-anchor="end" style="fill:var(--text)">media ${fmt(media)}</text>`;
+  $('chartAhorro').innerHTML = s + '</svg>';
+  hoverTips($('chartAhorro'));
+}
+function niceStep(max) { const p = Math.pow(10, Math.floor(Math.log10(max))); const f = max/p; return (f<=2?0.5:f<=5?1:2)*p; }
+function fmtK(v) { return Math.abs(v) >= 1000 ? (v/1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : v; }
+function hoverTips(el) {
+  const tip = $('tip');
+  el.onmousemove = e => { const t = e.target.dataset.tip; if (!t) { tip.style.opacity = 0; return; } const [a,b] = t.split('|'); tip.innerHTML = `<b>${a}</b>${b}`; tip.style.opacity = 1; tip.style.left = (e.clientX+12)+'px'; tip.style.top = (e.clientY+12)+'px'; };
+  el.onmouseleave = () => tip.style.opacity = 0;
+}
+
+function renderCats(sel, periodo) {
+  $('catsTitle').textContent = 'Gasto por categoría · ' + periodo;
+  const cats = Object.entries(sel.cats).sort((a,b) => b[1]-a[1]);
+  const max = Math.max(...cats.map(c => Math.abs(c[1])), 1);
+  const fijos = new Set(D.categorias.filter(c => c.fijo).map(c => c.nombre));
+  $('cats').innerHTML = cats.map(([c,v]) => `<div class="row" data-cat="${c}"><span class="name">${c}${fijos.has(c)?'<small>fijo</small>':''}</span><div class="track"><div class="fill ${v<0?'neg':''}" style="width:${Math.abs(v)/max*100}%"></div></div><span class="num">${fmt(v)}</span></div>`).join('') || '<p class="muted">Sin gastos</p>';
+  $('cats').onclick = e => { const r = e.target.closest('.row'); if (r) { state.cat = state.cat === r.dataset.cat ? '' : r.dataset.cat; $('fcat').value = state.cat; renderTable(); document.querySelector('.tablewrap').scrollIntoView({behavior:'smooth', block:'nearest'}); } };
+}
+function renderConjunta() {
+  const c = D.conjunta;
+  if (!c || !c.gasto_total) { $('conjunta').innerHTML = '<span class="muted">Sin datos</span>'; return; }
+  const meses = Object.entries(c.por_mes).filter(([m]) => m.startsWith(state.year));
+  $('conjunta').innerHTML = `
+    <span>Has aportado tú</span><b>${fmt2(c.aportado_joan)}</b>
+    <span>Ha aportado Kate</span><b>${fmt2(c.aportado_kate)}</b>
+    <span>Gasto total de la cuenta</span><b>${fmt2(c.gasto_total)}</b>
+    <span>Tu 50 %</span><b>${fmt2(c.mi_parte)}</b>
+    <span>Saldo actual</span><b>${fmt2(c.saldo)}</b>
+    <span class="muted" style="grid-column:1/-1;margin-top:6px">Por mes (tú / Kate / gasto)</span>
+    ${meses.map(([m,v]) => `<span>${mesLabel(m)}</span><b class="muted">${fmt(v.joan)} / ${fmt(v.kate)} / ${fmt(v.gasto)}</b>`).join('')}`;
+}
+function renderPend() {
+  const p = D.pendientes;
+  $('npend').textContent = p.length;
+  $('pend').innerHTML = p.length ? p.map(x => `<div><span class="muted">${x.fecha.slice(5)} · ${x.cuenta.slice(0,3)}</span><span class="c">${x.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,60)}<br><small class="muted">${x.nota || (x.categoria ? 'sugerido: ' + x.categoria : 'sin categoría')}</small></span><b>${fmt2(x.importe)}</b></div>`).join('') : '<p class="muted">Nada pendiente. Todo clasificado.</p>';
+}
+function renderCuentas() {
+  $('cuentas').innerHTML = D.cuentas.map(c => `<span>${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('');
+}
+function renderTable() {
+  let rows = D.movimientos.filter(m => m.fecha.startsWith(state.mes || state.year)
+    && (state.ambito === 'Todo' || m.ambito === state.ambito)
+    && (!state.cuenta || m.cuenta === state.cuenta)
+    && (!state.cat || (m.categoria || 'SIN CATEGORÍA') === state.cat)
+    && (!state.tipo || m.tipo === state.tipo)
+    && (!state.q || m.concepto.toLowerCase().includes(state.q) || (m.categoria||'').toLowerCase().includes(state.q)));
+  rows.sort((a,b) => b.fecha.localeCompare(a.fecha) || b.id - a.id);
+  $('nmov').textContent = rows.length + (state.cat ? ' · ' + state.cat : '') + (state.mes ? ' · ' + mesLabel(state.mes) : '');
+  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}</td><td>${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.slice(0,58)}</td><td>${m.categoria || '<span class="muted">–</span>'}</td><td><span class="pill ${m.ambito}">${m.tipo || '?'}${m.ambito==='Trabajo'?' · T':''}</span></td><td class="n ${m.importe<0?'neg':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
+    + (rows.length > 600 ? `<tr><td colspan="8" class="muted">… ${rows.length-600} más. Filtra para verlos.</td></tr>` : '');
+}
+</script>
+</body>
+</html>

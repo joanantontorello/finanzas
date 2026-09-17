@@ -1,0 +1,4 @@
+inbox/
+__pycache__/
+.vercel/
+.DS_Store

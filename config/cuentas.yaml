@@ -1,0 +1,20 @@
+# Cuentas. participacion = parte del gasto que es tuya (0.5 en la conjunta con Kate).
+Revolut:
+  tipo: Cuenta personal (tarjeta día a día)
+  participacion: 1.0
+  export: App Revolut > Cuenta > Extracto > CSV, rango desde el último cierre. Renombrar a revolut_AAAA-MM-DD_AAAA-MM-DD.csv
+Conjunta:
+  tipo: Cuenta conjunta Revolut con Kate (desde junio 2026)
+  participacion: 0.5
+  export: Igual que Revolut, desde la cuenta conjunta. Renombrar a conjunta_AAAA-MM-DD_AAAA-MM-DD.csv
+Trade Republic:
+  tipo: Cuenta principal (sueldo, alquiler, inversiones)
+  participacion: 1.0
+  export: App > Perfil > Actividad > Extracto de cuenta (PDF) del periodo. Renombrar a traderepublic_AAAA-MM-DD_AAAA-MM-DD.pdf
+BBVA:
+  tipo: Cuenta de autónomo (gestoría, Seguridad Social, AEAT)
+  participacion: 1.0
+  export: Web BBVA > Cuentas > Movimientos > filtrar fechas > Exportar Excel. Renombrar a bbva_AAAA-MM-DD_AAAA-MM-DD.xlsx
+Histórico:
+  tipo: Datos importados de la hoja de años anteriores (sin concepto ni día)
+  participacion: 1.0

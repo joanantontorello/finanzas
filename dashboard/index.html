@@ -9,178 +9,244 @@
     color-scheme: light;
     --bg: #f4f4f2; --surface: #fcfcfb; --surface-2: #ecebe7; --surface-3: #e2e1dc;
     --text: #0b0b0b; --text-2: #52514e; --text-3: #8a8985;
-    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s7: #4a3aa7;
-    --seq: #2a78d6; --seq-light: #cde2fb;
-    --good: #0ca30c; --bad: #d03b3b; --warn: #fab219;
-    --tint-blue: #e3eefb; --tint-orange: #fde9e0; --tint-aqua: #dff4ec; --tint-violet: #e8e5f7; --tint-yellow: #fcf0d4;
-    --radius: 14px;
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #4a3aa7; --s8: #e34948; --s9: #9a9994;
+    --seq: #2a78d6;
+    --good: #0ca30c; --bad: #d03b3b;
+    --tint-blue: #e3eefb; --tint-orange: #fde9e0; --tint-aqua: #dff4ec; --tint-violet: #e8e5f7; --tint-yellow: #fcf0d4; --tint-gray: #ecebe7;
+    --radius: 14px; --side: 210px;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
       --bg: #121211; --surface: #1a1a19; --surface-2: #242423; --surface-3: #2f2f2d;
       --text: #ffffff; --text-2: #c3c2b7; --text-3: #8a8985;
-      --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s7: #9085e9;
-      --seq: #3987e5; --seq-light: #1c3d63;
-      --tint-blue: #1b2c42; --tint-orange: #3d2419; --tint-aqua: #163229; --tint-violet: #272444; --tint-yellow: #3a2e12;
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767; --s9: #6f6e69;
+      --seq: #3987e5;
+      --tint-blue: #1b2c42; --tint-orange: #3d2419; --tint-aqua: #163229; --tint-violet: #272444; --tint-yellow: #3a2e12; --tint-gray: #242423;
     }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px 16px 60px; }
-  .wrap { max-width: 1180px; margin: 0 auto; }
-  header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-bottom: 18px; }
-  header h1 { font-size: 22px; margin: 0; font-weight: 700; letter-spacing: -0.01em; }
-  header .meta { color: var(--text-3); font-size: 12px; }
-  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .layout { display: grid; grid-template-columns: var(--side) 1fr; min-height: 100vh; }
+  nav { background: var(--surface); padding: 22px 14px; position: sticky; top: 0; height: 100vh; }
+  nav h1 { font-size: 20px; margin: 0 6px 4px; letter-spacing: -0.01em; }
+  nav .meta { color: var(--text-3); font-size: 11px; margin: 0 6px 18px; }
+  nav a { display: block; padding: 9px 12px; border-radius: 10px; color: var(--text-2); text-decoration: none; cursor: pointer; font-weight: 500; }
+  nav a.on { background: var(--tint-blue); color: var(--text); font-weight: 650; }
+  nav a small { float: right; background: var(--tint-yellow); color: var(--text); border-radius: 999px; padding: 0 7px; font-size: 11px; }
+  nav .tok { font-size: 11px; color: var(--text-3); margin: 24px 6px 0; }
+  nav .tok a { display: inline; padding: 0; color: var(--s1); }
+  main { padding: 20px 22px 80px; min-width: 0; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    nav { position: static; height: auto; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; padding: 12px 16px; }
+    nav h1 { width: 100%; } nav .meta { display: none; } nav .tok { width: 100%; margin: 8px 6px 0; }
+    main { padding: 16px 16px 80px; }
+  }
+  .bar-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
   .seg { display: inline-flex; background: var(--surface-2); border-radius: 999px; padding: 3px; }
   .seg button { border: 0; background: transparent; color: var(--text-2); padding: 6px 12px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 13px; }
   .seg button.on { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
-  select { border: 0; background: var(--surface-2); color: var(--text); padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 13px; }
+  select, input { border: 0; background: var(--surface-2); color: var(--text); padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 13px; }
+  .periodo { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-2); }
   .grid { display: grid; gap: 14px; }
-  .tiles { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-bottom: 14px; }
+  .tiles { grid-template-columns: repeat(4, 1fr); margin-bottom: 14px; }
+  @media (max-width: 1100px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .tiles { grid-template-columns: 1fr; } }
   .tile { background: var(--surface); border-radius: var(--radius); padding: 14px 16px; }
   .tile .lbl { color: var(--text-2); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
   .tile .val { font-size: 24px; font-weight: 700; margin-top: 4px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
   .tile .sub { color: var(--text-3); font-size: 12px; margin-top: 2px; }
-  .tile.blue { background: var(--tint-blue); } .tile.orange { background: var(--tint-orange); } .tile.aqua { background: var(--tint-aqua); } .tile.violet { background: var(--tint-violet); } .tile.yellow { background: var(--tint-yellow); }
+  .tile.blue { background: var(--tint-blue); } .tile.orange { background: var(--tint-orange); } .tile.aqua { background: var(--tint-aqua); } .tile.violet { background: var(--tint-violet); } .tile.yellow { background: var(--tint-yellow); } .tile.gray { background: var(--tint-gray); }
   .cards { grid-template-columns: 1fr; }
-  @media (min-width: 900px) { .cards.two { grid-template-columns: 3fr 2fr; } }
+  @media (min-width: 900px) { .cards.two { grid-template-columns: 3fr 2fr; } .cards.half { grid-template-columns: 1fr 1fr; } }
   .card { background: var(--surface); border-radius: var(--radius); padding: 16px 18px; min-width: 0; }
-  .card h2 { font-size: 15px; margin: 0 0 4px; font-weight: 650; }
+  .card h2 { font-size: 15px; margin: 0 0 4px; font-weight: 650; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .card h2 select { padding: 4px 10px; font-size: 12px; }
   .card .hint { color: var(--text-3); font-size: 12px; margin-bottom: 10px; }
   .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--text-2); margin-bottom: 8px; }
-  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .legend i, .dl i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
   svg { display: block; width: 100%; height: auto; }
-  .bar { cursor: pointer; }
-  .bar:hover { opacity: .85; }
+  .bar { cursor: pointer; } .bar:hover { opacity: .85; }
   .axis { fill: var(--text-3); font-size: 11px; }
   .gridline { stroke: var(--surface-3); stroke-width: 1; }
+  .donut { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 16px; align-items: center; }
+  @media (max-width: 1100px) { .donut { grid-template-columns: 1fr; } }
+  .dl { font-size: 13px; min-width: 0; } .dl div { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; padding: 3px 0; cursor: pointer; }
+  .dl div > span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dl div:hover { background: var(--surface-2); border-radius: 6px; } .dl b { font-variant-numeric: tabular-nums; } .dl .p { color: var(--text-3); width: 44px; text-align: right; }
   .cats .row { display: grid; grid-template-columns: 150px 1fr 90px; align-items: center; gap: 10px; padding: 4px 0; font-size: 13px; cursor: pointer; }
   .cats .row:hover { background: var(--surface-2); border-radius: 6px; }
-  .cats .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .cats .name small { color: var(--text-3); margin-left: 4px; }
+  .cats .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .cats .name small { color: var(--text-3); margin-left: 4px; }
   .cats .track { height: 14px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
-  .cats .fill { height: 100%; background: var(--seq); border-radius: 4px; }
-  .cats .fill.neg { background: var(--s3); }
+  .cats .fill { height: 100%; background: var(--seq); border-radius: 4px; } .cats .fill.neg { background: var(--s3); }
   .cats .num { text-align: right; font-variant-numeric: tabular-nums; }
-  .kv { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; font-size: 13px; }
-  .kv b { font-variant-numeric: tabular-nums; }
-  .pend { font-size: 13px; }
-  .pend div { display: grid; grid-template-columns: 78px 1fr auto; gap: 10px; padding: 6px 0; border-top: 1px solid var(--surface-2); }
+  .kv { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; font-size: 13px; } .kv b { font-variant-numeric: tabular-nums; }
+  .pend { font-size: 13px; } .pend div { display: grid; grid-template-columns: 78px 1fr auto auto; gap: 10px; padding: 8px 0; border-top: 1px solid var(--surface-2); align-items: center; }
   .pend .c { color: var(--text-2); }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th, td { text-align: left; padding: 7px 8px; border-top: 1px solid var(--surface-2); white-space: nowrap; }
   th { color: var(--text-2); font-weight: 600; font-size: 12px; position: sticky; top: 0; background: var(--surface); }
-  td.n { text-align: right; font-variant-numeric: tabular-nums; }
-  td.neg { color: var(--text); } td.pos { color: var(--good); }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; } td.pos { color: var(--good); }
   .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; background: var(--surface-2); color: var(--text-2); }
   .pill.pendiente { background: var(--tint-yellow); color: var(--text); }
-  .pill.Trabajo { background: var(--tint-violet); }
-  .tablewrap { overflow: auto; max-height: 520px; }
-  .tfilters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-  .tfilters input { border: 0; background: var(--surface-2); color: var(--text); padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 13px; min-width: 200px; }
-  .tip { position: fixed; pointer-events: none; background: var(--text); color: var(--bg); padding: 8px 10px; border-radius: 8px; font-size: 12px; opacity: 0; transition: opacity .1s; z-index: 10; white-space: nowrap; }
-  .tip b { display: block; margin-bottom: 2px; }
-  .muted { color: var(--text-3); }
-  .defs { font-size: 12px; color: var(--text-3); white-space: pre-line; margin-top: 8px; }
+  .tablewrap { overflow: auto; max-height: 70vh; }
+  .tfilters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; } .tfilters input { min-width: 200px; }
+  .tip { position: fixed; pointer-events: none; background: var(--text); color: var(--bg); padding: 8px 10px; border-radius: 8px; font-size: 12px; opacity: 0; transition: opacity .1s; z-index: 10; white-space: nowrap; } .tip b { display: block; margin-bottom: 2px; }
+  .muted { color: var(--text-3); } .defs { font-size: 12px; color: var(--text-3); white-space: pre-line; margin-top: 8px; }
   .up { color: var(--good); } .down { color: var(--bad); }
-  select.edit { padding: 3px 6px; border-radius: 6px; font-size: 12px; max-width: 170px; }
-  select.edit.changed { background: var(--tint-yellow); }
-  button.amb { border: 0; background: var(--surface-2); color: var(--text-2); border-radius: 999px; padding: 2px 8px; font-size: 11px; cursor: pointer; }
-  button.amb.T { background: var(--tint-violet); color: var(--text); }
+  select.edit { padding: 3px 6px; border-radius: 6px; font-size: 12px; max-width: 170px; } select.edit.changed { background: var(--tint-yellow); }
+  button.amb { border: 0; background: var(--surface-2); color: var(--text-2); border-radius: 999px; padding: 2px 8px; font-size: 11px; cursor: pointer; } button.amb.T { background: var(--tint-violet); color: var(--text); }
   .savebar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; display: none; gap: 12px; align-items: center; z-index: 20; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
-  .savebar button { border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; cursor: pointer; background: var(--s1); color: #fff; font-weight: 600; }
-  .savebar button.sec { background: transparent; color: var(--bg); }
-  .pend div { grid-template-columns: 78px 1fr auto auto; }
-  .tok { font-size: 12px; color: var(--text-3); margin-top: 8px; }
-  .tok a { color: var(--s1); cursor: pointer; }
+  .savebar button { border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; cursor: pointer; background: var(--s1); color: #fff; font-weight: 600; } .savebar button.sec { background: transparent; color: var(--bg); }
+  .view { display: none; } .view.on { display: block; }
+  .mt { margin-top: 14px; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>Finanzas</h1>
-      <div class="meta" id="meta"></div>
-    </div>
-    <div class="filters">
+<div class="layout">
+  <nav>
+    <h1>Finanzas</h1>
+    <div class="meta" id="meta"></div>
+    <a data-view="dashboard" class="on">Dashboard</a>
+    <a data-view="inversiones">Inversiones</a>
+    <a data-view="cuentas">Estado de cuentas</a>
+    <a data-view="movimientos">Movimientos</a>
+    <a data-view="pendientes">Pendientes <small id="npend"></small></a>
+    <div class="tok" id="tok"></div>
+  </nav>
+  <main>
+    <div class="bar-top">
       <div class="seg" id="years"></div>
-      <div class="seg" id="ambitos">
-        <button data-v="Todo" class="on">Todo</button>
-        <button data-v="Personal">Personal</button>
-        <button data-v="Trabajo">Trabajo</button>
-      </div>
+      <span class="periodo">de <select id="desde"></select> a <select id="hasta"></select></span>
+      <div class="seg" id="quick"><button data-q="anio">Año</button><button data-q="ultimo">Último mes</button><button data-q="3m">3 meses</button></div>
+      <div class="seg" id="ambitos"><button data-v="Todo" class="on">Todo</button><button data-v="Personal">Personal</button><button data-v="Trabajo">Trabajo</button></div>
       <select id="cuenta"><option value="">Todas las cuentas</option></select>
     </div>
-  </header>
 
-  <div class="grid tiles" id="tiles"></div>
+    <!-- ================= DASHBOARD -->
+    <section class="view on" id="v-dashboard">
+      <div class="grid tiles" id="tiles"></div>
+      <div class="grid cards two">
+        <div class="card">
+          <h2 id="mesesTitle">Por mes</h2>
+          <div class="hint">Clic en un mes para verlo solo. Barras atenuadas = fuera del periodo elegido.</div>
+          <div class="legend"><span><i style="background:var(--s1)"></i>Ingresos</span><span><i style="background:var(--s2)"></i>Gasto neto</span><span><i style="background:var(--s3)"></i>Invertido</span></div>
+          <div id="chartMeses"></div>
+        </div>
+        <div class="card">
+          <h2 id="donutTitle">En qué se va el dinero</h2>
+          <div class="hint">Reparto del gasto por categoría en el periodo (antes de reembolsos). Clic en una categoría para ver su evolución.</div>
+          <div class="donut"><div id="donutGasto"></div><div class="dl" id="donutLegend"></div></div>
+        </div>
+      </div>
+      <div class="grid cards two mt">
+        <div class="card">
+          <h2>Evolución de <select id="evoCat"></select></h2>
+          <div class="hint" id="evoHint"></div>
+          <div id="chartEvo"></div>
+        </div>
+        <div class="card">
+          <h2 id="catsTitle">Gasto por categoría</h2>
+          <div class="hint">Neto: los reembolsos restan. Clic abre los movimientos de esa categoría.</div>
+          <div class="cats" id="cats"></div>
+        </div>
+      </div>
+      <div class="grid cards two mt">
+        <div class="card">
+          <h2>Beneficio mensual</h2>
+          <div class="hint">Ingresos menos gasto neto (lo que llamabas ahorro). La línea punteada es la media del periodo.</div>
+          <div id="chartBeneficio"></div>
+        </div>
+        <div class="card">
+          <h2>Fijos y variables</h2>
+          <div class="hint">Fijos: alquiler, luz, agua, internet, suscripciones, gestoría e impuestos.</div>
+          <div class="kv" id="fijos"></div>
+        </div>
+      </div>
+    </section>
 
-  <div class="grid cards two">
-    <div class="card">
-      <h2 id="mesesTitle">Por mes</h2>
-      <div class="hint">Haz clic en un mes para ver sus categorías y movimientos. Clic otra vez para volver al año.</div>
-      <div class="legend"><span><i style="background:var(--s1)"></i>Ingresos</span><span><i style="background:var(--s2)"></i>Gasto neto</span><span><i style="background:var(--s3)"></i>Invertido</span></div>
-      <div id="chartMeses"></div>
-    </div>
-    <div class="card">
-      <h2 id="catsTitle">Gasto por categoría</h2>
-      <div class="hint" id="catsHint">Neto: los reembolsos restan. Clic filtra la tabla.</div>
-      <div class="cats" id="cats"></div>
-    </div>
-  </div>
+    <!-- ================= INVERSIONES -->
+    <section class="view" id="v-inversiones">
+      <div class="grid tiles" id="tilesInv"></div>
+      <div class="grid cards two">
+        <div class="card">
+          <h2>Aportado por mes</h2>
+          <div class="hint">Compras menos ventas, por tipo de activo.</div>
+          <div class="legend" id="invLegend"></div>
+          <div id="chartInv"></div>
+        </div>
+        <div class="card">
+          <h2>Reparto de lo aportado</h2>
+          <div class="hint">Porcentaje sobre el total aportado en el periodo (no es el valor de mercado).</div>
+          <div class="donut"><div id="donutInv"></div><div class="dl" id="donutInvLegend"></div></div>
+        </div>
+      </div>
+      <div class="card mt">
+        <h2>Operaciones</h2>
+        <div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Concepto</th><th>Tipo</th><th style="text-align:right">Importe</th></tr></thead><tbody id="tbodyInv"></tbody></table></div>
+      </div>
+    </section>
 
-  <div class="grid cards two" style="margin-top:14px">
-    <div class="card">
-      <h2>Ahorro mensual</h2>
-      <div class="hint">Ingresos menos gasto neto. La línea punteada es la media del periodo.</div>
-      <div id="chartAhorro"></div>
-    </div>
-    <div class="card">
-      <h2>Cuenta conjunta con Kate</h2>
-      <div class="hint">Cada gasto de la conjunta te cuenta al 50 %. Las aportaciones no son gasto.</div>
-      <div class="kv" id="conjunta"></div>
-    </div>
-  </div>
+    <!-- ================= ESTADO DE CUENTAS -->
+    <section class="view" id="v-cuentas">
+      <div class="grid cards half">
+        <div class="card">
+          <h2>Cuentas</h2>
+          <div class="hint">Último saldo del extracto importado.</div>
+          <div class="kv" id="cuentas"></div>
+        </div>
+        <div class="card">
+          <h2>Cuenta conjunta con Kate</h2>
+          <div class="hint">Cada gasto de la conjunta te cuenta al 50 %. Las aportaciones no son gasto.</div>
+          <div class="kv" id="conjunta"></div>
+        </div>
+      </div>
+      <div class="card mt">
+        <h2>Cómo se calcula</h2>
+        <div class="defs" id="defs"></div>
+      </div>
+    </section>
 
-  <div class="grid cards two" style="margin-top:14px">
-    <div class="card">
-      <h2>Pendientes de revisar <span class="pill pendiente" id="npend"></span></h2>
-      <div class="hint">Movimientos que las reglas no supieron clasificar con seguridad. Se resuelven en el cierre mensual.</div>
-      <div class="pend" id="pend"></div>
-    </div>
-    <div class="card">
-      <h2>Cuentas</h2>
-      <div class="hint">Último saldo del extracto importado.</div>
-      <div class="kv" id="cuentas"></div>
-      <div class="defs" id="defs"></div>
-      <div class="tok" id="tok"></div>
-    </div>
-  </div>
+    <!-- ================= MOVIMIENTOS -->
+    <section class="view" id="v-movimientos">
+      <div class="card">
+        <h2>Movimientos <span class="muted" id="nmov"></span></h2>
+        <div class="tfilters">
+          <input id="q" placeholder="Buscar concepto…">
+          <select id="fcat"><option value="">Todas las categorías</option></select>
+          <select id="ftipo"><option value="">Todos los tipos</option><option>Ingreso</option><option>Gasto</option><option>Reembolso</option><option>Inversion</option><option>Traspaso</option></select>
+          <button class="pill" id="clear" style="cursor:pointer;border:0">Limpiar filtros</button>
+        </div>
+        <div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Cuenta</th><th>Concepto</th><th>Categoría</th><th>Tipo</th><th style="text-align:right">Importe</th><th style="text-align:right">Tu parte</th><th>Estado</th></tr></thead><tbody id="tbody"></tbody></table></div>
+      </div>
+    </section>
 
-  <div class="card" style="margin-top:14px">
-    <h2>Movimientos <span class="muted" id="nmov"></span></h2>
-    <div class="tfilters">
-      <input id="q" placeholder="Buscar concepto…">
-      <select id="fcat"><option value="">Todas las categorías</option></select>
-      <select id="ftipo"><option value="">Todos los tipos</option><option>Ingreso</option><option>Gasto</option><option>Reembolso</option><option>Inversion</option><option>Traspaso</option></select>
-      <button class="pill" id="clear" style="cursor:pointer;border:0">Limpiar filtros</button>
-    </div>
-    <div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Cuenta</th><th>Concepto</th><th>Categoría</th><th>Tipo</th><th style="text-align:right">Importe</th><th style="text-align:right">Tu parte</th><th>Estado</th></tr></thead><tbody id="tbody"></tbody></table></div>
-  </div>
+    <!-- ================= PENDIENTES -->
+    <section class="view" id="v-pendientes">
+      <div class="card">
+        <h2>Pendientes de revisar</h2>
+        <div class="hint">Movimientos que las reglas no supieron clasificar con seguridad. Elige categoría y pulsa Guardar.</div>
+        <div class="pend" id="pend"></div>
+      </div>
+    </section>
+  </main>
 </div>
 <div class="tip" id="tip"></div>
 <div class="savebar" id="savebar"><span id="savemsg"></span><button class="sec" id="discard">Descartar</button><button id="save">Guardar en GitHub</button></div>
 
 <script>
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const MESES_L = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const fmt = n => (n == null ? '–' : new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', maximumFractionDigits:0}).format(n));
 const fmt2 = n => new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', minimumFractionDigits:2}).format(n);
 const pct = x => (x == null || Math.abs(x) > 5) ? '–' : Math.round(x*100) + ' %';
 const mesLabel = m => MESES[+m.slice(5,7)-1] + ' ' + m.slice(2,4);
-
-let D, state = { year: null, ambito: 'Todo', cuenta: '', mes: null, cat: '', tipo: '', q: '' };
+const mesLargo = m => MESES_L[+m.slice(5,7)-1] + ' ' + m.slice(0,4);
+const SERIES = ['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)','var(--s6)','var(--s7)','var(--s8)'];
 const $ = id => document.getElementById(id);
+
+let D, state = { year: null, desde: null, hasta: null, ambito: 'Todo', cuenta: '', view: 'dashboard', evoCat: '', cat: '', tipo: '', q: '' };
 const GH = { repo: 'joanantontorello/finanzas', path: 'data/overrides.json' };
 let overrides = {}, ovSha = null, cambios = {};
 const catTipo = {};
@@ -232,7 +298,7 @@ async function guardar() {
   if (!r.ok) { alert('No se pudo guardar en GitHub (' + r.status + '). Revisa el token: necesita permiso Contents: Read and write sobre el repo finanzas.'); return; }
   const j = await r.json(); ovSha = j.content.sha; overrides = merged; cambios = {};
   $('savebar').style.display = 'none';
-  $('meta').textContent = 'Correcciones guardadas. Se aplican a la base en el próximo cierre.';
+  $('meta').textContent = 'Correcciones guardadas. Se aplican en el próximo cierre.';
 }
 function pedirToken() {
   const t = prompt('Pega un token de GitHub (fine-grained, solo el repo finanzas, permiso Contents: Read and write). Se guarda solo en este navegador.');
@@ -246,11 +312,15 @@ function ambBtn(m) { return `<button class="amb ${m.ambito === 'Trabajo' ? 'T' :
 document.addEventListener('change', e => { if (e.target.matches('select.edit')) editar(+e.target.dataset.id, 'categoria', e.target.value); });
 document.addEventListener('click', e => { const b = e.target.closest('button.amb'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.amb); editar(m.id, 'ambito', m.ambito === 'Trabajo' ? 'Personal' : 'Trabajo'); } });
 
+// ---- init
 function init() {
   const years = [...new Set(D.movimientos.map(m => m.mes.slice(0,4)))].sort();
   state.year = years[years.length-1];
   $('years').innerHTML = years.map(y => `<button data-v="${y}" class="${y===state.year?'on':''}">${y}</button>`).join('');
-  $('years').onclick = e => { if (e.target.dataset.v) { state.year = e.target.dataset.v; state.mes = null; seg('years', state.year); render(); } };
+  $('years').onclick = e => { if (e.target.dataset.v) { state.year = e.target.dataset.v; seg('years', state.year); setPeriodo('anio'); } };
+  $('quick').onclick = e => { if (e.target.dataset.q) setPeriodo(e.target.dataset.q); };
+  $('desde').onchange = e => { state.desde = e.target.value; if (state.hasta < state.desde) state.hasta = state.desde; seg('quick', ''); render(); };
+  $('hasta').onchange = e => { state.hasta = e.target.value; if (state.hasta < state.desde) state.desde = state.hasta; seg('quick', ''); render(); };
   $('ambitos').onclick = e => { if (e.target.dataset.v) { state.ambito = e.target.dataset.v; seg('ambitos', state.ambito); render(); } };
   const cuentas = [...new Set(D.movimientos.map(m => m.cuenta))].sort();
   $('cuenta').innerHTML += cuentas.map(c => `<option>${c}</option>`).join('');
@@ -259,28 +329,39 @@ function init() {
   $('fcat').onchange = e => { state.cat = e.target.value; renderTable(); };
   $('ftipo').onchange = e => { state.tipo = e.target.value; renderTable(); };
   $('q').oninput = e => { state.q = e.target.value.toLowerCase(); renderTable(); };
-  $('clear').onclick = () => { state.cat=''; state.tipo=''; state.q=''; state.mes=null; $('fcat').value=''; $('ftipo').value=''; $('q').value=''; render(); };
-  $('meta').textContent = 'Actualizado ' + D.generado + ' · ' + D.movimientos.length + ' movimientos';
+  $('clear').onclick = () => { state.cat=''; state.tipo=''; state.q=''; $('fcat').value=''; $('ftipo').value=''; $('q').value=''; renderTable(); };
+  $('evoCat').onchange = e => { state.evoCat = e.target.value; renderEvo(); };
+  document.querySelectorAll('nav a[data-view]').forEach(a => a.onclick = () => showView(a.dataset.view));
+  $('meta').textContent = 'Actualizado ' + D.generado;
+  $('defs').textContent = D.definiciones;
   $('save').onclick = guardar;
   $('discard').onclick = () => location.reload();
-  $('tok').innerHTML = token() ? 'Token de GitHub configurado · <a id="deltok">quitar</a>' : 'Para guardar correcciones desde aquí hace falta un token de GitHub · <a id="settok">configurar</a>';
+  $('tok').innerHTML = token() ? 'Token de GitHub configurado · <a id="deltok">quitar</a>' : 'Para guardar correcciones hace falta un token de GitHub · <a id="settok">configurar</a>';
   const st = $('settok'), dt = $('deltok');
   if (st) st.onclick = () => { pedirToken(); location.reload(); };
   if (dt) dt.onclick = () => { try { localStorage.removeItem('gh_token'); } catch (e) {} location.reload(); };
-  $('defs').textContent = D.definiciones;
+  setPeriodo('anio');
+}
+function seg(id, v) { [...$(id).children].forEach(b => b.classList.toggle('on', b.dataset.v === v || b.dataset.q === v)); }
+function showView(v) { state.view = v; document.querySelectorAll('nav a[data-view]').forEach(a => a.classList.toggle('on', a.dataset.view === v)); document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v)); window.scrollTo(0, 0); }
+function mesesAnio() { return [...new Set(D.movimientos.filter(m => m.mes.startsWith(state.year) && m.tipo !== 'Traspaso').map(m => m.mes))].sort(); }
+function setPeriodo(q) {
+  const ms = mesesAnio();
+  if (q === 'anio') { state.desde = ms[0]; state.hasta = ms[ms.length-1]; }
+  else if (q === 'ultimo') { const hoy = new Date().toISOString().slice(0,7); const prev = ms.filter(m => m < hoy); const m = prev.length ? prev[prev.length-1] : ms[ms.length-1]; state.desde = state.hasta = m; }
+  else if (q === '3m') { state.hasta = ms[ms.length-1]; state.desde = ms[Math.max(0, ms.length-3)]; }
+  seg('quick', q);
   render();
 }
-function seg(id, v) { [...$(id).children].forEach(b => b.classList.toggle('on', b.dataset.v === v)); }
 
-// ---- filtro base (año + ámbito + cuenta), sin traspasos
-function base(mesOnly) {
-  return D.movimientos.filter(m => m.tipo && m.tipo !== 'Traspaso'
-    && m.mes.startsWith(mesOnly || state.year)
-    && (state.ambito === 'Todo' || m.ambito === state.ambito)
-    && (!state.cuenta || m.cuenta === state.cuenta));
+// ---- filtro base y agregación
+function enPeriodo(m) { return m.mes >= state.desde && m.mes <= state.hasta; }
+function base(pred) {
+  return D.movimientos.filter(m => m.tipo && m.tipo !== 'Traspaso' && (pred ? pred(m) : enPeriodo(m))
+    && (state.ambito === 'Todo' || m.ambito === state.ambito) && (!state.cuenta || m.cuenta === state.cuenta));
 }
 function agg(rows) {
-  const a = { ingresos:0, gasto:0, bruto:0, reemb:0, inv:0, cats:{}, fijos:0, ingT:0, gasT:0 };
+  const a = { ingresos:0, gasto:0, bruto:0, reemb:0, inv:0, cats:{}, invCats:{}, fijos:0, ingT:0, gasT:0 };
   const fijos = new Set(D.categorias.filter(c => c.fijo).map(c => c.nombre));
   for (const m of rows) {
     if (m.tipo === 'Ingreso') { a.ingresos += m.mio; if (m.ambito==='Trabajo') a.ingT += m.mio; }
@@ -289,106 +370,160 @@ function agg(rows) {
       const c = m.categoria || 'SIN CATEGORÍA'; a.cats[c] = (a.cats[c]||0) - m.mio;
       if (fijos.has(m.categoria)) a.fijos -= m.mio;
       if (m.ambito==='Trabajo') a.gasT -= m.mio;
-    } else if (m.tipo === 'Inversion') a.inv -= m.mio;
+    } else if (m.tipo === 'Inversion') { a.inv -= m.mio; const c = m.categoria || 'SIN CATEGORÍA'; a.invCats[c] = (a.invCats[c]||0) - m.mio; }
   }
-  a.ahorro = a.ingresos - a.gasto; a.liq = a.ahorro - a.inv; a.tasa = a.ingresos ? a.ahorro/a.ingresos : null;
+  a.beneficio = a.ingresos - a.gasto; a.caja = a.beneficio - a.inv; a.tasa = a.ingresos ? a.beneficio/a.ingresos : null;
   return a;
 }
+function periodoLabel() { return state.desde === state.hasta ? mesLargo(state.desde) : mesLabel(state.desde) + ' – ' + mesLabel(state.hasta) + (state.ambito !== 'Todo' ? ' · ' + state.ambito : ''); }
 
 function render() {
-  const rowsY = base();
-  const meses = [...new Set(rowsY.map(m => m.mes))].sort();
+  $('desde').innerHTML = mesesAnio().map(m => `<option value="${m}" ${m===state.desde?'selected':''}>${mesLabel(m)}</option>`).join('');
+  $('hasta').innerHTML = mesesAnio().map(m => `<option value="${m}" ${m===state.hasta?'selected':''}>${mesLabel(m)}</option>`).join('');
+  const rowsY = base(m => m.mes.startsWith(state.year));
+  const meses = mesesAnio();
   const porMes = meses.map(mes => ({ mes, ...agg(rowsY.filter(m => m.mes === mes)) }));
-  const sel = state.mes ? porMes.find(p => p.mes === state.mes) : agg(rowsY);
-  const n = state.mes ? 1 : Math.max(meses.length, 1);
-  const periodo = state.mes ? mesLabel(state.mes) : state.year + (state.ambito!=='Todo' ? ' · ' + state.ambito : '');
+  const rowsP = rowsY.filter(enPeriodo);
+  const sel = agg(rowsP);
+  const n = Math.max(new Set(rowsP.map(m => m.mes)).size, 1);
+  const periodo = periodoLabel();
 
-  // año anterior para comparar medias
   const prevY = String(+state.year - 1);
-  const prevRows = D.movimientos.filter(m => m.tipo && m.tipo !== 'Traspaso' && m.mes.startsWith(prevY) && (state.ambito === 'Todo' || m.ambito === state.ambito) && (!state.cuenta || m.cuenta === state.cuenta));
+  const prevRows = base(m => m.mes.startsWith(prevY));
   const prevN = new Set(prevRows.map(m => m.mes)).size;
   const prev = prevN ? agg(prevRows) : null;
-  const delta = (cur, key) => { if (!prev || state.mes) return ''; const p = prev[key]/prevN, c = cur/n; if (!p) return ''; const d = (c-p)/Math.abs(p); return `<span class="${(key==='gasto'? d<0 : d>0)?'up':'down'}">${d>0?'+':''}${Math.round(d*100)} % vs ${prevY}</span>`; };
+  const delta = (cur, key) => { if (!prev) return ''; const p = prev[key]/prevN, c = cur/n; if (!p) return ''; const d = (c-p)/Math.abs(p); return `<span class="${(key==='gasto'? d<0 : d>0)?'up':'down'}">${d>0?'+':''}${Math.round(d*100)} % vs media ${prevY}</span>`; };
 
   const t = [
     ['Ingresos', sel.ingresos, 'blue', `${fmt(sel.ingresos/n)} / mes ` + delta(sel.ingresos, 'ingresos')],
-    ['Gasto neto', sel.gasto, 'orange', `${fmt(sel.gasto/n)} / mes · fijos ${fmt(sel.fijos)} ` + delta(sel.gasto, 'gasto')],
-    ['Ahorro', sel.ahorro, sel.ahorro >= 0 ? 'aqua' : 'orange', `tasa ${pct(sel.tasa)} · ${fmt(sel.ahorro/n)} / mes`],
+    ['Gasto neto', sel.gasto, 'orange', `${fmt(sel.gasto/n)} / mes ` + delta(sel.gasto, 'gasto')],
+    ['Beneficio', sel.beneficio, sel.beneficio >= 0 ? 'aqua' : 'orange', `ingresos − gasto · tasa ${pct(sel.tasa)} · ${fmt(sel.beneficio/n)} / mes`],
     ['Invertido', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes · aportaciones netas`],
-    ['Variación de caja', sel.liq, 'yellow', 'ahorro menos invertido: cuánto ha subido o bajado tu dinero en cuentas'],
+    ['Variación de caja', sel.caja, 'yellow', 'beneficio − invertido: lo que sube o baja tu dinero en cuentas'],
+    ['Beneficio trabajo', sel.ingT - sel.gasT, 'gray', `sueldo ${fmt(sel.ingT)} − gastos ${fmt(sel.gasT)}`],
+    ['Saldo en cuentas hoy', D.saldo_total, 'gray', 'último extracto de cada cuenta, conjunta al 50 %'],
   ];
-  if (!state.mes && !state.cuenta) t.push(['Saldo en cuentas hoy', D.saldo_total, '', 'suma de los últimos extractos, conjunta al 50 %']);
-  if (state.ambito === 'Todo') t.push(['Beneficio trabajo', sel.ingT - sel.gasT, '', `sueldo ${fmt(sel.ingT)} − gastos ${fmt(sel.gasT)}`]);
   $('tiles').innerHTML = t.map(([l,v,c,s]) => `<div class="tile ${c}"><div class="lbl">${l} · ${periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
 
   chartMeses(porMes);
-  chartAhorro(porMes);
+  chartBeneficio(porMes);
+  renderDonut(sel, periodo);
   renderCats(sel, periodo);
+  renderEvo();
+  renderFijos(sel, n);
+  renderInversiones(porMes, sel, periodo, rowsP);
   renderConjunta();
   renderPend();
   renderCuentas();
   renderTable();
 }
 
-// ---- gráfico de barras agrupadas por mes
-function chartMeses(pm) {
-  $('mesesTitle').textContent = 'Por mes · ' + state.year;
-  if (!pm.length) { $('chartMeses').innerHTML = '<p class="muted">Sin datos</p>'; return; }
-  const W = 640, H = 240, padL = 48, padB = 26, padT = 10;
-  const max = Math.max(...pm.flatMap(p => [p.ingresos, p.gasto, p.inv]), 1);
-  const step = niceStep(max), top = Math.ceil(max/step)*step;
-  const y = v => padT + (H-padT-padB) * (1 - v/top);
-  const gw = (W-padL) / pm.length, bw = Math.min(16, (gw-10)/3);
-  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ingresos, gasto neto e inversión por mes">`;
-  for (let v = 0; v <= top; v += step) s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL-6}" y="${y(v)+4}" text-anchor="end">${fmtK(v)}</text>`;
-  pm.forEach((p, i) => {
-    const x0 = padL + i*gw + (gw - 3*bw - 4)/2;
-    const on = !state.mes || state.mes === p.mes;
-    [[p.ingresos,'var(--s1)','Ingresos'],[p.gasto,'var(--s2)','Gasto neto'],[p.inv,'var(--s3)','Invertido']].forEach(([v,c,l],k) => {
-      const h = Math.max(0, y(0)-y(v));
-      s += `<rect class="bar" data-mes="${p.mes}" data-tip="${mesLabel(p.mes)}|${l}: ${fmt2(v)}" x="${x0+k*(bw+2)}" y="${y(v)}" width="${bw}" height="${h}" rx="3" fill="${c}" opacity="${on?1:.35}"/>`;
-    });
-    s += `<text class="axis" x="${padL + i*gw + gw/2}" y="${H-8}" text-anchor="middle" style="cursor:pointer;font-weight:${state.mes===p.mes?700:400}" data-mes="${p.mes}">${mesLabel(p.mes)}${p.pendientes?'':''}</text>`;
-  });
-  $('chartMeses').innerHTML = s + '</svg>';
-  $('chartMeses').onclick = e => { const m = e.target.dataset.mes; if (m) { state.mes = state.mes === m ? null : m; render(); } };
-  hoverTips($('chartMeses'));
-}
-function chartAhorro(pm) {
-  if (!pm.length) { $('chartAhorro').innerHTML = ''; return; }
-  const W = 640, H = 200, padL = 48, padB = 26, padT = 10;
-  const vals = pm.map(p => p.ahorro), media = vals.reduce((a,b)=>a+b,0)/vals.length;
-  const lo = Math.min(0, ...vals), hi = Math.max(0, ...vals), step = niceStep(Math.max(hi, -lo, 1));
-  const top = Math.ceil(hi/step)*step, bot = Math.floor(lo/step)*step;
-  const y = v => padT + (H-padT-padB) * (1 - (v-bot)/(top-bot || 1));
-  const gw = (W-padL)/pm.length, bw = Math.min(28, gw-10);
-  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ahorro por mes">`;
-  for (let v = bot; v <= top; v += step) s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL-6}" y="${y(v)+4}" text-anchor="end">${fmtK(v)}</text>`;
-  pm.forEach((p, i) => {
-    const x = padL + i*gw + (gw-bw)/2, v = p.ahorro;
-    s += `<rect class="bar" data-tip="${mesLabel(p.mes)}|Ahorro: ${fmt2(v)} (${pct(p.tasa)})" x="${x}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.abs(y(v)-y(0))}" rx="3" fill="${v>=0?'var(--s3)':'var(--s2)'}"/>`;
-    s += `<text class="axis" x="${x+bw/2}" y="${H-8}" text-anchor="middle">${mesLabel(p.mes)}</text>`;
-  });
-  s += `<line x1="${padL}" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--text-3)" stroke-width="1"/>`;
-  s += `<line x1="${padL}" x2="${W}" y1="${y(media)}" y2="${y(media)}" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="4 4"/><text class="axis" x="${W-2}" y="${y(media)-4}" text-anchor="end" style="fill:var(--text)">media ${fmt(media)}</text>`;
-  $('chartAhorro').innerHTML = s + '</svg>';
-  hoverTips($('chartAhorro'));
-}
+// ---- gráficos
 function niceStep(max) { const p = Math.pow(10, Math.floor(Math.log10(max))); const f = max/p; return (f<=2?0.5:f<=5?1:2)*p; }
-function fmtK(v) { return Math.abs(v) >= 1000 ? (v/1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : v; }
+function fmtK(v) { return Math.abs(v) >= 1000 ? (v/1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : Math.round(v); }
 function hoverTips(el) {
   const tip = $('tip');
   el.onmousemove = e => { const t = e.target.dataset.tip; if (!t) { tip.style.opacity = 0; return; } const [a,b] = t.split('|'); tip.innerHTML = `<b>${a}</b>${b}`; tip.style.opacity = 1; tip.style.left = (e.clientX+12)+'px'; tip.style.top = (e.clientY+12)+'px'; };
   el.onmouseleave = () => tip.style.opacity = 0;
 }
-
+function barChart(el, pm, series, opts) {
+  // series: [{key, color, label}] ; opts: {media, stack}
+  if (!pm.length) { el.innerHTML = '<p class="muted">Sin datos</p>'; return; }
+  const W = 640, H = opts.h || 230, padL = 48, padB = 26, padT = 12;
+  const vals = pm.flatMap(p => series.map(s => p[s.key] || 0));
+  const hi = Math.max(0, ...vals, 1), lo = Math.min(0, ...vals);
+  const step = niceStep(Math.max(hi, -lo)); const top = Math.ceil(hi/step)*step, bot = Math.floor(lo/step)*step;
+  const y = v => padT + (H-padT-padB) * (1 - (v-bot)/(top-bot || 1));
+  const gw = (W-padL)/pm.length, k = series.length, bw = Math.min(k > 1 ? 16 : 28, (gw-10)/k);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  for (let v = bot; v <= top + 1e-9; v += step) s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL-6}" y="${y(v)+4}" text-anchor="end">${fmtK(v)}</text>`;
+  pm.forEach((p, i) => {
+    const x0 = padL + i*gw + (gw - k*bw - (k-1)*2)/2;
+    const on = enPeriodo({mes: p.mes});
+    series.forEach((se, j) => {
+      const v = p[se.key] || 0, col = typeof se.color === 'function' ? se.color(v) : se.color;
+      s += `<rect class="bar" data-mes="${p.mes}" data-tip="${mesLargo(p.mes)}|${se.label}: ${fmt2(v)}" x="${x0+j*(bw+2)}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.abs(y(v)-y(0))}" rx="3" fill="${col}" opacity="${on?1:.3}"/>`;
+    });
+    s += `<text class="axis" x="${padL + i*gw + gw/2}" y="${H-8}" text-anchor="middle" style="cursor:pointer" data-mes="${p.mes}">${mesLabel(p.mes)}</text>`;
+  });
+  if (lo < 0) s += `<line x1="${padL}" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--text-3)" stroke-width="1"/>`;
+  if (opts.media != null) s += `<line x1="${padL}" x2="${W}" y1="${y(opts.media)}" y2="${y(opts.media)}" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="4 4"/><text class="axis" x="${W-2}" y="${y(opts.media)-4}" text-anchor="end" style="fill:var(--text)">media ${fmt(opts.media)}</text>`;
+  el.innerHTML = s + '</svg>';
+  el.onclick = e => { const m = e.target.dataset.mes; if (m) { if (state.desde === m && state.hasta === m) setPeriodo('anio'); else { state.desde = state.hasta = m; seg('quick', ''); render(); } } };
+  hoverTips(el);
+}
+function chartMeses(pm) {
+  $('mesesTitle').textContent = 'Por mes · ' + state.year;
+  barChart($('chartMeses'), pm, [{key:'ingresos', color:'var(--s1)', label:'Ingresos'}, {key:'gasto', color:'var(--s2)', label:'Gasto neto'}, {key:'inv', color:'var(--s3)', label:'Invertido'}], {});
+}
+function chartBeneficio(pm) {
+  const enP = pm.filter(p => enPeriodo(p)); const media = enP.length ? enP.reduce((a,p) => a + p.beneficio, 0)/enP.length : null;
+  barChart($('chartBeneficio'), pm, [{key:'beneficio', color: v => v >= 0 ? 'var(--s3)' : 'var(--s2)', label:'Beneficio'}], {media, h: 200});
+}
+function donut(el, legendEl, items, onClick) {
+  // items: [[name, value]] positive only, sorted desc
+  const tot = items.reduce((a, it) => a + it[1], 0);
+  if (!tot) { el.innerHTML = ''; legendEl.innerHTML = '<p class="muted">Sin datos</p>'; return; }
+  const top = items.slice(0, 7); const otros = items.slice(7).reduce((a, it) => a + it[1], 0);
+  if (otros > 0) top.push(['Otros', otros]);
+  const R = 80, r = 52, C = 90; let a0 = -Math.PI/2, s = `<svg viewBox="0 0 180 180" role="img">`;
+  top.forEach((it, i) => {
+    const frac = it[1]/tot, a1 = a0 + frac*2*Math.PI, big = frac > .5 ? 1 : 0;
+    const p = (ang, rad) => [C + rad*Math.cos(ang), C + rad*Math.sin(ang)];
+    const [x0,y0] = p(a0,R), [x1,y1] = p(a1,R), [x2,y2] = p(a1,r), [x3,y3] = p(a0,r);
+    const col = it[0] === 'Otros' ? 'var(--s9)' : SERIES[i % SERIES.length];
+    s += `<path class="bar" data-tip="${it[0]}|${fmt2(it[1])} · ${Math.round(frac*100)} %" d="M${x0},${y0} A${R},${R} 0 ${big} 1 ${x1},${y1} L${x2},${y2} A${r},${r} 0 ${big} 0 ${x3},${y3} Z" fill="${col}" stroke="var(--surface)" stroke-width="2"/>`;
+    a0 = a1;
+  });
+  s += `<text x="${C}" y="${C-4}" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--text)">${fmt(tot)}</text><text x="${C}" y="${C+12}" text-anchor="middle" class="axis">total</text></svg>`;
+  el.innerHTML = s; hoverTips(el);
+  legendEl.innerHTML = top.map((it, i) => `<div data-name="${it[0]}"><span><i style="background:${it[0]==='Otros'?'var(--s9)':SERIES[i % SERIES.length]}"></i>${it[0]}</span><b>${fmt(it[1])}</b><span class="p">${Math.round(it[1]/tot*100)} %</span></div>`).join('');
+  legendEl.onclick = e => { const d = e.target.closest('div[data-name]'); if (d && onClick) onClick(d.dataset.name); };
+}
+function renderDonut(sel, periodo) {
+  $('donutTitle').textContent = 'En qué se va el dinero · ' + periodo;
+  const items = Object.entries(sel.cats).filter(([c,v]) => v > 0 && c !== 'REEMBOLSOS').sort((a,b) => b[1]-a[1]);
+  donut($('donutGasto'), $('donutLegend'), items, name => { if (name !== 'Otros') { state.evoCat = name; $('evoCat').value = name; renderEvo(); $('chartEvo').scrollIntoView({behavior:'smooth', block:'center'}); } });
+}
 function renderCats(sel, periodo) {
   $('catsTitle').textContent = 'Gasto por categoría · ' + periodo;
   const cats = Object.entries(sel.cats).sort((a,b) => b[1]-a[1]);
   const max = Math.max(...cats.map(c => Math.abs(c[1])), 1);
   const fijos = new Set(D.categorias.filter(c => c.fijo).map(c => c.nombre));
   $('cats').innerHTML = cats.map(([c,v]) => `<div class="row" data-cat="${c}"><span class="name">${c}${fijos.has(c)?'<small>fijo</small>':''}</span><div class="track"><div class="fill ${v<0?'neg':''}" style="width:${Math.abs(v)/max*100}%"></div></div><span class="num">${fmt(v)}</span></div>`).join('') || '<p class="muted">Sin gastos</p>';
-  $('cats').onclick = e => { const r = e.target.closest('.row'); if (r) { state.cat = state.cat === r.dataset.cat ? '' : r.dataset.cat; $('fcat').value = state.cat; renderTable(); document.querySelector('.tablewrap').scrollIntoView({behavior:'smooth', block:'nearest'}); } };
+  $('cats').onclick = e => { const r = e.target.closest('.row'); if (r) { state.cat = r.dataset.cat; $('fcat').value = state.cat; renderTable(); showView('movimientos'); } };
+}
+function renderEvo() {
+  const gastoCats = D.categorias.filter(c => c.tipo === 'Gasto' || c.tipo === 'Reembolso').map(c => c.nombre);
+  const usadas = new Set(D.movimientos.filter(m => m.mes.startsWith(state.year)).map(m => m.categoria));
+  const opts = ['<option value="">todo el gasto neto</option>'].concat(gastoCats.filter(c => usadas.has(c)).map(c => `<option value="${c}" ${c===state.evoCat?'selected':''}>${c}</option>`));
+  $('evoCat').innerHTML = opts.join('');
+  const meses = mesesAnio();
+  const rowsY = base(m => m.mes.startsWith(state.year) && (m.tipo === 'Gasto' || m.tipo === 'Reembolso') && (!state.evoCat || (m.categoria || 'SIN CATEGORÍA') === state.evoCat));
+  const pm = meses.map(mes => ({ mes, v: -rowsY.filter(m => m.mes === mes).reduce((a, m) => a + m.mio, 0) }));
+  const enP = pm.filter(enPeriodo); const media = enP.length ? enP.reduce((a,p) => a + p.v, 0)/enP.length : 0;
+  const tot = enP.reduce((a,p) => a + p.v, 0);
+  const ing = agg(base()).ingresos;
+  $('evoHint').textContent = `${periodoLabel()}: ${fmt(tot)} en total, ${fmt(media)} al mes` + (ing ? ` (${Math.round(tot/ing*100)} % de los ingresos)` : '') + `. Barras atenuadas = fuera del periodo.`;
+  barChart($('chartEvo'), pm, [{key:'v', color:'var(--seq)', label: state.evoCat || 'Gasto neto'}], {media, h: 200});
+}
+function renderFijos(sel, n) {
+  const variables = sel.gasto - sel.fijos;
+  $('fijos').innerHTML = `<span>Gastos fijos</span><b>${fmt(sel.fijos)} · ${fmt(sel.fijos/n)}/mes</b><span>Gastos variables</span><b>${fmt(variables)} · ${fmt(variables/n)}/mes</b><span>Reembolsos recibidos (ya restados)</span><b>${fmt(sel.reemb)}</b><span>Gasto bruto antes de reembolsos</span><b>${fmt(sel.bruto)}</b><span>Fijos sobre ingresos</span><b>${sel.ingresos ? Math.round(sel.fijos/sel.ingresos*100) + ' %' : '–'}</b>`;
+}
+function renderInversiones(pm, sel, periodo, rowsP) {
+  const cats = Object.keys(sel.invCats).length ? Object.keys(sel.invCats) : [];
+  const allCats = [...new Set(D.movimientos.filter(m => m.tipo === 'Inversion').map(m => m.categoria || 'SIN CATEGORÍA'))].sort();
+  const n = Math.max(new Set(rowsP.map(m => m.mes)).size, 1);
+  const t = [['Aportado', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes`]].concat(allCats.map((c, i) => [c, sel.invCats[c] || 0, '', sel.inv ? Math.round((sel.invCats[c]||0)/sel.inv*100) + ' % de lo aportado' : '']));
+  $('tilesInv').innerHTML = t.map(([l,v,c,s]) => `<div class="tile ${c}"><div class="lbl">${l} · ${periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
+  const series = allCats.map((c, i) => ({ key: 'ic_' + c, color: SERIES[i % SERIES.length], label: c }));
+  const pmi = pm.map(p => { const o = { mes: p.mes }; allCats.forEach(c => o['ic_' + c] = p.invCats[c] || 0); return o; });
+  $('invLegend').innerHTML = series.map(s => `<span><i style="background:${s.color}"></i>${s.label}</span>`).join('');
+  barChart($('chartInv'), pmi, series, {});
+  donut($('donutInv'), $('donutInvLegend'), Object.entries(sel.invCats).filter(([c,v]) => v > 0).sort((a,b) => b[1]-a[1]));
+  const ops = rowsP.filter(m => m.tipo === 'Inversion').sort((a,b) => b.fecha.localeCompare(a.fecha));
+  $('tbodyInv').innerHTML = ops.map(m => `<tr><td>${m.fecha}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,70)}</td><td>${m.categoria || '–'}</td><td class="n ${m.importe>0?'pos':''}">${fmt2(m.importe)}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sin operaciones en el periodo</td></tr>';
 }
 function renderConjunta() {
   const c = D.conjunta;
@@ -405,22 +540,22 @@ function renderConjunta() {
 }
 function renderPend() {
   const p = D.pendientes;
-  $('npend').textContent = p.length;
-  $('pend').innerHTML = p.length ? p.map(x => { const m = D.movimientos.find(z => z.id === x.id) || x; return `<div><span class="muted">${x.fecha.slice(5)} · ${x.cuenta.slice(0,3)}</span><span class="c">${x.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,60)}<br><small class="muted">${x.nota || (x.categoria ? 'sugerido: ' + x.categoria : 'sin categoría')}</small></span>${selCat(m)}<b>${fmt2(x.importe)}</b></div>`; }).join('') : '<p class="muted">Nada pendiente. Todo clasificado.</p>';
+  $('npend').textContent = p.length || '';
+  $('pend').innerHTML = p.length ? p.map(x => { const m = D.movimientos.find(z => z.id === x.id) || x; return `<div><span class="muted">${x.fecha.slice(5)} · ${x.cuenta.slice(0,3)}</span><span class="c">${x.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,70)}<br><small class="muted">${x.nota || (x.categoria ? 'sugerido: ' + x.categoria : 'sin categoría')}</small></span>${selCat(m)}<b>${fmt2(x.importe)}</b></div>`; }).join('') : '<p class="muted">Nada pendiente. Todo clasificado.</p>';
 }
 function renderCuentas() {
-  $('cuentas').innerHTML = D.cuentas.map(c => `<span>${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('');
+  $('cuentas').innerHTML = D.cuentas.map(c => `<span>${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('') + `<span style="margin-top:6px"><b>Total (conjunta al 50 %)</b></span><b style="margin-top:6px">${fmt2(D.saldo_total)}</b>`;
 }
 function renderTable() {
-  let rows = D.movimientos.filter(m => m.mes.startsWith(state.mes || state.year)
+  let rows = D.movimientos.filter(m => enPeriodo(m)
     && (state.ambito === 'Todo' || m.ambito === state.ambito)
     && (!state.cuenta || m.cuenta === state.cuenta)
     && (!state.cat || (m.categoria || 'SIN CATEGORÍA') === state.cat)
     && (!state.tipo || m.tipo === state.tipo)
     && (!state.q || m.concepto.toLowerCase().includes(state.q) || (m.categoria||'').toLowerCase().includes(state.q)));
   rows.sort((a,b) => b.fecha.localeCompare(a.fecha) || b.id - a.id);
-  $('nmov').textContent = rows.length + (state.cat ? ' · ' + state.cat : '') + (state.mes ? ' · ' + mesLabel(state.mes) : '');
-  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}</td><td>${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.slice(0,58)}</td><td>${m.cuenta === 'Histórico' ? (m.categoria || '–') : selCat(m)}</td><td><span class="pill">${m.tipo || '?'}</span> ${m.cuenta === 'Histórico' ? '' : ambBtn(m)}</td><td class="n ${m.importe<0?'neg':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
+  $('nmov').textContent = rows.length + ' · ' + periodoLabel() + (state.cat ? ' · ' + state.cat : '');
+  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}</td><td>${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.slice(0,58)}</td><td>${m.cuenta === 'Histórico' ? (m.categoria || '–') : selCat(m)}</td><td><span class="pill">${m.tipo || '?'}</span> ${m.cuenta === 'Histórico' ? '' : ambBtn(m)}</td><td class="n ${m.importe<0?'':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
     + (rows.length > 600 ? `<tr><td colspan="8" class="muted">… ${rows.length-600} más. Filtra para verlos.</td></tr>` : '');
 }
 </script>

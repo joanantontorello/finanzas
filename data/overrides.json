@@ -23,6 +23,9 @@
   "nota": "alquiler de abril (pagado el 25/03), mitad",
   "participacion": 0.5
  },
+ "1329": {
+  "categoria": "CITAS/PAREJA"
+ },
  "1365": {
   "categoria": "SALUD"
  },
@@ -31,6 +34,9 @@
   "participacion": 0.5,
   "compensar": true,
   "nota": "Roomba, a medias con Kate"
+ },
+ "1507": {
+  "categoria": "AJUSTES PAREJA"
  },
  "1516": {
   "categoria": "IMPREVISTOS",

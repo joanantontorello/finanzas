@@ -55,6 +55,9 @@
 
 - {id: deporte,            match: "Basic-Fit|Playtomic|PLAYTOMIC|circulodejiujitsu|Decathlon|AYTO MADRID DEPORTES", tipo: Gasto, categoria: DEPORTE}
 
+# --- aprendidas de las correcciones del dashboard (van antes que las genéricas para ganarles)
+- {"id": "auto_bizum_payment_to_noelia_m_j", "match": "Bizum\\ payment\\ to:\\ Noelia\\ M\\.J\\.", "tipo": "Gasto", "categoria": "PSICOLOGA", "ambito": "Personal", "nota": "aprendida de la corrección #860"}
+
 # ---------------------------------------------------------------- 6. Viajes (por fechas: Sri Lanka 11 jul - 6 ago 2026) y merchants de viaje
 - {id: viaje_srilanka_rev, cuenta: [Revolut, Conjunta, Trade Republic], desde: "2026-07-11", hasta: "2026-08-06", match: ".*", signo: "-", tipo: Gasto, categoria: VIAJES, nota: Sri Lanka}
 - {id: viaje_srilanka_bbva, cuenta: BBVA, match: "no eur|Com\\. ret\\. efec",                                         tipo: Gasto, categoria: VIAJES, nota: cajeros Sri Lanka (las reversiones netean)}

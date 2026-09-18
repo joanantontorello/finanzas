@@ -652,7 +652,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-01-11,Revolut,[Card Payment] E.s. Danoia,-20.0,-20.0,Gasto,TRANSPORTE,Personal,auto
 2026-01-11,Revolut,[Card Payment] McDonald's,-7.52,-7.52,Gasto,RESTAURANTES,Personal,auto
 2026-01-11,Revolut,[Card Payment] Intermodalidad Levante,-66.0,-66.0,Gasto,TRANSPORTE,Personal,auto
-2026-01-13,Revolut,[Transfer] Bizum payment to: Noelia M.J.,-30.0,-30.0,Gasto,OCIO,Personal,pendiente
+2026-01-13,Revolut,[Transfer] Bizum payment to: Noelia M.J.,-30.0,-30.0,Gasto,PSICOLOGA,Personal,revisado
 2026-01-13,Revolut,[Card Payment] Granier,-2.95,-2.95,Gasto,CAFÉ,Personal,auto
 2026-01-13,Revolut,[Card Payment] BonpreuEsclat,-10.95,-10.95,Gasto,COMIDA,Personal,auto
 2026-01-13,Trade Republic,[Transacción con tarjeta] OPENAI *CHATGPT SUBSCRnull,-23.0,-23.0,Gasto,SUBSCRIPCIONES,Trabajo,auto
@@ -1530,7 +1530,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-09-03,Revolut,[Card Payment] Casa do Açaí Brunch & Coffee,-2.8,-2.8,Gasto,CAFÉ,Personal,auto
 2026-09-05,Revolut,[Transfer] Bizum payment to: Helibeth R.Q.,-5.5,-5.5,Gasto,OCIO,Personal,auto
 2026-09-05,Revolut,[Card Payment] Raw Açaí,-6.9,-6.9,Gasto,CAFÉ,Personal,auto
-2026-09-05,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-70.0,-70.0,Gasto,PSICOLOGA,Personal,auto
+2026-09-05,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-70.0,-70.0,Gasto,PSICOLOGA,Personal,revisado
 2026-09-05,Trade Republic,[Transacción con tarjeta] ALCAMPO MORATALAZ,-34.34,-34.34,Gasto,COMIDA,Personal,auto
 2026-09-06,Revolut,[Card Payment] Madrid Coffee Love,-2.3,-2.3,Gasto,CAFÉ,Personal,auto
 2026-09-06,Revolut,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,TRASPASO,Personal,auto
@@ -1552,7 +1552,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-09-10,BBVA,Adeudo jaime carrasco del olmo | Adeudo nº 2026252000868802 | N 2026252000868802 JAIME CARRASCO DEL OLMO,-84.7,-84.7,Gasto,GESTORIA,Trabajo,auto
 2026-09-11,Revolut,[Card Payment] Playtomic,-9.36,-9.36,Gasto,DEPORTE,Personal,auto
 2026-09-11,Revolut,[Card Payment] Frutoseco.com,-1.9,-1.9,Gasto,COMIDA,Personal,auto
-2026-09-11,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-70.0,-70.0,Gasto,PSICOLOGA,Personal,auto
+2026-09-11,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-70.0,-70.0,Gasto,PSICOLOGA,Personal,revisado
 2026-09-12,Conjunta,[Card Payment] Mercadona,-19.26,-9.63,Gasto,COMIDA,Personal,auto
 2026-09-12,Conjunta,[Card Payment] Uber,-26.94,-13.47,Gasto,TRANSPORTE,Personal,auto
 2026-09-12,Revolut,[Card Payment] Metro de Madrid,-10.0,-10.0,Gasto,TRANSPORTE,Personal,auto

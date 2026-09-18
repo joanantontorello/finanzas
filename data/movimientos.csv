@@ -644,7 +644,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-01-05,Revolut,[Topup] Money added via BIZUM,322.41,322.41,Reembolso,REEMBOLSOS,Personal,auto
 2026-01-05,Revolut,[Card Payment] Loom,-20.65,-20.65,Gasto,SUBSCRIPCIONES,Trabajo,auto
 2026-01-05,Revolut,[Card Payment] Apple,-17.99,-17.99,Gasto,SUBSCRIPCIONES,Trabajo,auto
-2026-01-06,Revolut,[Transfer] Bizum payment to: Ton R.M.,-51.65,-51.65,Gasto,OCIO,Personal,pendiente
+2026-01-06,Revolut,[Transfer] Bizum payment to: Ton R.M.,-51.65,-51.65,Gasto,OCIO,Personal,revisado
 2026-01-07,Revolut,[Transfer] To Joan Anton Torello Lopez,-1000.0,-1000.0,Traspaso,TRASPASO,Personal,auto
 2026-01-07,Trade Republic,[Transferencia] Incoming transfer from Joan Anton Torello Lopez (ES7715830001199011909839),1000.0,1000.0,Traspaso,TRASPASO,Personal,auto
 2026-01-10,Revolut,[Card Payment] Amazon,-58.55,-58.55,Gasto,IMPREVISTOS,Personal,auto
@@ -746,7 +746,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-02-27,Revolut,[Transfer] Bizum payment to: Kateryna S.,-25.7,-25.7,Gasto,AJUSTES PAREJA,Personal,auto
 2026-02-27,Revolut,[Card Payment] Rspiro Cafeteria,-5.1,-5.1,Gasto,CAFÉ,Personal,auto
 2026-02-27,BBVA,Adeudo de cuota de la seguridad social | N 2026056001923845 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,IMPUESTOS,Trabajo,auto
-2026-02-28,Revolut,"[Card Payment] New York Burger, P. Castellana 89",-30.8,-30.8,Gasto,RESTAURANTES,Personal,auto
+2026-02-28,Revolut,"[Card Payment] New York Burger, P. Castellana 89",-30.8,-30.8,Gasto,CITAS/PAREJA,Personal,auto
 2026-02-28,Revolut,[Card Payment] Sqrups Principe Pio,-1.84,-1.84,Gasto,COMIDA,Personal,auto
 2026-02-28,Revolut,[Card Payment] Carrefour,-4.36,-4.36,Gasto,COMIDA,Personal,auto
 2026-03-01,Revolut,[Transfer] Bizum payment to: Kateryna S.,-2.0,-2.0,Gasto,AJUSTES PAREJA,Personal,auto
@@ -822,9 +822,9 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-03-21,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-300.0,-300.0,Traspaso,TRASPASO,Personal,auto
 2026-03-22,Revolut,[Card Payment] Dia,-4.02,-4.02,Gasto,COMIDA,Personal,auto
 2026-03-23,Revolut,[Topup] Apple Pay top-up by *5233,300.0,300.0,Traspaso,TRASPASO,Personal,auto
-2026-03-23,Trade Republic,[Transacción con tarjeta] Castellana,-32.25,-32.25,Gasto,,Personal,pendiente
+2026-03-23,Trade Republic,[Transacción con tarjeta] Castellana,-32.25,-32.25,Gasto,CITAS/PAREJA,Personal,revisado
 2026-03-23,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 7.991560",-50.0,-50.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
-2026-03-23,Trade Republic,[Transferencia] Outgoing transfer for INTECAT ISTORE SL (ES7800815154220001321834),-716.99,-716.99,Gasto,IMPREVISTOS,Personal,pendiente
+2026-03-23,Trade Republic,[Transferencia] Outgoing transfer for INTECAT ISTORE SL (ES7800815154220001321834),-716.99,-716.99,Gasto,TRABAJO,Personal,revisado
 2026-03-23,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.384274",-200.0,-200.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
 2026-03-24,Revolut,[Transfer] Bizum payment to: Rolando G.A.,-3.0,-3.0,Gasto,OCIO,Personal,auto
 2026-03-24,Revolut,[Card Payment] Madrid Coffee,-5.4,-5.4,Gasto,CAFÉ,Personal,auto
@@ -1245,7 +1245,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-07-09,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 13.069503",-100.0,-100.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
 2026-07-09,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-17.99,-17.99,Gasto,SUBSCRIPCIONES,Trabajo,auto
 2026-07-09,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.211387",-200.0,-200.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
-2026-07-10,Trade Republic,[Transferencia] Outgoing transfer for INTECAT ISTORE SL (ES7800815154220001321834),-30.0,-30.0,Gasto,,Personal,pendiente
+2026-07-10,Trade Republic,[Transferencia] Outgoing transfer for INTECAT ISTORE SL (ES7800815154220001321834),-30.0,-30.0,Gasto,TRABAJO,Trabajo,auto
 2026-07-11,Revolut,[Transfer] To WKRK Ranasinghe,-41.53,-41.53,Gasto,VIAJES,Personal,auto
 2026-07-11,Revolut,[Card Payment] Fab Ceylon,-9.06,-9.06,Gasto,VIAJES,Personal,auto
 2026-07-12,Revolut,[Transfer] To WKRK Ranasinghe,-159.18,-159.18,Gasto,VIAJES,Personal,auto

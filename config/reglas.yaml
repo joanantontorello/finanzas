@@ -56,6 +56,9 @@
 - {id: deporte,            match: "Basic-Fit|Playtomic|PLAYTOMIC|circulodejiujitsu|Decathlon|AYTO MADRID DEPORTES", tipo: Gasto, categoria: DEPORTE}
 
 # --- aprendidas de las correcciones del dashboard (van antes que las genéricas para ganarles)
+- {"id": "auto_bizum_payment_to_ton_r_m", "match": "Bizum\\ payment\\ to:\\ Ton\\ R\\.M\\.", "tipo": "Gasto", "categoria": "OCIO", "ambito": "Personal", "nota": "aprendida de la corrección #853"}
+- {"id": "auto_castellana", "match": "Castellana", "tipo": "Gasto", "categoria": "CITAS/PAREJA", "ambito": "Personal", "nota": "aprendida de la corrección #1208"}
+- {"id": "auto_outgoing_transfer_for_intecat_istore_sl", "match": "Outgoing\\ transfer\\ for\\ INTECAT\\ ISTORE\\ SL", "tipo": "Gasto", "categoria": "TRABAJO", "ambito": "Trabajo", "nota": "aprendida de la corrección #1210"}
 - {"id": "auto_bizum_payment_to_noelia_m_j", "match": "Bizum\\ payment\\ to:\\ Noelia\\ M\\.J\\.", "tipo": "Gasto", "categoria": "PSICOLOGA", "ambito": "Personal", "nota": "aprendida de la corrección #860"}
 
 # ---------------------------------------------------------------- 6. Viajes (por fechas: Sri Lanka 11 jul - 6 ago 2026) y merchants de viaje

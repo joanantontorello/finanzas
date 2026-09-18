@@ -12,5 +12,11 @@
  },
  "1535": {
   "categoria": "PSICOLOGA"
+ },
+ "1503": {
+  "categoria": "HOGAR",
+  "participacion": 0.5,
+  "compensar": true,
+  "nota": "Roomba, a medias con Kate"
  }
 }

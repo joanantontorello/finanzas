@@ -162,6 +162,8 @@ def aplicar_overrides(con):
         if not row:
             continue
         campos = {k: o[k] for k in ("categoria", "tipo", "ambito", "nota", "participacion", "mes") if k in o and o[k] not in (None, "")}
+        if "compensar" in o:
+            campos["compensar"] = 1 if o["compensar"] else 0
         if not campos:
             continue
         sets = ", ".join(f"{k}=?" for k in campos) + ", estado='revisado', regla='dashboard'"
@@ -182,6 +184,10 @@ def _clave_aprendizaje(concepto):
     return " ".join(palabras[:3]) if palabras else None
 
 
+# comercios donde se compra de todo: una corrección no dice nada sobre la siguiente compra
+NO_APRENDER = ("AMAZON", "EL CORTE INGL", "MEDIA MARKT", "CORTE INGLES", "FNAC", "IKEA", "DECATHLON", "CARREFOUR", "ALCAMPO", "SUMUP", "PAYPAL", "GLOVO")
+
+
 def aprender(con, categorias):
     """Convierte las correcciones del dashboard en reglas nuevas (config/reglas.yaml, sección 'aprendidas').
     Solo si el patrón no lo cubre ya una regla y ningún movimiento revisado a mano lo contradice."""
@@ -198,7 +204,7 @@ def aprender(con, categorias):
         if not cat or not row or row["cuenta"] in ("Histórico", "Ajustes"):
             continue
         clave = _clave_aprendizaje(row["concepto"])
-        if not clave or len(clave) < 5:
+        if not clave or len(clave) < 5 or any(g in clave.upper() for g in NO_APRENDER):
             continue
         # ¿ya hay una regla que da esa categoría a este concepto?
         c = clasificar(dict(row), reglas, categorias)

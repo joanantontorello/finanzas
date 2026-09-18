@@ -1475,7 +1475,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-08-19,Revolut,[Card Payment] Five Guys,-15.75,-15.75,Gasto,RESTAURANTES,Personal,auto
 2026-08-19,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
 2026-08-20,Trade Republic,[Transacción con tarjeta] RENFE VIRTUAL INTERNET,-34.3,-34.3,Gasto,TRANSPORTE,Personal,auto
-2026-08-20,Trade Republic,[Transacción con tarjeta] EL CORTE INGLES-DEPARTAM.,-429.0,-429.0,Gasto,IMPREVISTOS,Personal,pendiente
+2026-08-20,Trade Republic,[Transacción con tarjeta] EL CORTE INGLES-DEPARTAM.,-429.0,-214.5,Gasto,HOGAR,Personal,revisado
 2026-08-21,BBVA,Ret. efectivo  a debito con tarj. en cajero. aut. | Otros | 4603321058244685 01823800 999,-300.0,-300.0,Gasto,EFECTIVO,Personal,auto
 2026-08-21,Revolut,[Topup] Money added via BIZUM,15.0,15.0,Reembolso,REEMBOLSOS,Personal,auto
 2026-08-21,Revolut,[Card Payment] Los Reginas,-4.0,-4.0,Gasto,CAFÉ,Personal,auto

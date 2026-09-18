@@ -48,4 +48,8 @@ def connect():
     con = sqlite3.connect(DB_PATH)
     con.row_factory = sqlite3.Row
     con.executescript(SCHEMA)
+    cols = {r[1] for r in con.execute("PRAGMA table_info(movimientos)")}
+    if "compensar" not in cols:  # 1 = pagado a medias con Kate desde una cuenta propia: su mitad pasa a AJUSTES PAREJA
+        con.execute("ALTER TABLE movimientos ADD COLUMN compensar INTEGER DEFAULT 0")
+        con.commit()
     return con

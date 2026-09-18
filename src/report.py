@@ -8,6 +8,7 @@ Definiciones:
   ahorro       = ingresos − gasto neto        (lo que no te has gastado)
   liquidez     = ahorro − inversión           (lo que queda en cuenta corriente)
   trabajo      = ámbito Trabajo: sueldo − (gestoría + impuestos + suscripciones de trabajo)
+  ½ Kate       = compra pagada por ti a medias y liquidada por Tricount: tu mitad va a su categoría y la de Kate a AJUSTES PAREJA
 """
 import json
 import pathlib
@@ -47,6 +48,10 @@ def agregar(rows):
             if x["ambito"] == "Trabajo":
                 m["gastos_trabajo"] -= mio
             cats[x["categoria"] or "SIN CATEGORÍA"] -= mio
+            if x.get("compensar") and t == "Gasto":
+                resto = x["importe"] - mio  # la mitad de Kate, ya incluida en la liquidación de Tricount
+                m["gasto_neto"] -= resto
+                cats["AJUSTES PAREJA"] -= resto
             if x.get("fijo"):
                 m["fijos"] -= mio
         elif t == "Inversion":
@@ -131,7 +136,7 @@ def main():
              "tipo": x["tipo"], "categoria": x["categoria"], "nota": x["nota"]} for x in rows if x["estado"] == "pendiente"]
 
     movs = [{"id": x["id"], "fecha": x["fecha"], "mes": x["mes"], "cuenta": x["cuenta"], "concepto": x["concepto"], "importe": x["importe"],
-             "mio": x["mio"], "part": x["participacion"], "tipo": x["tipo"], "categoria": x["categoria"], "ambito": x["ambito"], "estado": x["estado"],
+             "mio": x["mio"], "part": x["participacion"], "compensar": x.get("compensar") or 0, "tipo": x["tipo"], "categoria": x["categoria"], "ambito": x["ambito"], "estado": x["estado"],
              "nota": x["nota"]} for x in rows]
     saldo_total = sum((c["saldo"] or 0) * (0.5 if c["cuenta"] == "Conjunta" else 1.0) for c in cuentas)
 

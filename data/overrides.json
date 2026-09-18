@@ -5,6 +5,10 @@
  "860": {
   "categoria": "PSICOLOGA"
  },
+ "1126": {
+  "categoria": "IMPREVISTOS",
+  "nota": "Pol devuelve la primera mitad del móvil"
+ },
  "1208": {
   "categoria": "CITAS/PAREJA"
  },
@@ -16,11 +20,8 @@
   "nota": "alquiler de abril (pagado el 25/03), mitad",
   "participacion": 0.5
  },
- "1525": {
-  "categoria": "PSICOLOGA"
- },
- "1535": {
-  "categoria": "PSICOLOGA"
+ "1365": {
+  "categoria": "SALUD"
  },
  "1503": {
   "categoria": "HOGAR",
@@ -33,8 +34,10 @@
   "ambito": "Trabajo",
   "nota": "Móvil de Pol (facturado a mi nombre para desgravar el IVA); me devuelve todo menos el IVA"
  },
- "1126": {
-  "categoria": "IMPREVISTOS",
-  "nota": "Pol devuelve la primera mitad del móvil"
+ "1525": {
+  "categoria": "PSICOLOGA"
+ },
+ "1535": {
+  "categoria": "PSICOLOGA"
  }
 }

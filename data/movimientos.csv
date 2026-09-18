@@ -884,7 +884,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-04-05,Revolut,[Card Payment] McDonald's,-6.0,-6.0,Gasto,RESTAURANTES,Personal,auto
 2026-04-06,Trade Republic,[Transacción con tarjeta] IKEA LA GAVIA HFB,-3.29,-3.29,Gasto,HOGAR,Personal,auto
 2026-04-06,Trade Republic,[Transacción con tarjeta] IKEA LA GAVIA HFB,-7.8,-7.8,Gasto,HOGAR,Personal,auto
-2026-04-07,Revolut,[Card Payment] Apple,-10.99,-10.99,Gasto,SUBSCRIPCIONES,Trabajo,auto
+2026-04-07,Revolut,[Card Payment] Apple,-10.99,-10.99,Gasto,SUBSCRIPCIONES,Personal,auto
 2026-04-07,Trade Republic,[Transacción con tarjeta] WWW.AMAZON* NI9OQ4O04,-125.98,-125.98,Gasto,IMPREVISTOS,Personal,auto
 2026-04-07,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,TRANSPORTE,Personal,auto
 2026-04-07,Trade Republic,[Transacción con tarjeta] LOS CANDILES DE VINATEROS,-4.0,-4.0,Gasto,RESTAURANTES,Personal,auto
@@ -937,7 +937,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-04-20,Trade Republic,[Transferencia] Outgoing transfer for Joan Anton Torelló Lopez (ES7501820238400201914723),-900.0,-900.0,Traspaso,TRASPASO,Personal,auto
 2026-04-20,Trade Republic,"[Operar] Sell trade LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 10.2",70.93,70.93,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
 2026-04-20,BBVA,Pago de impuestos | Nrc 1306448293516s7mr2qt1a,-864.23,-864.23,Gasto,IMPUESTOS,Trabajo,auto
-2026-04-20,BBVA,Transferencia recibida | T1 2026,900.0,900.0,Reembolso,IMPUESTOS,Trabajo,auto
+2026-04-20,BBVA,Transferencia recibida | T1 2026,900.0,900.0,Traspaso,TRASPASO,Personal,auto
 2026-04-21,Revolut,[Card Payment] Syra Coffee,-15.2,-15.2,Gasto,CAFÉ,Personal,auto
 2026-04-21,Revolut,[Card Payment] Alimentacion,-4.45,-4.45,Gasto,COMIDA,Personal,auto
 2026-04-22,Revolut,[Card Payment] Playtomic,-5.08,-5.08,Gasto,DEPORTE,Personal,auto
@@ -1157,7 +1157,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-06-22,Revolut,[Transfer] Bizum payment to: Kateryna S.,-13.9,-13.9,Gasto,AJUSTES PAREJA,Personal,auto
 2026-06-22,Revolut,[Transfer] Agencia Tributaria (AEAT),-122.62,-122.62,Gasto,IMPUESTOS,Trabajo,auto
 2026-06-22,Revolut,[Card Payment] Boheme,-3.2,-3.2,Gasto,CAFÉ,Personal,auto
-2026-06-22,Trade Republic,[Transacción con tarjeta] SHARE.MYCHEFTOOL.COM,-106.0,-106.0,Gasto,SUBSCRIPCIONES,Trabajo,auto
+2026-06-22,Trade Republic,[Transacción con tarjeta] SHARE.MYCHEFTOOL.COM,-106.0,-106.0,Gasto,RESTAURANTES,Personal,auto
 2026-06-22,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,TRANSPORTE,Personal,auto
 2026-06-22,Trade Republic,[Transacción con tarjeta] LLADOS UNIVERSITY,-100.0,-100.0,Inversion,FORMACIÓN / MENTORÍA,Personal,auto
 2026-06-23,Conjunta,[Card Payment] Sam Smak,-9.6,-4.8,Gasto,RESTAURANTES,Personal,auto
@@ -1509,7 +1509,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-08-27,Trade Republic,[Transferencia] Outgoing transfer for Kateryna Soltuchenko (ES2615860001472321062211),-355.51,-355.51,Gasto,AJUSTES PAREJA,Personal,pendiente
 2026-08-28,Revolut,[Card Refund] Playtomic,9.88,9.88,Reembolso,REEMBOLSOS,Personal,auto
 2026-08-28,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-10.0,Gasto,INTERNET,Personal,auto
-2026-08-28,Trade Republic,[Transacción con tarjeta] MEDIA MARKT ONLINE,-853.99,-853.99,Gasto,IMPREVISTOS,Personal,pendiente
+2026-08-28,Trade Republic,[Transacción con tarjeta] MEDIA MARKT ONLINE,-853.99,-853.99,Gasto,IMPREVISTOS,Trabajo,revisado
 2026-08-29,Revolut,[Card Payment] Estación Madrid - Puerta de Atocha,-4.4,-4.4,Gasto,TRANSPORTE,Personal,auto
 2026-08-29,Revolut,[Card Payment] Casa do Açaí Brunch & Coffee,-11.7,-11.7,Gasto,CAFÉ,Personal,auto
 2026-08-30,Revolut,[Card Payment] Faeem Alimentacion,-5.0,-5.0,Gasto,COMIDA,Personal,auto
@@ -1534,7 +1534,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-09-05,Trade Republic,[Transacción con tarjeta] ALCAMPO MORATALAZ,-34.34,-34.34,Gasto,COMIDA,Personal,auto
 2026-09-06,Revolut,[Card Payment] Madrid Coffee Love,-2.3,-2.3,Gasto,CAFÉ,Personal,auto
 2026-09-06,Revolut,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,TRASPASO,Personal,auto
-2026-09-06,Revolut,[Topup] Money added via BIZUM,353.0,353.0,Reembolso,REEMBOLSOS,Personal,auto
+2026-09-06,Revolut,[Topup] Money added via BIZUM,353.0,353.0,Reembolso,IMPREVISTOS,Personal,revisado
 2026-09-06,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
 2026-09-07,Conjunta,[Card Payment] Mercadona,-70.89,-35.45,Gasto,COMIDA,Personal,auto
 2026-09-07,Revolut,[Card Payment] circulodejiujitsu.com,-100.0,-100.0,Gasto,DEPORTE,Personal,auto

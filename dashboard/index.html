@@ -111,6 +111,7 @@
     <h1>Finanzas</h1>
     <div class="meta" id="meta"></div>
     <a data-view="dashboard" class="on">Dashboard</a>
+    <a data-view="presupuesto">Presupuesto</a>
     <a data-view="inversiones">Inversiones</a>
     <a data-view="cuentas">Estado de cuentas</a>
     <a data-view="movimientos">Movimientos</a>
@@ -165,6 +166,30 @@
           <div class="hint">Fijos: alquiler, luz, agua, internet, suscripciones, gestoría e impuestos.</div>
           <div class="kv" id="fijos"></div>
         </div>
+      </div>
+    </section>
+
+    <!-- ================= PRESUPUESTO -->
+    <section class="view" id="v-presupuesto">
+      <div class="grid tiles" id="tilesPres"></div>
+      <div class="grid cards half">
+        <div class="card">
+          <h2>Bloques del mes</h2>
+          <div class="hint" id="presHint"></div>
+          <div id="bloques"></div>
+        </div>
+        <div class="card">
+          <h2>Metas de ahorro</h2>
+          <div class="hint">Cuánto te falta y cuánto tendrías que apartar al mes para llegar a la fecha.</div>
+          <div id="metas"></div>
+          <button class="amb" id="addMeta" style="margin-top:10px">+ Nueva meta</button>
+        </div>
+      </div>
+      <div class="card mt">
+        <h2>Configurar presupuesto</h2>
+        <div class="hint">Importes mensuales. Los cambios se guardan en GitHub con el botón de abajo, igual que las correcciones.</div>
+        <div class="kv" id="presConfig"></div>
+        <details style="margin-top:12px"><summary class="muted" style="cursor:pointer">A qué bloque va cada categoría</summary><div class="kv" id="presAsig" style="margin-top:8px"></div></details>
       </div>
     </section>
 
@@ -253,7 +278,87 @@ const GH = { repo: 'joanantontorello/finanzas', path: 'data/overrides.json' };
 let overrides = {}, ovSha = null, cambios = {};
 const catTipo = {};
 
-fetch('data.json').then(r => r.json()).then(async d => { D = d; D.categorias.forEach(c => catTipo[c.nombre] = c.tipo); await cargarOverrides(); init(); });
+let P = null, pSha = null, pDirty = false;
+const GHP = { path: 'data/presupuesto.json' };
+fetch('data.json').then(r => r.json()).then(async d => { D = d; D.categorias.forEach(c => catTipo[c.nombre] = c.tipo); await cargarOverrides(); await cargarPresupuesto(); init(); });
+
+// ---- presupuesto: data/presupuesto.json (GitHub si hay token, si no la copia desplegada)
+async function cargarPresupuesto() {
+  try { P = await (await fetch('presupuesto.json')).json(); } catch (e) { P = null; }
+  if (!P) P = { bloques: { fijos: 1100, diario: 550, hucha: 300 }, asignacion: {}, inversion_mensual: 1000, colchon_objetivo: 6500, metas: [] };
+  if (!token()) return;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${GH.repo}/contents/${GHP.path}`, { headers: ghHeaders() });
+    if (!r.ok) return;
+    const j = await r.json(); pSha = j.sha;
+    P = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
+  } catch (e) { console.warn('presupuesto', e); }
+}
+async function guardarPresupuesto() {
+  const body = { message: 'Presupuesto actualizado desde el dashboard', content: btoa(unescape(encodeURIComponent(JSON.stringify(P, null, 1)))) };
+  if (pSha) body.sha = pSha;
+  const r = await fetch(`https://api.github.com/repos/${GH.repo}/contents/${GHP.path}`, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders()), body: JSON.stringify(body) });
+  if (!r.ok) { alert('No se pudo guardar el presupuesto en GitHub (' + r.status + ').'); return false; }
+  pSha = (await r.json()).content.sha; pDirty = false; return true;
+}
+function marcarPres() { pDirty = true; const n = Object.keys(cambios).length; $('savemsg').textContent = (n ? n + ' correcciones y ' : '') + 'presupuesto sin guardar'; $('savebar').style.display = 'flex'; }
+function bloqueDe(cat) { const fijos = new Set(D.categorias.filter(c => c.fijo).map(c => c.nombre)); return (P.asignacion || {})[cat] || (fijos.has(cat) ? 'fijos' : 'diario'); }
+const BLOQUES = { fijos: ['Fijos', 'alquiler, luz, internet, suscripciones, gestoría, impuestos, psicólogo, deporte'], diario: ['Día a día', 'comida, restaurantes, café, transporte, ocio, pareja'], hucha: ['Grandes compras y viajes', 'viajes, hogar, imprevistos'] };
+function renderPresupuesto() {
+  if (!P) return;
+  const rowsP = base(); const n = Math.max(new Set(rowsP.map(m => m.mes)).size, 1);
+  const a = agg(rowsP); const periodo = periodoLabel();
+  const gastoBloque = { fijos: 0, diario: 0, hucha: 0 }, catsBloque = { fijos: {}, diario: {}, hucha: {} };
+  for (const [c, v] of Object.entries(a.cats)) { const b = bloqueDe(c); gastoBloque[b] += v; catsBloque[b][c] = v; }
+  const presTotal = (P.bloques.fijos + P.bloques.diario + P.bloques.hucha) * n;
+  const libre = a.ingresos - a.gasto - P.inversion_mensual * n;
+  const t = [
+    ['Presupuesto', presTotal, 'blue', `gastado ${fmt(a.gasto)} · ${a.gasto <= presTotal ? 'quedan ' + fmt(presTotal - a.gasto) : 'te has pasado ' + fmt(a.gasto - presTotal)}`],
+    ['Inversión objetivo', P.inversion_mensual * n, 'violet', `invertido ${fmt(a.inv)} (${P.inversion_mensual ? Math.round(a.inv / (P.inversion_mensual * n) * 100) : 0} %)`],
+    ['Colchón', D.saldo_total, 'aqua', `objetivo ${fmt(P.colchon_objetivo)} · ${D.saldo_total >= P.colchon_objetivo ? 'conseguido' : 'faltan ' + fmt(P.colchon_objetivo - D.saldo_total)}`],
+    ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'orange', 'ingresos − gasto − inversión objetivo'],
+  ];
+  $('tilesPres').innerHTML = t.map(([l, v, c, s]) => `<div class="tile ${c}"><div class="lbl">${l} · ${periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
+  $('presHint').textContent = n > 1 ? `Periodo de ${n} meses: el presupuesto se multiplica por ${n}.` : 'Presupuesto del mes frente a lo gastado.';
+  $('bloques').innerHTML = Object.keys(BLOQUES).map(b => {
+    const pres = P.bloques[b] * n, g = gastoBloque[b], p = pres ? g / pres : 0;
+    const col = p > 1 ? 'var(--s2)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
+    const top = Object.entries(catsBloque[b]).sort((x, y) => y[1] - x[1]).slice(0, 5).map(([c, v]) => `${c.toLowerCase()} ${fmt(v)}`).join(' · ');
+    return `<div style="margin:10px 0 14px"><div style="display:flex;justify-content:space-between;font-size:13px"><b>${BLOQUES[b][0]}</b><span><b>${fmt(g)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
+      <div class="track" style="height:12px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:4px 0"><div style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div></div>
+      <div class="muted" style="font-size:12px">${p > 1 ? 'Pasado en ' + fmt(g - pres) : 'Quedan ' + fmt(pres - g)}${top ? ' · ' + top : ''}</div></div>`;
+  }).join('');
+  // metas
+  const hoy = new Date();
+  $('metas').innerHTML = (P.metas || []).map((m, i) => {
+    const falta = Math.max(0, m.objetivo - (m.reservado || 0));
+    const meses = m.fecha ? Math.max(1, (new Date(m.fecha).getFullYear() - hoy.getFullYear()) * 12 + new Date(m.fecha).getMonth() - hoy.getMonth()) : null;
+    const p = m.objetivo ? Math.min(1, (m.reservado || 0) / m.objetivo) : 0;
+    return `<div style="margin:10px 0 14px;font-size:13px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><input data-meta="${i}" data-k="nombre" value="${(m.nombre || '').replace(/"/g, '&quot;')}" style="flex:1;min-width:140px"> <input data-meta="${i}" data-k="objetivo" type="number" value="${m.objetivo}" style="width:100px" title="objetivo €"> <input data-meta="${i}" data-k="fecha" type="date" value="${m.fecha || ''}" style="width:150px"> <input data-meta="${i}" data-k="reservado" type="number" value="${m.reservado || 0}" style="width:100px" title="ya reservado €"> <button class="amb" data-delmeta="${i}" title="Quitar">✕</button></div>
+      <div class="track" style="height:10px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:6px 0"><div style="height:100%;width:${p * 100}%;background:var(--s1);border-radius:4px"></div></div>
+      <div class="muted" style="font-size:12px">${fmt(m.reservado || 0)} de ${fmt(m.objetivo)} · faltan ${fmt(falta)}${meses ? ` · ${meses} ${meses === 1 ? 'mes' : 'meses'} · ${fmt(falta / meses)} al mes` : ''}</div></div>`;
+  }).join('') || '<p class="muted">Sin metas. Añade una.</p>';
+  // config
+  $('presConfig').innerHTML = `
+    <span>Fijos al mes</span><input data-p="bloques.fijos" type="number" value="${P.bloques.fijos}" style="width:120px">
+    <span>Día a día al mes</span><input data-p="bloques.diario" type="number" value="${P.bloques.diario}" style="width:120px">
+    <span>Grandes compras y viajes al mes (hucha)</span><input data-p="bloques.hucha" type="number" value="${P.bloques.hucha}" style="width:120px">
+    <span>Inversión objetivo al mes</span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}" style="width:120px">
+    <span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}" style="width:120px">`;
+  const cats = D.categorias.filter(c => c.tipo === 'Gasto').map(c => c.nombre);
+  $('presAsig').innerHTML = cats.map(c => `<span>${c}</span><select data-asig="${c}" style="padding:4px 10px">${Object.keys(BLOQUES).map(b => `<option value="${b}" ${bloqueDe(c) === b ? 'selected' : ''}>${BLOQUES[b][0]}</option>`).join('')}</select>`).join('');
+}
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.dataset.p) { const [a, b] = el.dataset.p.split('.'); if (b) P[a][b] = +el.value; else P[a] = +el.value; marcarPres(); renderPresupuesto(); }
+  else if (el.dataset.asig) { P.asignacion = P.asignacion || {}; P.asignacion[el.dataset.asig] = el.value; marcarPres(); renderPresupuesto(); }
+  else if (el.dataset.meta != null) { const m = P.metas[+el.dataset.meta]; const k = el.dataset.k; m[k] = (k === 'nombre' || k === 'fecha') ? el.value : +el.value; marcarPres(); renderPresupuesto(); }
+});
+document.addEventListener('click', e => {
+  const d = e.target.closest('button[data-delmeta]'); if (d) { P.metas.splice(+d.dataset.delmeta, 1); marcarPres(); renderPresupuesto(); }
+  if (e.target.id === 'addMeta') { P.metas = P.metas || []; P.metas.push({ nombre: 'Nueva meta', objetivo: 1000, fecha: '', reservado: 0 }); marcarPres(); renderPresupuesto(); }
+});
 
 // ---- correcciones hechas desde aquí: se guardan en GitHub (data/overrides.json) y se aplican a la base en el próximo cierre
 function token() { try { return localStorage.getItem('gh_token') || ''; } catch (e) { return ''; } }
@@ -294,6 +399,8 @@ function editar(id, campo, valor) {
 }
 async function guardar() {
   if (!token()) { pedirToken(); if (!token()) return; }
+  if (pDirty) { const ok = await guardarPresupuesto(); if (!ok) return; }
+  if (!Object.keys(cambios).length) { $('savebar').style.display = 'none'; $('meta').textContent = 'Presupuesto guardado.'; return; }
   const merged = Object.assign({}, overrides, cambios);
   const body = { message: 'Correcciones desde el dashboard (' + Object.keys(cambios).length + ')', content: btoa(unescape(encodeURIComponent(JSON.stringify(merged, null, 1)))) };
   if (ovSha) body.sha = ovSha;
@@ -421,6 +528,7 @@ function render() {
   renderPend();
   renderCuentas();
   renderTable();
+  renderPresupuesto();
 }
 
 // ---- gráficos

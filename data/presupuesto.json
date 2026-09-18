@@ -1,0 +1,10 @@
+{
+ "bloques": {"fijos": 1400, "diario": 550, "hucha": 300},
+ "asignacion": {"VIAJES": "hucha", "HOGAR": "hucha", "IMPREVISTOS": "hucha", "AJUSTES PAREJA": "hucha", "EFECTIVO": "diario"},
+ "inversion_mensual": 1000,
+ "colchon_objetivo": 6500,
+ "metas": [
+  {"nombre": "Colchón de 3 meses", "objetivo": 6500, "fecha": "2026-12-31", "reservado": 3382},
+  {"nombre": "Setup despacho (silla, mesa, monitor)", "objetivo": 1200, "fecha": "2026-12-31", "reservado": 0}
+ ]
+}

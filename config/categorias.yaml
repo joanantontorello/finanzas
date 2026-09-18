@@ -16,7 +16,7 @@ Gasto:
   IMPUESTOS: {fijo: true, ambito: Trabajo}
   DEPORTE: {}
   SALUD: {}
-  PSICOLOGA: {}
+  PSICOLOGA: {fijo: true}   # 70 € por sesión, semanal desde sept 2026 (~280 €/mes)
   COMIDA: {}
   RESTAURANTES: {}
   CAFÉ: {}

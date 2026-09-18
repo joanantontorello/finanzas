@@ -154,6 +154,10 @@ def main():
     }
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    # presupuesto (editable desde el dashboard, vive en data/presupuesto.json en GitHub): copia para el despliegue
+    pres = ROOT / "data" / "presupuesto.json"
+    if pres.exists():
+        (OUT.parent / "presupuesto.json").write_text(pres.read_text(encoding="utf-8"), encoding="utf-8")
 
     # CSV espejo completo + resumen compacto mes x categoría (el resumen es el que se sube a Drive)
     import csv

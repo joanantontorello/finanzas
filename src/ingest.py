@@ -185,7 +185,7 @@ def _clave_aprendizaje(concepto):
 
 
 # comercios donde se compra de todo: una corrección no dice nada sobre la siguiente compra
-NO_APRENDER = ("AMAZON", "EL CORTE INGL", "MEDIA MARKT", "CORTE INGLES", "FNAC", "IKEA", "DECATHLON", "CARREFOUR", "ALCAMPO", "SUMUP", "PAYPAL", "GLOVO")
+NO_APRENDER = ("MONEY ADDED VIA BIZUM", "CARD REFUND", "AMAZON", "EL CORTE INGL", "MEDIA MARKT", "CORTE INGLES", "FNAC", "IKEA", "DECATHLON", "CARREFOUR", "ALCAMPO", "SUMUP", "PAYPAL", "GLOVO")
 
 
 def aprender(con, categorias):

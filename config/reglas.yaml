@@ -57,6 +57,12 @@
 - {id: deporte,            match: "Basic-Fit|Playtomic|PLAYTOMIC|circulodejiujitsu|Decathlon|AYTO MADRID DEPORTES", tipo: Gasto, categoria: DEPORTE}
 
 # --- aprendidas de las correcciones del dashboard (van antes que las genéricas para ganarles)
+- {"id": "auto_transferencia_recibida", "match": "Transferencia\\ recibida", "tipo": "Traspaso", "categoria": "TRASPASO", "ambito": "Personal", "nota": "aprendida de la corrección #1577"}
+- {"id": "auto_brownie", "match": "Brownie", "tipo": "Gasto", "categoria": "CITAS/PAREJA", "ambito": "Personal", "nota": "aprendida de la corrección #1583"}
+- {"id": "auto_the_cookie_lab", "match": "The\\ Cookie\\ Lab", "tipo": "Gasto", "categoria": "RESTAURANTES", "ambito": "Personal", "nota": "aprendida de la corrección #1589"}
+- {"id": "auto_to_diana_aracil", "match": "To\\ Diana\\ Aracil", "tipo": "Gasto", "categoria": "CITAS/PAREJA", "ambito": "Personal", "nota": "aprendida de la corrección #1599"}
+- {"id": "auto_samba_global_fuencarra", "match": "Samba\\ Global\\ Fuencarra", "tipo": "Gasto", "categoria": "RESTAURANTES", "ambito": "Personal", "nota": "aprendida de la corrección #1607"}
+- {"id": "auto_sp_hbada_eu", "match": "SP\\ HBADA\\ EU", "tipo": "Gasto", "categoria": "TRABAJO", "ambito": "Trabajo", "nota": "aprendida de la corrección #1622"}
 - {"id": "auto_bizum_payment_to_marina_h_l", "match": "Bizum\\ payment\\ to:\\ MARINA\\.H\\.L\\.", "tipo": "Gasto", "categoria": "VIAJES", "ambito": "Personal", "nota": "aprendida de la corrección #984"}
 - {"id": "auto_bizum_payment_to_jordi_m_g", "match": "Bizum\\ payment\\ to:\\ Jordi\\ M\\.G\\.", "tipo": "Gasto", "categoria": "SALUD", "ambito": "Personal", "nota": "aprendida de la corrección #1064"}
 - {"id": "auto_sp_zzen_labs", "match": "SP\\ ZZEN\\ LABS", "tipo": "Gasto", "categoria": "SALUD", "ambito": "Personal", "nota": "aprendida de la corrección #1365"}
@@ -76,7 +82,8 @@
 - {id: cajero_madrid,      cuenta: BBVA,     match: "Ret\\. efectivo",                                               tipo: Gasto, categoria: EFECTIVO}
 
 # ---------------------------------------------------------------- 8. Merchants habituales
-- {id: salud,              match: "MYPROTEIN|MyProtein|BARBER|Barber|PERFUMERIA|Farmacia|FARMACIA",                 tipo: Gasto, categoria: SALUD}
+- {id: autocuidado,        match: "BARBER|Barber|Barbería|BARBERIA|Peluquer|PELUQUER|PERFUMERIA|Perfumeria|PRIMOR|Primor", tipo: Gasto, categoria: PELUQUERÍA Y AUTOCUIDADO}
+- {id: salud,              match: "MYPROTEIN|MyProtein|Farmacia|FARMACIA",                 tipo: Gasto, categoria: SALUD}
 - {id: ruso,               match: "italki|russianincontext",                                                        tipo: Gasto, categoria: RUSO}
 - {id: pareja,             match: "Florist|FLORIST|Beauty By Dia",                                                  tipo: Gasto, categoria: CITAS/PAREJA}
 - {id: kate_bizum_small,   cuenta: Revolut, match: "Bizum payment to: Kateryna",                                     tipo: Gasto, categoria: AJUSTES PAREJA}

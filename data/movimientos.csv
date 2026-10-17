@@ -1536,6 +1536,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-09-06,Revolut,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,TRASPASO,Personal,auto
 2026-09-06,Revolut,[Topup] Money added via BIZUM,353.0,353.0,Reembolso,IMPREVISTOS,Personal,revisado
 2026-09-06,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
+2026-09-06,Revolut,[Card Payment] Arabay Coffee Roasters,-2.3,-2.3,Gasto,CAFÉ,Personal,auto
 2026-09-07,Conjunta,[Card Payment] Mercadona,-70.89,-35.45,Gasto,COMIDA,Personal,auto
 2026-09-07,Revolut,[Card Payment] circulodejiujitsu.com,-100.0,-100.0,Gasto,DEPORTE,Personal,auto
 2026-09-07,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,DEPORTE,Personal,auto
@@ -1575,3 +1576,65 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-09-16,Trade Republic,[Transacción con tarjeta] ANTHROPIC,-10.1,-10.1,Gasto,SUBSCRIPCIONES,Trabajo,auto
 2026-09-16,Trade Republic,[Transacción con tarjeta] ANTHROPIC,-11.27,-11.27,Gasto,SUBSCRIPCIONES,Trabajo,auto
 2026-09-16,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.602264",-100.0,-100.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
+2026-09-16,Conjunta,[Card Payment] Hundred,-9.8,-4.9,Gasto,RESTAURANTES,Personal,auto
+2026-09-17,Conjunta,[Card Payment] Alcampo,-17.67,-8.84,Gasto,COMIDA,Personal,auto
+2026-09-17,Revolut,[Card Payment] Playtomic,-3.11,-3.11,Gasto,DEPORTE,Personal,auto
+2026-09-17,Revolut,[Card Payment] D P Barber Studio,-22.95,-22.95,Gasto,SALUD,Personal,auto
+2026-09-17,Revolut,[Card Payment] Carrefour,-2.17,-2.17,Gasto,COMIDA,Personal,auto
+2026-09-17,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
+2026-09-18,Revolut,[Card Payment] Steak Burger Luchana,-26.18,-26.18,Gasto,RESTAURANTES,Personal,auto
+2026-09-18,Revolut,[Card Payment] Loomispvergara 8 Madr,-3.9,-3.9,Gasto,CAFÉ,Personal,auto
+2026-09-18,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,TRANSPORTE,Personal,auto
+2026-09-19,Conjunta,[Card Payment] Brownie,-6.8,-3.4,Gasto,IMPREVISTOS,Personal,auto
+2026-09-19,Conjunta,[Card Payment] Brownie,-4.5,-2.25,Gasto,IMPREVISTOS,Personal,auto
+2026-09-19,Conjunta,[Card Payment] Red Dragon Hot Pot,-60.0,-30.0,Gasto,RESTAURANTES,Personal,auto
+2026-09-19,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,TRANSPORTE,Personal,auto
+2026-09-19,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-70.0,-70.0,Gasto,PSICOLOGA,Personal,auto
+2026-09-20,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,12.11,12.11,Traspaso,TRASPASO,Personal,auto
+2026-09-20,Conjunta,[Card Payment] Alcampo,-22.63,-11.31,Gasto,COMIDA,Personal,auto
+2026-09-20,Conjunta,[Card Payment] Carrefour Express,-0.76,-0.38,Gasto,COMIDA,Personal,auto
+2026-09-20,Conjunta,[Card Payment] The Cookie Lab,-4.4,-2.2,Gasto,IMPREVISTOS,Personal,auto
+2026-09-20,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-12.11,-12.11,Traspaso,TRASPASO,Personal,auto
+2026-09-20,Revolut,[Card Payment] Samba Global Fuencarra,-4.9,-4.9,Gasto,IMPREVISTOS,Personal,auto
+2026-09-20,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,TRANSPORTE,Personal,auto
+2026-09-21,BBVA,Pago de impuestos | Nrc. 082612591968yxvs3rpssf,-108.46,-108.46,Gasto,IMPUESTOS,Trabajo,auto
+2026-09-21,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,29.5,29.5,Traspaso,APORTACIÓN PAREJA,Personal,auto
+2026-09-21,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to GC RE OCTOPUS ENERGY (FR7617118820080000001536203),-59.01,-59.01,Gasto,LUZ,Personal,auto
+2026-09-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,SUBSCRIPCIONES,Trabajo,auto
+2026-09-22,Trade Republic,[Transacción con tarjeta] SP HBADA EU,-330.28,-330.28,Gasto,HOGAR,Personal,pendiente
+2026-09-23,Conjunta,[Card Payment] Mercadona,-104.11,-52.05,Gasto,COMIDA,Personal,auto
+2026-09-23,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.54894",-100.0,-100.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
+2026-09-23,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.587889",-100.0,-100.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
+2026-09-25,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
+2026-09-25,Conjunta,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,TRASPASO,Personal,auto
+2026-09-25,Conjunta,[Card Payment] Ouigo,-98.0,-49.0,Gasto,TRANSPORTE,Personal,auto
+2026-09-25,Conjunta,[Card Payment] Lidl,-7.61,-3.81,Gasto,COMIDA,Personal,auto
+2026-09-26,Conjunta,[Card Payment] Alcampo,-4.99,-2.5,Gasto,COMIDA,Personal,auto
+2026-09-26,Revolut,[Topup] Money added via BIZUM,182.12,182.12,Reembolso,REEMBOLSOS,Personal,auto
+2026-09-26,Revolut,[Card Payment] Loomispvergara 8 Madr,-3.1,-3.1,Gasto,CAFÉ,Personal,auto
+2026-09-26,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-100.0,-100.0,Traspaso,TRASPASO,Personal,auto
+2026-09-26,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez,-70.0,-70.0,Gasto,PSICOLOGA,Personal,auto
+2026-09-26,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,TRANSPORTE,Personal,auto
+2026-09-26,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
+2026-09-27,Revolut,[Topup] Money added via BIZUM,182.12,182.12,Reembolso,REEMBOLSOS,Personal,auto
+2026-09-27,Revolut,[Card Payment] Playtomic,-3.4,-3.4,Gasto,DEPORTE,Personal,auto
+2026-09-27,Revolut,[Card Payment] Starbucks,-2.9,-2.9,Gasto,CAFÉ,Personal,auto
+2026-09-27,Trade Republic,[Transacción con tarjeta] ESQUIADES.COM,-113.0,-113.0,Gasto,VIAJES,Personal,auto
+2026-09-28,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,600.0,600.0,Traspaso,TRASPASO,Personal,auto
+2026-09-28,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,600.0,600.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
+2026-09-28,Revolut,[Topup] Money added via BIZUM,139.12,139.12,Reembolso,REEMBOLSOS,Personal,auto
+2026-09-28,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-600.0,-600.0,Traspaso,TRASPASO,Personal,auto
+2026-09-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
+2026-09-28,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,TRANSPORTE,Personal,auto
+2026-09-29,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
+2026-09-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,TRANSPORTE,Personal,auto
+2026-09-29,Trade Republic,[Transacción con tarjeta] OUIGO Espana,-33.0,-33.0,Gasto,TRANSPORTE,Personal,auto
+2026-09-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-10.0,Gasto,INTERNET,Personal,auto
+2026-09-29,Trade Republic,"[Operar] Buy trade US30303M1027 META PLATF. A DL-,000006, quantity: 0.158353",-101.0,-101.0,Inversion,ACCIONES,Personal,auto
+2026-09-30,BBVA,Adeudo de cuota de la seguridad social | N 2026271002702848 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,IMPUESTOS,Trabajo,auto
+2026-09-30,Conjunta,[Transfer] To Diana Aracil Diana,-80.0,-40.0,Gasto,,Personal,pendiente
+2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,TRANSPORTE,Personal,auto
+2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
+2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,TRANSPORTE,Personal,auto
+2026-10-07,BBVA,Adeudo jaime carrasco del olmo | Adeudo nº 2026279002497941 | N 2026279002497941 JAIME CARRASCO DEL OLMO,-84.7,-84.7,Gasto,GESTORIA,Trabajo,auto
+2026-10-16,BBVA,Transferencia recibida | Transferencia para tener saldo para impuestos,600.0,600.0,Reembolso,REEMBOLSOS,Personal,auto

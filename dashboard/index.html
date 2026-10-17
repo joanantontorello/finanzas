@@ -229,6 +229,13 @@
           <div class="kv" id="conjunta"></div>
         </div>
       </div>
+      <div class="card mt" id="deudasCard">
+        <h2>Deudas con Hacienda</h2>
+        <div class="hint">Fraccionamientos en vigor. Lo que vence antes de hoy se da por pagado; los cargos reales entran por BBVA como Impuestos.</div>
+        <div class="kv" id="deudasResumen"></div>
+        <div id="deudasLista" style="margin-top:12px"></div>
+        <details style="margin-top:10px"><summary class="muted" style="cursor:pointer">Calendario de cargos mes a mes</summary><div class="kv" id="deudasCal" style="margin-top:8px"></div></details>
+      </div>
       <div class="card mt">
         <h2>Cómo se calcula</h2>
         <div class="defs" id="defs"></div>
@@ -671,7 +678,24 @@ function renderPend() {
   }).join('') : '<p class="muted">Nada pendiente. Todo clasificado.</p>';
 }
 document.addEventListener('click', e => { const b = e.target.closest('button.ok'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.ok); if (m && m.categoria) editar(m.id, 'categoria', m.categoria); } });
+function renderDeudas() {
+  const ds = D.deudas || [];
+  if (!ds.length) { $('deudasCard').hidden = true; return; }
+  const pend = ds.reduce((a, d) => a + d.pendiente, 0), tot = ds.reduce((a, d) => a + d.total, 0);
+  const cal = D.deudas_calendario || {}, mesHoy = new Date().toISOString().slice(0, 7);
+  const proximos = ds.filter(d => d.proximo).map(d => d.proximo).sort((a, b) => a.fecha.localeCompare(b.fecha));
+  $('deudasResumen').innerHTML = `<span>Pendiente de pagar</span><b>${fmt2(pend)}</b>
+    <span>Pagado hasta hoy</span><b>${fmt2(tot - pend)} de ${fmt2(tot)}</b>
+    <span>Cargo este mes</span><b>${fmt2(cal[mesHoy] || 0)}</b>
+    <span>Próximo cargo</span><b>${proximos.length ? fmt2(proximos[0].importe) + ' el ' + fechaLarga(proximos[0].fecha) : '–'}</b>`;
+  $('deudasLista').innerHTML = ds.map(d => { const p = d.total ? (d.total - d.pendiente) / d.total : 0; return `<div style="margin:10px 0;font-size:13px">
+    <div style="display:flex;justify-content:space-between;gap:10px"><b>${d.nombre}</b><span><b>${fmt(d.pendiente)}</b> <span class="muted">pendientes</span></span></div>
+    <div style="height:10px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:5px 0"><div style="height:100%;width:${p * 100}%;background:var(--s3);border-radius:4px"></div></div>
+    <div class="muted" style="font-size:12px">${d.plazos - d.plazos_pendientes} de ${d.plazos} plazos pagados · ${d.proximo ? 'próximo ' + fmt2(d.proximo.importe) + ' el ' + d.proximo.fecha.split('-').reverse().join('/') : 'liquidada'} · termina ${d.fin.split('-').reverse().join('/')}${d.intereses ? ' · intereses totales ' + fmt2(d.intereses) : ''}</div></div>`; }).join('');
+  $('deudasCal').innerHTML = Object.entries(cal).map(([m, v]) => `<span>${mesLargo(m)}</span><b>${fmt2(v)}</b>`).join('');
+}
 function renderCuentas() {
+  renderDeudas();
   $('cuentas').innerHTML = D.cuentas.map(c => `<span>${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('') + `<span style="margin-top:6px"><b>Total (conjunta al 50 %)</b></span><b style="margin-top:6px">${fmt2(D.saldo_total)}</b>`;
 }
 function renderTable() {

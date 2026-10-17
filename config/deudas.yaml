@@ -1,0 +1,38 @@
+# Deudas con calendario de pagos. Cada plazo: fecha de vencimiento e importe total del plazo (principal + intereses).
+# El dashboard da por pagado lo que vence antes de hoy; los cargos reales entran por BBVA como "Pago de impuestos" (IMPUESTOS).
+- nombre: IRPF fraccionado (liquidación A0830626530043992)
+  concepto: I.R.P.F. fraccionamiento pagos profesionales
+  principal: 1292.73
+  intereses: 32.92
+  cuenta: BBVA
+  plazos:
+    - [2026-09-21, 108.46]
+    - [2026-10-20, 108.82]
+    - [2026-11-20, 109.19]
+    - [2026-12-21, 109.55]
+    - [2027-01-20, 109.93]
+    - [2027-02-22, 110.30]
+    - [2027-03-22, 110.63]
+    - [2027-04-20, 111.01]
+    - [2027-05-20, 111.36]
+    - [2027-06-21, 111.74]
+    - [2027-07-20, 112.10]
+    - [2027-08-20, 112.56]
+- nombre: IRPF fraccionado (liquidación A0830626530062472)
+  concepto: I.R.P.F. fraccionamiento pagos profesionales
+  principal: 1150.97
+  intereses: 29.21
+  cuenta: BBVA
+  plazos:
+    - [2026-12-21, 96.56]
+    - [2027-01-20, 96.89]
+    - [2027-02-22, 97.22]
+    - [2027-03-22, 97.52]
+    - [2027-04-20, 97.85]
+    - [2027-05-20, 98.17]
+    - [2027-06-21, 98.50]
+    - [2027-07-20, 98.82]
+    - [2027-08-20, 99.16]
+    - [2027-09-20, 99.49]
+    - [2027-10-20, 99.81]
+    - [2027-11-22, 100.19]

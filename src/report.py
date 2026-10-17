@@ -127,12 +127,30 @@ def main():
 
     # cuentas: último saldo conocido e importación
     cuentas = []
-    for c in con.execute("SELECT DISTINCT cuenta FROM movimientos WHERE cuenta != 'Histórico'").fetchall():
+    for c in con.execute("SELECT DISTINCT cuenta FROM movimientos WHERE cuenta NOT IN ('Histórico', 'Ajustes')").fetchall():
         c = c[0]
         last = con.execute("SELECT fecha, saldo FROM movimientos WHERE cuenta=? AND saldo IS NOT NULL ORDER BY fecha DESC, id DESC LIMIT 1", (c,)).fetchone()
         imp = con.execute("SELECT fecha_max, created_at FROM importaciones WHERE cuenta=? ORDER BY id DESC LIMIT 1", (c,)).fetchone()
         cuentas.append({"cuenta": c, "saldo": last["saldo"] if last else None, "fecha_saldo": last["fecha"] if last else None,
                         "hasta": imp["fecha_max"] if imp else None, "importado": imp["created_at"] if imp else None})
+
+    # deudas con calendario (config/deudas.yaml): lo vencido antes de hoy se da por pagado
+    deudas = []
+    dp = ROOT / "config" / "deudas.yaml"
+    hoy_s = datetime.now().strftime("%Y-%m-%d")
+    calendario = defaultdict(float)
+    if dp.exists():
+        for d in yaml.safe_load(dp.read_text(encoding="utf-8")) or []:
+            plazos = [{"fecha": str(f), "importe": float(i)} for f, i in d["plazos"]]
+            pagado = sum(x["importe"] for x in plazos if x["fecha"] < hoy_s)
+            restantes = [x for x in plazos if x["fecha"] >= hoy_s]
+            for x in restantes:
+                calendario[x["fecha"][:7]] += x["importe"]
+            deudas.append({"nombre": d["nombre"], "total": r2(sum(x["importe"] for x in plazos)), "pagado": r2(pagado),
+                           "pendiente": r2(sum(x["importe"] for x in restantes)), "plazos": len(plazos),
+                           "plazos_pendientes": len(restantes), "proximo": restantes[0] if restantes else None,
+                           "fin": plazos[-1]["fecha"], "intereses": d.get("intereses")})
+    deudas_calendario = {k: r2(v) for k, v in sorted(calendario.items())}
 
     pend = [{"id": x["id"], "fecha": x["fecha"], "cuenta": x["cuenta"], "concepto": x["concepto"], "importe": x["importe"],
              "tipo": x["tipo"], "categoria": x["categoria"], "nota": x["nota"]} for x in rows if x["estado"] == "pendiente"]
@@ -150,6 +168,8 @@ def main():
         "anios": anios,
         "categorias": cat_list,
         "cuentas": cuentas,
+        "deudas": deudas,
+        "deudas_calendario": deudas_calendario,
         "saldo_total": r2(saldo_total),
         "conjunta": conjunta,
         "pendientes": pend,

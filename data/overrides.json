@@ -5,6 +5,19 @@
  "860": {
   "categoria": "PSICOLOGA"
  },
+ "953": {
+  "categoria": "HOGAR"
+ },
+ "984": {
+  "categoria": "VIAJES"
+ },
+ "1064": {
+  "categoria": "SALUD"
+ },
+ "1126": {
+  "categoria": "IMPREVISTOS",
+  "nota": "Pol devuelve la primera mitad del móvil"
+ },
  "1208": {
   "categoria": "CITAS/PAREJA"
  },
@@ -16,11 +29,11 @@
   "nota": "alquiler de abril (pagado el 25/03), mitad",
   "participacion": 0.5
  },
- "1525": {
-  "categoria": "PSICOLOGA"
+ "1329": {
+  "categoria": "CITAS/PAREJA"
  },
- "1535": {
-  "categoria": "PSICOLOGA"
+ "1365": {
+  "categoria": "SALUD"
  },
  "1503": {
   "categoria": "HOGAR",
@@ -28,13 +41,24 @@
   "compensar": true,
   "nota": "Roomba, a medias con Kate"
  },
+ "1507": {
+  "categoria": "AJUSTES PAREJA"
+ },
+ "1510": {
+  "categoria": "HOGAR"
+ },
+ "1514": {
+  "categoria": "AJUSTES PAREJA"
+ },
  "1516": {
   "categoria": "IMPREVISTOS",
   "ambito": "Trabajo",
   "nota": "Móvil de Pol (facturado a mi nombre para desgravar el IVA); me devuelve todo menos el IVA"
  },
- "1126": {
-  "categoria": "IMPREVISTOS",
-  "nota": "Pol devuelve la primera mitad del móvil"
+ "1525": {
+  "categoria": "PSICOLOGA"
+ },
+ "1535": {
+  "categoria": "PSICOLOGA"
  }
 }

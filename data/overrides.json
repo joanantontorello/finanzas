@@ -69,5 +69,9 @@
  },
  "1622": {
   "categoria": "TRABAJO"
+ },
+ "1635": {
+  "participacion": 0.5,
+  "compensar": true
  }
 }

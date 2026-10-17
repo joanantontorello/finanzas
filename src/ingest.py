@@ -33,7 +33,8 @@ def cargar_reglas():
     reglas = yaml.safe_load((CONFIG / "reglas.yaml").read_text(encoding="utf-8"))
     perfil = cargar_perfil()
     subs = {"{TITULAR}": f"(?:{perfil.get('titular') or 'TITULAR_SIN_CONFIGURAR'})",
-            "{PAREJA}": f"(?:{perfil.get('pareja') or 'PAREJA_SIN_CONFIGURAR'})"}
+            "{PAREJA}": f"(?:{perfil.get('pareja') or 'PAREJA_SIN_CONFIGURAR'})",
+            "{TARJETAS_PAREJA}": f"(?:{perfil.get('tarjetas_pareja') or 'TARJETA_SIN_CONFIGURAR'})"}
     for r in reglas:
         for k, v in subs.items():
             r["match"] = r["match"].replace(k, v)

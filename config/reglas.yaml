@@ -9,7 +9,7 @@
 - {id: rev_to_tr,          cuenta: Revolut,  match: "\\[Transfer\\] To Joan Anton Torello Lopez",                     tipo: Traspaso, categoria: TRASPASO}
 - {id: rev_to_conjunta,    cuenta: Revolut,  match: "Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA",               tipo: Traspaso, categoria: TRASPASO, nota: aportación a la conjunta}
 - {id: conj_from_joan,     cuenta: Conjunta, match: "Transfer from JOAN ANTON TORELLO LOPEZ",                        tipo: Traspaso, categoria: TRASPASO}
-- {id: conj_from_kate,     cuenta: Conjunta, match: "(Payment|Transfer) from KATERYNA",                              tipo: Traspaso, categoria: APORTACIÓN KATE}
+- {id: conj_from_kate,     cuenta: Conjunta, match: "(Payment|Transfer) from KATERYNA",                              tipo: Traspaso, categoria: APORTACIÓN PAREJA}
 - {id: tr_revolut_card,    cuenta: Trade Republic, match: "Revolut\\*\\*3407",                                       tipo: Traspaso, categoria: TRASPASO, nota: recarga de Revolut}
 - {id: tr_from_joan,       cuenta: Trade Republic, match: "Incoming transfer from Joan Anton",                       tipo: Traspaso, categoria: TRASPASO}
 - {id: tr_to_joan,         cuenta: Trade Republic, match: "Outgoing transfer for Joan Anton",                        tipo: Traspaso, categoria: TRASPASO, nota: a BBVA}
@@ -52,17 +52,15 @@
 - {id: apple_disney,       match: "^\\[Card Payment\\] Apple$|APPLE\\.COM/BILL", min: 10.9, max: 11.1,              tipo: Gasto, categoria: SUBSCRIPCIONES, nota: Disney+ vía Apple (cancelada)}
 - {id: sub_trabajo,        match: "OPENAI|CLAUDE|ANTHROPIC|MIRO\\.COM|REPLIT|\\bLoom\\b|Higgsfield|Fidelio Online|FIDELIO ONLINE|NOPARRO FILMS|APPLE\\.COM/BILL|^\\[Card Payment\\] Apple$", tipo: Gasto, categoria: SUBSCRIPCIONES, ambito: Trabajo}
 - {id: sub_personal,       match: "Amazon Prime|DISNEY PLUS|Disney Plus|^\\[Card Payment\\] Max$",                   tipo: Gasto, categoria: SUBSCRIPCIONES}
-- {id: seguro_eci,         match: "CENTRO DE SEGUROS",                                                              tipo: Gasto, categoria: IMPREVISTOS, estado: pendiente, nota: "seguro El Corte Inglés, ¿de qué?"}
+- {id: seguro_eci,         match: "CENTRO DE SEGUROS",                                                              tipo: Gasto, categoria: HOGAR, nota: seguro (El Corte Inglés)}
 
 - {id: deporte,            match: "Basic-Fit|Playtomic|PLAYTOMIC|circulodejiujitsu|Decathlon|AYTO MADRID DEPORTES", tipo: Gasto, categoria: DEPORTE}
 
 # --- aprendidas de las correcciones del dashboard (van antes que las genéricas para ganarles)
-- {"id": "auto_bizum_payment_to_kateryna_s", "match": "Bizum\\ payment\\ to:\\ Kateryna\\ S\\.", "tipo": "Gasto", "categoria": "HOGAR", "ambito": "Personal", "nota": "aprendida de la corrección #953"}
 - {"id": "auto_bizum_payment_to_marina_h_l", "match": "Bizum\\ payment\\ to:\\ MARINA\\.H\\.L\\.", "tipo": "Gasto", "categoria": "VIAJES", "ambito": "Personal", "nota": "aprendida de la corrección #984"}
 - {"id": "auto_bizum_payment_to_jordi_m_g", "match": "Bizum\\ payment\\ to:\\ Jordi\\ M\\.G\\.", "tipo": "Gasto", "categoria": "SALUD", "ambito": "Personal", "nota": "aprendida de la corrección #1064"}
 - {"id": "auto_sp_zzen_labs", "match": "SP\\ ZZEN\\ LABS", "tipo": "Gasto", "categoria": "SALUD", "ambito": "Personal", "nota": "aprendida de la corrección #1365"}
 - {"id": "auto_outgoing_transfer_for_kateryna_soltuchen", "match": "Outgoing\\ transfer\\ for\\ Kateryna\\ Soltuchenko", "tipo": "Gasto", "categoria": "AJUSTES PAREJA", "ambito": "Personal", "nota": "aprendida de la corrección #1507"}
-- {"id": "auto_sepa_direct_debit", "match": "Sepa\\ Direct\\ Debit", "tipo": "Gasto", "categoria": "HOGAR", "ambito": "Personal", "nota": "aprendida de la corrección #1510"}
 - {"id": "auto_bizum_payment_to_ton_r_m", "match": "Bizum\\ payment\\ to:\\ Ton\\ R\\.M\\.", "tipo": "Gasto", "categoria": "OCIO", "ambito": "Personal", "nota": "aprendida de la corrección #853"}
 - {"id": "auto_castellana", "match": "Castellana", "tipo": "Gasto", "categoria": "CITAS/PAREJA", "ambito": "Personal", "nota": "aprendida de la corrección #1208"}
 - {"id": "auto_outgoing_transfer_for_intecat_istore_sl", "match": "Outgoing\\ transfer\\ for\\ INTECAT\\ ISTORE\\ SL", "tipo": "Gasto", "categoria": "TRABAJO", "ambito": "Trabajo", "nota": "aprendida de la corrección #1210"}

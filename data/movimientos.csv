@@ -684,7 +684,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-01-25,Revolut,[Card Payment] Cafeteria Restaurante,-17.7,-17.7,Gasto,RESTAURANTES,Personal,auto
 2026-01-26,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,DEPORTE,Personal,auto
 2026-01-27,BBVA,Adeudo jaime carrasco del olmo | Adeudo nº 2026026001544413 | N 2026026001544413 JAIME CARRASCO DEL OLMO,-84.7,-84.7,Gasto,GESTORIA,Trabajo,auto
-2026-01-28,Revolut,[Transfer] Bizum payment to: Kateryna S.,-3.8,-3.8,Gasto,HOGAR,Personal,auto
+2026-01-28,Revolut,[Transfer] Bizum payment to: Kateryna S.,-3.8,-3.8,Gasto,AJUSTES PAREJA,Personal,auto
 2026-01-28,Revolut,[Topup] Payment from KATERYNA SOLTUCHENKO,13.12,13.12,Reembolso,REEMBOLSOS,Personal,auto
 2026-01-28,Revolut,[Topup] Money added via BIZUM,13.11,13.11,Reembolso,REEMBOLSOS,Personal,auto
 2026-01-28,Revolut,[Topup] Money added via BIZUM,13.11,13.11,Reembolso,REEMBOLSOS,Personal,auto
@@ -743,13 +743,13 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-02-24,Trade Republic,[Transacción con tarjeta] TOTO ICE PLAZA ESPANA,-5.5,-5.5,Gasto,CAFÉ,Personal,auto
 2026-02-25,Revolut,[Card Payment] Brunch Society,-2.8,-2.8,Gasto,CAFÉ,Personal,auto
 2026-02-25,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
-2026-02-27,Revolut,[Transfer] Bizum payment to: Kateryna S.,-25.7,-25.7,Gasto,HOGAR,Personal,auto
+2026-02-27,Revolut,[Transfer] Bizum payment to: Kateryna S.,-25.7,-25.7,Gasto,AJUSTES PAREJA,Personal,auto
 2026-02-27,Revolut,[Card Payment] Rspiro Cafeteria,-5.1,-5.1,Gasto,CAFÉ,Personal,auto
 2026-02-27,BBVA,Adeudo de cuota de la seguridad social | N 2026056001923845 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,IMPUESTOS,Trabajo,auto
 2026-02-28,Revolut,"[Card Payment] New York Burger, P. Castellana 89",-30.8,-30.8,Gasto,CITAS/PAREJA,Personal,auto
 2026-02-28,Revolut,[Card Payment] Sqrups Principe Pio,-1.84,-1.84,Gasto,COMIDA,Personal,auto
 2026-02-28,Revolut,[Card Payment] Carrefour,-4.36,-4.36,Gasto,COMIDA,Personal,auto
-2026-03-01,Revolut,[Transfer] Bizum payment to: Kateryna S.,-2.0,-2.0,Gasto,HOGAR,Personal,auto
+2026-03-01,Revolut,[Transfer] Bizum payment to: Kateryna S.,-2.0,-2.0,Gasto,AJUSTES PAREJA,Personal,auto
 2026-03-01,Trade Republic,[Bonificación] Cash reward allocation,1.83,1.83,Ingreso,INTERESES,Personal,auto
 2026-03-01,Trade Republic,[Interés] Interest payment,20.3,20.3,Ingreso,INTERESES,Personal,auto
 2026-03-02,Revolut,[Card Payment] Alsa,-30.0,-30.0,Gasto,TRANSPORTE,Personal,auto
@@ -1110,7 +1110,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-06-13,Trade Republic,[Transacción con tarjeta] D P BARBER STUDIO,-22.95,-22.95,Gasto,SALUD,Personal,auto
 2026-06-14,Trade Republic,[Transacción con tarjeta] SQ *FULL OF BEANS SL,-5.4,-5.4,Gasto,CAFÉ,Personal,auto
 2026-06-14,Trade Republic,[Transacción con tarjeta] FRUTOS SECOS,-2.5,-2.5,Gasto,COMIDA,Personal,auto
-2026-06-15,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-06-15,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-06-15,Conjunta,[Card Payment] Alcampo,-20.81,-10.4,Gasto,COMIDA,Personal,auto
 2026-06-15,Conjunta,[Card Payment] Lidl,-63.14,-31.57,Gasto,COMIDA,Personal,auto
 2026-06-15,Revolut,[Topup] Money added via BIZUM,19.0,19.0,Reembolso,REEMBOLSOS,Personal,auto
@@ -1154,7 +1154,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-06-22,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,34.28,34.28,Traspaso,TRASPASO,Personal,auto
 2026-06-22,Revolut,[Topup] Money added via BIZUM,47.2,47.2,Reembolso,REEMBOLSOS,Personal,auto
 2026-06-22,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-34.28,-34.28,Traspaso,TRASPASO,Personal,auto
-2026-06-22,Revolut,[Transfer] Bizum payment to: Kateryna S.,-13.9,-13.9,Gasto,HOGAR,Personal,auto
+2026-06-22,Revolut,[Transfer] Bizum payment to: Kateryna S.,-13.9,-13.9,Gasto,AJUSTES PAREJA,Personal,auto
 2026-06-22,Revolut,[Transfer] Agencia Tributaria (AEAT),-122.62,-122.62,Gasto,IMPUESTOS,Trabajo,auto
 2026-06-22,Revolut,[Card Payment] Boheme,-3.2,-3.2,Gasto,CAFÉ,Personal,auto
 2026-06-22,Trade Republic,[Transacción con tarjeta] SHARE.MYCHEFTOOL.COM,-106.0,-106.0,Gasto,RESTAURANTES,Personal,auto
@@ -1166,17 +1166,17 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-06-23,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.804425",-100.0,-100.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
 2026-06-23,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.216101",-200.0,-200.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
 2026-06-24,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,30.0,30.0,Traspaso,TRASPASO,Personal,auto
-2026-06-24,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,30.0,30.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-06-24,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,30.0,30.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-06-24,Conjunta,[Card Payment] Carrefour,-4.89,-2.44,Gasto,COMIDA,Personal,auto
 2026-06-24,Conjunta,[Card Payment] Intermodalidad Levante,-50.64,-25.32,Gasto,TRANSPORTE,Personal,auto
 2026-06-24,Conjunta,[Card Payment] La Martinuca,-8.0,-4.0,Gasto,CAFÉ,Personal,auto
 2026-06-24,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-30.0,-30.0,Traspaso,TRASPASO,Personal,auto
 2026-06-24,Revolut,[Card Payment] Higgsfield,-243.0,-243.0,Gasto,SUBSCRIPCIONES,Trabajo,auto
 2026-06-26,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,100.0,100.0,Traspaso,TRASPASO,Personal,auto
-2026-06-26,Conjunta,[Transfer] Transfer from KATERYNA SOLTUCHENKO,57.05,57.05,Traspaso,APORTACIÓN KATE,Personal,auto
-2026-06-26,Conjunta,[Transfer] Transfer from KATERYNA SOLTUCHENKO,42.95,42.95,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-06-26,Conjunta,[Transfer] Transfer from KATERYNA SOLTUCHENKO,57.05,57.05,Traspaso,APORTACIÓN PAREJA,Personal,auto
+2026-06-26,Conjunta,[Transfer] Transfer from KATERYNA SOLTUCHENKO,42.95,42.95,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-06-26,Revolut,[Topup] Apple Pay top-up by *5233,500.0,500.0,Traspaso,TRASPASO,Personal,auto
-2026-06-26,Revolut,[Transfer] Bizum payment to: Kateryna S.,-21.67,-21.67,Gasto,HOGAR,Personal,auto
+2026-06-26,Revolut,[Transfer] Bizum payment to: Kateryna S.,-21.67,-21.67,Gasto,AJUSTES PAREJA,Personal,auto
 2026-06-26,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-100.0,-100.0,Traspaso,TRASPASO,Personal,auto
 2026-06-26,Trade Republic,[Transacción con tarjeta] PLAYTOMIC.IO 8119C6BE,-5.08,-5.08,Gasto,DEPORTE,Personal,auto
 2026-06-26,Trade Republic,[Rentabilidad] Cash Dividend for ISIN US67066G1040,0.62,0.62,Ingreso,INTERESES,Personal,auto
@@ -1189,7 +1189,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-06-28,Conjunta,[Card Payment] Bel Mondo,-45.49,-22.75,Gasto,RESTAURANTES,Personal,auto
 2026-06-28,Conjunta,[Card Payment] De Tyler Restauraciones S,-5.0,-2.5,Gasto,RESTAURANTES,Personal,auto
 2026-06-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
-2026-06-29,Revolut,[Transfer] Bizum payment to: Kateryna S.,-10.08,-10.08,Gasto,HOGAR,Personal,auto
+2026-06-29,Revolut,[Transfer] Bizum payment to: Kateryna S.,-10.08,-10.08,Gasto,AJUSTES PAREJA,Personal,auto
 2026-06-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-10.0,Gasto,INTERNET,Personal,auto
 2026-06-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,TRANSPORTE,Personal,auto
 2026-06-29,Trade Republic,[Transacción con tarjeta] CHURRERIA LA MEJOR,-5.6,-5.6,Gasto,CAFÉ,Personal,auto
@@ -1255,7 +1255,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-07-14,BBVA,Abono bonificación pack viajes | Otros | BONIFICACION PACK VIAJES,8.46,8.46,Reembolso,VIAJES,Personal,auto
 2026-07-14,BBVA,Abono bonificación pack viajes | Otros | BONIFICACION PACK VIAJES,5.49,5.49,Reembolso,VIAJES,Personal,auto
 2026-07-14,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,100.0,100.0,Traspaso,TRASPASO,Personal,auto
-2026-07-14,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-07-14,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-07-14,Conjunta,[Card Payment] ClearPoint Restaurant,-0.55,-0.28,Gasto,VIAJES,Personal,auto
 2026-07-14,Conjunta,[Card Payment] Ella Crepes & Waffles,-15.49,-7.75,Gasto,VIAJES,Personal,auto
 2026-07-14,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-100.0,-100.0,Traspaso,TRASPASO,Personal,auto
@@ -1263,7 +1263,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-07-14,Trade Republic,"[Transacción con tarjeta] VITO PIZZA (PVT) LTD, 4.543,00 LKR, exchange rate: 0,0026128",-11.87,-11.87,Gasto,VIAJES,Personal,auto
 2026-07-15,BBVA,Transferencia recibida | Joan anton torell  lopez,500.0,500.0,Traspaso,TRASPASO,Personal,auto
 2026-07-15,BBVA,Transferencia recibida | Joan anton torell  lopez,300.0,300.0,Traspaso,TRASPASO,Personal,auto
-2026-07-15,Conjunta,[Transfer] Transfer from KATERYNA SOLTUCHENKO,14.59,14.59,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-07-15,Conjunta,[Transfer] Transfer from KATERYNA SOLTUCHENKO,14.59,14.59,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-07-15,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,14.59,14.59,Traspaso,TRASPASO,Personal,auto
 2026-07-15,Conjunta,[Card Payment] Wild Bee Hostel,-4.71,-2.35,Gasto,VIAJES,Personal,auto
 2026-07-15,Conjunta,[Card Payment] Cafe Chill,-4.89,-2.44,Gasto,VIAJES,Personal,auto
@@ -1298,7 +1298,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-07-20,Revolut,[Topup] Apple Pay top-up by *5233,500.0,500.0,Traspaso,TRASPASO,Personal,auto
 2026-07-20,Trade Republic,"[Operar] Sell trade LU0290358497 Xtrackers II - Xtrackers II EUR Overnight Rate Swap UCITS ETF 1C, quantity: 4.031148",602.37,602.37,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
 2026-07-20,Trade Republic,"[Operar] Buy trade LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 40.578926",-301.0,-301.0,Inversion,FONDOS INDEXADOS / ETF,Personal,auto
-2026-07-21,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-07-21,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-07-21,Conjunta,[Card Payment] H K M De Silva Wow R,-13.65,-6.83,Gasto,VIAJES,Personal,auto
 2026-07-21,Conjunta,[Card Payment] M N M Rinas The Wave Roo,-107.26,-53.63,Gasto,VIAJES,Personal,auto
 2026-07-21,Conjunta,[Card Payment] Nilmini Laundry,-10.65,-5.33,Gasto,VIAJES,Personal,auto
@@ -1321,7 +1321,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-07-24,Revolut,[Card Payment] ClearPoint Restaurant,-0.53,-0.53,Gasto,VIAJES,Personal,auto
 2026-07-24,Revolut,[Card Payment] ClearPoint Restaurant,-1.97,-1.97,Gasto,VIAJES,Personal,auto
 2026-07-24,Revolut,[Card Payment] Steam Yard,-2.58,-2.58,Gasto,VIAJES,Personal,auto
-2026-07-25,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,200.0,200.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-07-25,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,200.0,200.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-07-25,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,200.0,200.0,Traspaso,TRASPASO,Personal,auto
 2026-07-25,Conjunta,[Card Payment] Iramalingam Pradeepan My,-1.71,-0.85,Gasto,VIAJES,Personal,auto
 2026-07-25,Conjunta,[Card Payment] Pizza Hub,-16.99,-8.49,Gasto,VIAJES,Personal,auto
@@ -1377,7 +1377,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-07-31,Conjunta,[Card Payment] Home Need Super Market,-1.07,-0.54,Gasto,VIAJES,Personal,auto
 2026-07-31,Conjunta,[Card Payment] Nilmini Laundry,-11.42,-5.71,Gasto,VIAJES,Personal,auto
 2026-07-31,Conjunta,[Card Payment] Cartridge World (pvt) L,-5.74,-2.87,Gasto,VIAJES,Personal,auto
-2026-08-01,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,200.0,200.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-08-01,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,200.0,200.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-08-01,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,200.0,200.0,Traspaso,TRASPASO,Personal,auto
 2026-08-01,Conjunta,[Card Payment] Surf N Sun,-6.8,-3.4,Gasto,VIAJES,Personal,auto
 2026-08-01,Conjunta,[Card Payment] Nilmini Laundry,-8.68,-4.34,Gasto,VIAJES,Personal,auto
@@ -1395,7 +1395,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-08-02,Conjunta,[Card Payment] Ama,-31.54,-15.77,Gasto,VIAJES,Personal,auto
 2026-08-02,Conjunta,[Card Payment] Home Need Super Market,-2.37,-1.19,Gasto,VIAJES,Personal,auto
 2026-08-02,Conjunta,[Card Payment] Shady Lane Arugam Bay,-12.35,-6.17,Gasto,VIAJES,Personal,auto
-2026-08-03,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,600.0,600.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-08-03,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,600.0,600.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-08-03,Conjunta,[Card Payment] ClearPoint Restaurant,-0.39,-0.2,Gasto,VIAJES,Personal,auto
 2026-08-03,Conjunta,[Card Payment] Mellow Hostel,-15.11,-7.55,Gasto,VIAJES,Personal,auto
 2026-08-03,Conjunta,[Card Payment] Mellow Hostel,-7.7,-3.85,Gasto,VIAJES,Personal,auto
@@ -1425,12 +1425,12 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-08-07,Conjunta,[Card Payment] Cinesa,-32.8,-16.4,Gasto,OCIO,Personal,auto
 2026-08-07,Revolut,[Card Payment] Metro de Madrid,-10.0,-10.0,Gasto,TRANSPORTE,Personal,auto
 2026-08-07,Trade Republic,"[Transferencia] Incoming transfer from FIDELIO, SLU (AD3700010000419001600100)",2865.77,2865.77,Ingreso,SUELDO,Trabajo,auto
-2026-08-08,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-08-08,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-08-08,Conjunta,[Topup] Apple Pay top-up by *5233,200.0,200.0,Traspaso,TRASPASO,Personal,auto
 2026-08-08,Conjunta,[Card Payment] Cinesa,-18.2,-9.1,Gasto,OCIO,Personal,auto
 2026-08-08,Conjunta,[Card Payment] Lidl,-43.68,-21.84,Gasto,COMIDA,Personal,auto
 2026-08-08,Conjunta,[Card Payment] Cash EcoFamilia,-1.78,-0.89,Gasto,COMIDA,Personal,auto
-2026-08-09,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-08-09,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-08-09,Conjunta,[Card Payment] Nuevo Specialty,-7.0,-3.5,Gasto,CAFÉ,Personal,auto
 2026-08-09,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-200.0,-200.0,Traspaso,TRASPASO,Personal,auto
 2026-08-09,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-17.99,-17.99,Gasto,SUBSCRIPCIONES,Trabajo,auto
@@ -1517,7 +1517,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,categoria,ambito,estado
 2026-08-31,BBVA,Adeudo de cuota de la seguridad social | N 2026239001594611 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,IMPUESTOS,Trabajo,auto
 2026-08-31,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,TRANSPORTE,Personal,auto
 2026-09-01,Conjunta,[Topup] Apple Pay top-up by *5233,800.0,800.0,Traspaso,TRASPASO,Personal,auto
-2026-09-01,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,800.0,800.0,Traspaso,APORTACIÓN KATE,Personal,auto
+2026-09-01,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,800.0,800.0,Traspaso,APORTACIÓN PAREJA,Personal,auto
 2026-09-01,Revolut,[Card Payment] Ametller Origen,-4.49,-4.49,Gasto,COMIDA,Personal,auto
 2026-09-01,Trade Republic,[Bonificación] Saveback cash reward,12.15,12.15,Ingreso,INTERESES,Personal,auto
 2026-09-01,Trade Republic,[Interés] Interest payment,7.17,7.17,Ingreso,INTERESES,Personal,auto

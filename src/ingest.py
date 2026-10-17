@@ -24,9 +24,19 @@ CONFIG = ROOT / "config"
 INBOX = ROOT / "inbox"
 
 
+def cargar_perfil():
+    path = CONFIG / "perfil.yaml"
+    return (yaml.safe_load(path.read_text(encoding="utf-8")) or {}) if path.exists() else {}
+
+
 def cargar_reglas():
     reglas = yaml.safe_load((CONFIG / "reglas.yaml").read_text(encoding="utf-8"))
+    perfil = cargar_perfil()
+    subs = {"{TITULAR}": f"(?:{perfil.get('titular') or 'TITULAR_SIN_CONFIGURAR'})",
+            "{PAREJA}": f"(?:{perfil.get('pareja') or 'PAREJA_SIN_CONFIGURAR'})"}
     for r in reglas:
+        for k, v in subs.items():
+            r["match"] = r["match"].replace(k, v)
         r["_re"] = re.compile(r["match"], re.I)
         if "cuenta" in r and isinstance(r["cuenta"], str):
             r["cuenta"] = [r["cuenta"]]
@@ -176,7 +186,7 @@ def aplicar_overrides(con):
 def _clave_aprendizaje(concepto):
     """Extrae del concepto la parte estable que identifica al comercio o persona (sin códigos ni fechas)."""
     c = re.sub(r"^\[[^\]]+\]\s*", "", concepto).strip()
-    m = re.match(r"(Bizum payment to: .+|Outgoing transfer for [^(]+|Incoming transfer from [^(]+|Transfer to .+|Transfer from .+|Payment from .+)", c)
+    m = re.match(r"(Bizum payment to: .+|Outgoing transfer for [^(]+|Incoming transfer from [^(]+|Transfer to .+|Transfer from .+|Payment from .+|Sepa Direct Debit transfer to [^(]+)", c)
     if m:
         return m.group(1).strip()
     c = c.split("|")[0]  # BBVA: quedarse con el concepto principal
@@ -197,6 +207,8 @@ def aprender(con, categorias):
     data = json.loads(OVERRIDES.read_text(encoding="utf-8") or "{}")
     reglas_txt = (CONFIG / "reglas.yaml").read_text(encoding="utf-8")
     reglas = cargar_reglas()
+    pareja = cargar_perfil().get("pareja")
+    pareja_re = re.compile(pareja, re.I) if pareja else None
     nuevas = []
     for id_, o in data.items():
         cat = o.get("categoria")
@@ -206,6 +218,8 @@ def aprender(con, categorias):
         clave = _clave_aprendizaje(row["concepto"])
         if not clave or len(clave) < 5 or any(g in clave.upper() for g in NO_APRENDER):
             continue
+        if pareja_re and pareja_re.search(clave):
+            continue  # con la pareja cada movimiento es distinto (piso, viaje, ajuste): no se generaliza
         # ¿ya hay una regla que da esa categoría a este concepto?
         c = clasificar(dict(row), reglas, categorias)
         if c["categoria"] == cat and c["estado"] == "auto":

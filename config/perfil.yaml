@@ -1,0 +1,7 @@
+# Quién es el titular de este sistema. Las reglas usan {TITULAR} y {PAREJA} y se sustituyen por estas expresiones.
+nombre: Joan                 # cómo se llama la persona (aparece en el título del dashboard)
+titular: "Joan Anton Torell?[oó]? L[oó]pez|Joan Anton Torell"   # cómo escriben los bancos tu nombre (regex, sin distinguir mayúsculas)
+pareja_nombre: Kate          # nombre corto de la pareja con quien compartes la cuenta conjunta (vacío si no hay)
+pareja: "Kateryna Soltuchenko|Kateryna S\\."                   # cómo escriben los bancos su nombre (regex)
+github_repo: joanantontorello/finanzas                         # repositorio privado donde el dashboard guarda correcciones y presupuesto
+dashboard_url: https://finanzas-kappa-gold.vercel.app

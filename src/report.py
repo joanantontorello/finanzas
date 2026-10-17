@@ -8,7 +8,7 @@ Definiciones:
   ahorro       = ingresos − gasto neto        (lo que no te has gastado)
   liquidez     = ahorro − inversión           (lo que queda en cuenta corriente)
   trabajo      = ámbito Trabajo: sueldo − (gestoría + impuestos + suscripciones de trabajo)
-  ½ Kate       = compra pagada por ti a medias y liquidada por Tricount: tu mitad va a su categoría y la de Kate a AJUSTES PAREJA
+  ½ pareja     = compra pagada por ti a medias y liquidada aparte (Tricount): tu mitad va a su categoría y la otra a AJUSTES PAREJA
 """
 import json
 import pathlib
@@ -71,6 +71,8 @@ def agregar(rows):
 
 def main():
     con = connect()
+    pp = ROOT / "config" / "perfil.yaml"
+    perfil = (yaml.safe_load(pp.read_text(encoding="utf-8")) or {}) if pp.exists() else {}
     cats_cfg = yaml.safe_load((ROOT / "config" / "categorias.yaml").read_text(encoding="utf-8"))
     fijos = {n for t in cats_cfg.values() for n, p in (t or {}).items() if (p or {}).get("fijo")}
     cat_list = [{"nombre": n, "tipo": t, "fijo": bool((p or {}).get("fijo"))} for t, d in cats_cfg.items() for n, p in (d or {}).items()]
@@ -108,8 +110,8 @@ def main():
     # cuenta conjunta
     conj = [x for x in rows if x["cuenta"] == "Conjunta"]
     conjunta = {
-        "aportado_joan": r2(sum(x["importe"] for x in conj if x["tipo"] == "Traspaso" and x["categoria"] == "TRASPASO")),
-        "aportado_kate": r2(sum(x["importe"] for x in conj if x["categoria"] == "APORTACIÓN KATE")),
+        "aportado_yo": r2(sum(x["importe"] for x in conj if x["tipo"] == "Traspaso" and x["categoria"] == "TRASPASO")),
+        "aportado_pareja": r2(sum(x["importe"] for x in conj if x["categoria"] == "APORTACIÓN PAREJA")),
         "gasto_total": r2(-sum(x["importe"] for x in conj if x["tipo"] in ("Gasto", "Reembolso"))),
         "mi_parte": r2(-sum(x["mio"] for x in conj if x["tipo"] in ("Gasto", "Reembolso"))),
         "saldo": next((x["saldo"] for x in reversed(conj) if x["saldo"] is not None), None),
@@ -118,8 +120,8 @@ def main():
     for mes in sorted({x["mes"] for x in conj}):
         ms = [x for x in conj if x["mes"] == mes]
         conjunta["por_mes"][mes] = {
-            "joan": r2(sum(x["importe"] for x in ms if x["tipo"] == "Traspaso" and x["categoria"] == "TRASPASO")),
-            "kate": r2(sum(x["importe"] for x in ms if x["categoria"] == "APORTACIÓN KATE")),
+            "yo": r2(sum(x["importe"] for x in ms if x["tipo"] == "Traspaso" and x["categoria"] == "TRASPASO")),
+            "pareja": r2(sum(x["importe"] for x in ms if x["categoria"] == "APORTACIÓN PAREJA")),
             "gasto": r2(-sum(x["importe"] for x in ms if x["tipo"] in ("Gasto", "Reembolso"))),
         }
 
@@ -142,6 +144,7 @@ def main():
 
     data = {
         "generado": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "perfil": {k: perfil.get(k) for k in ("nombre", "pareja_nombre", "github_repo", "dashboard_url")},
         "definiciones": __doc__.strip().split("Definiciones:")[1].strip(),
         "meses": meses,
         "anios": anios,
@@ -181,7 +184,7 @@ def main():
         for x in pend:
             w.writerow(["", x["fecha"], x["cuenta"], x["importe"], x["concepto"]])
         w.writerow([])
-        w.writerow(["Generado", data["generado"], "Dashboard", "https://finanzas-kappa-gold.vercel.app"])
+        w.writerow(["Generado", data["generado"], "Dashboard", perfil.get("dashboard_url") or ""])
     with open(ROOT / "data" / "movimientos.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["fecha", "cuenta", "concepto", "importe", "tu_parte", "tipo", "categoria", "ambito", "estado"])

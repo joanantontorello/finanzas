@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Finanzas Joan</title>
+<title>Finanzas</title>
 <style>
   :root {
     color-scheme: light;
@@ -224,7 +224,7 @@
           <div class="kv" id="cuentas"></div>
         </div>
         <div class="card">
-          <h2>Cuenta conjunta con Kate</h2>
+          <h2 id="conjTitle">Cuenta conjunta</h2>
           <div class="hint">Cada gasto de la conjunta te cuenta al 50 %. Las aportaciones no son gasto.</div>
           <div class="kv" id="conjunta"></div>
         </div>
@@ -274,13 +274,13 @@ const SERIES = ['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)','var
 const $ = id => document.getElementById(id);
 
 let D, state = { year: null, desde: null, hasta: null, ambito: 'Todo', cuenta: '', view: 'dashboard', evoCat: '', cat: '', tipo: '', q: '' };
-const GH = { repo: 'joanantontorello/finanzas', path: 'data/overrides.json' };
+const GH = { repo: '', path: 'data/overrides.json' };
 let overrides = {}, ovSha = null, cambios = {};
 const catTipo = {};
 
-let P = null, pSha = null, pDirty = false;
+let P = null, pSha = null, pDirty = false, PAREJA = 'pareja';
 const GHP = { path: 'data/presupuesto.json' };
-fetch('data.json').then(r => r.json()).then(async d => { D = d; D.categorias.forEach(c => catTipo[c.nombre] = c.tipo); await cargarOverrides(); await cargarPresupuesto(); init(); });
+fetch('data.json').then(r => r.json()).then(async d => { D = d; const pf = D.perfil || {}; GH.repo = pf.github_repo || ''; PAREJA = pf.pareja_nombre || 'pareja'; document.title = 'Finanzas' + (pf.nombre ? ' ' + pf.nombre : ''); D.categorias.forEach(c => catTipo[c.nombre] = c.tipo); await cargarOverrides(); await cargarPresupuesto(); init(); });
 
 // ---- presupuesto: data/presupuesto.json (GitHub si hay token, si no la copia desplegada)
 async function cargarPresupuesto() {
@@ -418,7 +418,7 @@ function selCat(m) {
   const opts = D.categorias.map(c => `<option ${c.nombre === m.categoria ? 'selected' : ''}>${c.nombre}</option>`).join('');
   return `<select class="edit ${cambios[m.id] ? 'changed' : ''}" data-id="${m.id}"><option value="" ${!m.categoria ? 'selected' : ''}>– sin categoría –</option>${opts}</select>`;
 }
-function ambBtn(m) { return `<button class="amb ${m.ambito === 'Trabajo' ? 'T' : ''}" data-amb="${m.id}" title="Personal / Trabajo">${m.ambito === 'Trabajo' ? 'Trabajo' : 'Personal'}</button>` + (m.cuenta !== 'Conjunta' && m.tipo === 'Gasto' ? `<button class="amb ${m.compensar ? 'T' : ''}" data-kate="${m.id}" title="Pagado a medias con Kate y liquidado por Tricount: tu mitad queda en la categoría y la suya pasa a Ajustes pareja">½ Kate</button>` : ''); }
+function ambBtn(m) { return `<button class="amb ${m.ambito === 'Trabajo' ? 'T' : ''}" data-amb="${m.id}" title="Personal / Trabajo">${m.ambito === 'Trabajo' ? 'Trabajo' : 'Personal'}</button>` + (m.cuenta !== 'Conjunta' && m.tipo === 'Gasto' ? `<button class="amb ${m.compensar ? 'T' : ''}" data-kate="${m.id}" title="Pagado a medias con ${PAREJA} y liquidado aparte: tu mitad queda en la categoría y la otra pasa a Ajustes pareja">½ ${PAREJA}</button>` : ''); }
 document.addEventListener('click', e => { const b = e.target.closest('button[data-kate]'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.kate); const on = !m.compensar; cambios[m.id] = Object.assign({}, overrides[m.id] || {}, cambios[m.id] || {}, { participacion: on ? 0.5 : 1, compensar: on }); editar(m.id, 'compensar', on); } });
 document.addEventListener('change', e => { if (e.target.matches('select.edit')) editar(+e.target.dataset.id, 'categoria', e.target.value); });
 document.addEventListener('click', e => { const b = e.target.closest('button.amb'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.amb); editar(m.id, 'ambito', m.ambito === 'Trabajo' ? 'Personal' : 'Trabajo'); } });
@@ -639,17 +639,18 @@ function renderInversiones(pm, sel, periodo, rowsP) {
   $('tbodyInv').innerHTML = ops.map(m => `<tr><td>${m.fecha}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,70)}</td><td>${m.categoria || '–'}</td><td class="n ${m.importe>0?'pos':''}">${fmt2(m.importe)}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sin operaciones en el periodo</td></tr>';
 }
 function renderConjunta() {
+  $('conjTitle').textContent = 'Cuenta conjunta' + (D.perfil && D.perfil.pareja_nombre ? ' con ' + D.perfil.pareja_nombre : '');
   const c = D.conjunta;
   if (!c || !c.gasto_total) { $('conjunta').innerHTML = '<span class="muted">Sin datos</span>'; return; }
   const meses = Object.entries(c.por_mes).filter(([m]) => m.startsWith(state.year));
   $('conjunta').innerHTML = `
-    <span>Has aportado tú</span><b>${fmt2(c.aportado_joan)}</b>
-    <span>Ha aportado Kate</span><b>${fmt2(c.aportado_kate)}</b>
+    <span>Has aportado tú</span><b>${fmt2(c.aportado_yo)}</b>
+    <span>Ha aportado ${PAREJA}</span><b>${fmt2(c.aportado_pareja)}</b>
     <span>Gasto total de la cuenta</span><b>${fmt2(c.gasto_total)}</b>
     <span>Tu 50 %</span><b>${fmt2(c.mi_parte)}</b>
     <span>Saldo actual</span><b>${fmt2(c.saldo)}</b>
-    <span class="muted" style="grid-column:1/-1;margin-top:6px">Por mes (tú / Kate / gasto)</span>
-    ${meses.map(([m,v]) => `<span>${mesLabel(m)}</span><b class="muted">${fmt(v.joan)} / ${fmt(v.kate)} / ${fmt(v.gasto)}</b>`).join('')}`;
+    <span class="muted" style="grid-column:1/-1;margin-top:6px">Por mes (tú / ${PAREJA} / gasto)</span>
+    ${meses.map(([m,v]) => `<span>${mesLabel(m)}</span><b class="muted">${fmt(v.yo)} / ${fmt(v.pareja)} / ${fmt(v.gasto)}</b>`).join('')}`;
 }
 const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 function fechaLarga(f) { const d = new Date(f + 'T12:00:00'); return DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES_L[d.getMonth()].toLowerCase() + ' ' + d.getFullYear(); }

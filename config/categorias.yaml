@@ -1,42 +1,63 @@
-# Categorías por tipo. "fijo" = gasto recurrente mensual (para separar fijos de variables en el dashboard).
-Ingreso:
-  SUELDO: {ambito: Trabajo}
-  PAGA: {}
-  INTERESES: {}
-  OTROS/EXTRAS: {}
-Reembolso:
-  REEMBOLSOS: {}          # Bizums de amigos, devoluciones: restan del gasto, no son ingreso
+# Categorías en dos niveles: grupo y subcategorías. Los movimientos guardan la SUBCATEGORÍA; el grupo sale de aquí.
+#   esencial: true / false para medir fugas (porcentaje no esencial); null = fuera de ese cálculo.
+#   ambito:   ámbito por defecto de todo el grupo (Trabajo); ambito_sub lo fija para una subcategoría concreta.
+#   roles:    marcas técnicas que usa el código. No las cambies de nombre sin avisar.
+# La etiqueta Personal / Trabajo y la de ½ Kate van aparte, en cada movimiento.
+
 Gasto:
-  ALQUILER: {fijo: true}
-  LUZ: {fijo: true}
-  AGUA: {fijo: true}
-  INTERNET: {fijo: true}
-  SUBSCRIPCIONES: {fijo: true}
-  GESTORIA: {fijo: true, ambito: Trabajo}
-  IMPUESTOS: {fijo: true, ambito: Trabajo}
-  DEPORTE: {}
-  SALUD: {}
-  PELUQUERÍA Y AUTOCUIDADO: {}   # barbería, peluquería, perfumería, cuidado personal
-  PSICOLOGA: {fijo: true}   # 70 € por sesión, semanal desde sept 2026 (~280 €/mes)
-  COMIDA: {}
-  RESTAURANTES: {}
-  CAFÉ: {}
-  TRANSPORTE: {}
-  OCIO: {}
-  CITAS/PAREJA: {}
-  AJUSTES PAREJA: {}      # transferencias con Kate que no son alquiler ni aportación a la conjunta
-  ROPA: {}
-  RUSO: {}
-  HOGAR: {}
-  VIAJES: {}
-  EFECTIVO: {}            # retiradas de cajero (no se sigue el efectivo)
-  IMPREVISTOS: {}
-  TRABAJO: {ambito: Trabajo}   # solo histórico 2025
+  Vivienda y suministros:
+    esencial: true
+    sub: [Alquiler, Supermercado, Electricidad, Agua, Internet y teléfono, Seguros, Hogar y equipamiento]
+  Salud y deporte:
+    esencial: true
+    sub: [Psicología, Jiu-jitsu, Pádel, Gimnasio, Farmacia y salud, Peluquería y autocuidado]
+  Transporte:
+    esencial: true
+    sub: [Transporte público, BiciMAD, Uber y taxi, Trenes y AVE, Vuelos, "Gasolina, peajes y parking"]
+  Empresa:
+    esencial: true
+    ambito: Trabajo
+    sub: [Cuota de autónomos, IRPF e IVA trimestral, Gestoría, Herramientas de trabajo]
+  Préstamos y deudas:
+    esencial: true
+    sub: [Deuda Hacienda, Financiaciones, Otras deudas]
+    ambito_sub: {Deuda Hacienda: Trabajo}
+  Hábitos diarios:
+    esencial: false
+    sub: [Café, Açaí y brunch, Comida a domicilio]
+  Ocio y vida social:
+    esencial: false
+    sub: [Restaurantes, Citas y pareja, Planes y ocio, Ropa, Compras impulsivas]
+  Viajes:
+    esencial: false
+    sub: [Alojamiento, Comida y gastos en destino, Actividades]
+  Suscripciones:
+    esencial: false
+    sub: [Streaming de vídeo, Música, Almacenamiento, Apps personales]
+  Formación:
+    esencial: false
+    sub: [Mentoría y cursos, Libros, Mastermind]
+  Otros:
+    esencial: null
+    sub: [Ajustes con Kate, Efectivo, Imprevistos]
+    roles: {Ajustes con Kate: ajustes_pareja, Imprevistos: imprevistos}
+
+Reembolso:
+  Reembolsos:
+    esencial: null
+    sub: [Reembolsos]
+    roles: {Reembolsos: reembolsos}
+
+Ingreso:
+  Ingresos:
+    sub: [Trabajo, Trabajos extra, Clases y formación, Alquileres, Dividendos e intereses, Otros ingresos]
+    ambito_sub: {Trabajo: Trabajo}
+
 Inversion:
-  FONDOS INDEXADOS / ETF: {}
-  ACCIONES: {}
-  CRYPTOMONEDAS: {}
-  FORMACIÓN / MENTORÍA: {}
+  Inversiones:
+    sub: [Fondos indexados y ETF, Acciones, Criptomonedas, Vivienda e inmuebles]
+
 Traspaso:
-  TRASPASO: {}            # entre tus propias cuentas
-  APORTACIÓN PAREJA: {}     # dinero que Kate mete en la conjunta (no es tuyo)
+  Traspasos:
+    sub: [Traspaso entre cuentas, Aportación de Kate]
+    roles: {Traspaso entre cuentas: traspaso, Aportación de Kate: aportacion_pareja}

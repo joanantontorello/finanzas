@@ -1,109 +1,127 @@
 # Reglas de clasificación. Se evalúan EN ORDEN y gana la primera que encaja.
 # Campos: id, cuenta (una o lista), match (regex sobre el concepto, sin distinguir mayúsculas),
-#         desde/hasta (rango de fechas), min/max (importe absoluto), signo (+ o -),
-#         tipo, categoria, ambito (Personal por defecto), estado (auto por defecto; "pendiente" = sugerencia a revisar), nota.
-# Cuando corrijas algo a mano, añade la regla aquí para que el mes que viene salga solo.
+#         desde/hasta (rango de fechas), min/max (importe absoluto), signo (+ o -), participacion,
+#         tipo, categoria (= SUBCATEGORÍA de config/categorias.yaml), ambito (si no, el de la categoría),
+#         estado (auto por defecto; "pendiente" = sugerencia a revisar), nota.
+# Las correcciones del dashboard se convierten solas en reglas "auto_*" (sección aprendidas).
 
 # ---------------------------------------------------------------- 1. Traspasos entre cuentas propias y aportaciones a la conjunta
-- {id: rev_topup_tr,       cuenta: [Revolut, Conjunta], match: "Apple Pay top-up by \\*5233",                       tipo: Traspaso, categoria: TRASPASO, nota: recarga desde tarjeta Trade Republic}
-- {id: rev_to_tr,          cuenta: Revolut,  match: "\\[Transfer\\] To Joan Anton Torello Lopez",                     tipo: Traspaso, categoria: TRASPASO}
-- {id: rev_to_conjunta,    cuenta: Revolut,  match: "Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA",               tipo: Traspaso, categoria: TRASPASO, nota: aportación a la conjunta}
-- {id: conj_from_joan,     cuenta: Conjunta, match: "Transfer from JOAN ANTON TORELLO LOPEZ",                        tipo: Traspaso, categoria: TRASPASO}
-- {id: conj_from_kate,     cuenta: Conjunta, match: "(Payment|Transfer) from KATERYNA",                              tipo: Traspaso, categoria: APORTACIÓN PAREJA}
-- {id: tr_revolut_card,    cuenta: Trade Republic, match: "Revolut\\*\\*3407",                                       tipo: Traspaso, categoria: TRASPASO, nota: recarga de Revolut}
-- {id: tr_from_joan,       cuenta: Trade Republic, match: "Incoming transfer from Joan Anton",                       tipo: Traspaso, categoria: TRASPASO}
-- {id: tr_to_joan,         cuenta: Trade Republic, match: "Outgoing transfer for Joan Anton",                        tipo: Traspaso, categoria: TRASPASO, nota: a BBVA}
-- {id: bbva_from_joan,     cuenta: BBVA,     match: "Transferencia recibida \\| Joan anton",                         tipo: Traspaso, categoria: TRASPASO}
-- {id: bbva_t_trimestre,   cuenta: BBVA,     match: "Transferencia recibida \\| T\\d ",                               tipo: Traspaso, categoria: TRASPASO, nota: dinero que te pasas desde Trade Republic para pagar el IRPF trimestral}
-- {id: bbva_regalo,        cuenta: BBVA,     match: "Transferencia recibida \\| Regalo",                                tipo: Ingreso, categoria: OTROS/EXTRAS}
-- {id: bbva_transfer_in,   cuenta: BBVA,     match: "Transferencia recibida", signo: "+",                                 tipo: Reembolso, categoria: REEMBOLSOS}
-- {id: godaddy,            match: "GODADDY|Godaddy",                                                                  tipo: Gasto, categoria: SUBSCRIPCIONES, ambito: Trabajo}
+- {id: rev_topup_tr,       cuenta: [Revolut, Conjunta], match: "Apple Pay top-up by \\*5233",                       tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: recarga desde tarjeta Trade Republic}
+- {id: rev_to_tr,          cuenta: Revolut,  match: "\\[Transfer\\] To Joan Anton Torello Lopez",                     tipo: Traspaso, categoria: "Traspaso entre cuentas"}
+- {id: rev_to_conjunta,    cuenta: Revolut,  match: "Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA",               tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: aportación a la conjunta}
+- {id: conj_from_joan,     cuenta: Conjunta, match: "Transfer from JOAN ANTON TORELLO LOPEZ",                        tipo: Traspaso, categoria: "Traspaso entre cuentas"}
+- {id: conj_from_kate,     cuenta: Conjunta, match: "(Payment|Transfer) from KATERYNA",                              tipo: Traspaso, categoria: "Aportación de Kate"}
+- {id: tr_revolut_card,    cuenta: Trade Republic, match: "Revolut\\*\\*3407",                                       tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: recarga de Revolut}
+- {id: tr_from_joan,       cuenta: Trade Republic, match: "Incoming transfer from Joan Anton",                       tipo: Traspaso, categoria: "Traspaso entre cuentas"}
+- {id: tr_to_joan,         cuenta: Trade Republic, match: "Outgoing transfer for Joan Anton",                        tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: a BBVA}
+- {id: bbva_from_joan,     cuenta: BBVA,     match: "Transferencia recibida \\| Joan anton",                         tipo: Traspaso, categoria: "Traspaso entre cuentas"}
+- {id: bbva_t_trimestre,   cuenta: BBVA,     match: "Transferencia recibida \\| T\\d ",                               tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: dinero que te pasas desde Trade Republic para pagar el IRPF trimestral}
+- {id: bbva_regalo,        cuenta: BBVA,     match: "Transferencia recibida \\| Regalo",                                tipo: Ingreso, categoria: "Otros ingresos"}
+- {id: bbva_transfer_propia, cuenta: BBVA,   match: "Transferencia recibida", signo: "+", min: 200,                      tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: "transferencia grande a BBVA: tuya, para impuestos"}
+- {id: bbva_transfer_in,   cuenta: BBVA,     match: "Transferencia recibida", signo: "+",                                 tipo: Reembolso, categoria: "Reembolsos"}
 
 # ---------------------------------------------------------------- 2. Ingresos
-- {id: sueldo_fidelio,     match: "Incoming transfer from FIDELIO",                                                  tipo: Ingreso, categoria: SUELDO, ambito: Trabajo}
-- {id: tr_interes,         cuenta: Trade Republic, match: "^\\[Interés\\]|^\\[Bonificación\\]|^\\[Rentabilidad\\]",  tipo: Ingreso, categoria: INTERESES}
-- {id: bbva_bonif_viajes,  cuenta: BBVA,     match: "bonificación pack viajes",                                      tipo: Reembolso, categoria: VIAJES, nota: devolución comisión cajero extranjero}
+- {id: sueldo_fidelio,     match: "Incoming transfer from FIDELIO",                                                  tipo: Ingreso, categoria: "Trabajo", ambito: Trabajo}
+- {id: tr_interes,         cuenta: Trade Republic, match: "^\\[Interés\\]|^\\[Bonificación\\]|^\\[Rentabilidad\\]",  tipo: Ingreso, categoria: "Dividendos e intereses"}
+- {id: bbva_bonif_viajes,  cuenta: BBVA,     match: "bonificación pack viajes",                                      tipo: Reembolso, categoria: "Comida y gastos en destino", nota: devolución comisión cajero extranjero}
 
 # ---------------------------------------------------------------- 3. Reembolsos (Bizums de amigos, devoluciones)
-- {id: rev_bizum_in,       cuenta: Revolut,  match: "Money added via BIZUM",                                         tipo: Reembolso, categoria: REEMBOLSOS}
-- {id: rev_from_kate,      cuenta: Revolut,  match: "(Payment|Transfer) from KATERYNA",                              tipo: Reembolso, categoria: REEMBOLSOS, nota: Kate te devuelve algo}
-- {id: rev_transfer_in,    cuenta: Revolut,  match: "^\\[Transfer\\] Transfer from ",                                tipo: Reembolso, categoria: REEMBOLSOS}
-- {id: tr_from_kate,       cuenta: Trade Republic, match: "Incoming transfer from Kateryna",                         tipo: Reembolso, categoria: REEMBOLSOS}
-- {id: tr_incoming_otros,  cuenta: Trade Republic, match: "Incoming transfer from ", signo: "+",                     tipo: Reembolso, categoria: REEMBOLSOS}
-- {id: rev_card_refund,    cuenta: [Revolut, Conjunta], match: "^\\[Card Refund\\]",                                 tipo: Reembolso, categoria: REEMBOLSOS, nota: devolución de compra}
-- {id: rev_chargeback,     cuenta: [Revolut, Conjunta], match: "^\\[Card Chargeback\\]",                             tipo: Gasto, categoria: SUBSCRIPCIONES, ambito: Trabajo, nota: devolución Higgsfield}
+- {id: rev_bizum_in,       cuenta: Revolut,  match: "Money added via BIZUM",                                         tipo: Reembolso, categoria: "Reembolsos"}
+- {id: rev_from_kate,      cuenta: Revolut,  match: "(Payment|Transfer) from KATERYNA",                              tipo: Reembolso, categoria: "Reembolsos", nota: Kate te devuelve algo}
+- {id: rev_transfer_in,    cuenta: Revolut,  match: "^\\[Transfer\\] Transfer from ",                                tipo: Reembolso, categoria: "Reembolsos"}
+- {id: tr_from_kate,       cuenta: Trade Republic, match: "Incoming transfer from Kateryna",                         tipo: Reembolso, categoria: "Reembolsos"}
+- {id: tr_incoming_otros,  cuenta: Trade Republic, match: "Incoming transfer from ", signo: "+",                     tipo: Reembolso, categoria: "Reembolsos"}
+- {id: rev_card_refund,    cuenta: [Revolut, Conjunta], match: "^\\[Card Refund\\]",                                 tipo: Reembolso, categoria: "Reembolsos", nota: devolución de compra}
+- {id: rev_chargeback,     cuenta: [Revolut, Conjunta], match: "^\\[Card Chargeback\\]",                             tipo: Gasto, categoria: "Herramientas de trabajo", ambito: Trabajo, nota: devolución Higgsfield}
 
 # ---------------------------------------------------------------- 4. Inversiones (Trade Republic)
-- {id: tr_crypto,          cuenta: Trade Republic, match: "\\[Operar\\] (Buy|Sell) trade XF000",                    tipo: Inversion, categoria: CRYPTOMONEDAS}
-- {id: tr_etf,             cuenta: Trade Republic, match: "\\[Operar\\] .*(UCITS|ETF|Savings plan)",                 tipo: Inversion, categoria: FONDOS INDEXADOS / ETF}
-- {id: tr_acciones,        cuenta: Trade Republic, match: "\\[Operar\\] (Buy|Sell) trade ",                          tipo: Inversion, categoria: ACCIONES}
-- {id: formacion_llados,   match: "LLADOS UNIVERSITY",                                                              tipo: Inversion, categoria: FORMACIÓN / MENTORÍA}
+- {id: tr_crypto,          cuenta: Trade Republic, match: "\\[Operar\\] (Buy|Sell) trade XF000",                    tipo: Inversion, categoria: "Criptomonedas"}
+- {id: tr_etf,             cuenta: Trade Republic, match: "\\[Operar\\] .*(UCITS|ETF|Savings plan)",                 tipo: Inversion, categoria: "Fondos indexados y ETF"}
+- {id: tr_acciones,        cuenta: Trade Republic, match: "\\[Operar\\] (Buy|Sell) trade ",                          tipo: Inversion, categoria: "Acciones"}
 
-# ---------------------------------------------------------------- 5. Fijos y trabajo
-- {id: alquiler_nautante,  match: "Grupo Nautante", participacion: 0.5,                                               tipo: Gasto, categoria: ALQUILER, nota: "alquiler 1.200 € a medias con Kate"}
-- {id: alquiler_kate_ene,  cuenta: Revolut, match: "Bizum payment to: Kateryna", min: 800, hasta: "2026-01-31",      tipo: Gasto, categoria: ALQUILER, nota: alquiler piso anterior}
-- {id: piso_kate_600,      cuenta: Revolut, match: "Bizum payment to: Kateryna", min: 500, max: 700, hasta: "2026-05-31", tipo: Gasto, categoria: HOGAR, estado: pendiente, nota: "600 € a Kate, probablemente del piso (¿fianza?)"}
-- {id: luz_octopus,        match: "OCTOPUS ENERGY",                                                                 tipo: Gasto, categoria: LUZ}
-- {id: internet_digi,      match: "DIGI SPAIN",                                                                     tipo: Gasto, categoria: INTERNET}
-- {id: gestoria,           cuenta: BBVA,     match: "jaime carrasco",                                                tipo: Gasto, categoria: GESTORIA, ambito: Trabajo}
-- {id: cuota_autonomos,    cuenta: BBVA,     match: "seguridad social|autonomos",                                    tipo: Gasto, categoria: IMPUESTOS, ambito: Trabajo, nota: cuota autónomos}
-- {id: aeat,               match: "Agencia Tributaria|Pago de impuestos|AEAT",                                      tipo: Gasto, categoria: IMPUESTOS, ambito: Trabajo}
-- {id: fnmt,               match: "FAB\\.NACION\\. DE MONEDA",                                                       tipo: Gasto, categoria: GESTORIA, ambito: Trabajo, nota: certificado digital}
-- {id: apple_disney,       match: "^\\[Card Payment\\] Apple$|APPLE\\.COM/BILL", min: 10.9, max: 11.1,              tipo: Gasto, categoria: SUBSCRIPCIONES, nota: Disney+ vía Apple (cancelada)}
-- {id: sub_trabajo,        match: "OPENAI|CLAUDE|ANTHROPIC|MIRO\\.COM|REPLIT|\\bLoom\\b|Higgsfield|Fidelio Online|FIDELIO ONLINE|NOPARRO FILMS|APPLE\\.COM/BILL|^\\[Card Payment\\] Apple$", tipo: Gasto, categoria: SUBSCRIPCIONES, ambito: Trabajo}
-- {id: sub_personal,       match: "Amazon Prime|DISNEY PLUS|Disney Plus|^\\[Card Payment\\] Max$",                   tipo: Gasto, categoria: SUBSCRIPCIONES}
-- {id: seguro_eci,         match: "CENTRO DE SEGUROS",                                                              tipo: Gasto, categoria: HOGAR, nota: seguro (El Corte Inglés)}
+# ---------------------------------------------------------------- 5. Vivienda, empresa, salud, suscripciones y formación
+- {id: alquiler_nautante,  match: "Grupo Nautante", participacion: 0.5,                                               tipo: Gasto, categoria: "Alquiler", nota: "alquiler 1.200 € a medias con Kate"}
+- {id: alquiler_kate_ene,  cuenta: Revolut, match: "Bizum payment to: Kateryna", min: 800, hasta: "2026-01-31",      tipo: Gasto, categoria: "Alquiler", nota: alquiler piso anterior}
+- {id: piso_kate_600,      cuenta: Revolut, match: "Bizum payment to: Kateryna", min: 500, max: 700, hasta: "2026-05-31", tipo: Gasto, categoria: "Hogar y equipamiento", estado: pendiente, nota: "600 € a Kate, probablemente del piso (¿fianza?)"}
+- {id: luz_octopus,        match: "OCTOPUS ENERGY",                                                                 tipo: Gasto, categoria: "Electricidad"}
+- {id: internet_digi,      match: "DIGI SPAIN",                                                                     tipo: Gasto, categoria: "Internet y teléfono"}
+- {id: seguro_eci,         match: "CENTRO DE SEGUROS",                                                              tipo: Gasto, categoria: "Seguros", nota: seguro (El Corte Inglés)}
+- {id: gestoria,           cuenta: BBVA,     match: "jaime carrasco",                                                tipo: Gasto, categoria: "Gestoría", ambito: Trabajo}
+- {id: fnmt,               match: "FAB\\.NACION\\. DE MONEDA",                                                       tipo: Gasto, categoria: "Gestoría", ambito: Trabajo, nota: certificado digital}
+- {id: cuota_autonomos,    cuenta: BBVA,     match: "seguridad social|autonomos",                                    tipo: Gasto, categoria: "Cuota de autónomos", ambito: Trabajo}
+- {id: aeat,               match: "Agencia Tributaria|Pago de impuestos|AEAT",                                      tipo: Gasto, categoria: "IRPF e IVA trimestral", ambito: Trabajo, nota: "si coincide con un plazo de config/deudas.yaml pasa a Deuda Hacienda"}
+- {id: herramientas,       match: "OPENAI|CLAUDE|ANTHROPIC|MIRO\\.COM|REPLIT|\\bLoom\\b|Higgsfield|Fidelio Online|FIDELIO ONLINE|NOPARRO FILMS|GODADDY|Godaddy", tipo: Gasto, categoria: "Herramientas de trabajo", ambito: Trabajo}
+- {id: apple_disney,       match: "^\\[Card Payment\\] Apple$|APPLE\\.COM/BILL", min: 10.9, max: 11.1,              tipo: Gasto, categoria: "Streaming de vídeo", nota: Disney+ vía Apple (cancelada)}
+- {id: apple_icloud,       match: "^\\[Card Payment\\] Apple$|APPLE\\.COM/BILL", max: 3.5,                           tipo: Gasto, categoria: "Almacenamiento", ambito: Trabajo, nota: iCloud}
+- {id: apple_youtube,      match: "^\\[Card Payment\\] Apple$|APPLE\\.COM/BILL", min: 15, max: 25,                   tipo: Gasto, categoria: "Streaming de vídeo", ambito: Trabajo, nota: YouTube Premium}
+- {id: apple_otras,        match: "^\\[Card Payment\\] Apple$|APPLE\\.COM/BILL",                                      tipo: Gasto, categoria: "Apps personales", ambito: Trabajo}
+- {id: streaming,          match: "Amazon Prime|DISNEY PLUS|Disney Plus|^\\[Card Payment\\] Max$|Netflix|NETFLIX|HBO|Crunchyroll|YouTube|YOUTUBE", tipo: Gasto, categoria: "Streaming de vídeo"}
+- {id: musica,             match: "Spotify|SPOTIFY",                                                                tipo: Gasto, categoria: "Música"}
+- {id: formacion_llados,   match: "LLADOS UNIVERSITY",                                                              tipo: Gasto, categoria: "Mentoría y cursos"}
+- {id: idiomas,            match: "italki|russianincontext",                                                        tipo: Gasto, categoria: "Mentoría y cursos", nota: clases de ruso}
+- {id: libros,             match: "Casa del Libro|CASA DEL LIBRO|LIBRERIA|Llibreria|LLIBRERIA|Libreria|Kindle|KINDLE|Audible|AUDIBLE", tipo: Gasto, categoria: "Libros"}
+- {id: jiujitsu,           match: "circulodejiujitsu|jiu-?jitsu",                                                   tipo: Gasto, categoria: "Jiu-jitsu"}
+- {id: padel,              match: "Playtomic|PLAYTOMIC",                                                            tipo: Gasto, categoria: "Pádel"}
+- {id: gimnasio,           match: "Basic-Fit|Decathlon|AYTO MADRID DEPORTES",                                       tipo: Gasto, categoria: "Gimnasio"}
+- {id: psicologo,          match: "Julian Gimenez",                                                                  tipo: Gasto, categoria: "Psicología", nota: psicólogo, 70 € por sesión}
 
-- {id: deporte,            match: "Basic-Fit|Playtomic|PLAYTOMIC|circulodejiujitsu|Decathlon|AYTO MADRID DEPORTES", tipo: Gasto, categoria: DEPORTE}
+# ---------------------------------------------------------------- 6. Billetes de tren y avión (siempre Transporte, también si son de un viaje)
+- {id: trenes,             match: "Renfe|RENFE|IRYO|Iryo|OUIGO|Ouigo|AVLO|Avlo",                                     tipo: Gasto, categoria: "Trenes y AVE"}
+- {id: vuelos,             match: "VUELING|Vueling|RYANAIR|Ryanair|IBERIA|Iberia|EASYJET|easyJet|AIR EUROPA|Air Europa|VOLOTEA|Volotea", tipo: Gasto, categoria: "Vuelos"}
 
 # --- aprendidas de las correcciones del dashboard (van antes que las genéricas para ganarles)
-- {"id": "auto_transferencia_recibida", "match": "Transferencia\\ recibida", "tipo": "Traspaso", "categoria": "TRASPASO", "ambito": "Personal", "nota": "aprendida de la corrección #1577"}
-- {"id": "auto_brownie", "match": "Brownie", "tipo": "Gasto", "categoria": "CITAS/PAREJA", "ambito": "Personal", "nota": "aprendida de la corrección #1583"}
-- {"id": "auto_the_cookie_lab", "match": "The\\ Cookie\\ Lab", "tipo": "Gasto", "categoria": "RESTAURANTES", "ambito": "Personal", "nota": "aprendida de la corrección #1589"}
-- {"id": "auto_to_diana_aracil", "match": "To\\ Diana\\ Aracil", "tipo": "Gasto", "categoria": "CITAS/PAREJA", "ambito": "Personal", "nota": "aprendida de la corrección #1599"}
-- {"id": "auto_samba_global_fuencarra", "match": "Samba\\ Global\\ Fuencarra", "tipo": "Gasto", "categoria": "RESTAURANTES", "ambito": "Personal", "nota": "aprendida de la corrección #1607"}
-- {"id": "auto_sp_hbada_eu", "match": "SP\\ HBADA\\ EU", "tipo": "Gasto", "categoria": "TRABAJO", "ambito": "Trabajo", "nota": "aprendida de la corrección #1622"}
-- {"id": "auto_bizum_payment_to_marina_h_l", "match": "Bizum\\ payment\\ to:\\ MARINA\\.H\\.L\\.", "tipo": "Gasto", "categoria": "VIAJES", "ambito": "Personal", "nota": "aprendida de la corrección #984"}
-- {"id": "auto_bizum_payment_to_jordi_m_g", "match": "Bizum\\ payment\\ to:\\ Jordi\\ M\\.G\\.", "tipo": "Gasto", "categoria": "SALUD", "ambito": "Personal", "nota": "aprendida de la corrección #1064"}
-- {"id": "auto_sp_zzen_labs", "match": "SP\\ ZZEN\\ LABS", "tipo": "Gasto", "categoria": "SALUD", "ambito": "Personal", "nota": "aprendida de la corrección #1365"}
-- {"id": "auto_outgoing_transfer_for_kateryna_soltuchen", "match": "Outgoing\\ transfer\\ for\\ Kateryna\\ Soltuchenko", "tipo": "Gasto", "categoria": "AJUSTES PAREJA", "ambito": "Personal", "nota": "aprendida de la corrección #1507"}
-- {"id": "auto_bizum_payment_to_ton_r_m", "match": "Bizum\\ payment\\ to:\\ Ton\\ R\\.M\\.", "tipo": "Gasto", "categoria": "OCIO", "ambito": "Personal", "nota": "aprendida de la corrección #853"}
-- {"id": "auto_castellana", "match": "Castellana", "tipo": "Gasto", "categoria": "CITAS/PAREJA", "ambito": "Personal", "nota": "aprendida de la corrección #1208"}
-- {"id": "auto_outgoing_transfer_for_intecat_istore_sl", "match": "Outgoing\\ transfer\\ for\\ INTECAT\\ ISTORE\\ SL", "tipo": "Gasto", "categoria": "TRABAJO", "ambito": "Trabajo", "nota": "aprendida de la corrección #1210"}
-- {"id": "auto_bizum_payment_to_noelia_m_j", "match": "Bizum\\ payment\\ to:\\ Noelia\\ M\\.J\\.", "tipo": "Gasto", "categoria": "PSICOLOGA", "ambito": "Personal", "nota": "aprendida de la corrección #860"}
+- {"id": "auto_casa_do_a_a", "match": "Casa\\ do\\ Açaí", "tipo": "Gasto", "categoria": "Açaí y brunch", "ambito": "Personal", "nota": "aprendida de la corrección #1120"}
+- {"id": "auto_bizum_payment_to_helibeth_r_q", "match": "Bizum\\ payment\\ to:\\ Helibeth\\ R\\.Q\\.", "tipo": "Gasto", "categoria": "Pádel", "ambito": "Personal", "nota": "aprendida de la corrección #1122"}
+- {"id": "auto_raw_a_a", "match": "Raw\\ Açaí", "tipo": "Gasto", "categoria": "Açaí y brunch", "ambito": "Personal", "nota": "aprendida de la corrección #1123"}
+- {"id": "auto_brownie", "match": "Brownie", "tipo": "Gasto", "categoria": "Citas y pareja", "ambito": "Personal", "nota": "aprendida de la corrección #1583"}
+- {"id": "auto_the_cookie_lab", "match": "The\\ Cookie\\ Lab", "tipo": "Gasto", "categoria": "Restaurantes", "ambito": "Personal", "nota": "aprendida de la corrección #1589"}
+- {"id": "auto_to_diana_aracil", "match": "To\\ Diana\\ Aracil", "tipo": "Gasto", "categoria": "Citas y pareja", "ambito": "Personal", "nota": "aprendida de la corrección #1599"}
+- {"id": "auto_samba_global_fuencarra", "match": "Samba\\ Global\\ Fuencarra", "tipo": "Gasto", "categoria": "Restaurantes", "ambito": "Personal", "nota": "aprendida de la corrección #1607"}
+- {"id": "auto_sp_hbada_eu", "match": "SP\\ HBADA\\ EU", "tipo": "Gasto", "categoria": "Herramientas de trabajo", "ambito": "Trabajo", "nota": "aprendida de la corrección #1622"}
+- {"id": "auto_bizum_payment_to_marina_h_l", "match": "Bizum\\ payment\\ to:\\ MARINA\\.H\\.L\\.", "tipo": "Gasto", "categoria": "Comida y gastos en destino", "ambito": "Personal", "nota": "aprendida de la corrección #984"}
+- {"id": "auto_bizum_payment_to_jordi_m_g", "match": "Bizum\\ payment\\ to:\\ Jordi\\ M\\.G\\.", "tipo": "Gasto", "categoria": "Farmacia y salud", "ambito": "Personal", "nota": "aprendida de la corrección #1064"}
+- {"id": "auto_sp_zzen_labs", "match": "SP\\ ZZEN\\ LABS", "tipo": "Gasto", "categoria": "Farmacia y salud", "ambito": "Personal", "nota": "aprendida de la corrección #1365"}
+- {"id": "auto_outgoing_transfer_for_kateryna_soltuchen", "match": "Outgoing\\ transfer\\ for\\ Kateryna\\ Soltuchenko", "tipo": "Gasto", "categoria": "Ajustes con Kate", "ambito": "Personal", "nota": "aprendida de la corrección #1507"}
+- {"id": "auto_bizum_payment_to_ton_r_m", "match": "Bizum\\ payment\\ to:\\ Ton\\ R\\.M\\.", "tipo": "Gasto", "categoria": "Planes y ocio", "ambito": "Personal", "nota": "aprendida de la corrección #853"}
+- {"id": "auto_castellana", "match": "Castellana", "tipo": "Gasto", "categoria": "Citas y pareja", "ambito": "Personal", "nota": "aprendida de la corrección #1208"}
+- {"id": "auto_outgoing_transfer_for_intecat_istore_sl", "match": "Outgoing\\ transfer\\ for\\ INTECAT\\ ISTORE\\ SL", "tipo": "Gasto", "categoria": "Herramientas de trabajo", "ambito": "Trabajo", "nota": "aprendida de la corrección #1210"}
+- {"id": "auto_bizum_payment_to_noelia_m_j", "match": "Bizum\\ payment\\ to:\\ Noelia\\ M\\.J\\.", "tipo": "Gasto", "categoria": "Psicología", "ambito": "Personal", "nota": "aprendida de la corrección #860"}
 
-# ---------------------------------------------------------------- 6. Viajes (por fechas: Sri Lanka 11 jul - 6 ago 2026) y merchants de viaje
-- {id: viaje_srilanka_rev, cuenta: [Revolut, Conjunta, Trade Republic], desde: "2026-07-11", hasta: "2026-08-06", match: ".*", signo: "-", tipo: Gasto, categoria: VIAJES, nota: Sri Lanka}
-- {id: viaje_srilanka_bbva, cuenta: BBVA, match: "no eur|Com\\. ret\\. efec",                                         tipo: Gasto, categoria: VIAJES, nota: cajeros Sri Lanka (las reversiones netean)}
-- {id: viaje_ranasinghe,   match: "Ranasinghe",                                                                     tipo: Gasto, categoria: VIAJES}
-- {id: viajes_merchants,   match: "ESQUIADES|VUELING|HEYMONDO|DEPARTMENT OF IMMIGRATION|Holafly|Rumbo|Hotel Adsera|Mont Romies|Wild Bee Hostel|Hostel", tipo: Gasto, categoria: VIAJES}
+# ---------------------------------------------------------------- 7. Viajes (por fechas: Sri Lanka 11 jul - 6 ago 2026) y comercios de viaje
+- {id: alojamiento,        match: "Hostel|HOSTEL|Holiday Homes|Guest In|Airbnb|AIRBNB|Booking\\.com|BOOKING\\.COM|ESQUIADES|Resort|Cabanas", tipo: Gasto, categoria: "Alojamiento"}
+- {id: viaje_srilanka_rev, cuenta: [Revolut, Conjunta, Trade Republic], desde: "2026-07-11", hasta: "2026-08-06", match: ".*", signo: "-", tipo: Gasto, categoria: "Comida y gastos en destino", nota: Sri Lanka}
+- {id: viaje_srilanka_bbva, cuenta: BBVA, match: "no eur|Com\\. ret\\. efec",                                         tipo: Gasto, categoria: "Comida y gastos en destino", nota: cajeros Sri Lanka (las reversiones netean)}
+- {id: viaje_ranasinghe,   match: "Ranasinghe",                                                                     tipo: Gasto, categoria: "Comida y gastos en destino"}
+- {id: viajes_merchants,   match: "HEYMONDO|DEPARTMENT OF IMMIGRATION|Holafly|Rumbo|Hotel Adsera|Mont Romies",       tipo: Gasto, categoria: "Comida y gastos en destino"}
+- {id: langre,             match: "Posada Playa de Langre|Playa de Langre",                                          tipo: Gasto, categoria: "Comida y gastos en destino", nota: Cantabria ago 2026}
 
-# ---------------------------------------------------------------- 7. Efectivo
-- {id: cajero_madrid,      cuenta: BBVA,     match: "Ret\\. efectivo",                                               tipo: Gasto, categoria: EFECTIVO}
+# ---------------------------------------------------------------- 8. Efectivo
+- {id: cajero_madrid,      cuenta: BBVA,     match: "Ret\\. efectivo",                                               tipo: Gasto, categoria: "Efectivo"}
 
-# ---------------------------------------------------------------- 8. Merchants habituales
-- {id: autocuidado,        match: "BARBER|Barber|Barbería|BARBERIA|Peluquer|PELUQUER|PERFUMERIA|Perfumeria|PRIMOR|Primor", tipo: Gasto, categoria: PELUQUERÍA Y AUTOCUIDADO}
-- {id: salud,              match: "MYPROTEIN|MyProtein|Farmacia|FARMACIA",                 tipo: Gasto, categoria: SALUD}
-- {id: ruso,               match: "italki|russianincontext",                                                        tipo: Gasto, categoria: RUSO}
-- {id: pareja,             match: "Florist|FLORIST|Beauty By Dia",                                                  tipo: Gasto, categoria: CITAS/PAREJA}
-- {id: kate_bizum_small,   cuenta: Revolut, match: "Bizum payment to: Kateryna",                                     tipo: Gasto, categoria: AJUSTES PAREJA}
-- {id: kate_transfer_tr,   cuenta: Trade Republic, match: "Outgoing transfer for Kateryna", min: 100,                tipo: Gasto, categoria: AJUSTES PAREJA, estado: pendiente, nota: "transferencia grande a Kate, ¿de qué?"}
-- {id: kate_transfer_tr_s, cuenta: Trade Republic, match: "Outgoing transfer for Kateryna",                          tipo: Gasto, categoria: AJUSTES PAREJA}
-- {id: supermercado,       match: "Mercadona|MERCADONA|Alcampo|ALCAMPO|Mialcampo|Lidl|LIDL|ALDI|\\bDia\\b|DIA MADRID|Carrefour|Bonpreu|Supermercats|Alimentacion|ALIMENTACION|Fruteria|FRUTERIA|Polleria|POLLERIA|Mercadito|Ametller|EcoFamilia|Frutoseco|FRUTOS SECOS|Sqrups|MARKET MORATAZ|Auchan|Home Need Super", tipo: Gasto, categoria: COMIDA}
-- {id: restaurantes,       match: "MYCHEFTOOL|Red Dragon|Hot Pot|Steak Burger|McDonald|Five Guys|GOIKO|Fosters Hollywood|New York Burger|Ochenta Grados|Bel Mondo|Ramen|RAMEN|Sushi|SUSHI|SHUSI|Isushi|Al Waha|Casa Figari|Fen[íi]cia|Domino|Pizza|PIZZA|Glovo|Viena|Ii Picarolo|Sam Smak|Ziqi|ZIQI|El Urogallo|HUNDRED|Hundred|STEAK BURGER|MANTECA BURGER|WOK TO WALK|GUASACACA|MALVON|KUBOKING|ABBRAZZAS|LOS CANDILES|BORDA XICOIES|EL ENCUENTRO|SANISSIMO|REDDRAGON|MAKAMI|PASTA PIZZA|RESTAURANTE|Restaurant|Mambo|Perera|Milwaukee", tipo: Gasto, categoria: RESTAURANTES}
-- {id: cafe,               match: "Coffee|COFFEE|Coffe|Cafe|CAFE|Cafeteria|CAFETERIA|Starbucks|STARBUCKS|Granier|Brunch|BRUNCH|MOOD|Mood|A[cç]a[ií]|ACAI|Llao|Helados|Pastisseria|Boheme|Enrich|Salting|Chocolat|Cacao|Mister Pa|Xd Portaine|Vending|VENDING|Burvending|Selecta|Steam Yard|Los Reginas|Lyma|La Martinuca|Churreria|CHURRERIA|MANOLO BAKES|LUCCIANOS|TOTO ICE|LA SELECTA|IVETTES|ARNAL2|ROYAL COFFEE|XOLO|Gate Gourmet|S S P EMIRATES|^\\[Card Payment\\] SSP$|^\\[Card Payment\\] areas$|EL MONO DE LA PILA|CARACOLA|Full Of Beans|FULL OF BEANS|Nuevo Specialty|THE MINERS|MORROW|NOVELA BCN|SANNA", tipo: Gasto, categoria: CAFÉ}
-- {id: transporte,         match: "Metro de Madrid|METRO DE MADRID|METRO BARCELONA|Renfe|RENFE|Alsa|Uber|Intermodalidad Levante|E\\.s\\. Danoia|^\\[Card Payment\\] BP$|Túnels|Transports Metropolitans|Puerta de Atocha|Aeropuerto|Saba|Ayuntamiento de Madrid|Marina Port Vell|MPASS|AP PL DEL SOL|PORT DE MATARO|Ap\\. Cal Rondina|IRYO|Iryo|OUIGO|Gasolinera", tipo: Gasto, categoria: TRANSPORTE}
-- {id: ocio,               match: "Cinesa|Teatro|Babylon|Pub La V|Fnac|4fund|Amar por Se|WhSmith|CIRCUIT RACING|SCAPEROOM|LLIBRERIA|ADORADO BAR|BAR ALESKA|KAPYBAR|GranVia7", tipo: Gasto, categoria: OCIO}
-- {id: ropa,               match: "UNIQLO|Zara|ZARA|H&M|Primark|PRIMARK",                                           tipo: Gasto, categoria: ROPA}
-- {id: hogar,              match: "IKEA|Leroy|LEROY",                                                               tipo: Gasto, categoria: HOGAR}
-- {id: hbada,              match: "HBADA",                                                                    tipo: Gasto, categoria: HOGAR, estado: pendiente, nota: "silla Hbada (setup del despacho): ¿Hogar o Trabajo?"}
-- {id: amazon,             match: "Amazon|AMAZON",                                                                  tipo: Gasto, categoria: IMPREVISTOS, nota: Amazon}
-- {id: tech_grande,        match: "MEDIA MARKT|INTECAT ISTORE|EL CORTE INGLES-DEPARTAM", min: 60,                    tipo: Gasto, categoria: IMPREVISTOS, estado: pendiente, nota: "compra grande, ¿qué fue?"}
-- {id: eci_pequeno,        match: "El Corte Ingl|EL CORTE INGLES",                                                   tipo: Gasto, categoria: COMIDA}
-- {id: inditex,            match: "^\\[Transacción con tarjeta\\] \\d{5} MADRID ",                                  tipo: Gasto, categoria: ROPA, nota: tienda Inditex (código+calle)}
-- {id: langre,             match: "Posada Playa de Langre|Playa de Langre",                                          tipo: Gasto, categoria: VIAJES, nota: Cantabria ago 2026}
-- {id: rest_extra,         match: "PIZZERIA|Tyler Restauraciones|Almafer",                                          tipo: Gasto, categoria: RESTAURANTES}
-- {id: loomis_vending,     match: "Loomisp|LOOMIS",                                                                 tipo: Gasto, categoria: CAFÉ}
-- {id: psicologo,          match: "Julian Gimenez",                                                                  tipo: Gasto, categoria: PSICOLOGA, nota: psicólogo, 70 € por sesión}
-- {id: bizum_out_grande,   cuenta: Revolut,  match: "Bizum payment to: ", min: 30,                                   tipo: Gasto, categoria: OCIO, estado: pendiente, nota: "Bizum a un amigo, ¿de qué?"}
-- {id: bizum_out_amigos,   cuenta: Revolut,  match: "Bizum payment to: ",                                            tipo: Gasto, categoria: OCIO, nota: Bizum pequeño a un amigo}
+# ---------------------------------------------------------------- 9. Comercios habituales
+- {id: autocuidado,        match: "BARBER|Barber|Barbería|BARBERIA|Peluquer|PELUQUER|PERFUMERIA|Perfumeria|PRIMOR|Primor", tipo: Gasto, categoria: "Peluquería y autocuidado"}
+- {id: salud,              match: "MYPROTEIN|MyProtein|Farmacia|FARMACIA",                                          tipo: Gasto, categoria: "Farmacia y salud"}
+- {id: pareja,             match: "Florist|FLORIST|Beauty By Dia",                                                  tipo: Gasto, categoria: "Citas y pareja"}
+- {id: kate_bizum_small,   cuenta: Revolut, match: "Bizum payment to: Kateryna",                                     tipo: Gasto, categoria: "Ajustes con Kate"}
+- {id: kate_transfer_tr,   cuenta: Trade Republic, match: "Outgoing transfer for Kateryna", min: 100,                tipo: Gasto, categoria: "Ajustes con Kate", estado: pendiente, nota: "transferencia grande a Kate, ¿de qué?"}
+- {id: kate_transfer_tr_s, cuenta: Trade Republic, match: "Outgoing transfer for Kateryna",                          tipo: Gasto, categoria: "Ajustes con Kate"}
+- {id: supermercado,       match: "Mercadona|MERCADONA|Alcampo|ALCAMPO|Mialcampo|Lidl|LIDL|ALDI|\\bDia\\b|DIA MADRID|Carrefour|Bonpreu|Supermercats|Alimentacion|ALIMENTACION|Fruteria|FRUTERIA|Polleria|POLLERIA|Mercadito|Ametller|EcoFamilia|Frutoseco|FRUTOS SECOS|Sqrups|MARKET MORATAZ|Auchan|Home Need Super", tipo: Gasto, categoria: "Supermercado"}
+- {id: delivery,           match: "Glovo|GLOVO|MYCHEFTOOL|Just Eat|JUST EAT|Uber Eats|UBER EATS|Deliveroo|DELIVEROO",  tipo: Gasto, categoria: "Comida a domicilio"}
+- {id: acai_brunch,        match: "A[cç]a[ií]|ACAI|Brunch|BRUNCH|\\bMOOD\\b|\\bMood\\b",                              tipo: Gasto, categoria: "Açaí y brunch"}
+- {id: restaurantes,       match: "Red Dragon|Hot Pot|Steak Burger|McDonald|Five Guys|GOIKO|Fosters Hollywood|New York Burger|Ochenta Grados|Bel Mondo|Ramen|RAMEN|Sushi|SUSHI|SHUSI|Isushi|Al Waha|Casa Figari|Fen[íi]cia|Domino|Pizza|PIZZA|Viena|Ii Picarolo|Sam Smak|Ziqi|ZIQI|El Urogallo|HUNDRED|Hundred|STEAK BURGER|MANTECA BURGER|WOK TO WALK|GUASACACA|MALVON|KUBOKING|ABBRAZZAS|LOS CANDILES|BORDA XICOIES|EL ENCUENTRO|SANISSIMO|REDDRAGON|MAKAMI|PASTA PIZZA|RESTAURANTE|Restaurant|Mambo|Perera|Milwaukee", tipo: Gasto, categoria: "Restaurantes"}
+- {id: cafe,               match: "Coffee|COFFEE|Coffe|Cafe|CAFE|Cafeteria|CAFETERIA|Starbucks|STARBUCKS|Granier|Llao|Helados|Pastisseria|Boheme|Enrich|Salting|Chocolat|Cacao|Mister Pa|Xd Portaine|Vending|VENDING|Burvending|Selecta|Steam Yard|Los Reginas|Lyma|La Martinuca|Churreria|CHURRERIA|MANOLO BAKES|LUCCIANOS|TOTO ICE|LA SELECTA|IVETTES|ARNAL2|ROYAL COFFEE|XOLO|Gate Gourmet|S S P EMIRATES|^\\[Card Payment\\] SSP$|^\\[Card Payment\\] areas$|EL MONO DE LA PILA|CARACOLA|Full Of Beans|FULL OF BEANS|Nuevo Specialty|THE MINERS|MORROW|NOVELA BCN|SANNA|Loomisp|LOOMIS", tipo: Gasto, categoria: "Café"}
+- {id: bicimad,            match: "Ayuntamiento de Madrid",                                                         tipo: Gasto, categoria: "BiciMAD"}
+- {id: uber_taxi,          match: "\\bUber\\b|\\bUBER\\b|Cabify|CABIFY|\\bTaxi\\b|\\bTAXI\\b|FreeNow|FREENOW|\\bBolt\\b", tipo: Gasto, categoria: "Uber y taxi"}
+- {id: gasolina_parking,   match: "E\\.s\\. |Gasolinera|GASOLINERA|^\\[Card Payment\\] BP$|Repsol|REPSOL|Cepsa|CEPSA|Túnels|AP PL DEL SOL|PORT DE MATARO|Marina Port Vell|\\bSaba\\b|\\bSABA\\b|Parking|PARKING|Autopista|AUTOPISTA", tipo: Gasto, categoria: "Gasolina, peajes y parking"}
+- {id: transporte_publico, match: "Metro de Madrid|METRO DE MADRID|METRO BARCELONA|Alsa|ALSA|Intermodalidad Levante|Transports Metropolitans|Puerta de Atocha|Aeropuerto|MPASS|Ap\\. Cal Rondina|EMT|Cercanias|CERCANIAS", tipo: Gasto, categoria: "Transporte público"}
+- {id: ocio,               match: "Cinesa|Teatro|Babylon|Pub La V|Fnac|4fund|Amar por Se|WhSmith|CIRCUIT RACING|SCAPEROOM|ADORADO BAR|BAR ALESKA|KAPYBAR|GranVia7", tipo: Gasto, categoria: "Planes y ocio"}
+- {id: ropa,               match: "UNIQLO|Zara|ZARA|H&M|Primark|PRIMARK",                                           tipo: Gasto, categoria: "Ropa"}
+- {id: hogar,              match: "IKEA|Leroy|LEROY",                                                               tipo: Gasto, categoria: "Hogar y equipamiento"}
+- {id: hbada,              match: "HBADA",                                                                          tipo: Gasto, categoria: "Hogar y equipamiento", estado: pendiente, nota: "silla Hbada (setup del despacho): ¿Hogar o Trabajo?"}
+- {id: amazon,             match: "Amazon|AMAZON",                                                                  tipo: Gasto, categoria: "Compras impulsivas", nota: Amazon}
+- {id: tech_grande,        match: "MEDIA MARKT|INTECAT ISTORE|EL CORTE INGLES-DEPARTAM", min: 60,                    tipo: Gasto, categoria: "Imprevistos", estado: pendiente, nota: "compra grande, ¿qué fue?"}
+- {id: eci_pequeno,        match: "El Corte Ingl|EL CORTE INGLES",                                                   tipo: Gasto, categoria: "Supermercado"}
+- {id: inditex,            match: "^\\[Transacción con tarjeta\\] \\d{5} MADRID ",                                  tipo: Gasto, categoria: "Ropa", nota: tienda Inditex (código+calle)}
+- {id: rest_extra,         match: "PIZZERIA|Tyler Restauraciones|Almafer",                                          tipo: Gasto, categoria: "Restaurantes"}
+- {id: bizum_out_grande,   cuenta: Revolut,  match: "Bizum payment to: ", min: 30,                                   tipo: Gasto, categoria: "Planes y ocio", estado: pendiente, nota: "Bizum a un amigo, ¿de qué?"}
+- {id: bizum_out_amigos,   cuenta: Revolut,  match: "Bizum payment to: ",                                            tipo: Gasto, categoria: "Planes y ocio", nota: Bizum pequeño a un amigo}

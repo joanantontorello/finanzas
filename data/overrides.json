@@ -1,40 +1,40 @@
 {
  "853": {
-  "categoria": "OCIO"
+  "categoria": "Planes y ocio"
  },
  "860": {
-  "categoria": "PSICOLOGA"
+  "categoria": "Psicología"
  },
  "953": {
-  "categoria": "HOGAR"
+  "categoria": "Hogar y equipamiento"
  },
  "984": {
-  "categoria": "VIAJES"
+  "categoria": "Comida y gastos en destino"
  },
  "1064": {
-  "categoria": "SALUD"
+  "categoria": "Farmacia y salud"
  },
  "1120": {
-  "categoria": "RESTAURANTES"
+  "categoria": "Açaí y brunch"
  },
  "1121": {
-  "categoria": "RESTAURANTES"
+  "categoria": "Açaí y brunch"
  },
  "1122": {
-  "categoria": "DEPORTE"
+  "categoria": "Pádel"
  },
  "1123": {
-  "categoria": "RESTAURANTES"
+  "categoria": "Açaí y brunch"
  },
  "1126": {
-  "categoria": "AJUSTES PAREJA",
+  "categoria": "Ajustes con Kate",
   "nota": "Pol devuelve la primera mitad del móvil"
  },
  "1208": {
-  "categoria": "CITAS/PAREJA"
+  "categoria": "Citas y pareja"
  },
  "1210": {
-  "categoria": "TRABAJO"
+  "categoria": "Herramientas de trabajo"
  },
  "1216": {
   "mes": "2026-04",
@@ -42,61 +42,61 @@
   "participacion": 0.5
  },
  "1329": {
-  "categoria": "CITAS/PAREJA"
+  "categoria": "Citas y pareja"
  },
  "1365": {
-  "categoria": "SALUD"
+  "categoria": "Farmacia y salud"
  },
  "1503": {
-  "categoria": "HOGAR",
+  "categoria": "Hogar y equipamiento",
   "participacion": 0.5,
   "compensar": true,
   "nota": "Roomba, a medias con Kate"
  },
  "1507": {
-  "categoria": "AJUSTES PAREJA"
+  "categoria": "Ajustes con Kate"
  },
  "1510": {
-  "categoria": "HOGAR"
+  "categoria": "Seguros"
  },
  "1514": {
-  "categoria": "AJUSTES PAREJA"
+  "categoria": "Ajustes con Kate"
  },
  "1516": {
-  "categoria": "IMPREVISTOS",
+  "categoria": "Imprevistos",
   "ambito": "Trabajo",
   "nota": "Móvil de Pol (facturado a mi nombre para desgravar el IVA); me devuelve todo menos el IVA"
  },
  "1525": {
-  "categoria": "PSICOLOGA"
+  "categoria": "Psicología"
  },
  "1535": {
-  "categoria": "PSICOLOGA"
+  "categoria": "Psicología"
  },
  "1577": {
-  "categoria": "TRASPASO"
+  "categoria": "Traspaso entre cuentas"
  },
  "1583": {
-  "categoria": "CITAS/PAREJA"
+  "categoria": "Citas y pareja"
  },
  "1584": {
-  "categoria": "CITAS/PAREJA"
+  "categoria": "Citas y pareja"
  },
  "1589": {
-  "categoria": "RESTAURANTES"
+  "categoria": "Restaurantes"
  },
  "1599": {
-  "categoria": "CITAS/PAREJA"
+  "categoria": "Citas y pareja"
  },
  "1607": {
-  "categoria": "RESTAURANTES"
+  "categoria": "Restaurantes"
  },
  "1620": {
   "participacion": 0.5,
   "compensar": true
  },
  "1622": {
-  "categoria": "TRABAJO"
+  "categoria": "Herramientas de trabajo"
  },
  "1635": {
   "participacion": 0.5,

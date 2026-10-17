@@ -49,12 +49,13 @@ def cargar_cuentas():
 
 
 def cargar_categorias():
-    cats = yaml.safe_load((CONFIG / "categorias.yaml").read_text(encoding="utf-8"))
-    flat = {}
-    for tipo, d in cats.items():
-        for nombre, props in (d or {}).items():
-            flat[nombre] = dict(props or {}, tipo=tipo)
-    return flat
+    """{subcategoría: {tipo, grupo, esencial, ambito, rol}} desde config/categorias.yaml (dos niveles)."""
+    import cats
+    return cats.cargar(ROOT)[0]
+
+
+def rol(categorias, nombre):
+    return next((k for k, v in categorias.items() if v.get("rol") == nombre), None)
 
 
 def clasificar(mov, reglas, categorias):
@@ -75,12 +76,12 @@ def clasificar(mov, reglas, categorias):
         if not r["_re"].search(mov["concepto"]):
             continue
         cat = r.get("categoria")
-        ambito = r.get("ambito") or categorias.get(cat, {}).get("ambito", "Personal")
+        ambito = r.get("ambito") or categorias.get(cat, {}).get("ambito") or "Personal"
         return {"tipo": r["tipo"], "categoria": cat, "ambito": ambito, "participacion": r.get("participacion"),
                 "estado": r.get("estado", "auto"), "regla": r["id"], "nota": r.get("nota")}
-    # sin regla: gasto si sale dinero. Lo pequeño (<30 €) va a IMPREVISTOS sin molestar; lo grande queda pendiente.
+    # sin regla: gasto si sale dinero. Lo pequeño (<30 €) va a Imprevistos sin molestar; lo grande queda pendiente.
     if mov["importe"] < 0 and abs(mov["importe"]) < 30:
-        return {"tipo": "Gasto", "categoria": "IMPREVISTOS", "ambito": "Personal", "estado": "auto",
+        return {"tipo": "Gasto", "categoria": rol(categorias, "imprevistos") or "Imprevistos", "ambito": "Personal", "estado": "auto",
                 "regla": "fallback_pequeno", "nota": "sin regla, importe pequeño"}
     return {"tipo": "Gasto" if mov["importe"] < 0 else None, "categoria": None,
             "ambito": "Personal", "estado": "pendiente", "regla": None, "nota": None}
@@ -161,12 +162,13 @@ def importar_ajustes(con):
 OVERRIDES = ROOT / "data" / "overrides.json"
 
 
-def aplicar_overrides(con):
+def aplicar_overrides(con, categorias=None):
     """Correcciones hechas desde el dashboard (data/overrides.json: {id: {categoria, tipo, ambito, nota, participacion, mes}})."""
     import json
     if not OVERRIDES.exists():
         return 0
     data = json.loads(OVERRIDES.read_text(encoding="utf-8") or "{}")
+    categorias = categorias or cargar_categorias()
     n = 0
     for id_, o in data.items():
         row = con.execute("SELECT * FROM movimientos WHERE id=?", (int(id_),)).fetchone()
@@ -177,6 +179,15 @@ def aplicar_overrides(con):
             campos["compensar"] = 1 if o["compensar"] else 0
         if not campos:
             continue
+        # el tipo sigue a la categoría elegida (antes solo se guardaba la categoría y el tipo quedaba viejo)
+        cat = campos.get("categoria")
+        if cat and "tipo" not in campos and cat in categorias:
+            t = categorias[cat]["tipo"]
+            if t in ("Gasto", "Reembolso"):
+                t = "Gasto" if row["importe"] < 0 else "Reembolso"
+            campos["tipo"] = t
+        if cat and "ambito" not in campos and (categorias.get(cat) or {}).get("ambito"):
+            campos["ambito"] = categorias[cat]["ambito"]
         sets = ", ".join(f"{k}=?" for k in campos) + ", estado='revisado', regla='dashboard'"
         con.execute(f"UPDATE movimientos SET {sets} WHERE id=?", (*campos.values(), int(id_)))
         n += 1
@@ -196,7 +207,7 @@ def _clave_aprendizaje(concepto):
 
 
 # comercios donde se compra de todo: una corrección no dice nada sobre la siguiente compra
-NO_APRENDER = ("MONEY ADDED", "CARD REFUND", "TOP-UP", "TRANSFER FROM", "PAYMENT FROM", "AMAZON", "EL CORTE INGL", "MEDIA MARKT", "CORTE INGLES", "FNAC", "IKEA", "DECATHLON", "CARREFOUR", "ALCAMPO", "SUMUP", "PAYPAL", "GLOVO")
+NO_APRENDER = ("MONEY ADDED", "CARD REFUND", "TRANSFERENCIA RECIBIDA", "PAGO DE IMPUESTOS", "TOP-UP", "TRANSFER FROM", "PAYMENT FROM", "AMAZON", "EL CORTE INGL", "MEDIA MARKT", "CORTE INGLES", "FNAC", "IKEA", "DECATHLON", "CARREFOUR", "ALCAMPO", "SUMUP", "PAYPAL", "GLOVO")
 
 
 def aprender(con, categorias):
@@ -248,6 +259,31 @@ def aprender(con, categorias):
     return len(nuevas)
 
 
+def marcar_plazos(con):
+    """Los cargos de Hacienda que coinciden con un plazo de config/deudas.yaml (importe exacto, ±7 días) pasan a Deuda Hacienda."""
+    import datetime as dt
+    path = CONFIG / "deudas.yaml"
+    if not path.exists():
+        return 0
+    plazos = []
+    for d in yaml.safe_load(path.read_text(encoding="utf-8")) or []:
+        for f, imp in d["plazos"]:
+            plazos.append((dt.date.fromisoformat(str(f)), round(float(imp), 2), d.get("subcategoria", "Deuda Hacienda")))
+    n = 0
+    rows = con.execute("SELECT id, fecha, importe FROM movimientos WHERE tipo='Gasto' AND estado!='revisado' "
+                       "AND categoria='IRPF e IVA trimestral'").fetchall()
+    for r in rows:
+        f = dt.date.fromisoformat(r["fecha"])
+        for pf, imp, sub in plazos:
+            if abs(round(-r["importe"], 2) - imp) < 0.005 and abs((f - pf).days) <= 7:
+                con.execute("UPDATE movimientos SET categoria=?, ambito='Trabajo', regla='deuda_plazo', nota=? WHERE id=?",
+                            (sub, f"plazo del {pf.isoformat()} de un fraccionamiento", r["id"]))
+                n += 1
+                break
+    con.commit()
+    return n
+
+
 def pendientes(con):
     rows = con.execute("SELECT id,cuenta,fecha,importe,concepto,tipo,categoria,nota FROM movimientos WHERE estado='pendiente' ORDER BY fecha").fetchall()
     for r in rows:
@@ -274,14 +310,15 @@ def main(argv):
         return
     if argv and argv[0] == "--reclasificar":
         print("reclasificados:", reclasificar(con, reglas, cuentas, categorias))
-        print("ajustes nuevos:", importar_ajustes(con), "| overrides aplicados:", aplicar_overrides(con))
+        print("ajustes nuevos:", importar_ajustes(con), "| overrides aplicados:", aplicar_overrides(con, categorias),
+              "| plazos de deuda:", marcar_plazos(con))
         n = aprender(con, categorias)
         if n:
             print("reglas aprendidas:", n, "| reclasificados:", reclasificar(con, cargar_reglas(), cuentas, categorias))
         pendientes(con)
         return
     if argv and argv[0] == "--overrides":
-        print("overrides aplicados:", aplicar_overrides(con))
+        print("overrides aplicados:", aplicar_overrides(con, categorias), "| plazos de deuda:", marcar_plazos(con))
         n = aprender(con, categorias)
         print("reglas aprendidas:", n)
         if n:
@@ -292,7 +329,8 @@ def main(argv):
         cuenta, n, nuevas, fmin, fmax = importar(str(f), con, reglas, cuentas, categorias)
         print(f"{f.name}: {cuenta} {n} filas, {nuevas} nuevas ({fmin} .. {fmax})")
     print("reclasificados:", reclasificar(con, reglas, cuentas, categorias))
-    print("ajustes nuevos:", importar_ajustes(con), "| overrides aplicados:", aplicar_overrides(con))
+    print("ajustes nuevos:", importar_ajustes(con), "| overrides aplicados:", aplicar_overrides(con, categorias),
+          "| plazos de deuda:", marcar_plazos(con))
     n = aprender(con, categorias)
     if n:
         print("reglas aprendidas:", n, "| reclasificados:", reclasificar(con, cargar_reglas(), cuentas, categorias))

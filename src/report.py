@@ -7,8 +7,9 @@ Definiciones:
   inversión    = aportaciones netas (compras − ventas)
   ahorro       = ingresos − gasto neto        (lo que no te has gastado)
   liquidez     = ahorro − inversión           (lo que queda en cuenta corriente)
-  trabajo      = ámbito Trabajo: sueldo − (gestoría + impuestos + suscripciones de trabajo)
-  ½ pareja     = compra pagada por ti a medias y liquidada aparte (Tricount): tu mitad va a su categoría y la otra a AJUSTES PAREJA
+  trabajo      = etiqueta Trabajo: ingresos de trabajo − gastos con etiqueta Trabajo (cuota, IRPF, gestoría, herramientas, deuda Hacienda)
+  no esencial  = parte del gasto en grupos marcados como no esenciales (hábitos, ocio, viajes, suscripciones, formación). "Otros" queda fuera
+  ½ pareja     = compra pagada por ti a medias y liquidada aparte (Tricount): tu mitad va a su categoría y la otra a Ajustes con la pareja
 """
 import json
 import pathlib
@@ -20,6 +21,9 @@ import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from db import connect, ROOT  # noqa: E402
+import cats as catsmod  # noqa: E402
+
+FLAT, GRUPOS, ROLES = catsmod.cargar(ROOT)
 
 OUT = ROOT / "dashboard" / "data.json"
 
@@ -32,7 +36,18 @@ def agregar(rows):
     """rows: lista de dicts con tipo, categoria, ambito, mio. Devuelve dict de métricas."""
     m = defaultdict(float)
     cats = defaultdict(float)
+    grupos = defaultdict(float)
     cats_inv = defaultdict(float)
+    ajustes = ROLES.get("ajustes_pareja", "Ajustes con la pareja")
+
+    def sumar(cat, v):
+        cats[cat] -= v
+        info = FLAT.get(cat) or {}
+        grupos[info.get("grupo") or "Sin categoría"] -= v
+        if info.get("esencial") is True:
+            m["esencial"] -= v
+        elif info.get("esencial") is False:
+            m["no_esencial"] -= v
     for x in rows:
         t, mio = x["tipo"], x["mio"]
         if t == "Ingreso":
@@ -47,24 +62,24 @@ def agregar(rows):
                 m["reembolsos"] += mio
             if x["ambito"] == "Trabajo":
                 m["gastos_trabajo"] -= mio
-            cats[x["categoria"] or "SIN CATEGORÍA"] -= mio
+            sumar(x["categoria"] or "Sin categoría", mio)
             if x.get("compensar") and t == "Gasto":
-                resto = x["importe"] - mio  # la mitad de Kate, ya incluida en la liquidación de Tricount
+                resto = x["importe"] - mio  # la mitad de la pareja, ya incluida en la liquidación de Tricount
                 m["gasto_neto"] -= resto
-                cats["AJUSTES PAREJA"] -= resto
-            if x.get("fijo"):
-                m["fijos"] -= mio
+                sumar(ajustes, resto)
         elif t == "Inversion":
             m["inversion"] -= mio
-            cats_inv[x["categoria"] or "SIN CATEGORÍA"] -= mio
+            cats_inv[x["categoria"] or "Sin categoría"] -= mio
     m["ahorro"] = m["ingresos"] - m["gasto_neto"]
     m["liquidez"] = m["ahorro"] - m["inversion"]
     m["tasa_ahorro"] = (m["ahorro"] / m["ingresos"]) if m["ingresos"] else None
     m["beneficio_trabajo"] = m["ingresos_trabajo"] - m["gastos_trabajo"]
     m["gasto_personal"] = m["gasto_neto"] - m["gastos_trabajo"]
-    m["variables"] = m["gasto_neto"] - m["fijos"]
-    out = {k: (r2(v) if k != "tasa_ahorro" else (round(v, 4) if v is not None else None)) for k, v in m.items()}
+    base_fugas = m["esencial"] + m["no_esencial"]
+    m["pct_no_esencial"] = (m["no_esencial"] / base_fugas) if base_fugas > 0 else None
+    out = {k: (r2(v) if k not in ("tasa_ahorro", "pct_no_esencial") else (round(v, 4) if v is not None else None)) for k, v in m.items()}
     out["categorias"] = {k: r2(v) for k, v in sorted(cats.items(), key=lambda kv: -kv[1])}
+    out["grupos"] = {k: r2(v) for k, v in sorted(grupos.items(), key=lambda kv: -kv[1])}
     out["inversiones"] = {k: r2(v) for k, v in sorted(cats_inv.items(), key=lambda kv: -kv[1])}
     return out
 
@@ -73,14 +88,12 @@ def main():
     con = connect()
     pp = ROOT / "config" / "perfil.yaml"
     perfil = (yaml.safe_load(pp.read_text(encoding="utf-8")) or {}) if pp.exists() else {}
-    cats_cfg = yaml.safe_load((ROOT / "config" / "categorias.yaml").read_text(encoding="utf-8"))
-    fijos = {n for t in cats_cfg.values() for n, p in (t or {}).items() if (p or {}).get("fijo")}
-    cat_list = [{"nombre": n, "tipo": t, "fijo": bool((p or {}).get("fijo"))} for t, d in cats_cfg.items() for n, p in (d or {}).items()]
+    cat_list = [{"nombre": s, "grupo": g["nombre"], "tipo": g["tipo"], "esencial": g["esencial"],
+                 "ambito": FLAT[s]["ambito"], "rol": FLAT[s]["rol"]} for g in GRUPOS for s in g["sub"]]
 
     rows = [dict(r) for r in con.execute("SELECT * FROM movimientos ORDER BY fecha, id").fetchall()]
     for x in rows:
         x["mio"] = r2(x["importe"] * (x["participacion"] or 1.0))
-        x["fijo"] = x["categoria"] in fijos
 
     por_mes = defaultdict(list)
     por_anio = defaultdict(list)
@@ -110,8 +123,8 @@ def main():
     # cuenta conjunta
     conj = [x for x in rows if x["cuenta"] == "Conjunta"]
     conjunta = {
-        "aportado_yo": r2(sum(x["importe"] for x in conj if x["tipo"] == "Traspaso" and x["categoria"] == "TRASPASO")),
-        "aportado_pareja": r2(sum(x["importe"] for x in conj if x["categoria"] == "APORTACIÓN PAREJA")),
+        "aportado_yo": r2(sum(x["importe"] for x in conj if x["tipo"] == "Traspaso" and x["categoria"] == ROLES.get("traspaso"))),
+        "aportado_pareja": r2(sum(x["importe"] for x in conj if x["categoria"] == ROLES.get("aportacion_pareja"))),
         "gasto_total": r2(-sum(x["importe"] for x in conj if x["tipo"] in ("Gasto", "Reembolso"))),
         "mi_parte": r2(-sum(x["mio"] for x in conj if x["tipo"] in ("Gasto", "Reembolso"))),
         "saldo": next((x["saldo"] for x in reversed(conj) if x["saldo"] is not None), None),
@@ -120,8 +133,8 @@ def main():
     for mes in sorted({x["mes"] for x in conj}):
         ms = [x for x in conj if x["mes"] == mes]
         conjunta["por_mes"][mes] = {
-            "yo": r2(sum(x["importe"] for x in ms if x["tipo"] == "Traspaso" and x["categoria"] == "TRASPASO")),
-            "pareja": r2(sum(x["importe"] for x in ms if x["categoria"] == "APORTACIÓN PAREJA")),
+            "yo": r2(sum(x["importe"] for x in ms if x["tipo"] == "Traspaso" and x["categoria"] == ROLES.get("traspaso"))),
+            "pareja": r2(sum(x["importe"] for x in ms if x["categoria"] == ROLES.get("aportacion_pareja"))),
             "gasto": r2(-sum(x["importe"] for x in ms if x["tipo"] in ("Gasto", "Reembolso"))),
         }
 
@@ -167,6 +180,8 @@ def main():
         "meses": meses,
         "anios": anios,
         "categorias": cat_list,
+        "grupos": [{"nombre": g["nombre"], "tipo": g["tipo"], "esencial": g["esencial"], "sub": g["sub"]} for g in GRUPOS],
+        "roles": ROLES,
         "cuentas": cuentas,
         "deudas": deudas,
         "deudas_calendario": deudas_calendario,
@@ -186,7 +201,8 @@ def main():
     import csv
     anio_actual = datetime.now().strftime("%Y")
     meses_a = [m for m in meses if m["mes"].startswith(anio_actual)]
-    cats_a = sorted({c for m in meses_a for c in m["categorias"]} | {c for m in meses_a for c in m["inversiones"]})
+    cats_a = [s for g in GRUPOS if g["tipo"] in ("Gasto", "Reembolso", "Inversion") for s in g["sub"]
+              if any(s in m["categorias"] or s in m["inversiones"] for m in meses_a)]
     with open(ROOT / "data" / "resumen.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["concepto"] + [m["mes"] for m in meses_a] + ["total " + anio_actual, "media mensual"])
@@ -195,10 +211,16 @@ def main():
         for k, label in [("ingresos", "INGRESOS"), ("gasto_neto", "GASTO NETO"), ("ahorro", "AHORRO"), ("inversion", "INVERTIDO"), ("liquidez", "LIQUIDEZ"), ("beneficio_trabajo", "BENEFICIO TRABAJO")]:
             fila(label, [m.get(k, 0) or 0 for m in meses_a])
         w.writerow(["TASA AHORRO"] + [f"{(m['tasa_ahorro'] or 0)*100:.0f}%" for m in meses_a] + ["", ""])
+        w.writerow(["% NO ESENCIAL"] + [f"{(m.get('pct_no_esencial') or 0)*100:.0f}%" for m in meses_a] + ["", ""])
         w.writerow([])
-        w.writerow(["POR CATEGORÍA (gastos netos e inversiones, tu parte)"])
+        w.writerow(["POR GRUPO (gasto neto, tu parte)"])
+        for g in [g["nombre"] for g in GRUPOS if g["tipo"] in ("Gasto", "Reembolso")]:
+            if any(g in m["grupos"] for m in meses_a):
+                fila(g, [m["grupos"].get(g, 0) for m in meses_a])
+        w.writerow([])
+        w.writerow(["POR SUBCATEGORÍA (gastos netos e inversiones, tu parte)"])
         for c in cats_a:
-            fila(c, [m["categorias"].get(c, m["inversiones"].get(c, 0)) for m in meses_a])
+            fila(f"{FLAT[c]['grupo']} · {c}", [m["categorias"].get(c, m["inversiones"].get(c, 0)) for m in meses_a])
         w.writerow([])
         w.writerow(["PENDIENTES DE REVISAR", "fecha", "cuenta", "importe", "concepto"])
         for x in pend:
@@ -207,9 +229,10 @@ def main():
         w.writerow(["Generado", data["generado"], "Dashboard", perfil.get("dashboard_url") or ""])
     with open(ROOT / "data" / "movimientos.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["fecha", "cuenta", "concepto", "importe", "tu_parte", "tipo", "categoria", "ambito", "estado"])
+        w.writerow(["fecha", "cuenta", "concepto", "importe", "tu_parte", "tipo", "grupo", "subcategoria", "ambito", "estado"])
         for x in movs:
-            w.writerow([x["fecha"], x["cuenta"], x["concepto"], x["importe"], x["mio"], x["tipo"], x["categoria"], x["ambito"], x["estado"]])
+            w.writerow([x["fecha"], x["cuenta"], x["concepto"], x["importe"], x["mio"], x["tipo"],
+                        (FLAT.get(x["categoria"]) or {}).get("grupo", ""), x["categoria"], x["ambito"], x["estado"]])
 
     # resumen en texto del último mes completo (el anterior al actual)
     hoy = datetime.now().strftime("%Y-%m")
@@ -218,8 +241,8 @@ def main():
         m = cerrados[-1]
         print(f"Cierre {m['mes']}: ingresos {m['ingresos']:.2f} | gasto neto {m['gasto_neto']:.2f} | inversión {m['inversion']:.2f} | "
               f"ahorro {m['ahorro']:.2f} ({(m['tasa_ahorro'] or 0)*100:.0f} %) | pendientes {m['pendientes']}")
-        top = list(m["categorias"].items())[:5]
-        print("Top gastos: " + ", ".join(f"{k} {v:.0f}" for k, v in top))
+        top = list(m["grupos"].items())[:5]
+        print("Top grupos: " + ", ".join(f"{k} {v:.0f}" for k, v in top) + f" | no esencial {(m.get('pct_no_esencial') or 0)*100:.0f} %")
     print(f"data.json: {len(meses)} meses, {len(movs)} movimientos, {len(pend)} pendientes -> {OUT}")
 
 

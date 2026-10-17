@@ -138,8 +138,8 @@
           <div id="chartMeses"></div>
         </div>
         <div class="card">
-          <h2 id="donutTitle">En qué se va el dinero</h2>
-          <div class="hint">Reparto del gasto por categoría en el periodo (antes de reembolsos). Clic en una categoría para ver su evolución.</div>
+          <h2><span id="donutTitle">En qué se va el dinero</span> <button class="amb" id="donutBack" hidden>Ver todos los grupos</button></h2>
+          <div class="hint" id="donutHint">Reparto del gasto por grupo en el periodo. Clic en un grupo para ver sus subcategorías.</div>
           <div class="donut"><div id="donutGasto"></div><div class="dl" id="donutLegend"></div></div>
         </div>
       </div>
@@ -150,8 +150,8 @@
           <div id="chartEvo"></div>
         </div>
         <div class="card">
-          <h2 id="catsTitle">Gasto por categoría</h2>
-          <div class="hint">Neto: los reembolsos restan. Clic abre los movimientos de esa categoría.</div>
+          <h2 id="catsTitle">Gasto por grupo</h2>
+          <div class="hint">Neto: los reembolsos restan. Clic en un grupo o subcategoría abre sus movimientos.</div>
           <div class="cats" id="cats"></div>
         </div>
       </div>
@@ -162,8 +162,8 @@
           <div id="chartBeneficio"></div>
         </div>
         <div class="card">
-          <h2>Fijos y variables</h2>
-          <div class="hint">Fijos: alquiler, luz, agua, internet, suscripciones, gestoría e impuestos.</div>
+          <h2>Esencial y no esencial</h2>
+          <div class="hint">Dónde están las fugas: el gasto no esencial es el que puedes recortar. Otros y reembolsos quedan fuera del porcentaje.</div>
           <div class="kv" id="fijos"></div>
         </div>
       </div>
@@ -174,7 +174,7 @@
       <div class="grid tiles" id="tilesPres"></div>
       <div class="grid cards half">
         <div class="card">
-          <h2>Bloques del mes</h2>
+          <h2>Presupuesto por grupo</h2>
           <div class="hint" id="presHint"></div>
           <div id="bloques"></div>
         </div>
@@ -187,9 +187,8 @@
       </div>
       <div class="card mt">
         <h2>Configurar presupuesto</h2>
-        <div class="hint">Importes mensuales. Los cambios se guardan en GitHub con el botón de abajo, igual que las correcciones.</div>
+        <div class="hint">Importe mensual por grupo. Los cambios se guardan en GitHub con el botón de abajo, igual que las correcciones.</div>
         <div class="kv" id="presConfig"></div>
-        <details style="margin-top:12px"><summary class="muted" style="cursor:pointer">A qué bloque va cada categoría</summary><div class="kv" id="presAsig" style="margin-top:8px"></div></details>
       </div>
     </section>
 
@@ -283,23 +282,31 @@ const $ = id => document.getElementById(id);
 let D, state = { year: null, desde: null, hasta: null, ambito: 'Todo', cuenta: '', view: 'dashboard', evoCat: '', cat: '', tipo: '', q: '' };
 const GH = { repo: '', path: 'data/overrides.json' };
 let overrides = {}, ovSha = null, cambios = {};
-const catTipo = {};
+const catTipo = {}, CI = {};
+const grupoDe = c => (CI[c] || {}).grupo || 'Sin categoría';
+function matchCat(m, sel) { if (!sel) return true; if (sel.startsWith('g:')) return grupoDe(m.categoria) === sel.slice(2); return (m.categoria || 'Sin categoría') === sel; }
+function optsCategorias(selected, soloGasto) {
+  return (D.grupos || []).filter(g => soloGasto !== true || g.tipo === 'Gasto' || g.tipo === 'Reembolso').map(g =>
+    `<optgroup label="${g.nombre}">${soloGasto !== 'subs' ? `<option value="g:${g.nombre}" ${selected === 'g:' + g.nombre ? 'selected' : ''}>${g.nombre} (todo)</option>` : ''}${g.sub.map(c => `<option value="${c}" ${c === selected ? 'selected' : ''}>${c}</option>`).join('')}</optgroup>`).join('');
+}
 
 let P = null, pSha = null, pDirty = false, PAREJA = 'pareja';
 const GHP = { path: 'data/presupuesto.json' };
-fetch('data.json').then(r => r.json()).then(async d => { D = d; const pf = D.perfil || {}; GH.repo = pf.github_repo || ''; PAREJA = pf.pareja_nombre || 'pareja'; document.title = 'Finanzas' + (pf.nombre ? ' ' + pf.nombre : ''); D.categorias.forEach(c => catTipo[c.nombre] = c.tipo); await cargarOverrides(); await cargarPresupuesto(); init(); });
+fetch('data.json').then(r => r.json()).then(async d => { D = d; const pf = D.perfil || {}; GH.repo = pf.github_repo || ''; PAREJA = pf.pareja_nombre || 'pareja'; document.title = 'Finanzas' + (pf.nombre ? ' ' + pf.nombre : ''); D.categorias.forEach(c => { catTipo[c.nombre] = c.tipo; CI[c.nombre] = c; }); await cargarOverrides(); await cargarPresupuesto(); init(); });
 
 // ---- presupuesto: data/presupuesto.json (GitHub si hay token, si no la copia desplegada)
 async function cargarPresupuesto() {
   try { P = await (await fetch('presupuesto.json')).json(); } catch (e) { P = null; }
-  if (!P) P = { bloques: { fijos: 1100, diario: 550, hucha: 300 }, asignacion: {}, inversion_mensual: 1000, colchon_objetivo: 6500, metas: [] };
-  if (!token()) return;
+  if (!P) P = { grupos: {}, inversion_mensual: 0, colchon_objetivo: 0, metas: [] };
+  if (!token()) { P.grupos = P.grupos || {}; return; }
   try {
     const r = await fetch(`https://api.github.com/repos/${GH.repo}/contents/${GHP.path}`, { headers: ghHeaders() });
     if (!r.ok) return;
     const j = await r.json(); pSha = j.sha;
-    P = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
+    const Pg = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
+    if (Pg.grupos) P = Pg;  // una versión antigua (por bloques) en GitHub no pisa la nueva
   } catch (e) { console.warn('presupuesto', e); }
+  P.grupos = P.grupos || {};
 }
 async function guardarPresupuesto() {
   const body = { message: 'Presupuesto actualizado desde el dashboard', content: btoa(unescape(encodeURIComponent(JSON.stringify(P, null, 1)))) };
@@ -309,15 +316,12 @@ async function guardarPresupuesto() {
   pSha = (await r.json()).content.sha; pDirty = false; return true;
 }
 function marcarPres() { pDirty = true; const n = Object.keys(cambios).length; $('savemsg').textContent = (n ? n + ' correcciones y ' : '') + 'presupuesto sin guardar'; $('savebar').style.display = 'flex'; }
-function bloqueDe(cat) { const fijos = new Set(D.categorias.filter(c => c.fijo).map(c => c.nombre)); return (P.asignacion || {})[cat] || (fijos.has(cat) ? 'fijos' : 'diario'); }
-const BLOQUES = { fijos: ['Fijos', 'alquiler, luz, internet, suscripciones, gestoría, impuestos, psicólogo, deporte'], diario: ['Día a día', 'comida, restaurantes, café, transporte, ocio, pareja'], hucha: ['Grandes compras y viajes', 'viajes, hogar, imprevistos'] };
 function renderPresupuesto() {
   if (!P) return;
   const rowsP = base(); const n = Math.max(new Set(rowsP.map(m => m.mes)).size, 1);
   const a = agg(rowsP); const periodo = periodoLabel();
-  const gastoBloque = { fijos: 0, diario: 0, hucha: 0 }, catsBloque = { fijos: {}, diario: {}, hucha: {} };
-  for (const [c, v] of Object.entries(a.cats)) { const b = bloqueDe(c); gastoBloque[b] += v; catsBloque[b][c] = v; }
-  const presTotal = (P.bloques.fijos + P.bloques.diario + P.bloques.hucha) * n;
+  const gGasto = (D.grupos || []).filter(g => g.tipo === 'Gasto');
+  const presTotal = gGasto.reduce((t, g) => t + (+P.grupos[g.nombre] || 0), 0) * n;
   const libre = a.ingresos - a.gasto - P.inversion_mensual * n;
   const t = [
     ['Presupuesto', presTotal, 'blue', `gastado ${fmt(a.gasto)} · ${a.gasto <= presTotal ? 'quedan ' + fmt(presTotal - a.gasto) : 'te has pasado ' + fmt(a.gasto - presTotal)}`],
@@ -326,14 +330,14 @@ function renderPresupuesto() {
     ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'orange', 'ingresos − gasto − inversión objetivo'],
   ];
   $('tilesPres').innerHTML = t.map(([l, v, c, s]) => `<div class="tile ${c}"><div class="lbl">${l} · ${periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
-  $('presHint').textContent = n > 1 ? `Periodo de ${n} meses: el presupuesto se multiplica por ${n}.` : 'Presupuesto del mes frente a lo gastado.';
-  $('bloques').innerHTML = Object.keys(BLOQUES).map(b => {
-    const pres = P.bloques[b] * n, g = gastoBloque[b], p = pres ? g / pres : 0;
+  $('presHint').textContent = (n > 1 ? `Periodo de ${n} meses: el presupuesto se multiplica por ${n}. ` : 'Presupuesto del mes frente a lo gastado. ') + 'Verde bien, ámbar por encima del 80 %, rojo pasado.';
+  $('bloques').innerHTML = gGasto.map(g => {
+    const pres = (+P.grupos[g.nombre] || 0) * n, gs = a.grupos[g.nombre] || 0, p = pres ? gs / pres : (gs > 0 ? 2 : 0);
     const col = p > 1 ? 'var(--s2)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
-    const top = Object.entries(catsBloque[b]).sort((x, y) => y[1] - x[1]).slice(0, 5).map(([c, v]) => `${c.toLowerCase()} ${fmt(v)}`).join(' · ');
-    return `<div style="margin:10px 0 14px"><div style="display:flex;justify-content:space-between;font-size:13px"><b>${BLOQUES[b][0]}</b><span><b>${fmt(g)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
+    const top = g.sub.filter(c => a.cats[c]).sort((x, y) => a.cats[y] - a.cats[x]).slice(0, 4).map(c => `${c.toLowerCase()} ${fmt(a.cats[c])}`).join(' · ');
+    return `<div style="margin:10px 0 14px"><div style="display:flex;justify-content:space-between;font-size:13px"><b>${g.nombre} <small class="muted">${g.esencial === true ? 'esencial' : g.esencial === false ? 'no esencial' : ''}</small></b><span><b>${fmt(gs)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
       <div class="track" style="height:12px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:4px 0"><div style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div></div>
-      <div class="muted" style="font-size:12px">${p > 1 ? 'Pasado en ' + fmt(g - pres) : 'Quedan ' + fmt(pres - g)}${top ? ' · ' + top : ''}</div></div>`;
+      <div class="muted" style="font-size:12px">${gs > pres ? 'Pasado en ' + fmt(gs - pres) : 'Quedan ' + fmt(pres - gs)}${top ? ' · ' + top : ''}</div></div>`;
   }).join('');
   // metas
   const hoy = new Date();
@@ -347,19 +351,14 @@ function renderPresupuesto() {
       <div class="muted" style="font-size:12px">${fmt(m.reservado || 0)} de ${fmt(m.objetivo)} · faltan ${fmt(falta)}${meses ? ` · ${meses} ${meses === 1 ? 'mes' : 'meses'} · ${fmt(falta / meses)} al mes` : ''}</div></div>`;
   }).join('') || '<p class="muted">Sin metas. Añade una.</p>';
   // config
-  $('presConfig').innerHTML = `
-    <span>Fijos al mes</span><input data-p="bloques.fijos" type="number" value="${P.bloques.fijos}" style="width:120px">
-    <span>Día a día al mes</span><input data-p="bloques.diario" type="number" value="${P.bloques.diario}" style="width:120px">
-    <span>Grandes compras y viajes al mes (hucha)</span><input data-p="bloques.hucha" type="number" value="${P.bloques.hucha}" style="width:120px">
-    <span>Inversión objetivo al mes</span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}" style="width:120px">
+  $('presConfig').innerHTML = (D.grupos || []).filter(g => g.tipo === 'Gasto').map(g => `<span>${g.nombre}</span><input data-pg="${g.nombre}" type="number" value="${+P.grupos[g.nombre] || 0}" style="width:120px">`).join('') + `
+    <span><b>Inversión objetivo al mes</b></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}" style="width:120px">
     <span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}" style="width:120px">`;
-  const cats = D.categorias.filter(c => c.tipo === 'Gasto').map(c => c.nombre);
-  $('presAsig').innerHTML = cats.map(c => `<span>${c}</span><select data-asig="${c}" style="padding:4px 10px">${Object.keys(BLOQUES).map(b => `<option value="${b}" ${bloqueDe(c) === b ? 'selected' : ''}>${BLOQUES[b][0]}</option>`).join('')}</select>`).join('');
 }
 document.addEventListener('change', e => {
   const el = e.target;
   if (el.dataset.p) { const [a, b] = el.dataset.p.split('.'); if (b) P[a][b] = +el.value; else P[a] = +el.value; marcarPres(); renderPresupuesto(); }
-  else if (el.dataset.asig) { P.asignacion = P.asignacion || {}; P.asignacion[el.dataset.asig] = el.value; marcarPres(); renderPresupuesto(); }
+  else if (el.dataset.pg) { P.grupos[el.dataset.pg] = +el.value; marcarPres(); renderPresupuesto(); }
   else if (el.dataset.meta != null) { const m = P.metas[+el.dataset.meta]; const k = el.dataset.k; m[k] = (k === 'nombre' || k === 'fecha') ? el.value : +el.value; marcarPres(); renderPresupuesto(); }
 });
 document.addEventListener('click', e => {
@@ -422,10 +421,10 @@ function pedirToken() {
   if (t) { try { localStorage.setItem('gh_token', t.trim()); } catch (e) {} }
 }
 function selCat(m) {
-  const opts = D.categorias.map(c => `<option ${c.nombre === m.categoria ? 'selected' : ''}>${c.nombre}</option>`).join('');
+  const opts = optsCategorias(m.categoria, 'subs');
   return `<select class="edit ${cambios[m.id] ? 'changed' : ''}" data-id="${m.id}"><option value="" ${!m.categoria ? 'selected' : ''}>– sin categoría –</option>${opts}</select>`;
 }
-function ambBtn(m) { return `<button class="amb ${m.ambito === 'Trabajo' ? 'T' : ''}" data-amb="${m.id}" title="Personal / Trabajo">${m.ambito === 'Trabajo' ? 'Trabajo' : 'Personal'}</button>` + (m.cuenta !== 'Conjunta' && m.tipo === 'Gasto' ? `<button class="amb ${m.compensar ? 'T' : ''}" data-kate="${m.id}" title="Pagado a medias con ${PAREJA} y liquidado aparte: tu mitad queda en la categoría y la otra pasa a Ajustes pareja">½ ${PAREJA}</button>` : ''); }
+function ambBtn(m) { return `<button class="amb ${m.ambito === 'Trabajo' ? 'T' : ''}" data-amb="${m.id}" title="Personal / Trabajo">${m.ambito === 'Trabajo' ? 'Trabajo' : 'Personal'}</button>` + (m.cuenta !== 'Conjunta' && m.tipo === 'Gasto' ? `<button class="amb ${m.compensar ? 'T' : ''}" data-kate="${m.id}" title="Pagado a medias con ${PAREJA} y liquidado aparte: tu mitad queda en la categoría y la otra pasa a Ajustes con ${PAREJA}">½ ${PAREJA}</button>` : ''); }
 document.addEventListener('click', e => { const b = e.target.closest('button[data-kate]'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.kate); const on = !m.compensar; cambios[m.id] = Object.assign({}, overrides[m.id] || {}, cambios[m.id] || {}, { participacion: on ? 0.5 : 1, compensar: on }); editar(m.id, 'compensar', on); } });
 document.addEventListener('change', e => { if (e.target.matches('select.edit')) editar(+e.target.dataset.id, 'categoria', e.target.value); });
 document.addEventListener('click', e => { const b = e.target.closest('button.amb'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.amb); editar(m.id, 'ambito', m.ambito === 'Trabajo' ? 'Personal' : 'Trabajo'); } });
@@ -443,7 +442,8 @@ function init() {
   const cuentas = [...new Set(D.movimientos.map(m => m.cuenta))].sort();
   $('cuenta').innerHTML += cuentas.map(c => `<option>${c}</option>`).join('');
   $('cuenta').onchange = e => { state.cuenta = e.target.value; render(); };
-  $('fcat').innerHTML += D.categorias.map(c => `<option>${c.nombre}</option>`).join('');
+  $('fcat').innerHTML += optsCategorias('', false);
+  $('donutBack').onclick = () => { state.donutGrupo = null; state.evoCat = ''; renderDonut(agg(base()), periodoLabel()); renderEvo(); };
   $('fcat').onchange = e => { state.cat = e.target.value; renderTable(); };
   $('ftipo').onchange = e => { state.tipo = e.target.value; renderTable(); };
   $('q').oninput = e => { state.q = e.target.value.toLowerCase(); renderTable(); };
@@ -479,19 +479,20 @@ function base(pred) {
     && (state.ambito === 'Todo' || m.ambito === state.ambito) && (!state.cuenta || m.cuenta === state.cuenta));
 }
 function agg(rows) {
-  const a = { ingresos:0, gasto:0, bruto:0, reemb:0, inv:0, cats:{}, invCats:{}, fijos:0, ingT:0, gasT:0 };
-  const fijos = new Set(D.categorias.filter(c => c.fijo).map(c => c.nombre));
+  const a = { ingresos:0, gasto:0, bruto:0, reemb:0, inv:0, cats:{}, grupos:{}, invCats:{}, ess:0, noess:0, otros:0, ingT:0, gasT:0 };
+  const ajustes = (D.roles || {}).ajustes_pareja || 'Ajustes con la pareja';
+  const sumar = (c, v) => { a.cats[c] = (a.cats[c]||0) + v; const g = grupoDe(c); a.grupos[g] = (a.grupos[g]||0) + v; const e = (CI[c] || {}).esencial; if (e === true) a.ess += v; else if (e === false) a.noess += v; else if (g !== grupoDe((D.roles || {}).reembolsos)) a.otros += v; };
   for (const m of rows) {
     if (m.tipo === 'Ingreso') { a.ingresos += m.mio; if (m.ambito==='Trabajo') a.ingT += m.mio; }
     else if (m.tipo === 'Gasto' || m.tipo === 'Reembolso') {
       a.gasto -= m.mio; if (m.tipo==='Gasto' && m.mio<0) a.bruto -= m.mio; else a.reemb += m.mio;
-      const c = m.categoria || 'SIN CATEGORÍA'; a.cats[c] = (a.cats[c]||0) - m.mio;
-      if (m.compensar && m.tipo === 'Gasto') { const resto = m.importe - m.mio; a.gasto -= resto; a.cats['AJUSTES PAREJA'] = (a.cats['AJUSTES PAREJA']||0) - resto; }
-      if (fijos.has(m.categoria)) a.fijos -= m.mio;
+      sumar(m.categoria || 'Sin categoría', -m.mio);
+      if (m.compensar && m.tipo === 'Gasto') { const resto = m.importe - m.mio; a.gasto -= resto; sumar(ajustes, -resto); }
       if (m.ambito==='Trabajo') a.gasT -= m.mio;
-    } else if (m.tipo === 'Inversion') { a.inv -= m.mio; const c = m.categoria || 'SIN CATEGORÍA'; a.invCats[c] = (a.invCats[c]||0) - m.mio; }
+    } else if (m.tipo === 'Inversion') { a.inv -= m.mio; const c = m.categoria || 'Sin categoría'; a.invCats[c] = (a.invCats[c]||0) - m.mio; }
   }
   a.beneficio = a.ingresos - a.gasto; a.caja = a.beneficio - a.inv; a.tasa = a.ingresos ? a.beneficio/a.ingresos : null;
+  a.pctNoEss = (a.ess + a.noess) > 0 ? a.noess / (a.ess + a.noess) : null;
   return a;
 }
 function periodoLabel() { return state.desde === state.hasta ? mesLargo(state.desde) : mesLabel(state.desde) + ' – ' + mesLabel(state.hasta) + (state.ambito !== 'Todo' ? ' · ' + state.ambito : ''); }
@@ -515,7 +516,7 @@ function render() {
 
   const t = [
     ['Ingresos', sel.ingresos, 'blue', `${fmt(sel.ingresos/n)} / mes ` + delta(sel.ingresos, 'ingresos')],
-    ['Gasto neto', sel.gasto, 'orange', `${fmt(sel.gasto/n)} / mes ` + delta(sel.gasto, 'gasto')],
+    ['Gasto neto', sel.gasto, 'orange', `${fmt(sel.gasto/n)} / mes · no esencial ${pct(sel.pctNoEss)} ` + delta(sel.gasto, 'gasto')],
     ['Beneficio', sel.beneficio, sel.beneficio >= 0 ? 'aqua' : 'orange', `ingresos − gasto · tasa ${pct(sel.tasa)} · ${fmt(sel.beneficio/n)} / mes`],
     ['Invertido', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes · aportaciones netas`],
     ['Variación de caja', sel.caja, 'yellow', 'beneficio − invertido: lo que sube o baja tu dinero en cuentas'],
@@ -585,55 +586,67 @@ function donut(el, legendEl, items, onClick) {
   const tot = items.reduce((a, it) => a + it[1], 0);
   if (!tot) { el.innerHTML = ''; legendEl.innerHTML = '<p class="muted">Sin datos</p>'; return; }
   const top = items.slice(0, 7); const otros = items.slice(7).reduce((a, it) => a + it[1], 0);
-  if (otros > 0) top.push(['Otros', otros]);
+  if (otros > 0) top.push(['Resto', otros]);
   const R = 80, r = 52, C = 90; let a0 = -Math.PI/2, s = `<svg viewBox="0 0 180 180" role="img">`;
   top.forEach((it, i) => {
     const frac = it[1]/tot, a1 = a0 + frac*2*Math.PI, big = frac > .5 ? 1 : 0;
     const p = (ang, rad) => [C + rad*Math.cos(ang), C + rad*Math.sin(ang)];
     const [x0,y0] = p(a0,R), [x1,y1] = p(a1,R), [x2,y2] = p(a1,r), [x3,y3] = p(a0,r);
-    const col = it[0] === 'Otros' ? 'var(--s9)' : SERIES[i % SERIES.length];
+    const col = it[0] === 'Resto' ? 'var(--s9)' : SERIES[i % SERIES.length];
     s += `<path class="bar" data-tip="${it[0]}|${fmt2(it[1])} · ${Math.round(frac*100)} %" d="M${x0},${y0} A${R},${R} 0 ${big} 1 ${x1},${y1} L${x2},${y2} A${r},${r} 0 ${big} 0 ${x3},${y3} Z" fill="${col}" stroke="var(--surface)" stroke-width="2"/>`;
     a0 = a1;
   });
   s += `<text x="${C}" y="${C-4}" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--text)">${fmt(tot)}</text><text x="${C}" y="${C+12}" text-anchor="middle" class="axis">total</text></svg>`;
   el.innerHTML = s; hoverTips(el);
-  legendEl.innerHTML = top.map((it, i) => `<div data-name="${it[0]}"><span><i style="background:${it[0]==='Otros'?'var(--s9)':SERIES[i % SERIES.length]}"></i>${it[0]}</span><b>${fmt(it[1])}</b><span class="p">${Math.round(it[1]/tot*100)} %</span></div>`).join('');
+  legendEl.innerHTML = top.map((it, i) => `<div data-name="${it[0]}"><span><i style="background:${it[0]==='Resto'?'var(--s9)':SERIES[i % SERIES.length]}"></i>${it[0]}</span><b>${fmt(it[1])}</b><span class="p">${Math.round(it[1]/tot*100)} %</span></div>`).join('');
   legendEl.onclick = e => { const d = e.target.closest('div[data-name]'); if (d && onClick) onClick(d.dataset.name); };
 }
 function renderDonut(sel, periodo) {
-  $('donutTitle').textContent = 'En qué se va el dinero · ' + periodo;
-  const items = Object.entries(sel.cats).filter(([c,v]) => v > 0 && c !== 'REEMBOLSOS').sort((a,b) => b[1]-a[1]);
-  donut($('donutGasto'), $('donutLegend'), items, name => { if (name !== 'Otros') { state.evoCat = name; $('evoCat').value = name; renderEvo(); $('chartEvo').scrollIntoView({behavior:'smooth', block:'center'}); } });
+  const g = state.donutGrupo;
+  $('donutTitle').textContent = (g ? g : 'En qué se va el dinero') + ' · ' + periodo;
+  $('donutBack').hidden = !g;
+  $('donutHint').textContent = g ? 'Subcategorías del grupo. Clic en una para ver su evolución mes a mes.' : 'Reparto del gasto por grupo en el periodo. Clic en un grupo para ver sus subcategorías.';
+  const reembG = grupoDe((D.roles || {}).reembolsos);
+  const items = g ? Object.entries(sel.cats).filter(([c,v]) => v > 0 && grupoDe(c) === g).sort((a,b) => b[1]-a[1])
+                  : Object.entries(sel.grupos).filter(([c,v]) => v > 0 && c !== reembG).sort((a,b) => b[1]-a[1]);
+  donut($('donutGasto'), $('donutLegend'), items, name => {
+    if (name === 'Resto') return;
+    if (!g) { state.donutGrupo = name; renderDonut(sel, periodo); state.evoCat = 'g:' + name; renderEvo(); return; }
+    state.evoCat = name; renderEvo(); $('chartEvo').scrollIntoView({behavior:'smooth', block:'center'});
+  });
 }
 function renderCats(sel, periodo) {
-  $('catsTitle').textContent = 'Gasto por categoría · ' + periodo;
-  const cats = Object.entries(sel.cats).sort((a,b) => b[1]-a[1]);
-  const max = Math.max(...cats.map(c => Math.abs(c[1])), 1);
-  const fijos = new Set(D.categorias.filter(c => c.fijo).map(c => c.nombre));
-  $('cats').innerHTML = cats.map(([c,v]) => `<div class="row" data-cat="${c}"><span class="name">${c}${fijos.has(c)?'<small>fijo</small>':''}</span><div class="track"><div class="fill ${v<0?'neg':''}" style="width:${Math.abs(v)/max*100}%"></div></div><span class="num">${fmt(v)}</span></div>`).join('') || '<p class="muted">Sin gastos</p>';
+  $('catsTitle').textContent = 'Gasto por grupo · ' + periodo;
+  const grupos = Object.entries(sel.grupos).sort((a,b) => b[1]-a[1]);
+  const max = Math.max(...grupos.map(c => Math.abs(c[1])), 1);
+  const tag = g => { const x = (D.grupos || []).find(z => z.nombre === g); return x && x.esencial === false ? '<small>no esencial</small>' : ''; };
+  $('cats').innerHTML = grupos.map(([g,v]) => `<div class="row" data-cat="g:${g}" style="font-weight:650"><span class="name">${g}${tag(g)}</span><div class="track"><div class="fill ${v<0?'neg':''}" style="width:${Math.abs(v)/max*100}%"></div></div><span class="num">${fmt(v)}</span></div>`
+    + Object.entries(sel.cats).filter(([c]) => grupoDe(c) === g).sort((a,b) => b[1]-a[1]).map(([c,w]) => `<div class="row" data-cat="${c}" style="font-size:12px"><span class="name muted" style="padding-left:14px">${c}</span><div class="track" style="height:8px"><div class="fill ${w<0?'neg':''}" style="width:${Math.abs(w)/max*100}%;opacity:.55"></div></div><span class="num muted">${fmt(w)}</span></div>`).join('')).join('') || '<p class="muted">Sin gastos</p>';
   $('cats').onclick = e => { const r = e.target.closest('.row'); if (r) { state.cat = r.dataset.cat; $('fcat').value = state.cat; renderTable(); showView('movimientos'); } };
 }
 function renderEvo() {
-  const gastoCats = D.categorias.filter(c => c.tipo === 'Gasto' || c.tipo === 'Reembolso').map(c => c.nombre);
-  const usadas = new Set(D.movimientos.filter(m => m.mes.startsWith(state.year)).map(m => m.categoria));
-  const opts = ['<option value="">todo el gasto neto</option>'].concat(gastoCats.filter(c => usadas.has(c)).map(c => `<option value="${c}" ${c===state.evoCat?'selected':''}>${c}</option>`));
-  $('evoCat').innerHTML = opts.join('');
+  $('evoCat').innerHTML = '<option value="">todo el gasto neto</option>' + optsCategorias(state.evoCat, true);
   const meses = mesesAnio();
-  const rowsY = base(m => m.mes.startsWith(state.year) && (m.tipo === 'Gasto' || m.tipo === 'Reembolso') && (!state.evoCat || (m.categoria || 'SIN CATEGORÍA') === state.evoCat));
+  const rowsY = base(m => m.mes.startsWith(state.year) && (m.tipo === 'Gasto' || m.tipo === 'Reembolso') && matchCat(m, state.evoCat));
   const pm = meses.map(mes => ({ mes, v: -rowsY.filter(m => m.mes === mes).reduce((a, m) => a + m.mio, 0) }));
   const enP = pm.filter(enPeriodo); const media = enP.length ? enP.reduce((a,p) => a + p.v, 0)/enP.length : 0;
   const tot = enP.reduce((a,p) => a + p.v, 0);
   const ing = agg(base()).ingresos;
   $('evoHint').textContent = `${periodoLabel()}: ${fmt(tot)} en total, ${fmt(media)} al mes` + (ing ? ` (${Math.round(tot/ing*100)} % de los ingresos)` : '') + `. Barras atenuadas = fuera del periodo.`;
-  barChart($('chartEvo'), pm, [{key:'v', color:'var(--seq)', label: state.evoCat || 'Gasto neto'}], {media, h: 200});
+  barChart($('chartEvo'), pm, [{key:'v', color:'var(--seq)', label: (state.evoCat || 'Gasto neto').replace(/^g:/, '')}], {media, h: 200});
 }
 function renderFijos(sel, n) {
-  const variables = sel.gasto - sel.fijos;
-  $('fijos').innerHTML = `<span>Gastos fijos</span><b>${fmt(sel.fijos)} · ${fmt(sel.fijos/n)}/mes</b><span>Gastos variables</span><b>${fmt(variables)} · ${fmt(variables/n)}/mes</b><span>Reembolsos recibidos (ya restados)</span><b>${fmt(sel.reemb)}</b><span>Gasto bruto antes de reembolsos</span><b>${fmt(sel.bruto)}</b><span>Fijos sobre ingresos</span><b>${sel.ingresos ? Math.round(sel.fijos/sel.ingresos*100) + ' %' : '–'}</b>`;
+  const noEss = (D.grupos || []).filter(g => g.esencial === false).map(g => [g.nombre, sel.grupos[g.nombre] || 0]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]);
+  $('fijos').innerHTML = `<span>Esencial</span><b>${fmt(sel.ess)} · ${fmt(sel.ess/n)}/mes</b>
+    <span>No esencial</span><b>${fmt(sel.noess)} · ${fmt(sel.noess/n)}/mes · ${pct(sel.pctNoEss)}</b>
+    ${noEss.map(([g, v]) => `<span class="muted" style="padding-left:12px">${g}</span><b class="muted">${fmt(v)} · ${fmt(v/n)}/mes</b>`).join('')}
+    <span>Otros (ajustes con ${PAREJA}, efectivo, imprevistos)</span><b>${fmt(sel.otros)}</b>
+    <span>Reembolsos recibidos (ya restados)</span><b>${fmt(sel.reemb)}</b>
+    <span>Esencial sobre ingresos</span><b>${sel.ingresos ? Math.round(sel.ess/sel.ingresos*100) + ' %' : '–'}</b>`;
 }
 function renderInversiones(pm, sel, periodo, rowsP) {
   const cats = Object.keys(sel.invCats).length ? Object.keys(sel.invCats) : [];
-  const allCats = [...new Set(D.movimientos.filter(m => m.tipo === 'Inversion').map(m => m.categoria || 'SIN CATEGORÍA'))].sort();
+  const allCats = [...new Set(D.movimientos.filter(m => m.tipo === 'Inversion').map(m => m.categoria || 'Sin categoría'))].sort();
   const n = Math.max(new Set(rowsP.map(m => m.mes)).size, 1);
   const t = [['Aportado', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes`]].concat(allCats.map((c, i) => [c, sel.invCats[c] || 0, '', sel.inv ? Math.round((sel.invCats[c]||0)/sel.inv*100) + ' % de lo aportado' : '']));
   $('tilesInv').innerHTML = t.map(([l,v,c,s]) => `<div class="tile ${c}"><div class="lbl">${l} · ${periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
@@ -702,12 +715,12 @@ function renderTable() {
   let rows = D.movimientos.filter(m => enPeriodo(m)
     && (state.ambito === 'Todo' || m.ambito === state.ambito)
     && (!state.cuenta || m.cuenta === state.cuenta)
-    && (!state.cat || (m.categoria || 'SIN CATEGORÍA') === state.cat)
+    && matchCat(m, state.cat)
     && (!state.tipo || m.tipo === state.tipo)
     && (!state.q || m.concepto.toLowerCase().includes(state.q) || (m.categoria||'').toLowerCase().includes(state.q)));
   rows.sort((a,b) => b.fecha.localeCompare(a.fecha) || b.id - a.id);
-  $('nmov').textContent = rows.length + ' · ' + periodoLabel() + (state.cat ? ' · ' + state.cat : '');
-  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}</td><td>${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.slice(0,58)}</td><td>${m.cuenta === 'Histórico' ? (m.categoria || '–') : selCat(m)}</td><td><span class="pill">${m.tipo || '?'}</span> ${m.cuenta === 'Histórico' ? '' : ambBtn(m)}</td><td class="n ${m.importe<0?'':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
+  $('nmov').textContent = rows.length + ' · ' + periodoLabel() + (state.cat ? ' · ' + state.cat.replace(/^g:/, '') : '');
+  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}</td><td>${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.slice(0,58)}</td><td><small class="muted">${m.categoria ? grupoDe(m.categoria) : ''}</small><br>${m.cuenta === 'Histórico' ? (m.categoria || '–') : selCat(m)}</td><td><span class="pill">${m.tipo || '?'}</span> ${m.cuenta === 'Histórico' ? '' : ambBtn(m)}</td><td class="n ${m.importe<0?'':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
     + (rows.length > 600 ? `<tr><td colspan="8" class="muted">… ${rows.length-600} más. Filtra para verlos.</td></tr>` : '');
 }
 </script>

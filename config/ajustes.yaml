@@ -4,9 +4,19 @@
   concepto: "Mitad del alquiler de junio (lo pagó Kate entero; se liquidó por Tricount)"
   importe: -600
   tipo: Gasto
-  categoria: ALQUILER
+  categoria: Alquiler
 - fecha: 2026-06-30
   concepto: "Compensación: la mitad del alquiler de junio ya está dentro de los ajustes con Kate"
   importe: 600
   tipo: Gasto
-  categoria: AJUSTES PAREJA
+  categoria: Ajustes con Kate
+- fecha: 2026-09-30
+  concepto: "Libros pagados en efectivo (septiembre)"
+  importe: -20
+  tipo: Gasto
+  categoria: Libros
+- fecha: 2026-09-30
+  concepto: "Compensación: esos 20 € salieron del efectivo ya contado al sacarlo del cajero"
+  importe: 20
+  tipo: Gasto
+  categoria: Efectivo

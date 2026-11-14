@@ -1632,7 +1632,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,revisado
 2026-09-29,Trade Republic,"[Operar] Buy trade US30303M1027 META PLATF. A DL-,000006, quantity: 0.158353",-101.0,-101.0,Inversion,Inversiones,Acciones,Personal,auto
 2026-09-30,BBVA,Adeudo de cuota de la seguridad social | N 2026271002702848 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
-2026-09-30,Conjunta,[Transfer] To Diana Aracil Diana,-80.0,-40.0,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
+2026-09-30,Conjunta,[Transfer] To Diana Aracil Diana,-80.0,-40.0,Gasto,Salud y deporte,Psicología,Personal,revisado
 2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
 2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
 2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
@@ -1671,7 +1671,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-11,Conjunta,[Card Payment] Bolt,-10.5,-5.25,Gasto,Transporte,Uber y taxi,Personal,auto
 2026-10-12,Conjunta,[Card Payment] Lidl,-77.39,-38.7,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-12,Trade Republic,"[Transferencia] Incoming transfer from FIDELIO, SLU (AD3700010000419001600100)",3651.71,3651.71,Ingreso,Ingresos,Trabajo,Trabajo,auto
-2026-10-12,Trade Republic,[Transferencia] Outgoing transfer for Kateryna Soltuchenko (ES2615860001472321062211),-1250.0,-1250.0,Gasto,Otros,Ajustes con Kate,Personal,pendiente
+2026-10-12,Trade Republic,[Transferencia] Outgoing transfer for Kateryna Soltuchenko (ES2615860001472321062211),-1250.0,-1250.0,Gasto,Formación,Mentoría y cursos,Personal,revisado
 2026-10-13,Conjunta,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-10-14,Conjunta,[Topup] Apple Pay top-up by *5233,150.0,150.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-10-14,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,150.0,150.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
@@ -1731,7 +1731,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-30,BBVA,Adeudo de cuota de la seguridad social | N 2026301001494998 TGSS. COTIZACION 005 R.E.AUTONOMOS,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
 2026-10-30,Conjunta,[Topup] Apple Pay top-up by *5233,200.0,200.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-10-30,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,200.0,200.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
-2026-10-30,Conjunta,[Transfer] To Diana Aracil Diana · Ref: Joan y Kate,-360.0,-180.0,Gasto,Ocio y vida social,Citas y pareja,Personal,auto
+2026-10-30,Conjunta,[Transfer] To Diana Aracil Diana · Ref: Joan y Kate,-360.0,-180.0,Gasto,Salud y deporte,Psicología,Personal,revisado
 2026-10-30,Revolut,[Card Payment] [B]-bar,-3.5,-3.5,Gasto,Hábitos diarios,Café,Personal,auto
 2026-10-30,Trade Republic,"[Operar] Buy trade US67066G1040 NVIDIA CORP. DL-,001, quantity: 0.551146",-101.0,-101.0,Inversion,Inversiones,Acciones,Personal,auto
 2026-10-31,Conjunta,[Card Payment] Alcampo,-46.11,-23.05,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1758,16 +1758,16 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-11-05,Conjunta,[Card Payment] Supermercats Sapa,-2.03,-1.01,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-11-05,Conjunta,[Card Payment] Mercadona,-25.94,-12.97,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-11-05,Conjunta,[Card Payment] Pastisseria Rosell,-1.5,-0.75,Gasto,Hábitos diarios,Café,Personal,auto
-2026-11-05,Conjunta,[Card Payment] La Placita,-30.8,-15.4,Gasto,,,Personal,pendiente
+2026-11-05,Conjunta,[Card Payment] La Placita,-30.8,-15.4,Gasto,Hábitos diarios,Açaí y brunch,Personal,revisado
 2026-11-05,Revolut,[Transfer] Bizum payment to: Kateryna S. · Ref: Andorra compras,-16.58,-16.58,Gasto,Otros,Ajustes con Kate,Personal,auto
-2026-11-06,BBVA,Transferencia recibida | De eva maria lopez trujillo,25.0,25.0,Reembolso,Reembolsos,Reembolsos,Personal,auto
+2026-11-06,BBVA,Transferencia recibida | De eva maria lopez trujillo,25.0,25.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
 2026-11-07,Conjunta,[Card Payment] Mercadona,-23.74,-11.87,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-11-07,Trade Republic,[Transacción con tarjeta] eToro EU LTD,-200.0,-200.0,Inversion,Inversiones,Acciones,Personal,pendiente
+2026-11-07,Trade Republic,[Transacción con tarjeta] eToro EU LTD,-200.0,-200.0,Inversion,Inversiones,Acciones,Personal,revisado
 2026-11-08,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-11-08,Conjunta,[Card Payment] Alcampo,-16.02,-8.01,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-11-08,Conjunta,[Card Payment] Alcampo,-65.81,-32.91,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-11-08,Trade Republic,[Transacción con tarjeta] LA LLAR DEL POLLASTRE,-18.52,-18.52,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-11-09,BBVA,Transferencia recibida | De eva maria lopez trujillo,25.0,25.0,Reembolso,Reembolsos,Reembolsos,Personal,auto
+2026-11-09,BBVA,Transferencia recibida | De eva maria lopez trujillo,25.0,25.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
 2026-11-09,Trade Republic,[Transacción con tarjeta] HOTMART,-19.9,-19.9,Gasto,Formación,Mentoría y cursos,Personal,auto
 2026-11-09,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 14.134275",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-11-09,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-20.99,-20.99,Gasto,Suscripciones,Streaming de vídeo,Trabajo,auto
@@ -1777,8 +1777,8 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-11-11,Conjunta,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-11,Conjunta,[Topup] Apple Pay top-up by *5233,600.0,600.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-11,Conjunta,[Card Payment] Primaprix,-6.4,-3.2,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-11-11,Trade Republic,[Transferencia] Outgoing transfer for Kateryna Soltuchenko (ES2615860001472321062211),-1250.0,-1250.0,Gasto,Otros,Ajustes con Kate,Personal,pendiente
-2026-11-12,Conjunta,[Transfer] To Kateryna Soltuchenko,-600.0,-300.0,Gasto,Otros,Ajustes con Kate,Personal,pendiente
+2026-11-11,Trade Republic,[Transferencia] Outgoing transfer for Kateryna Soltuchenko (ES2615860001472321062211),-1250.0,-1250.0,Gasto,Formación,Mentoría y cursos,Personal,revisado
+2026-11-12,Conjunta,[Transfer] To Kateryna Soltuchenko,-600.0,-300.0,Traspaso,Traspasos,Aportación de Kate,Personal,revisado
 2026-11-12,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-600.0,-600.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-12,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-12,Trade Republic,"[Operar] Buy trade US67066G1040 NVIDIA CORP. DL-,001, quantity: 2.707825",-401.05,-401.05,Inversion,Inversiones,Acciones,Personal,auto

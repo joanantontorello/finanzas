@@ -18,6 +18,7 @@
 - {id: tr_to_joan,         cuenta: Trade Republic, match: "Outgoing transfer for Joan Anton",                        tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: a BBVA}
 - {id: bbva_from_joan,     cuenta: BBVA,     match: "Transferencia recibida \\| Joan anton",                         tipo: Traspaso, categoria: "Traspaso entre cuentas"}
 - {id: bbva_t_trimestre,   cuenta: BBVA,     match: "Transferencia recibida \\| T\\d ",                               tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: dinero que te pasas desde Trade Republic para pagar el IRPF trimestral}
+- {id: madre,              match: "eva maria lopez|Eva Maria Lopez|EVA MARIA LOPEZ",                               tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: "dinero de tu madre a devolver (o devuelto): no cuenta"}
 - {id: bbva_regalo,        cuenta: BBVA,     match: "Transferencia recibida \\| Regalo",                                tipo: Ingreso, categoria: "Otros ingresos"}
 - {id: bbva_transfer_propia, cuenta: BBVA,   match: "Transferencia recibida", signo: "+", min: 200,                      tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: "transferencia grande a BBVA: tuya, para impuestos"}
 - {id: bbva_transfer_in,   cuenta: BBVA,     match: "Transferencia recibida", signo: "+",                                 tipo: Reembolso, categoria: "Reembolsos"}
@@ -37,7 +38,7 @@
 - {id: rev_chargeback,     cuenta: [Revolut, Conjunta], match: "^\\[Card Chargeback\\]",                             tipo: Gasto, categoria: "Herramientas de trabajo", ambito: Trabajo, nota: devolución Higgsfield}
 
 # ---------------------------------------------------------------- 4. Inversiones (Trade Republic)
-- {id: etoro,              match: "eToro|ETORO",                                                                     tipo: Inversion, categoria: "Acciones", estado: pendiente, nota: "aportación a eToro: ¿acciones, ETF o cripto?"}
+- {id: etoro,              match: "eToro|ETORO",                                                                     tipo: Inversion, categoria: "Acciones", nota: aportación a eToro}
 - {id: tr_crypto,          cuenta: Trade Republic, match: "\\[Operar\\] (Buy|Sell) trade XF000",                    tipo: Inversion, categoria: "Criptomonedas"}
 - {id: tr_etf,             cuenta: Trade Republic, match: "\\[Operar\\] .*(UCITS|ETF|Savings plan)",                 tipo: Inversion, categoria: "Fondos indexados y ETF"}
 - {id: tr_acciones,        cuenta: Trade Republic, match: "\\[Operar\\] (Buy|Sell) trade ",                          tipo: Inversion, categoria: "Acciones"}
@@ -83,7 +84,7 @@
 - {"id": "auto_raw_a_a", "match": "Raw\\ Açaí", "tipo": "Gasto", "categoria": "Açaí y brunch", "ambito": "Personal", "nota": "aprendida de la corrección #1123"}
 - {"id": "auto_brownie", "match": "Brownie", "tipo": "Gasto", "categoria": "Citas y pareja", "ambito": "Personal", "nota": "aprendida de la corrección #1583"}
 - {"id": "auto_the_cookie_lab", "match": "The\\ Cookie\\ Lab", "tipo": "Gasto", "categoria": "Restaurantes", "ambito": "Personal", "nota": "aprendida de la corrección #1589"}
-- {"id": "auto_to_diana_aracil", "match": "To\\ Diana\\ Aracil", "tipo": "Gasto", "categoria": "Citas y pareja", "ambito": "Personal", "nota": "aprendida de la corrección #1599"}
+- {"id": "auto_to_diana_aracil", "match": "To\\ Diana\\ Aracil", "tipo": "Gasto", "categoria": "Psicología", "ambito": "Personal", "nota": "aprendida de la corrección #1599"}
 - {"id": "auto_samba_global_fuencarra", "match": "Samba\\ Global\\ Fuencarra", "tipo": "Gasto", "categoria": "Restaurantes", "ambito": "Personal", "nota": "aprendida de la corrección #1607"}
 - {"id": "auto_sp_hbada_eu", "match": "SP\\ HBADA\\ EU", "tipo": "Gasto", "categoria": "Herramientas de trabajo", "ambito": "Trabajo", "nota": "aprendida de la corrección #1622"}
 - {"id": "auto_bizum_payment_to_marina_h_l", "match": "Bizum\\ payment\\ to:\\ MARINA\\.H\\.L\\.", "tipo": "Gasto", "categoria": "Comida y gastos en destino", "ambito": "Personal", "nota": "aprendida de la corrección #984"}
@@ -95,6 +96,7 @@
 - {"id": "auto_bizum_payment_to_noelia_m_j", "match": "Bizum\\ payment\\ to:\\ Noelia\\ M\\.J\\.", "tipo": "Gasto", "categoria": "Psicología", "ambito": "Personal", "nota": "aprendida de la corrección #860"}
 
 # ---------------------------------------------------------------- 7. Viajes (por fechas: Sri Lanka 11 jul - 6 ago 2026) y comercios de viaje
+- {id: la_placita,         match: "La Placita",                                                                     tipo: Gasto, categoria: "Açaí y brunch"}
 - {id: alojamiento,        match: "Hostel|HOSTEL|Holiday Homes|Guest In|Airbnb|AIRBNB|Booking\\.com|BOOKING\\.COM|ESQUIADES|Resort|Cabanas", tipo: Gasto, categoria: "Alojamiento"}
 - {id: viaje_srilanka_rev, cuenta: [Revolut, Conjunta, Trade Republic], desde: "2026-07-11", hasta: "2026-08-06", match: ".*", signo: "-", tipo: Gasto, categoria: "Comida y gastos en destino", nota: Sri Lanka}
 - {id: viaje_srilanka_bbva, cuenta: BBVA, match: "no eur|Com\\. ret\\. efec",                                         tipo: Gasto, categoria: "Comida y gastos en destino", nota: cajeros Sri Lanka (las reversiones netean)}

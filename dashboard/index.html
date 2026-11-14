@@ -36,16 +36,30 @@
   nav { background: var(--surface); padding: 22px 14px; position: sticky; top: 0; height: 100vh; min-width: 0; }
   nav h1 { font-size: 20px; margin: 0 6px 4px; letter-spacing: -0.01em; }
   nav .meta { color: var(--text-3); font-size: 11px; margin: 0 6px 18px; }
-  nav a { display: block; padding: 9px 12px; border-radius: 10px; color: var(--text-2); text-decoration: none; cursor: pointer; font-weight: 500; }
+  nav a { display: flex; align-items: center; gap: 11px; position: relative; padding: 9px 12px; border-radius: 10px; color: var(--text-2); text-decoration: none; cursor: pointer; font-weight: 500; }
   nav a.on { background: var(--tint-blue); color: var(--text); font-weight: 650; }
-  nav a small { float: right; background: var(--tint-yellow); color: var(--text); border-radius: 999px; padding: 0 7px; font-size: 11px; }
+  nav a small { margin-left: auto; background: var(--tint-yellow); color: var(--text); border-radius: 999px; padding: 0 7px; font-size: 11px; }
   nav .tok { font-size: 11px; color: var(--text-3); margin: 24px 6px 0; }
   nav .tok a { display: inline; padding: 0; color: var(--s1); }
   main { padding: 20px 22px 80px; min-width: 0; }
+  .layout { transition: grid-template-columns .2s ease; }
+  nav .navhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+  nav .navhead h1 { margin: 0 6px; }
+  nav svg, .navtoggle svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  button.navtoggle { border: 0; background: none; color: var(--text-3); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: grid; place-items: center; padding: 0; }
+  button.navtoggle:hover { background: var(--surface-2); color: var(--text); }
+  @media (min-width: 861px) {
+    body.nav-min { --side: 68px; }
+    body.nav-min nav { padding: 18px 10px; }
+    body.nav-min nav h1, body.nav-min nav .meta, body.nav-min nav .tok, body.nav-min nav a .txt { display: none; }
+    body.nav-min nav .navhead { justify-content: center; margin-bottom: 14px; }
+    body.nav-min nav a { justify-content: center; padding: 11px 0; }
+    body.nav-min nav a small { position: absolute; top: 3px; right: 6px; padding: 0 5px; font-size: 10px; }
+  }
   @media (max-width: 860px) {
     .layout { grid-template-columns: 1fr; }
     nav { position: sticky; top: 0; z-index: 6; height: auto; padding: 8px 12px; box-shadow: 0 1px 0 var(--surface-3); }
-    nav h1, nav .meta, nav .tok { display: none; }
+    nav .navhead, nav .meta, nav .tok { display: none; }
     nav .links { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
     nav a { white-space: nowrap; padding: 10px 14px; }
     main { padding: 16px 16px 80px; }
@@ -135,6 +149,13 @@
   table.fin tr[data-exp].open td:first-child::before { content: '▾ '; }
   .fin-note { font-size: 12px; color: var(--text-3); margin-top: 10px; line-height: 1.5; }
   .mt { margin-top: 14px; }
+  img.logo, span.logo { width: 24px; height: 24px; border-radius: 7px; flex: none; background: #fff; object-fit: contain; padding: 2px; }
+  span.logo { display: inline-grid; place-items: center; background: var(--surface-3); color: var(--text-2); font-size: 11px; font-weight: 700; padding: 0; }
+  img.logo.sm, span.logo.sm { width: 16px; height: 16px; border-radius: 4px; padding: 1px; vertical-align: -3px; margin-right: 7px; }
+  .act { display: flex; align-items: center; gap: 10px; } .act b { font-weight: 600; } .act small { display: block; color: var(--text-3); font-size: 11px; }
+  #tbodyInv tr:nth-child(even) td, #tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--text) 3.5%, transparent); }
+  #tbodyInv td { padding: 9px 10px; vertical-align: middle; }
+  .dd-op img.logo.sm { margin-right: 8px; }
   /* luz: las marcas de los gráficos brillan con su propio color */
   svg .bar:hover { filter: url(#glow) brightness(1.08); }
   svg .hit:hover { fill: color-mix(in srgb, var(--text) 5%, transparent); }
@@ -201,16 +222,16 @@
 <body>
 <div class="layout">
   <nav>
-    <h1>Finanzas</h1>
+    <div class="navhead"><h1>Finanzas</h1><button class="navtoggle" id="navToggle" aria-label="Plegar menú" title="Plegar menú"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M9 3v18"/></svg></button></div>
     <div class="meta" id="meta"></div>
     <div class="links">
-    <a href="#dashboard" data-view="dashboard" class="on">Dashboard</a>
-    <a href="#estados" data-view="estados">Estados financieros</a>
-    <a href="#presupuesto" data-view="presupuesto">Presupuesto</a>
-    <a href="#inversiones" data-view="inversiones">Inversiones</a>
-    <a href="#cuentas" data-view="cuentas">Estado de cuentas</a>
-    <a href="#movimientos" data-view="movimientos">Movimientos</a>
-    <a href="#pendientes" data-view="pendientes">Pendientes <small id="npend"></small></a>
+    <a href="#dashboard" data-view="dashboard" title="Dashboard" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="txt">Dashboard</span></a>
+    <a href="#estados" data-view="estados" title="Estados financieros"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 16v-4M12.5 16V8M17 16v-6"/></svg><span class="txt">Estados financieros</span></a>
+    <a href="#presupuesto" data-view="presupuesto" title="Presupuesto"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span class="txt">Presupuesto</span></a>
+    <a href="#inversiones" data-view="inversiones" title="Inversiones"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span class="txt">Inversiones</span></a>
+    <a href="#cuentas" data-view="cuentas" title="Estado de cuentas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V11M9.5 21V11M14.5 21V11M19 21V11"/><path d="M2.5 9L12 3.5 21.5 9z"/></svg><span class="txt">Estado de cuentas</span></a>
+    <a href="#movimientos" data-view="movimientos" title="Movimientos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3L4 7l4 4"/><path d="M4 7h16"/><path d="M16 21l4-4-4-4"/><path d="M20 17H4"/></svg><span class="txt">Movimientos</span></a>
+    <a href="#pendientes" data-view="pendientes" title="Pendientes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></svg><span class="txt">Pendientes</span> <small id="npend"></small></a>
     </div>
     <div class="tok" id="tok"></div>
   </nav>
@@ -330,7 +351,7 @@
       </div>
       <div class="card mt">
         <h2>Operaciones</h2>
-        <div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Concepto</th><th>Tipo</th><th style="text-align:right">Importe</th></tr></thead><tbody id="tbodyInv"></tbody></table></div>
+        <div class="tablewrap"><table><thead><tr><th>Fecha</th><th style="text-align:right">Importe</th><th>Tipo</th><th>Concepto</th></tr></thead><tbody id="tbodyInv"></tbody></table></div>
       </div>
     </section>
 
@@ -395,6 +416,7 @@
 <div class="savebar" id="savebar"><span id="savemsg"></span><button class="sec" id="discard">Descartar</button><button id="save">Guardar en GitHub</button></div>
 
 <script>
+try { if (localStorage.getItem('navMin')) document.body.classList.add('nav-min'); } catch (e) {}
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const MESES_L = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 // de-DE agrupa también los miles de 4 cifras (2.173 €); es-ES no lo hace
@@ -575,8 +597,8 @@ function init() {
   $('hasta').onchange = e => { state.hasta = e.target.value; if (state.hasta < state.desde) state.desde = state.hasta; seg('quick', ''); render(); };
   $('ambitos').onclick = e => { if (e.target.dataset.v) { state.ambito = e.target.dataset.v; seg('ambitos', state.ambito); render(); } };
   const cuentas = [...new Set(D.movimientos.map(m => m.cuenta))].filter(c => c !== 'Ajustes').sort();
-  $('cuenta').innerHTML += cuentas.map(c => `<option value="${c}">${c === 'Histórico' ? 'Hoja antigua (2025)' : c}</option>`).join('');
-  $('cuenta').onchange = e => { state.cuenta = e.target.value; render(); };
+  $('cuenta').innerHTML += cuentas.map(c => `<option value="${c}" ${BANCO[c] ? `data-logo="${LOGO(BANCO[c])}"` : ''}>${c === 'Histórico' ? 'Hoja antigua (2025)' : c}</option>`).join('');
+  $('cuenta').onchange = e => { state.cuenta = e.target.value; logoSelect(e.target); render(); };
   $('fcat').innerHTML += optsCategorias('', false);
   $('donutBack').onclick = () => { state.donutGrupo = null; state.evoCats = []; renderDonut(agg(base()), periodoLabel()); renderEvo(); };
   $('fcat').onchange = e => { state.cat = e.target.value; renderTable(); };
@@ -586,6 +608,7 @@ function init() {
   $('evoCat').onclick = e => { if (dd && dd.sel === e.currentTarget) cerrarDD(); else abrirMultiCat(e.currentTarget); };
   document.querySelectorAll('nav a[data-view]').forEach(a => a.onclick = e => { e.preventDefault(); showView(a.dataset.view); });
   $('meta').textContent = 'Actualizado ' + D.generado;
+  $('navToggle').onclick = () => setNavMin(!document.body.classList.contains('nav-min'));
   $('defs').textContent = D.definiciones;
   $('save').onclick = guardar;
   $('discard').onclick = () => location.reload();
@@ -665,8 +688,8 @@ function render() {
   const t = [
     ['Ingresos', sel.ingresos, 'blue', `${fmt(sel.ingresos/n)} / mes ` + delta(sel.ingresos, 'ingresos')],
     ['Gasto neto', sel.gasto, 'orange', `${fmt(sel.gasto/n)} / mes · no esencial ${pct(sel.pctNoEss)} ` + delta(sel.gasto, 'gasto')],
+    ['Invertido', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes · compras menos ventas de inversiones. No cuenta como gasto: sale del beneficio (lo que te queda tras los gastos)`],
     ['Beneficio', sel.beneficio, sel.beneficio >= 0 ? 'aqua' : 'orange', `ingresos − gasto · tasa ${pct(sel.tasa)} · ${fmt(sel.beneficio/n)} / mes`],
-    ['Invertido', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes · aportaciones netas`],
     ['Variación de caja', sel.caja, 'yellow', 'beneficio − invertido: lo que sube o baja tu dinero en cuentas'],
     ['Beneficio trabajo', sel.ingT - sel.gasT, 'gray', `sueldo ${fmt(sel.ingT)} − gastos ${fmt(sel.gasT)}`],
     ['Saldo en cuentas hoy', D.saldo_total, 'pink', 'último extracto de cada cuenta, conjunta al 50 %', true],
@@ -819,18 +842,19 @@ function renderFijos(sel, n) {
 }
 function renderInversiones(pm, sel, periodo, rowsP) {
   const allCats = [...new Set(D.movimientos.filter(m => m.tipo === 'Inversion').map(m => m.categoria || 'Sin categoría'))].sort();
-  const INV_COL = ['var(--s7)', 'var(--s1)', 'var(--s4)', 'var(--s10)', 'var(--s5)'];
+  const INV_COL = ['var(--s1)', 'var(--s4)', 'var(--s3)', 'var(--s10)', 'var(--s5)'];  // Acciones, Cripto, Fondos, Inmuebles
   const colInv = c => INV_COL[Math.max(0, allCats.indexOf(c)) % INV_COL.length];  // mismo color en barras y donut
   const n = Math.max(new Set(rowsP.map(m => m.mes)).size, 1);
   const t = [['Aportado', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes`]].concat(allCats.map(c => [c, sel.invCats[c] || 0, '', sel.inv ? Math.round((sel.invCats[c]||0)/sel.inv*100) + ' % de lo aportado' : '']));
-  $('tilesInv').innerHTML = t.map(([l,v,c,s], i) => tileHTML(l, v, c || ['violet', 'blue', 'yellow', 'aqua', 'orange'][i % 5], s, periodo)).join(''); hoverTips($('tilesInv'));
+  $('tilesInv').innerHTML = t.map(([l,v,c,s], i) => tileHTML(l, v, c || colInv(l), s, periodo)).join(''); hoverTips($('tilesInv'));
   const series = allCats.map(c => ({ key: 'ic_' + c, color: colInv(c), label: c }));
   const pmi = pm.map(p => { const o = { mes: p.mes }; allCats.forEach(c => o['ic_' + c] = p.invCats[c] || 0); return o; });
   $('invLegend').innerHTML = series.map(s => `<span data-s="${s.label}"><i style="background:${s.color}"></i>${s.label}</span>`).join('');
   barChart($('chartInv'), pmi, series, {});
   donut($('donutInv'), $('donutInvLegend'), Object.entries(sel.invCats).filter(([c,v]) => v > 0).sort((a,b) => b[1]-a[1]), null, colInv);
   const ops = rowsP.filter(m => m.tipo === 'Inversion').sort((a,b) => b.fecha.localeCompare(a.fecha));
-  $('tbodyInv').innerHTML = ops.map(m => `<tr><td>${m.fecha}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,70)}</td><td>${m.categoria || '–'}</td><td class="n ${m.importe>0?'pos':''}">${fmt2(m.importe)}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sin operaciones en el periodo</td></tr>';
+  $('tbodyInv').innerHTML = ops.map(m => { const a = activo(m), col = colInv(m.categoria || 'Sin categoría');
+    return `<tr><td>${m.fecha}</td><td class="n ${m.importe>0?'pos':''}">${fmt2(m.importe)}</td><td><span class="pill" style="background:color-mix(in srgb, ${col} 24%, transparent);color:var(--text)">${m.categoria || '–'}</span></td><td title="${m.concepto.replace(/"/g,'&quot;')}"><div class="act">${logoImg(a.dom, a.nombre)}<div><b>${a.nombre}</b><small>${a.detalle}</small></div></div></td></tr>`; }).join('') || '<tr><td colspan="4" class="muted">Sin operaciones en el periodo</td></tr>';
 }
 function renderConjunta() {
   $('conjTitle').textContent = 'Cuenta conjunta' + (D.perfil && D.perfil.pareja_nombre ? ' con ' + D.perfil.pareja_nombre : '');
@@ -1024,7 +1048,8 @@ document.addEventListener('click', e => {
 const esc = t => String(t).replace(/<[^>]+>/g, '').replace(/"/g, '&quot;').replace(/\s+/g, ' ').trim();
 function tileHTML(l, v, c, desc, periodo) {
   const info = (periodo ? periodo + '. ' : '') + esc(desc);
-  return `<div class="tile ${c}"><div class="lbl"><span>${l}</span><button class="info" data-tip="${esc(l)}|${info}" aria-label="Qué es ${esc(l)}: ${info}">i</button></div><div class="val">${fmt(v)}</div></div>`;
+  const css = c.startsWith('var(');
+  return `<div class="tile ${css ? '' : c}"${css ? ` style="--c:${c}"` : ''}><div class="lbl"><span>${l}</span><button class="info" data-tip="${esc(l)}|${info}" aria-label="Qué es ${esc(l)}: ${info}">i</button></div><div class="val">${fmt(v)}</div></div>`;
 }
 document.addEventListener('focusin', e => { if (e.target.matches('button.info')) { const r = e.target.getBoundingClientRect(); mostrarTip(e.target.dataset.tip, r.left, r.bottom + 8); } });
 document.addEventListener('focusout', e => { if (e.target.matches('button.info')) $('tip').style.opacity = 0; });
@@ -1051,7 +1076,7 @@ function abrirDD(sel) {
   cerrarDD();
   const el = document.createElement('div'); el.className = 'dd'; el.setAttribute('role', 'listbox');
   const items = []; let h = '';
-  const op = o => { items.push(o); const on = o.value === sel.value; return `<div class="dd-op ${on ? 'on' : ''}" role="option" aria-selected="${on}" data-i="${items.length - 1}">${o.textContent.replace(/</g, '&lt;')}</div>`; };
+  const op = o => { items.push(o); const on = o.value === sel.value; return `<div class="dd-op ${on ? 'on' : ''}" role="option" aria-selected="${on}" data-i="${items.length - 1}">${o.dataset.logo ? `<img class="logo sm" src="${o.dataset.logo}" alt="">` : ''}${o.textContent.replace(/</g, '&lt;')}</div>`; };
   for (const ch of sel.children) h += ch.tagName === 'OPTGROUP' ? `<div class="dd-g">${ch.label}</div>` + [...ch.children].map(op).join('') : op(ch);
   el.innerHTML = (items.length > 14 ? '<input class="dd-q" placeholder="Buscar…" aria-label="Buscar">' : '') + `<div class="dd-list">${h}</div>`;
   document.body.appendChild(el);
@@ -1126,6 +1151,44 @@ function abrirMultiCat(btn) {
     el.querySelectorAll('.dd-g').forEach(g => { const todo = t && g.textContent.toLowerCase().includes(t); let n = g.nextElementSibling, vis = false; while (n && n.classList.contains('dd-op')) { if (todo) n.hidden = false; if (!n.hidden) vis = true; n = n.nextElementSibling; } g.hidden = !vis; });  // si el texto coincide con el grupo, se ve el grupo entero
   };
 }
+
+// ---- logos: bancos y activos (el icono lo sirve el servicio de favicons de Google a partir del dominio)
+const LOGO = d => `https://www.google.com/s2/favicons?domain=${d}&sz=64`;
+const BANCO = { 'Revolut': 'revolut.com', 'Conjunta': 'revolut.com', 'BBVA': 'bbva.es', 'Trade Republic': 'traderepublic.com' };
+// ISIN → [nombre, dominio]. Si compras un valor nuevo, añádelo aquí.
+const ACTIVOS = { CA6445351068: ['New Gold', 'newgold.com'], US0231351067: ['Amazon', 'amazon.com'], US1921085049: ['Coeur Mining', 'coeur.com'], US30303M1027: ['Meta', 'meta.com'],
+  US4581401001: ['Intel', 'intel.com'], US5801351017: ["McDonald's", 'mcdonalds.com'], US67066G1040: ['NVIDIA', 'nvidia.com'], XF000BTC0017: ['Bitcoin', 'bitcoin.org'], XF000ETH0019: ['Ethereum', 'ethereum.org'],
+  IE00BK5BQT80: ['Vanguard FTSE All-World', 'vanguard.com'], LU1681045370: ['Amundi MSCI Emerging Markets', 'amundi.com'], LU0290358497: ['Xtrackers EUR Overnight Rate', 'xtrackers.com'] };
+function logoImg(dom, nombre, cls) {
+  if (!dom) return cls ? '' : `<span class="logo">${(nombre || '?').replace(/[^A-Za-zÀ-ÿ0-9]/g, '').charAt(0).toUpperCase()}</span>`;
+  return `<img class="logo ${cls || ''}" src="${LOGO(dom)}" alt="" loading="lazy">`;
+}
+function activo(m) {
+  const c = m.concepto.replace(/^\[[^\]]+\]\s*/, '');
+  if (/histórico/i.test(c)) return { nombre: 'Aportación de 2025', dom: null, detalle: 'hoja antigua · ' + (m.categoria || '').toLowerCase() };
+  if (/etoro/i.test(c)) return { nombre: 'eToro', dom: 'etoro.com', detalle: 'ingreso en la cuenta de eToro' };
+  const isin = (c.match(/\b([A-Z]{2}[A-Z0-9]{9}\d)\b/) || [])[1];
+  const qty = (c.match(/quantity: ([\d.]+)/) || [])[1];
+  const op = /^Sell/i.test(c) ? 'Venta' : /^Savings plan/i.test(c) ? 'Plan de ahorro' : /^Buy/i.test(c) ? 'Compra' : '';
+  const [nombre, dom] = ACTIVOS[isin] || [c.replace(/^(Buy|Sell) trade |^Savings plan execution /i, '').replace(/,? ?quantity:.*$/, '').replace(isin || '', '').trim().slice(0, 48), null];
+  const cant = qty ? (+qty).toLocaleString('es-ES', { maximumFractionDigits: 4 }) + (m.categoria === 'Criptomonedas' ? '' : ' uds.') : '';
+  return { nombre, dom, detalle: [op, cant, isin].filter(Boolean).join(' · ') };
+}
+const CHEV = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a8985' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`;
+function logoSelect(sel) {
+  const o = sel.selectedOptions[0], lg = o && o.dataset.logo;
+  sel.style.backgroundImage = lg ? `url("${lg}"), ${CHEV}` : '';
+  sel.style.backgroundPosition = lg ? 'left 12px center, right 12px center' : '';
+  sel.style.backgroundSize = lg ? '16px 16px, auto' : '';
+  sel.style.paddingLeft = lg ? '36px' : '';
+}
+// ---- menú lateral plegable (solo iconos); se recuerda en este navegador
+function setNavMin(on) {
+  document.body.classList.toggle('nav-min', on);
+  try { localStorage.setItem('navMin', on ? '1' : ''); } catch (e) {}
+  const b = $('navToggle'); b.title = b.ariaLabel = on ? 'Desplegar menú' : 'Plegar menú';
+  setTimeout(() => D && render(), 230);  // los gráficos se redibujan al nuevo ancho
+}
 const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 function fechaLarga(f) { const d = new Date(f + 'T12:00:00'); return DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES_L[d.getMonth()].toLowerCase() + ' ' + d.getFullYear(); }
 function renderPend() {
@@ -1163,7 +1226,7 @@ function renderDeudas() {
 }
 function renderCuentas() {
   renderDeudas();
-  $('cuentas').innerHTML = D.cuentas.map(c => `<span>${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('') + `<span style="margin-top:6px"><b>Total (conjunta al 50 %)</b></span><b style="margin-top:6px">${fmt2(D.saldo_total)}</b>`;
+  $('cuentas').innerHTML = D.cuentas.map(c => `<span>${logoImg(BANCO[c.cuenta], c.cuenta, 'sm')}${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('') + `<span style="margin-top:6px"><b>Total (conjunta al 50 %)</b></span><b style="margin-top:6px">${fmt2(D.saldo_total)}</b>`;
 }
 function renderTable() {
   let rows = D.movimientos.filter(m => enPeriodo(m)
@@ -1174,7 +1237,7 @@ function renderTable() {
     && (!state.q || m.concepto.toLowerCase().includes(state.q) || (m.categoria||'').toLowerCase().includes(state.q)));
   rows.sort((a,b) => b.fecha.localeCompare(a.fecha) || b.id - a.id);
   $('nmov').textContent = rows.length + ' · ' + periodoLabel() + (state.cat ? ' · ' + state.cat.replace(/^g:/, '') : '') + ' · tu parte ' + fmt(rows.reduce((t, m) => t + m.mio, 0));
-  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}<span class="mcta"> · ${m.cuenta}</span></td><td>${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,50)}</td><td><small class="muted">${m.categoria ? grupoDe(m.categoria) : ''}</small><br>${m.cuenta === 'Histórico' ? (m.categoria || '–') : selCat(m)}</td><td><span class="pill">${m.tipo || '?'}</span> ${m.cuenta === 'Histórico' ? '' : ambBtn(m)}</td><td class="n ${m.importe<0?'':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
+  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}<span class="mcta"> · ${m.cuenta}</span></td><td>${logoImg(BANCO[m.cuenta], m.cuenta, 'sm')}${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,50)}</td><td><small class="muted">${m.categoria ? grupoDe(m.categoria) : ''}</small><br>${m.cuenta === 'Histórico' ? (m.categoria || '–') : selCat(m)}</td><td><span class="pill">${m.tipo || '?'}</span> ${m.cuenta === 'Histórico' ? '' : ambBtn(m)}</td><td class="n ${m.importe<0?'':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
     + (rows.length > 600 ? `<tr><td colspan="8" class="muted">… ${rows.length-600} más. Filtra para verlos.</td></tr>` : '');
 }
 </script>

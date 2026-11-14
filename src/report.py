@@ -22,6 +22,7 @@ import yaml
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from db import connect, ROOT  # noqa: E402
 import cats as catsmod  # noqa: E402
+import estados  # noqa: E402
 
 FLAT, GRUPOS, ROLES = catsmod.cargar(ROOT)
 
@@ -187,6 +188,7 @@ def main():
         "deudas_calendario": deudas_calendario,
         "saldo_total": r2(saldo_total),
         "conjunta": conjunta,
+        "estados": estados.calcular(rows, FLAT, ROLES, ROOT),
         "pendientes": pend,
         "movimientos": movs,
     }

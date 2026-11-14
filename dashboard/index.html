@@ -102,6 +102,23 @@
   .savebar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; display: none; gap: 12px; align-items: center; z-index: 20; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
   .savebar button { border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; cursor: pointer; background: var(--s1); color: #fff; font-weight: 600; } .savebar button.sec { background: transparent; color: var(--bg); }
   .view { display: none; } .view.on { display: block; }
+  .fin-wrap { overflow-x: auto; }
+  table.fin { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+  table.fin th, table.fin td { padding: 9px 10px; border-top: 1px solid var(--surface-2); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  table.fin th:first-child, table.fin td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); z-index: 1; min-width: 210px; }
+  table.fin thead th { color: var(--text-2); font-weight: 600; font-size: 12px; vertical-align: bottom; }
+  table.fin thead th small { display: block; color: var(--text-3); font-weight: 400; }
+  table.fin tr.main td { background: var(--tint-blue); font-weight: 650; }
+  table.fin tr.main td:first-child { background: var(--tint-blue); }
+  table.fin tr.sub td { color: var(--text-2); font-size: 12px; }
+  table.fin tr.sub td:first-child { padding-left: 28px; }
+  table.fin tr.pct td { color: var(--text-3); font-size: 12px; }
+  table.fin td .g { display: block; font-size: 11px; font-weight: 500; }
+  table.fin td .g.up { color: var(--good); } table.fin td .g.down { color: var(--bad); }
+  table.fin tr[data-exp] td:first-child { cursor: pointer; }
+  table.fin tr[data-exp] td:first-child::before { content: '▸ '; color: var(--text-3); }
+  table.fin tr[data-exp].open td:first-child::before { content: '▾ '; }
+  .fin-note { font-size: 12px; color: var(--text-3); margin-top: 10px; line-height: 1.5; }
   .mt { margin-top: 14px; }
 </style>
 </head>
@@ -111,6 +128,7 @@
     <h1>Finanzas</h1>
     <div class="meta" id="meta"></div>
     <a data-view="dashboard" class="on">Dashboard</a>
+    <a data-view="estados">Estados financieros</a>
     <a data-view="presupuesto">Presupuesto</a>
     <a data-view="inversiones">Inversiones</a>
     <a data-view="cuentas">Estado de cuentas</a>
@@ -119,7 +137,7 @@
     <div class="tok" id="tok"></div>
   </nav>
   <main>
-    <div class="bar-top">
+    <div class="bar-top" id="filtros">
       <div class="seg" id="years"></div>
       <span class="periodo">de <select id="desde"></select> a <select id="hasta"></select></span>
       <div class="seg" id="quick"><button data-q="anio">Año</button><button data-q="ultimo">Último mes</button><button data-q="3m">3 meses</button></div>
@@ -166,6 +184,22 @@
           <div class="hint">Dónde están las fugas: el gasto no esencial es el que puedes recortar. Otros y reembolsos quedan fuera del porcentaje.</div>
           <div class="kv" id="fijos"></div>
         </div>
+      </div>
+    </section>
+
+    <!-- ================= ESTADOS FINANCIEROS -->
+    <section class="view" id="v-estados">
+      <div class="bar-top" style="margin-top:-4px">
+        <div class="seg" id="finTab"><button data-v="resultados" class="on">Cuenta de resultados</button><button data-v="balance">Balance</button><button data-v="flujo">Flujo de caja</button></div>
+        <div class="seg" id="finGran"><button data-v="anual">Anual</button><button data-v="trimestral" class="on">Trimestral</button><button data-v="mensual">Mensual</button></div>
+      </div>
+      <div class="card">
+        <div class="legend" id="finLegend"></div>
+        <div id="finChart"></div>
+      </div>
+      <div class="card mt">
+        <div class="fin-wrap"><table class="fin" id="finTable"></table></div>
+        <div class="fin-note" id="finNote"></div>
       </div>
     </section>
 
@@ -461,7 +495,7 @@ function init() {
   setPeriodo('anio');
 }
 function seg(id, v) { [...$(id).children].forEach(b => b.classList.toggle('on', b.dataset.v === v || b.dataset.q === v)); }
-function showView(v) { state.view = v; document.querySelectorAll('nav a[data-view]').forEach(a => a.classList.toggle('on', a.dataset.view === v)); document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v)); window.scrollTo(0, 0); }
+function showView(v) { state.view = v; document.querySelectorAll('nav a[data-view]').forEach(a => a.classList.toggle('on', a.dataset.view === v)); document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v)); $('filtros').style.display = v === 'estados' ? 'none' : ''; window.scrollTo(0, 0); }
 function mesesAnio() { return [...new Set(D.movimientos.filter(m => m.mes.startsWith(state.year) && m.tipo !== 'Traspaso').map(m => m.mes))].sort(); }
 function setPeriodo(q) {
   const ms = mesesAnio();
@@ -537,6 +571,7 @@ function render() {
   renderCuentas();
   renderTable();
   renderPresupuesto();
+  renderEstados();
 }
 
 // ---- gráficos
@@ -672,6 +707,112 @@ function renderConjunta() {
     <span class="muted" style="grid-column:1/-1;margin-top:6px">Por mes (tú / ${PAREJA} / gasto)</span>
     ${meses.map(([m,v]) => `<span>${mesLabel(m)}</span><b class="muted">${fmt(v.yo)} / ${fmt(v.pareja)} / ${fmt(v.gasto)}</b>`).join('')}`;
 }
+
+// ---- estados financieros (cuenta de resultados, balance, flujo de caja) por año, trimestre o mes
+const FIN = { tab: 'resultados', gran: 'trimestral', open: {} };
+const FIN_DEF = {
+  resultados: {
+    serie: [['ingresos', 'Ingresos', 'var(--s1)'], ['margen_bruto', 'Margen bruto', 'var(--s3)'], ['operativo', 'Resultado operativo', 'var(--s2)'], ['antes_impuestos', 'Antes de impuestos', 'var(--s7)'], ['neto', 'Beneficio neto', 'var(--s4)']],
+    filas: [
+      { k: 'ingresos', l: 'Ingresos', main: 1, exp: 'ingresos|' },
+      { k: 'esencial', l: 'Coste de vida esencial', neg: 1, exp: 'esencial|' },
+      { k: 'margen_bruto', l: 'Margen bruto', main: 1 },
+      { k: 'margen_bruto_pct', l: 'Margen bruto sobre ingresos', pct: 1 },
+      { k: 'noesencial', l: 'Gasto no esencial', neg: 1, exp: 'noesencial|' },
+      { k: 'operativo', l: 'Resultado operativo', main: 1 },
+      { k: 'operativo_pct', l: 'Margen operativo', pct: 1 },
+      { k: 'extra', l: 'Extraordinarios (Otros y reembolsos)', exp: 'extra|' },
+      { k: 'antes_impuestos', l: 'Resultado antes de impuestos', main: 1 },
+      { k: 'impuestos', l: 'Impuestos', neg: 1, exp: 'impuestos|' },
+      { k: 'neto', l: 'Beneficio neto', main: 1 },
+      { k: 'neto_pct', l: 'Tasa de ahorro', pct: 1 },
+    ],
+    nota: 'Criterio de caja: cada movimiento cuenta en el periodo en que se cobra o se paga, en tu parte (la conjunta al 50 %). El beneficio neto es el mismo que el Beneficio del dashboard. Coste esencial = vivienda, salud y deporte, transporte, gestoría y herramientas. No esencial = hábitos, ocio, viajes, suscripciones y formación.',
+  },
+  balance: {
+    serie: [['activos', 'Total activos', 'var(--s1)'], ['pasivos', 'Total pasivos', 'var(--s3)'], ['patrimonio', 'Patrimonio neto', 'var(--s7)']],
+    filas: [
+      { k: 'activos', l: 'Total activos', main: 1 },
+      { k: 'caja', l: 'Caja en bancos', sub: 1, exp: 'activos|caja' },
+      { k: 'hucha', l: 'Huchas de ahorro Revolut', sub: 1 },
+      { k: 'inversiones', l: 'Inversiones (a precio de compra)', sub: 1 },
+      { k: 'pasivos', l: 'Total pasivos', main: 1, malo: 1 },
+      { k: 'deuda_hacienda', l: 'Deuda con Hacienda pendiente', sub: 1 },
+      { k: 'a_devolver', l: 'Dinero recibido a devolver', sub: 1 },
+      { k: 'patrimonio', l: 'Patrimonio neto', main: 1 },
+    ],
+    nota: 'Foto al cierre de cada periodo. Caja = último saldo de cada cuenta (conjunta al 50 %); solo existe desde enero de 2026, antes la hoja no guardaba saldos. Inversiones a precio de compra y solo lo aportado desde 2025: no es el valor de mercado ni incluye lo que tuvieras antes. Pasivos = plazos pendientes de los fraccionamientos de Hacienda y el dinero de tu madre a devolver.',
+  },
+  flujo: {
+    serie: [['operativo', 'Flujo operativo', 'var(--s1)'], ['inversion', 'Flujo de inversión', 'var(--s3)'], ['financiacion', 'Flujo de financiación', 'var(--s2)']],
+    filas: [
+      { k: 'operativo', l: 'Flujo operativo', main: 1 },
+      { k: 'inversion', l: 'Flujo de inversión', main: 1, exp: 'inversion|', neutro: 1 },
+      { k: 'financiacion', l: 'Flujo de financiación', main: 1, neutro: 1 },
+      { k: 'variacion', l: 'Variación de caja', main: 1 },
+      { k: 'inversion_pct', l: 'Invertido sobre ingresos', pct: 1 },
+    ],
+    nota: 'Operativo = beneficio neto más los plazos de deuda (que aquí van como financiación). Inversión = compras menos ventas de activos (negativo = has invertido). Financiación = plazos de Hacienda pagados. Variación de caja = la suma: cuánto sube o baja tu dinero en cuentas.',
+  },
+};
+function finFmt(v) { if (v == null) return '–'; const a = Math.abs(v); const t = a >= 10000 ? (a / 1000).toLocaleString('es-ES', { maximumFractionDigits: 1 }) + 'k €' : fmt(a); return (v < 0 ? '−' : '') + t.replace('-', ''); }
+function renderEstados() {
+  const E = D.estados; if (!E) return;
+  const def = FIN_DEF[FIN.tab];
+  const cuantos = { anual: 99, trimestral: 8, mensual: 12 }[FIN.gran];
+  const lista = (E[FIN.gran] || []).filter(e => FIN.tab !== 'balance' || e.balance.caja_conocida).slice(-cuantos);
+  const val = (e, k) => FIN.tab === 'resultados' ? e.resultados[k] : FIN.tab === 'flujo' ? e.flujo[k] : e.balance[k];
+  // gráfico
+  $('finLegend').innerHTML = def.serie.map(([k, l, c]) => `<span><i style="background:${c}"></i>${l}</span>`).join('');
+  finChart($('finChart'), lista.map(e => e.etiqueta + (e.en_curso ? '*' : '')), def.serie.map(([k, l, c]) => ({ label: l, color: c, vals: lista.map(e => val(e, k)) })));
+  // tabla
+  let h = `<thead><tr><th>${FIN.tab === 'balance' ? 'Al cierre de' : 'Periodo'}<small>Euros · tu parte</small></th>` + lista.map(e => `<th>${e.etiqueta}<small>${e.en_curso ? 'en curso' : e.historico ? 'hoja antigua' : ''}</small></th>`).join('') + '</tr></thead><tbody>';
+  for (const f of def.filas) {
+    const vals = lista.map(e => val(e, f.k));
+    if (vals.every(v => v == null || v === 0) && !f.main) continue;
+    const cls = f.main ? 'main' : f.pct ? 'pct' : f.sub ? 'sub' : '';
+    h += `<tr class="${cls} ${f.exp && FIN.open[f.exp] ? 'open' : ''}" ${f.exp ? `data-exp="${f.exp}"` : ''}><td>${f.l}</td>` + vals.map((v, i) => {
+      if (f.pct) return `<td>${v == null ? '–' : Math.round(v) + ' %'}</td>`;
+      const shown = v == null ? null : (f.neg ? -v : v);
+      let g = '';
+      if (f.main && !f.neutro && i > 0 && v != null && vals[i - 1]) { const d = (v - vals[i - 1]) / Math.abs(vals[i - 1]); const bueno = f.malo ? d < 0 : d > 0; g = `<span class="g ${bueno ? 'up' : 'down'}">${d > 0 ? '+' : '−'}${Math.abs(Math.round(d * 100))} %</span>`; }
+      return `<td>${finFmt(shown)}${g}</td>`;
+    }).join('') + '</tr>';
+    if (f.exp && FIN.open[f.exp]) {
+      const keys = new Set(); lista.forEach(e => Object.keys(val(e, f.exp) || {}).forEach(x => keys.add(x)));
+      const tot = k => lista.reduce((t, e) => t + Math.abs((val(e, f.exp) || {})[k] || 0), 0);
+      [...keys].sort((a, b) => tot(b) - tot(a)).forEach(k => {
+        h += `<tr class="sub"><td>${k}</td>` + lista.map(e => { const v = (val(e, f.exp) || {})[k]; return `<td>${v == null ? '–' : finFmt(f.neg ? -v : v)}</td>`; }).join('') + '</tr>';
+      });
+    }
+  }
+  $('finTable').innerHTML = h + '</tbody>';
+  $('finNote').textContent = def.nota + ' Incluye todo (personal y trabajo, todas las cuentas). * = periodo en curso.';
+}
+function finChart(el, labels, series) {
+  if (!labels.length) { el.innerHTML = '<p class="muted">Sin datos</p>'; return; }
+  const W = 760, H = 260, padL = 54, padB = 28, padT = 12;
+  const all = series.flatMap(s => s.vals.filter(v => v != null));
+  const hi = Math.max(0, ...all, 1), lo = Math.min(0, ...all);
+  const step = niceStep(Math.max(hi, -lo)); const top = Math.ceil(hi / step) * step, bot = Math.floor(lo / step) * step;
+  const y = v => padT + (H - padT - padB) * (1 - (v - bot) / (top - bot || 1));
+  const gw = (W - padL) / labels.length, k = series.length, bw = Math.max(4, Math.min(22, (gw - 14) / k - 2));
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Estados financieros">`;
+  for (let v = bot; v <= top + 1e-9; v += step) s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL - 6}" y="${y(v) + 4}" text-anchor="end">${fmtK(v)}</text>`;
+  labels.forEach((lab, i) => {
+    const x0 = padL + i * gw + (gw - k * bw - (k - 1) * 2) / 2;
+    series.forEach((se, j) => { const v = se.vals[i]; if (v == null) return;
+      s += `<rect class="bar" data-tip="${lab}|${se.label}: ${fmt2(v)}" x="${x0 + j * (bw + 2)}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.max(1, Math.abs(y(v) - y(0)))}" rx="2" fill="${se.color}"/>`; });
+    s += `<text class="axis" x="${padL + i * gw + gw / 2}" y="${H - 8}" text-anchor="middle">${lab}</text>`;
+  });
+  if (lo < 0) s += `<line x1="${padL}" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--text-3)" stroke-width="1"/>`;
+  el.innerHTML = s + '</svg>'; hoverTips(el);
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('#finTab button'); if (t) { FIN.tab = t.dataset.v; seg('finTab', FIN.tab); renderEstados(); return; }
+  const g = e.target.closest('#finGran button'); if (g) { FIN.gran = g.dataset.v; seg('finGran', FIN.gran); renderEstados(); return; }
+  const r = e.target.closest('#finTable tr[data-exp]'); if (r) { FIN.open[r.dataset.exp] = !FIN.open[r.dataset.exp]; renderEstados(); }
+});
 const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 function fechaLarga(f) { const d = new Date(f + 'T12:00:00'); return DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES_L[d.getMonth()].toLowerCase() + ' ' + d.getFullYear(); }
 function renderPend() {

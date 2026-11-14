@@ -18,10 +18,12 @@ Gasto:
     esencial: true
     ambito: Trabajo
     sub: [Cuota de autónomos, IRPF e IVA trimestral, Gestoría, Herramientas de trabajo]
+    roles: {Cuota de autónomos: impuesto, IRPF e IVA trimestral: impuesto}
   Préstamos y deudas:
     esencial: true
     sub: [Deuda Hacienda, Financiaciones, Otras deudas]
     ambito_sub: {Deuda Hacienda: Trabajo}
+    roles: {Deuda Hacienda: deuda}
   Hábitos diarios:
     esencial: false
     sub: [Café, Açaí y brunch, Comida a domicilio]

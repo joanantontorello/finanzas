@@ -107,7 +107,7 @@
   .pill.pendiente { background: var(--tint-yellow); color: var(--text); }
   .tablewrap { overflow: auto; max-height: 70vh; }
   .tfilters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; } .tfilters input { min-width: 200px; }
-  .tip { position: fixed; pointer-events: none; background: var(--text); color: var(--bg); padding: 8px 10px; border-radius: 8px; font-size: 12px; opacity: 0; transition: opacity .08s; z-index: 40; white-space: normal; max-width: 280px; line-height: 1.4; box-shadow: 0 8px 28px rgba(0,0,0,.35); } .tip b { display: block; margin-bottom: 2px; }
+  .tip { position: fixed; pointer-events: none; background: var(--surface-3); color: var(--text); padding: 8px 10px; border-radius: 8px; font-size: 12px; opacity: 0; transition: opacity .08s; z-index: 40; white-space: normal; max-width: 280px; line-height: 1.4; box-shadow: 0 8px 28px rgba(0,0,0,.35); } .tip b { display: block; margin-bottom: 2px; }
   .muted { color: var(--text-3); } .defs { font-size: 12px; color: var(--text-3); white-space: pre-line; margin-top: 8px; }
   .up { color: var(--good); } .down { color: var(--bad); }
   select.edit { padding: 3px 6px; border-radius: 6px; font-size: 12px; max-width: 170px; } select.edit.changed { background-color: var(--tint-yellow); }
@@ -137,6 +137,7 @@
   .mt { margin-top: 14px; }
   /* luz: las marcas de los gráficos brillan con su propio color */
   svg .bar:hover { filter: url(#glow) brightness(1.08); }
+  svg .hit:hover { fill: color-mix(in srgb, var(--text) 5%, transparent); }
   [data-s] { transition: opacity .15s, filter .15s; }
   .apagado { opacity: .1 !important; filter: none !important; }
   .encendido { filter: url(#glow) brightness(1.1) !important; }
@@ -847,7 +848,7 @@ function renderConjunta() {
 }
 
 // ---- estados financieros (cuenta de resultados, balance, flujo de caja) por año, trimestre o mes, al estilo de TradingView
-const FIN = { tab: 'resultados', gran: 'trimestral', open: {}, sel: null, vista: '', off: { resultados: new Set(), balance: new Set(), flujo: new Set() } };
+const FIN = { tab: 'resultados', gran: 'trimestral', open: {}, sel: null, vista: '', off: { resultados: new Set(), balance: new Set(['patrimonio']), flujo: new Set() } };
 const FIN_DEF = {
   resultados: {
     serie: [{ k: 'ingresos', l: 'Ingresos', c: 'var(--tv1)' }, { k: 'margen_bruto', l: 'Margen bruto', c: 'var(--tv2)' }, { k: 'operativo', l: 'Resultado operativo', c: 'var(--tv3)' }, { k: 'antes_impuestos', l: 'Antes de impuestos', c: 'var(--tv4)' }, { k: 'neto', l: 'Beneficio neto', c: 'var(--tv5)' }],
@@ -868,13 +869,13 @@ const FIN_DEF = {
     nota: 'Criterio de caja: cada movimiento cuenta en el periodo en que se cobra o se paga, en tu parte (la conjunta al 50 %). El beneficio neto es el mismo que el Beneficio del dashboard. Coste esencial = vivienda, salud y deporte, transporte, gestoría y herramientas. No esencial = hábitos, ocio, viajes, suscripciones y formación.',
   },
   balance: {
-    serie: [{ k: 'caja', l: 'Caja', c: 'var(--tv1)', t: 'stack' }, { k: 'hucha', l: 'Huchas', c: 'var(--tv2)', t: 'stack' }, { k: 'inversiones', l: 'Inversiones', c: 'var(--tv4)', t: 'stack' }, { k: 'pasivos', l: 'Pasivos (en negativo)', c: 'var(--tv3)', t: 'stack', neg: 1 }, { k: 'patrimonio', l: 'Patrimonio neto', c: 'var(--tv5)', t: 'line' }],
+    serie: [{ k: 'activos', l: 'Total activos', c: 'var(--tv1)' }, { k: 'pasivos', l: 'Total pasivos', c: 'var(--tv2)' }, { k: 'patrimonio', l: 'Patrimonio neto', c: 'var(--tv5)' }],
     filas: [
       { k: 'activos', l: 'Total activos', main: 1, a: 'var(--tv1)' },
       { k: 'caja', l: 'Caja en bancos', sub: 1, exp: 'activos|caja' },
       { k: 'hucha', l: 'Huchas de ahorro Revolut', sub: 1 },
       { k: 'inversiones', l: 'Inversiones (a precio de compra)', sub: 1 },
-      { k: 'pasivos', l: 'Total pasivos', main: 1, malo: 1, a: 'var(--tv3)' },
+      { k: 'pasivos', l: 'Total pasivos', main: 1, malo: 1, a: 'var(--tv2)' },
       { k: 'deuda_hacienda', l: 'Deuda con Hacienda pendiente', sub: 1 },
       { k: 'a_devolver', l: 'Dinero recibido a devolver', sub: 1 },
       { k: 'patrimonio', l: 'Patrimonio neto', main: 1, a: 'var(--tv5)' },
@@ -961,18 +962,20 @@ function finChart(el, lista, series) {
   lista.forEach((_, i) => { let p = 0, n = 0; stack.forEach(x => { const v = x.vals[i] || 0; if (v > 0) p += v; else n += v; }); ext.push(p, n); });
   const { y, ticks, lo } = escala(ext, H, padT, padB);
   const slots = bars.length + (stack.length ? 1 : 0) || 1;
-  const gw = (W - padL) / lista.length, bw = Math.max(4, Math.min(bars.length ? 24 : 44, (gw - (narrow ? 6 : 14)) / slots - 2));
+  const gw = (W - padL) / lista.length, bw = Math.max(4, Math.min(bars.length > 2 ? 24 : 44, (gw - (narrow ? 6 : 14)) / slots - 2));
   const paso = gw < 44 ? Math.ceil(44 / gw) : 1;
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${vis.map(x => x.label).join(', ')} por periodo">`;
   ticks.forEach(v => s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL - 6}" y="${y(v) + 4}" text-anchor="end">${fmtK(v)}</text>`);
   lista.forEach((e, i) => {
     const lab = e.etiqueta + (e.en_curso ? '*' : ''), cx = padL + i * gw + gw / 2, x0 = cx - (slots * bw + (slots - 1) * 2) / 2;
+    const tipP = lab + '|' + vis.filter(se => se.vals[i] != null).map(se => `<span style='display:flex;justify-content:space-between;gap:14px'><span><i style='display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:${se.color}'></i>${se.label}</span><b style='display:inline;margin:0'>${fmt(se.vals[i])}</b></span>`).join('');
+    s += `<rect class="hit" data-p="${e.periodo}" data-tip="${tipP}" x="${padL + i * gw}" y="${padT}" width="${gw}" height="${H - padT - padB}" fill="transparent"/>`;
     if (FIN.tab === 'resultados' && e.periodo === FIN.sel) s += `<rect x="${padL + i * gw + 2}" y="${padT}" width="${gw - 4}" height="${H - padT - padB}" rx="6" fill="var(--surface-2)"/>`;
     bars.forEach((se, j) => { const v = se.vals[i]; if (v == null) return;
-      s += `<rect class="bar" data-s="${se.label}" data-p="${e.periodo}" data-tip="${lab}|${se.label}: ${fmt2(v)}" x="${x0 + j * (bw + 2)}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.max(1, Math.abs(y(v) - y(0)))}" rx="2" fill="${se.color}"/>`; });
+      s += `<rect class="bar" data-s="${se.label}" data-p="${e.periodo}" data-tip="${tipP}" x="${x0 + j * (bw + 2)}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.max(1, Math.abs(y(v) - y(0)))}" rx="2" fill="${se.color}"/>`; });
     if (stack.length) { const x = x0 + bars.length * (bw + 2); let p = 0, n = 0;
       stack.forEach(se => { const v = se.vals[i]; if (!v) return; const a = v > 0 ? p : n, b = a + v; if (v > 0) p = b; else n = b;
-        s += `<rect class="bar" data-s="${se.label}" data-p="${e.periodo}" data-tip="${lab}|${se.label}: ${fmt2(v)}" x="${x}" y="${Math.min(y(a), y(b))}" width="${bw}" height="${Math.max(1, Math.abs(y(a) - y(b)))}" fill="${se.color}" stroke="var(--surface)" stroke-width="1"/>`; }); }
+        s += `<rect class="bar" data-s="${se.label}" data-p="${e.periodo}" data-tip="${tipP}" x="${x}" y="${Math.min(y(a), y(b))}" width="${bw}" height="${Math.max(1, Math.abs(y(a) - y(b)))}" fill="${se.color}" stroke="var(--surface)" stroke-width="1"/>`; }); }
     if ((lista.length - 1 - i) % paso === 0) s += `<text class="axis" x="${cx}" y="${H - 8}" text-anchor="middle">${lab}</text>`;
   });
   if (lo < 0) s += `<line x1="${padL}" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--text-3)" stroke-width="1"/>`;

@@ -175,7 +175,7 @@ def calcular(rows, flat, roles, root, hoy=None):
         return {
             "activos": r2(activos), "caja": r2(caja), "activos|caja": detalle_caja, "hucha": r2(hucha), "inversiones": r2(inv),
             "pasivos": r2(pasivos), "deuda_hacienda": r2(deuda), "a_devolver": r2(max(devolver, 0)),
-            "patrimonio": r2(activos - pasivos) if activos is not None else None, "caja_conocida": "Revolut" in detalle_caja,  # antes de tener saldos de la cuenta principal el balance no es fiable
+            "patrimonio": r2(activos - pasivos) if activos is not None else None, "caja_conocida": "Revolut" in detalle_caja and "Trade Republic" in detalle_caja,  # antes de tener saldos de la cuenta principal el balance no es fiable
         }
 
     # ---------------------------------------------------------------- montaje

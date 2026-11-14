@@ -9,8 +9,8 @@
     color-scheme: light;
     --bg: #f4f4f2; --surface: #fcfcfb; --surface-2: #ecebe7; --surface-3: #e2e1dc;
     --text: #0b0b0b; --text-2: #52514e; --text-3: #6b6a66;
-    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #4a3aa7; --s8: #e34948; --s9: #9a9994; --s10: #0f8b8d; --s11: #8c5a2b;
-    --seq: #2a78d6;
+    --s1: #1f7bff; --s2: #ff6b2c; --s3: #12b886; --s4: #f5a400; --s5: #f0559b; --s6: #22a447; --s7: #7354ff; --s8: #f03e4f; --s9: #9a9994; --s10: #0bb5c9; --s11: #c47a35;
+    --seq: #1f7bff; --glow: .55;
     --good: #0a7d0a; --bad: #b42f2f;
     --tint-blue: #e3eefb; --tint-orange: #fde9e0; --tint-aqua: #dff4ec; --tint-violet: #e8e5f7; --tint-yellow: #fcf0d4; --tint-gray: #ecebe7;
     --radius: 14px; --side: 210px;
@@ -20,9 +20,9 @@
       color-scheme: dark;
       --bg: #121211; --surface: #1a1a19; --surface-2: #242423; --surface-3: #2f2f2d;
       --text: #ffffff; --text-2: #c3c2b7; --text-3: #8a8985;
-      --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767; --s9: #6f6e69; --s10: #23a5a7; --s11: #b27a45;
+      --s1: #3d9bff; --s2: #ff7a3d; --s3: #26e0a0; --s4: #ffc233; --s5: #ff6cb4; --s6: #4ade6b; --s7: #a08cff; --s8: #ff5a6a; --s9: #8a8984; --s10: #2fd9e6; --s11: #e8a25c;
       --good: #4cc24c; --bad: #ff7a7a;
-      --seq: #3987e5;
+      --seq: #3d9bff; --glow: .9;
       --tint-blue: #1b2c42; --tint-orange: #3d2419; --tint-aqua: #163229; --tint-violet: #272444; --tint-yellow: #3a2e12; --tint-gray: #242423;
     }
   }
@@ -60,11 +60,14 @@
   .tiles { grid-template-columns: repeat(4, 1fr); margin-bottom: 14px; }
   @media (max-width: 1100px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 500px) { .tiles { gap: 10px; } .tile { padding: 12px; } .tile .lbl, .tile .sub { font-size: 11px; } }
-  .tile { background: var(--surface); border-radius: var(--radius); padding: 14px 16px; }
-  .tile .lbl { color: var(--text-2); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  .tile { --c: var(--s9); position: relative; border-radius: var(--radius); padding: 14px 16px; background: radial-gradient(140% 130% at 0% 0%, color-mix(in srgb, var(--c) calc(var(--glow) * 48%), transparent) 0%, color-mix(in srgb, var(--c) calc(var(--glow) * 14%), transparent) 45%, transparent 80%), var(--surface); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--c) 35%, transparent); }
+  .tile .lbl { color: var(--text-2); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .tile .val { text-shadow: 0 0 22px color-mix(in srgb, var(--c) calc(var(--glow) * 70%), transparent); }
+  button.info { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 0; padding: 0; cursor: help; font: italic 600 12px/20px Georgia, serif; color: var(--text-2); background: color-mix(in srgb, var(--text) 8%, transparent); }
+  button.info:hover { color: var(--text); background: color-mix(in srgb, var(--c) 35%, transparent); }
   .tile .val { font-size: 24px; font-weight: 700; margin-top: 4px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
   .tile .sub { color: var(--text-3); font-size: 12px; margin-top: 2px; }
-  .tile.blue { background: var(--tint-blue); } .tile.orange { background: var(--tint-orange); } .tile.aqua { background: var(--tint-aqua); } .tile.violet { background: var(--tint-violet); } .tile.yellow { background: var(--tint-yellow); } .tile.gray { background: var(--tint-gray); }
+  .tile.blue { --c: var(--s1); } .tile.orange { --c: var(--s2); } .tile.aqua { --c: var(--s3); } .tile.violet { --c: var(--s7); } .tile.yellow { --c: var(--s4); } .tile.gray { --c: var(--s9); }
   .cards { grid-template-columns: 1fr; align-items: start; }
   @media (min-width: 900px) { .cards.two { grid-template-columns: 3fr 2fr; } .cards.half { grid-template-columns: 1fr 1fr; } }
   .card { background: var(--surface); border-radius: var(--radius); padding: 16px 18px; min-width: 0; }
@@ -101,10 +104,10 @@
   .pill.pendiente { background: var(--tint-yellow); color: var(--text); }
   .tablewrap { overflow: auto; max-height: 70vh; }
   .tfilters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; } .tfilters input { min-width: 200px; }
-  .tip { position: fixed; pointer-events: none; background: var(--text); color: var(--bg); padding: 8px 10px; border-radius: 8px; font-size: 12px; opacity: 0; transition: opacity .1s; z-index: 10; white-space: nowrap; } .tip b { display: block; margin-bottom: 2px; }
+  .tip { position: fixed; pointer-events: none; background: var(--text); color: var(--bg); padding: 8px 10px; border-radius: 8px; font-size: 12px; opacity: 0; transition: opacity .08s; z-index: 40; white-space: normal; max-width: 280px; line-height: 1.4; box-shadow: 0 8px 28px rgba(0,0,0,.35); } .tip b { display: block; margin-bottom: 2px; }
   .muted { color: var(--text-3); } .defs { font-size: 12px; color: var(--text-3); white-space: pre-line; margin-top: 8px; }
   .up { color: var(--good); } .down { color: var(--bad); }
-  select.edit { padding: 3px 6px; border-radius: 6px; font-size: 12px; max-width: 170px; } select.edit.changed { background: var(--tint-yellow); }
+  select.edit { padding: 3px 6px; border-radius: 6px; font-size: 12px; max-width: 170px; } select.edit.changed { background-color: var(--tint-yellow); }
   button.amb { border: 0; background: var(--surface-2); color: var(--text-2); border-radius: 999px; padding: 2px 8px; font-size: 11px; cursor: pointer; } button.amb.T { background: var(--tint-violet); color: var(--text); }
   .savebar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; display: none; gap: 12px; align-items: center; z-index: 20; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
   .savebar button { border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; cursor: pointer; background: var(--s1); color: #fff; font-weight: 600; } .savebar button.sec { background: transparent; color: var(--bg); }
@@ -127,6 +130,32 @@
   table.fin tr[data-exp].open td:first-child::before { content: '▾ '; }
   .fin-note { font-size: 12px; color: var(--text-3); margin-top: 10px; line-height: 1.5; }
   .mt { margin-top: 14px; }
+  /* luz: las marcas de los gráficos brillan con su propio color */
+  svg .bar, svg .glow { filter: url(#glow); }
+  svg .bar:hover { filter: url(#glow) brightness(1.15); }
+  [data-s] { transition: opacity .15s, filter .15s; }
+  .apagado { opacity: .1 !important; filter: none !important; }
+  .encendido { filter: url(#glow) brightness(1.2) !important; }
+  .legend [data-s], .dl [data-s] { cursor: default; }
+  .legend i, .dl i { box-shadow: 0 0 8px -1px color-mix(in srgb, var(--text) 25%, transparent); }
+  .stackbar > div, .cats .fill { box-shadow: inset 0 1px 0 rgba(255,255,255,.25); }
+  /* desplegables */
+  select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor: pointer; background-repeat: no-repeat; background-position: right 12px center;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a8985' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); transition: background-color .12s, box-shadow .12s; }
+  select:hover { background-color: var(--surface-3); }
+  select.abierto { box-shadow: 0 0 0 2px color-mix(in srgb, var(--s1) 50%, transparent); }
+  .card h2 select { padding-right: 28px; background-position: right 10px center; }
+  select.edit { padding-right: 24px; background-position: right 8px center; }
+  .dd { position: fixed; z-index: 30; background: var(--surface); border-radius: 14px; padding: 6px; max-width: 340px; font-size: 13px;
+    box-shadow: 0 14px 44px rgba(0,0,0,.30), 0 0 0 1px var(--surface-3); animation: ddIn .12s ease-out; }
+  @keyframes ddIn { from { opacity: 0; transform: translateY(-4px); } }
+  .dd-list { max-height: 320px; overflow-y: auto; }
+  .dd-op { position: relative; padding: 7px 12px 7px 30px; border-radius: 8px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+  .dd-op:hover, .dd-op.act { background: var(--surface-2); }
+  .dd-op.on { font-weight: 650; color: var(--s1); }
+  .dd-op.on::before { content: '✓'; position: absolute; left: 11px; }
+  .dd-g { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--text-3); padding: 10px 12px 4px; }
+  .dd-q { width: 100%; margin-bottom: 6px; border-radius: 10px; min-height: 34px; }
   .legend button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; padding: 4px 0; }
   .legend button.off { opacity: .45; text-decoration: line-through; }
   table.fin thead th[data-p] { cursor: pointer; }
@@ -186,7 +215,7 @@
         <div class="card">
           <h2 id="mesesTitle">Por mes</h2>
           <div class="hint">Clic en un mes para verlo solo. Barras atenuadas = fuera del periodo elegido.</div>
-          <div class="legend"><span><i style="background:var(--s1)"></i>Ingresos</span><span><i style="background:var(--s2)"></i>Gasto neto</span><span><i style="background:var(--s7)"></i>Invertido</span></div>
+          <div class="legend"><span data-s="Ingresos"><i style="background:var(--s1)"></i>Ingresos</span><span data-s="Gasto neto"><i style="background:var(--s2)"></i>Gasto neto</span><span data-s="Invertido"><i style="background:var(--s7)"></i>Invertido</span></div>
           <div id="chartMeses"></div>
         </div>
         <div class="card">
@@ -341,6 +370,12 @@
     </section>
   </main>
 </div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="glow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="b"/>
+    <feComponentTransfer in="b" result="b2"><feFuncA type="linear" slope="0.75"/></feComponentTransfer>
+    <feMerge><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter></defs></svg>
 <div class="tip" id="tip"></div>
 <div class="savebar" id="savebar"><span id="savemsg"></span><button class="sec" id="discard">Descartar</button><button id="save">Guardar en GitHub</button></div>
 
@@ -409,7 +444,7 @@ function renderPresupuesto() {
     ['Colchón', D.saldo_total, 'aqua', `objetivo ${fmt(P.colchon_objetivo)} · ${D.saldo_total >= P.colchon_objetivo ? 'conseguido' : 'faltan ' + fmt(P.colchon_objetivo - D.saldo_total)}`],
     ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'orange', 'ingresos − gasto − inversión objetivo'],
   ];
-  $('tilesPres').innerHTML = t.map(([l, v, c, s]) => `<div class="tile ${c}"><div class="lbl">${l} · ${periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
+  $('tilesPres').innerHTML = t.map(([l, v, c, s]) => tileHTML(l, v, c, s, periodo)).join(''); hoverTips($('tilesPres'));
   const hoy0 = new Date(), mesHoy = hoy0.toISOString().slice(0, 7);
   const mesesP = mesesAnio().filter(m => m >= state.desde && m <= state.hasta);
   const transc = mesesP.reduce((t, m) => t + (m < mesHoy ? 1 : m === mesHoy ? hoy0.getDate() / new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate() : 0), 0);
@@ -524,8 +559,8 @@ function init() {
   $('desde').onchange = e => { state.desde = e.target.value; if (state.hasta < state.desde) state.hasta = state.desde; seg('quick', ''); render(); };
   $('hasta').onchange = e => { state.hasta = e.target.value; if (state.hasta < state.desde) state.desde = state.hasta; seg('quick', ''); render(); };
   $('ambitos').onclick = e => { if (e.target.dataset.v) { state.ambito = e.target.dataset.v; seg('ambitos', state.ambito); render(); } };
-  const cuentas = [...new Set(D.movimientos.map(m => m.cuenta))].sort();
-  $('cuenta').innerHTML += cuentas.map(c => `<option>${c}</option>`).join('');
+  const cuentas = [...new Set(D.movimientos.map(m => m.cuenta))].filter(c => c !== 'Ajustes').sort();
+  $('cuenta').innerHTML += cuentas.map(c => `<option value="${c}">${c === 'Histórico' ? 'Hoja antigua (2025)' : c}</option>`).join('');
   $('cuenta').onchange = e => { state.cuenta = e.target.value; render(); };
   $('fcat').innerHTML += optsCategorias('', false);
   $('donutBack').onclick = () => { state.donutGrupo = null; state.evoCat = ''; renderDonut(agg(base()), periodoLabel()); renderEvo(); };
@@ -621,7 +656,7 @@ function render() {
     ['Beneficio trabajo', sel.ingT - sel.gasT, 'gray', `sueldo ${fmt(sel.ingT)} − gastos ${fmt(sel.gasT)}`],
     ['Saldo en cuentas hoy', D.saldo_total, 'gray', 'último extracto de cada cuenta, conjunta al 50 %', true],
   ];
-  $('tiles').innerHTML = t.map(([l,v,c,s,sinP]) => `<div class="tile ${c}"><div class="lbl">${l}${sinP ? '' : ' · ' + periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
+  $('tiles').innerHTML = t.map(([l,v,c,s,sinP]) => tileHTML(l, v, c, s, sinP ? '' : periodo)).join(''); hoverTips($('tiles'));
 
   chartMeses(porMes);
   chartBeneficio(porMes);
@@ -653,9 +688,9 @@ function escala(vals, H, padT, padB) {
 function fmtK(v) { return Math.abs(v) >= 1000 ? (v/1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : String(Math.round(v)); }
 function ancho(el, def) { return Math.max(300, Math.round(el.clientWidth || def)); }
 let ultimoPuntero = 'mouse';
+function mostrarTip(t, x, y) { const tip = $('tip'); const [a, b] = t.split('|'); tip.innerHTML = `<b>${a}</b>${b || ''}`; tip.style.opacity = 1; tip.style.left = Math.max(8, Math.min(x + 12, innerWidth - tip.offsetWidth - 8)) + 'px'; tip.style.top = Math.max(8, Math.min(y, innerHeight - tip.offsetHeight - 8)) + 'px'; }
 function hoverTips(el) {
-  const tip = $('tip');
-  const show = (t, x, y) => { const [a, b] = t.split('|'); tip.innerHTML = `<b>${a}</b>${b}`; tip.style.opacity = 1; tip.style.left = Math.max(8, Math.min(x + 12, innerWidth - tip.offsetWidth - 8)) + 'px'; tip.style.top = y + 'px'; };
+  const tip = $('tip'), show = mostrarTip;
   el.onpointermove = e => { if (e.pointerType !== 'mouse') return; const t = e.target.dataset && e.target.dataset.tip; if (!t) { tip.style.opacity = 0; return; } show(t, e.clientX, e.clientY + 12); };
   // en el móvil, tocar enseña el valor (y se oculta solo)
   el.onpointerdown = e => { ultimoPuntero = e.pointerType; if (e.pointerType === 'mouse') return; const t = e.target.dataset && e.target.dataset.tip; if (!t) return; show(t, e.clientX, e.clientY - 64); clearTimeout(hoverTips.t); hoverTips.t = setTimeout(() => tip.style.opacity = 0, 2500); };
@@ -675,7 +710,7 @@ function barChart(el, pm, series, opts) {
     const on = enPeriodo({mes: p.mes});
     series.forEach((se, j) => {
       const v = p[se.key] || 0, col = typeof se.color === 'function' ? se.color(v) : se.color;
-      s += `<rect class="bar" data-mes="${p.mes}" data-tip="${mesLargo(p.mes)}|${se.label}: ${fmt2(v)}" x="${x0+j*(bw+2)}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.max(0.5, Math.abs(y(v)-y(0)))}" rx="${bw > 8 ? 3 : 1.5}" fill="${col}" opacity="${on?1:.3}"/>`;
+      s += `<rect class="bar" data-s="${se.label}" data-mes="${p.mes}" data-tip="${mesLargo(p.mes)}|${se.label}: ${fmt2(v)}" x="${x0+j*(bw+2)}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.max(0.5, Math.abs(y(v)-y(0)))}" rx="${bw > 8 ? 3 : 1.5}" fill="${col}" opacity="${on?1:.3}"/>`;
     });
     if ((pm.length - 1 - i) % paso === 0) s += `<text class="axis" x="${padL + i*gw + gw/2}" y="${H-8}" text-anchor="middle" style="cursor:pointer" data-mes="${p.mes}">${mesLabel(p.mes)}</text>`;
   });
@@ -705,12 +740,12 @@ function donut(el, legendEl, items, onClick, colorFn, centro) {
     const frac = it[1]/tot, a1 = a0 + frac*2*Math.PI, big = frac > .5 ? 1 : 0;
     const p = (ang, rad) => [C + rad*Math.cos(ang), C + rad*Math.sin(ang)];
     const [x0,y0] = p(a0,R), [x1,y1] = p(a1,R), [x2,y2] = p(a1,r), [x3,y3] = p(a0,r);
-    s += `<path class="bar" data-tip="${it[0]}|${fmt2(it[1])} · ${Math.round(frac*100)} %" d="M${x0},${y0} A${R},${R} 0 ${big} 1 ${x1},${y1} L${x2},${y2} A${r},${r} 0 ${big} 0 ${x3},${y3} Z" fill="${col(it[0], i)}" stroke="var(--surface)" stroke-width="2"/>`;
+    s += `<path class="bar" data-s="${it[0]}" data-tip="${it[0]}|${fmt2(it[1])} · ${Math.round(frac*100)} %" d="M${x0},${y0} A${R},${R} 0 ${big} 1 ${x1},${y1} L${x2},${y2} A${r},${r} 0 ${big} 0 ${x3},${y3} Z" fill="${col(it[0], i)}" stroke="var(--surface)" stroke-width="2"/>`;
     a0 = a1;
   });
   s += `<text x="${C}" y="${C-4}" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--text)">${fmt(tot)}</text><text x="${C}" y="${C+12}" text-anchor="middle" class="axis">${centro || 'total'}</text></svg>`;
   el.innerHTML = s; hoverTips(el);
-  legendEl.innerHTML = top.map((it, i) => `<div data-name="${it[0]}" ${onClick && it[0] !== 'Resto' ? 'tabindex="0" role="button"' : ''}><span><i style="background:${col(it[0], i)}"></i>${it[0]}</span><b>${fmt(it[1])}</b><span class="p">${Math.round(it[1]/tot*100)} %</span></div>`).join('');
+  legendEl.innerHTML = top.map((it, i) => `<div data-name="${it[0]}" data-s="${it[0]}" ${onClick && it[0] !== 'Resto' ? 'tabindex="0" role="button"' : ''}><span><i style="background:${col(it[0], i)}"></i>${it[0]}</span><b>${fmt(it[1])}</b><span class="p">${Math.round(it[1]/tot*100)} %</span></div>`).join('');
   legendEl.onclick = e => { const d = e.target.closest('div[data-name]'); if (d && onClick) onClick(d.dataset.name); };
 }
 function renderDonut(sel, periodo) {
@@ -749,14 +784,14 @@ function renderEvo() {
   const tot = enP.reduce((a,p) => a + p.v, 0);
   const ing = agg(base()).ingresos;
   $('evoHint').textContent = `${periodoLabel()}: ${fmt(tot)} en total, ${fmt(media)} al mes` + (ing ? ` (${Math.round(tot/ing*100)} % de los ingresos)` : '') + `. Barras atenuadas = fuera del periodo.`;
-  barChart($('chartEvo'), pm, [{key:'v', color:'var(--seq)', label: (state.evoCat || 'Gasto neto').replace(/^g:/, '')}], {media, h: 200});
+  barChart($('chartEvo'), pm, [{key:'v', color:'var(--s8)', label: (state.evoCat || 'Gasto neto').replace(/^g:/, '')}], {media, h: 200});
 }
 function renderFijos(sel, n) {
   const noEss = (D.grupos || []).filter(g => g.esencial === false).map(g => [g.nombre, sel.grupos[g.nombre] || 0]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]);
   const partes = [['Esencial', sel.ess, 'var(--s1)'], ['No esencial', sel.noess, 'var(--s2)'], ['Otros', Math.max(sel.otros, 0), 'var(--s9)']].filter(x => x[1] > 0);
   const tot = partes.reduce((a, x) => a + x[1], 0) || 1;
-  $('fijos').innerHTML = `<div style="grid-column:1/-1;margin-bottom:8px"><div class="stackbar" role="img" aria-label="${partes.map(([l, v]) => l + ' ' + Math.round(v / tot * 100) + ' %').join(', ')}">${partes.map(([l, v, c]) => `<div data-tip="${l}|${fmt2(v)} · ${Math.round(v / tot * 100)} %" style="width:${v / tot * 100}%;background:${c}"></div>`).join('')}</div>
-      <div class="legend" style="margin:6px 0 0">${partes.map(([l, v, c]) => `<span><i style="background:${c}"></i>${l} ${Math.round(v / tot * 100)} %</span>`).join('')}</div></div>
+  $('fijos').innerHTML = `<div style="grid-column:1/-1;margin-bottom:8px"><div class="stackbar" role="img" aria-label="${partes.map(([l, v]) => l + ' ' + Math.round(v / tot * 100) + ' %').join(', ')}">${partes.map(([l, v, c]) => `<div data-s="${l}" data-tip="${l}|${fmt2(v)} · ${Math.round(v / tot * 100)} %" style="width:${v / tot * 100}%;background:${c}"></div>`).join('')}</div>
+      <div class="legend" style="margin:6px 0 0">${partes.map(([l, v, c]) => `<span data-s="${l}"><i style="background:${c}"></i>${l} ${Math.round(v / tot * 100)} %</span>`).join('')}</div></div>
     <span>Esencial</span><b>${fmt(sel.ess)} · ${fmt(sel.ess/n)}/mes</b>
     <span>No esencial</span><b>${fmt(sel.noess)} · ${fmt(sel.noess/n)}/mes · ${pct(sel.pctNoEss)}</b>
     ${noEss.map(([g, v]) => `<span class="muted" style="padding-left:12px">${g}</span><b class="muted">${fmt(v)} · ${fmt(v/n)}/mes</b>`).join('')}
@@ -771,10 +806,10 @@ function renderInversiones(pm, sel, periodo, rowsP) {
   const colInv = c => INV_COL[Math.max(0, allCats.indexOf(c)) % INV_COL.length];  // mismo color en barras y donut
   const n = Math.max(new Set(rowsP.map(m => m.mes)).size, 1);
   const t = [['Aportado', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes`]].concat(allCats.map(c => [c, sel.invCats[c] || 0, '', sel.inv ? Math.round((sel.invCats[c]||0)/sel.inv*100) + ' % de lo aportado' : '']));
-  $('tilesInv').innerHTML = t.map(([l,v,c,s]) => `<div class="tile ${c}"><div class="lbl">${l} · ${periodo}</div><div class="val">${fmt(v)}</div><div class="sub">${s}</div></div>`).join('');
+  $('tilesInv').innerHTML = t.map(([l,v,c,s], i) => tileHTML(l, v, c || ['violet', 'blue', 'yellow', 'aqua', 'orange'][i % 5], s, periodo)).join(''); hoverTips($('tilesInv'));
   const series = allCats.map(c => ({ key: 'ic_' + c, color: colInv(c), label: c }));
   const pmi = pm.map(p => { const o = { mes: p.mes }; allCats.forEach(c => o['ic_' + c] = p.invCats[c] || 0); return o; });
-  $('invLegend').innerHTML = series.map(s => `<span><i style="background:${s.color}"></i>${s.label}</span>`).join('');
+  $('invLegend').innerHTML = series.map(s => `<span data-s="${s.label}"><i style="background:${s.color}"></i>${s.label}</span>`).join('');
   barChart($('chartInv'), pmi, series, {});
   donut($('donutInv'), $('donutInvLegend'), Object.entries(sel.invCats).filter(([c,v]) => v > 0).sort((a,b) => b[1]-a[1]), null, colInv);
   const ops = rowsP.filter(m => m.tipo === 'Inversion').sort((a,b) => b.fecha.localeCompare(a.fecha));
@@ -862,7 +897,7 @@ function renderEstados() {
   if (!lista.find(e => e.periodo === FIN.sel)) { const comp = lista.filter(e => !e.en_curso); FIN.sel = (comp[comp.length - 1] || lista[lista.length - 1] || {}).periodo; }
   // evolución
   $('finTitle').textContent = { resultados: 'Evolución', balance: 'Activos, pasivos y patrimonio al cierre', flujo: 'Flujos de caja' }[FIN.tab] + ' · ' + { anual: 'por año', trimestral: 'por trimestre', mensual: 'por mes' }[FIN.gran];
-  $('finLegend').innerHTML = def.serie.map(x => `<button data-k="${x.k}" class="${off.has(x.k) ? 'off' : ''}" aria-pressed="${!off.has(x.k)}"><i style="background:${x.c};${x.t === 'line' ? 'height:3px;vertical-align:3px' : ''}"></i>${x.l}</button>`).join('') + '<span class="muted" style="font-size:11px">clic en la leyenda para mostrar u ocultar</span>';
+  $('finLegend').innerHTML = def.serie.map(x => `<button data-k="${x.k}" data-s="${x.l}" class="${off.has(x.k) ? 'off' : ''}" aria-pressed="${!off.has(x.k)}"><i style="background:${x.c};${x.t === 'line' ? 'height:3px;vertical-align:3px' : ''}"></i>${x.l}</button>`).join('') + '<span class="muted" style="font-size:11px">clic en la leyenda para mostrar u ocultar</span>';
   finChart($('finChart'), lista, def.serie.map(x => ({ label: x.l, color: x.c, type: x.t || 'bar', off: off.has(x.k), vals: lista.map(e => { const v = val(e, x.k); return v == null ? null : x.neg ? -v : v; }) })));
   // cascada (solo cuenta de resultados)
   const casc = FIN.tab === 'resultados';
@@ -912,18 +947,18 @@ function finChart(el, lista, series) {
     const lab = e.etiqueta + (e.en_curso ? '*' : ''), cx = padL + i * gw + gw / 2, x0 = cx - (slots * bw + (slots - 1) * 2) / 2;
     if (FIN.tab === 'resultados' && e.periodo === FIN.sel) s += `<rect x="${padL + i * gw + 2}" y="${padT}" width="${gw - 4}" height="${H - padT - padB}" rx="6" fill="var(--surface-2)"/>`;
     bars.forEach((se, j) => { const v = se.vals[i]; if (v == null) return;
-      s += `<rect class="bar" data-p="${e.periodo}" data-tip="${lab}|${se.label}: ${fmt2(v)}" x="${x0 + j * (bw + 2)}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.max(1, Math.abs(y(v) - y(0)))}" rx="2" fill="${se.color}"/>`; });
+      s += `<rect class="bar" data-s="${se.label}" data-p="${e.periodo}" data-tip="${lab}|${se.label}: ${fmt2(v)}" x="${x0 + j * (bw + 2)}" y="${Math.min(y(v), y(0))}" width="${bw}" height="${Math.max(1, Math.abs(y(v) - y(0)))}" rx="2" fill="${se.color}"/>`; });
     if (stack.length) { const x = x0 + bars.length * (bw + 2); let p = 0, n = 0;
       stack.forEach(se => { const v = se.vals[i]; if (!v) return; const a = v > 0 ? p : n, b = a + v; if (v > 0) p = b; else n = b;
-        s += `<rect class="bar" data-p="${e.periodo}" data-tip="${lab}|${se.label}: ${fmt2(v)}" x="${x}" y="${Math.min(y(a), y(b))}" width="${bw}" height="${Math.max(1, Math.abs(y(a) - y(b)))}" fill="${se.color}" stroke="var(--surface)" stroke-width="1"/>`; }); }
+        s += `<rect class="bar" data-s="${se.label}" data-p="${e.periodo}" data-tip="${lab}|${se.label}: ${fmt2(v)}" x="${x}" y="${Math.min(y(a), y(b))}" width="${bw}" height="${Math.max(1, Math.abs(y(a) - y(b)))}" fill="${se.color}" stroke="var(--surface)" stroke-width="1"/>`; }); }
     if ((lista.length - 1 - i) % paso === 0) s += `<text class="axis" x="${cx}" y="${H - 8}" text-anchor="middle">${lab}</text>`;
   });
   if (lo < 0) s += `<line x1="${padL}" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--text-3)" stroke-width="1"/>`;
   lines.forEach(se => {
     const pts = se.vals.map((v, i) => v == null ? null : [padL + i * gw + gw / 2, y(v)]);
     let d = ''; pts.forEach((pt, i) => { if (pt) d += (d && pts[i - 1] ? 'L' : 'M') + pt[0].toFixed(1) + ',' + pt[1].toFixed(1); });
-    s += `<path d="${d}" fill="none" stroke="${se.color}" stroke-width="2"/>`;
-    pts.forEach((pt, i) => { if (pt) s += `<circle class="bar" data-p="${lista[i].periodo}" data-tip="${lista[i].etiqueta}|${se.label}: ${fmt2(se.vals[i])}" cx="${pt[0]}" cy="${pt[1]}" r="${narrow ? 3.5 : 4.5}" fill="var(--surface)" stroke="${se.color}" stroke-width="2"/>`; });
+    s += `<path class="glow" data-s="${se.label}" d="${d}" fill="none" stroke="${se.color}" stroke-width="2.5"/>`;
+    pts.forEach((pt, i) => { if (pt) s += `<circle class="bar" data-s="${se.label}" data-p="${lista[i].periodo}" data-tip="${lista[i].etiqueta}|${se.label}: ${fmt2(se.vals[i])}" cx="${pt[0]}" cy="${pt[1]}" r="${narrow ? 3.5 : 4.5}" fill="var(--surface)" stroke="${se.color}" stroke-width="2"/>`; });
   });
   el.innerHTML = s + '</svg>'; hoverTips(el);
 }
@@ -959,6 +994,72 @@ document.addEventListener('click', e => {
   const p = e.target.closest('#finChart [data-p], #finTable th[data-p]'); if (p && FIN.tab === 'resultados') { FIN.sel = p.dataset.p; renderEstados(); return; }
   const r = e.target.closest('#finTable tr[data-exp]'); if (r) { FIN.open[r.dataset.exp] = !FIN.open[r.dataset.exp]; renderEstados(); }
 });
+
+// ---- tarjetas KPI: nombre y cifra; lo demás en el botón de info
+const esc = t => String(t).replace(/<[^>]+>/g, '').replace(/"/g, '&quot;').replace(/\s+/g, ' ').trim();
+function tileHTML(l, v, c, desc, periodo) {
+  const info = (periodo ? periodo + '. ' : '') + esc(desc);
+  return `<div class="tile ${c}"><div class="lbl"><span>${l}</span><button class="info" data-tip="${esc(l)}|${info}" aria-label="Qué es ${esc(l)}: ${info}">i</button></div><div class="val">${fmt(v)}</div></div>`;
+}
+document.addEventListener('focusin', e => { if (e.target.matches('button.info')) { const r = e.target.getBoundingClientRect(); mostrarTip(e.target.dataset.tip, r.left, r.bottom + 8); } });
+document.addEventListener('focusout', e => { if (e.target.matches('button.info')) $('tip').style.opacity = 0; });
+
+// ---- al pasar por la leyenda se encienden solo las marcas de esa serie
+function resaltar(card, k) {
+  if (!card) return;
+  card.querySelectorAll('[data-s]').forEach(x => { if (x.closest('.legend, .dl')) return; x.classList.toggle('apagado', k != null && x.dataset.s !== k); x.classList.toggle('encendido', k != null && x.dataset.s === k); });
+}
+document.addEventListener('pointerover', e => { const l = e.target.closest('.legend [data-s], .dl [data-s]'); if (l) resaltar(l.closest('.card'), l.dataset.s); });
+document.addEventListener('pointerout', e => { const l = e.target.closest('.legend [data-s], .dl [data-s]'); if (l && !l.contains(e.relatedTarget)) resaltar(l.closest('.card'), null); });
+
+// ---- desplegables propios con ratón y teclado (en el móvil se deja el selector nativo, que es mejor)
+const punteroFino = matchMedia('(pointer: fine)').matches;
+let dd = null;
+function cerrarDD() { if (dd) { dd.el.remove(); dd.sel.classList.remove('abierto'); dd = null; } }
+function abrirDD(sel) {
+  cerrarDD();
+  const el = document.createElement('div'); el.className = 'dd'; el.setAttribute('role', 'listbox');
+  const items = []; let h = '';
+  const op = o => { items.push(o); const on = o.value === sel.value; return `<div class="dd-op ${on ? 'on' : ''}" role="option" aria-selected="${on}" data-i="${items.length - 1}">${o.textContent.replace(/</g, '&lt;')}</div>`; };
+  for (const ch of sel.children) h += ch.tagName === 'OPTGROUP' ? `<div class="dd-g">${ch.label}</div>` + [...ch.children].map(op).join('') : op(ch);
+  el.innerHTML = (items.length > 14 ? '<input class="dd-q" placeholder="Buscar…" aria-label="Buscar">' : '') + `<div class="dd-list">${h}</div>`;
+  document.body.appendChild(el);
+  const r = sel.getBoundingClientRect();
+  el.style.minWidth = Math.max(r.width, 190) + 'px';
+  el.style.left = Math.max(8, Math.min(r.left, innerWidth - el.offsetWidth - 8)) + 'px';
+  if (innerHeight - r.bottom < 300 && r.top > innerHeight - r.bottom) el.style.bottom = (innerHeight - r.top + 6) + 'px'; else el.style.top = (r.bottom + 6) + 'px';
+  sel.classList.add('abierto');
+  const elegir = i => { const o = items[i]; if (!o) return; const cambia = sel.value !== o.value; sel.value = o.value; cerrarDD(); sel.focus(); if (cambia) sel.dispatchEvent(new Event('change', { bubbles: true })); };
+  dd = { el, sel, elegir };
+  el.onmousedown = e => { if (!e.target.matches('.dd-q')) e.preventDefault(); };
+  el.onclick = e => { const d = e.target.closest('.dd-op'); if (d) elegir(+d.dataset.i); };
+  const on = el.querySelector('.dd-op.on'); if (on) on.scrollIntoView({ block: 'nearest' });
+  const q = el.querySelector('.dd-q');
+  if (q) { q.focus(); q.oninput = () => {
+    const t = q.value.toLowerCase();
+    el.querySelectorAll('.dd-op').forEach(d => d.hidden = !d.textContent.toLowerCase().includes(t));
+    el.querySelectorAll('.dd-g').forEach(g => { let n = g.nextElementSibling, vis = false; while (n && n.classList.contains('dd-op')) { if (!n.hidden) vis = true; n = n.nextElementSibling; } g.hidden = !vis; });
+  }; }
+}
+document.addEventListener('mousedown', e => {
+  const s = e.target.closest('select');
+  if (s && punteroFino && !s.disabled) { e.preventDefault(); if (dd && dd.sel === s) cerrarDD(); else { s.focus(); abrirDD(s); } return; }
+  if (dd && !dd.el.contains(e.target)) cerrarDD();
+});
+document.addEventListener('keydown', e => {
+  if (dd) {
+    const vis = [...dd.el.querySelectorAll('.dd-op')].filter(d => !d.hidden);
+    let i = vis.findIndex(d => d.classList.contains('act')); if (i < 0) i = vis.findIndex(d => d.classList.contains('on'));
+    if (e.key === 'Escape') { e.preventDefault(); const s = dd.sel; cerrarDD(); s.focus(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); i = Math.max(0, Math.min(vis.length - 1, i + (e.key === 'ArrowDown' ? 1 : -1))); vis.forEach(d => d.classList.remove('act')); if (vis[i]) { vis[i].classList.add('act'); vis[i].scrollIntoView({ block: 'nearest' }); } }
+    else if (e.key === 'Enter') { e.preventDefault(); const a = vis[i] || vis[0]; if (a) dd.elegir(+a.dataset.i); }
+    else if (e.key === 'Tab') cerrarDD();
+    return;
+  }
+  if (punteroFino && e.target.matches('select') && [' ', 'Enter', 'ArrowDown'].includes(e.key)) { e.preventDefault(); abrirDD(e.target); }
+});
+addEventListener('scroll', e => { if (dd && !dd.el.contains(e.target)) cerrarDD(); }, true);
+addEventListener('resize', () => cerrarDD());
 const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 function fechaLarga(f) { const d = new Date(f + 'T12:00:00'); return DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES_L[d.getMonth()].toLowerCase() + ' ' + d.getFullYear(); }
 function renderPend() {

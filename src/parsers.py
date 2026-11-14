@@ -149,6 +149,94 @@ def parse_bbva(path, cuenta="BBVA"):
     return rows
 
 
+# --------------------------------------------------------------------------- Revolut en PDF (personal y conjunta)
+RV_MES = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
+RV_FECHA = r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2}), (\d{4})"
+RV_LINEA = re.compile(r"^" + RV_FECHA + r" " + RV_FECHA + r" (.+?) €([\d,]+\.\d{2}) €(-?[\d,]+\.\d{2})$")
+RV_REF_INUTIL = re.compile(r"^(Sent from Revolut|REF-|\d{2}-\d{2}-\d{4} / )", re.I)
+
+
+def _rv_num(x):
+    return float(x.replace(",", ""))
+
+
+def parse_revolut_pdf(path, cuenta):
+    """Extracto PDF de Revolut. Solo la sección "Account transactions": se salta los pendientes (una sola fecha) y el
+    apartado "Deposit transactions", que repite los traspasos a la hucha de ahorro. El signo sale de la cadena de saldos."""
+    import pypdf
+    lineas = "\n".join(pg.extract_text() for pg in pypdf.PdfReader(str(path)).pages).splitlines()
+    m0 = next((re.search(r"Account \(Current Account\) €(-?[\d,]+\.\d{2})", l) for l in lineas if l.startswith("Account (Current Account)")), None)
+    saldo_prev = _rv_num(m0.group(1)) if m0 else None
+    rows, dentro, actual = [], False, None
+
+    def cerrar():
+        if not actual:
+            return
+        d = actual
+        tipo = ("Card Refund" if d["importe"] > 0 else "Card Payment") if d["card"] else \
+               ("Topup" if re.match(r"(Apple Pay top-up|Money added|Payment from)", d["desc"]) else "Transfer")
+        concepto = f"[{tipo}] {d['desc']}" + (f" · Ref: {d['ref']}" if d["ref"] and not RV_REF_INUTIL.match(d["ref"]) else "")
+        rows.append({"cuenta": cuenta, "fecha": d["fecha"], "concepto": concepto, "importe": d["importe"], "saldo": d["saldo"],
+                     "clave": f"pdf|{d['fecha']}|{d['desc']}|{d['importe']}|{d['saldo']}"})
+
+    for l in lineas:
+        if l.startswith("Account transactions from"):
+            dentro = True
+            continue
+        if l.startswith(("Deposit transactions from", "Pending from")):
+            cerrar(); actual = None
+            dentro = False
+            continue
+        if not dentro:
+            continue
+        m = RV_LINEA.match(l.strip())
+        if m:
+            cerrar()
+            mes, dia, anio = RV_MES[m.group(1)], int(m.group(2)), int(m.group(3))
+            imp, saldo = _rv_num(m.group(8)), _rv_num(m.group(9))
+            signo = 1 if (saldo_prev is not None and saldo > saldo_prev) else -1
+            if saldo_prev is not None and abs(round(saldo_prev + signo * imp, 2) - saldo) > 0.011:
+                raise ValueError(f"Revolut PDF descuadra en {l!r}: {saldo_prev} ± {imp} != {saldo}")
+            saldo_prev = saldo
+            actual = {"fecha": f"{anio:04d}-{mes:02d}-{dia:02d}", "desc": m.group(7).strip(), "importe": round(signo * imp, 2),
+                      "saldo": saldo, "card": False, "ref": None}
+        elif actual and l.startswith("Card:"):
+            actual["card"] = True
+        elif actual and l.startswith("Reference:"):
+            actual["ref"] = l[len("Reference:"):].strip()
+    cerrar()
+    return rows
+
+
+# --------------------------------------------------------------------------- BBVA en PDF ("Últimos movimientos" desde la app)
+BB_FECHA = re.compile(r"^(\d{2})/(\d{2})/(\d{4})$")
+BB_IMPORTE = re.compile(r"^(-?[\d .]+,\d{2}) €\s+(-?[\d .]+,\d{2}) €$")
+
+
+def parse_bbva_pdf(path, cuenta="BBVA"):
+    import pypdf
+    lineas = [l.strip() for pg in pypdf.PdfReader(str(path)).pages for l in pg.extract_text().splitlines()]
+    rows, i = [], 0
+    while i < len(lineas):
+        m = BB_FECHA.match(lineas[i])
+        if m and i + 1 < len(lineas) and lineas[i + 1].startswith("Fecha valor"):
+            fecha = f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
+            j, partes = i + 2, []
+            while j < len(lineas) and not BB_IMPORTE.match(lineas[j]):
+                partes.append(lineas[j]); j += 1
+            if j >= len(lineas):
+                break
+            mi = BB_IMPORTE.match(lineas[j])
+            importe = eur(mi.group(1).replace(" ", "")); saldo = eur(mi.group(2).replace(" ", ""))
+            concepto = " | ".join(partes)
+            rows.append({"cuenta": cuenta, "fecha": fecha, "concepto": concepto, "importe": round(importe, 2), "saldo": saldo,
+                         "clave": f"pdf|{fecha}|{concepto}|{importe}|{saldo}"})
+            i = j + 1
+        else:
+            i += 1
+    return rows
+
+
 # --------------------------------------------------------------------------- Histórico (hoja de años anteriores)
 MAPA_CATEGORIAS_HISTORICO = {
     "GIMNASIO/SALUD": "DEPORTE",
@@ -198,14 +286,15 @@ def parse_historico(path, anio, cuenta="Histórico"):
 def detect(path):
     """Devuelve (parser, cuenta) según el prefijo del nombre del fichero."""
     name = pathlib.Path(path).name.lower()
+    pdf = name.endswith(".pdf")
     if name.startswith("revolut"):
-        return lambda p: parse_revolut(p, "Revolut"), "Revolut"
+        return (lambda p: (parse_revolut_pdf if pdf else parse_revolut)(p, "Revolut")), "Revolut"
     if name.startswith("conjunta"):
-        return lambda p: parse_revolut(p, "Conjunta"), "Conjunta"
+        return (lambda p: (parse_revolut_pdf if pdf else parse_revolut)(p, "Conjunta")), "Conjunta"
     if name.startswith("traderepublic") or name.startswith("tr_"):
         return parse_traderepublic, "Trade Republic"
     if name.startswith("bbva"):
-        return parse_bbva, "BBVA"
+        return (parse_bbva_pdf if pdf else parse_bbva), "BBVA"
     if name.startswith("historico_"):
         anio = int(re.search(r"historico_(\d{4})", name).group(1))
         return lambda p: parse_historico(p, anio), "Histórico"

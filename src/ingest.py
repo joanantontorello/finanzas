@@ -100,6 +100,11 @@ def importar(path, con, reglas, cuentas, categorias):
         h = hash_mov(f["cuenta"], f["clave"])
         if con.execute("SELECT 1 FROM movimientos WHERE hash=?", (h,)).fetchone():
             continue
+        # el mismo movimiento exportado en otro formato (CSV, Excel, PDF) trae otro texto: se reconoce por fecha, importe y saldo
+        if f.get("saldo") is not None and con.execute(
+                "SELECT 1 FROM movimientos WHERE cuenta=? AND fecha=? AND ABS(importe-?)<0.005 AND ABS(saldo-?)<0.005",
+                (f["cuenta"], f["fecha"], f["importe"], f["saldo"])).fetchone():
+            continue
         if f.get("tipo"):  # ya viene clasificado (histórico)
             c = {k: f.get(k) for k in ("tipo", "categoria", "ambito", "estado", "regla")}
             c["nota"] = None

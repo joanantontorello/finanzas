@@ -9,8 +9,10 @@
     color-scheme: light;
     --bg: #f4f4f2; --surface: #fcfcfb; --surface-2: #ecebe7; --surface-3: #e2e1dc;
     --text: #0b0b0b; --text-2: #52514e; --text-3: #6b6a66;
-    --s1: #1f7bff; --s2: #ff6b2c; --s3: #12b886; --s4: #f5a400; --s5: #f0559b; --s6: #22a447; --s7: #7354ff; --s8: #f03e4f; --s9: #9a9994; --s10: #0bb5c9; --s11: #c47a35;
-    --seq: #1f7bff; --glow: .55;
+    --s1: #2f6fe4; --s2: #e07a2c; --s3: #13a57a; --s4: #d9a21b; --s5: #d9558f; --s6: #2f9a55; --s7: #7b5ce6; --s8: #e04450; --s9: #9a9994; --s10: #1aa6bf; --s11: #b8763a;
+    --seq: #2f6fe4; --glow: .55; --mix: 26%;
+    --tv1: #2f6fe4; --tv2: #1fa7bf; --tv3: #e07a2c; --tv4: #8a5ce6; --tv5: #d9a21b;
+    --fin-main: #e9effd; --up: #089981; --down: #f23645;
     --good: #0a7d0a; --bad: #b42f2f;
     --tint-blue: #e3eefb; --tint-orange: #fde9e0; --tint-aqua: #dff4ec; --tint-violet: #e8e5f7; --tint-yellow: #fcf0d4; --tint-gray: #ecebe7;
     --radius: 14px; --side: 210px;
@@ -20,9 +22,11 @@
       color-scheme: dark;
       --bg: #121211; --surface: #1a1a19; --surface-2: #242423; --surface-3: #2f2f2d;
       --text: #ffffff; --text-2: #c3c2b7; --text-3: #8a8985;
-      --s1: #3d9bff; --s2: #ff7a3d; --s3: #26e0a0; --s4: #ffc233; --s5: #ff6cb4; --s6: #4ade6b; --s7: #a08cff; --s8: #ff5a6a; --s9: #8a8984; --s10: #2fd9e6; --s11: #e8a25c;
+      --s1: #5585f0; --s2: #e8873a; --s3: #2bb38a; --s4: #f0c24b; --s5: #e872a8; --s6: #4caf6e; --s7: #a77ff2; --s8: #ef5a64; --s9: #8a8984; --s10: #62c6db; --s11: #c98d55;
+      --tv1: #5585f0; --tv2: #6cc8dc; --tv3: #e8873a; --tv4: #a77ff2; --tv5: #f3c74b;
+      --fin-main: #1b2645; --up: #22ab94; --down: #f7525f; --mix: 58%;
       --good: #4cc24c; --bad: #ff7a7a;
-      --seq: #3d9bff; --glow: .9;
+      --seq: #5585f0; --glow: .9;
       --tint-blue: #1b2c42; --tint-orange: #3d2419; --tint-aqua: #163229; --tint-violet: #272444; --tint-yellow: #3a2e12; --tint-gray: #242423;
     }
   }
@@ -60,14 +64,13 @@
   .tiles { grid-template-columns: repeat(4, 1fr); margin-bottom: 14px; }
   @media (max-width: 1100px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 500px) { .tiles { gap: 10px; } .tile { padding: 12px; } .tile .lbl, .tile .sub { font-size: 11px; } }
-  .tile { --c: var(--s9); position: relative; border-radius: var(--radius); padding: 14px 16px; background: radial-gradient(140% 130% at 0% 0%, color-mix(in srgb, var(--c) calc(var(--glow) * 48%), transparent) 0%, color-mix(in srgb, var(--c) calc(var(--glow) * 14%), transparent) 45%, transparent 80%), var(--surface); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--c) 35%, transparent); }
-  .tile .lbl { color: var(--text-2); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  .tile .val { text-shadow: 0 0 22px color-mix(in srgb, var(--c) calc(var(--glow) * 70%), transparent); }
-  button.info { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 0; padding: 0; cursor: help; font: italic 600 12px/20px Georgia, serif; color: var(--text-2); background: color-mix(in srgb, var(--text) 8%, transparent); }
-  button.info:hover { color: var(--text); background: color-mix(in srgb, var(--c) 35%, transparent); }
+  .tile { --c: var(--s9); position: relative; border-radius: var(--radius); padding: 14px 16px; background: color-mix(in srgb, var(--c) var(--mix), var(--surface)); }
+  .tile .lbl { color: color-mix(in srgb, var(--text) 78%, transparent); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  button.info { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 0; padding: 0; cursor: help; font: italic 600 12px/20px Georgia, serif; color: var(--text-2); background: color-mix(in srgb, var(--text) 12%, transparent); }
+  button.info:hover { color: var(--text); background: color-mix(in srgb, var(--text) 24%, transparent); }
   .tile .val { font-size: 24px; font-weight: 700; margin-top: 4px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
   .tile .sub { color: var(--text-3); font-size: 12px; margin-top: 2px; }
-  .tile.blue { --c: var(--s1); } .tile.orange { --c: var(--s2); } .tile.aqua { --c: var(--s3); } .tile.violet { --c: var(--s7); } .tile.yellow { --c: var(--s4); } .tile.gray { --c: var(--s9); }
+  .tile.blue { --c: var(--s1); } .tile.orange { --c: var(--s2); } .tile.aqua { --c: var(--s3); } .tile.violet { --c: var(--s7); } .tile.yellow { --c: var(--s4); } .tile.gray { --c: var(--s10); } .tile.pink { --c: var(--s5); }
   .cards { grid-template-columns: 1fr; align-items: start; }
   @media (min-width: 900px) { .cards.two { grid-template-columns: 3fr 2fr; } .cards.half { grid-template-columns: 1fr 1fr; } }
   .card { background: var(--surface); border-radius: var(--radius); padding: 16px 18px; min-width: 0; }
@@ -118,27 +121,26 @@
   table.fin th:first-child, table.fin td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); z-index: 1; min-width: 210px; }
   table.fin thead th { color: var(--text-2); font-weight: 600; font-size: 12px; vertical-align: bottom; }
   table.fin thead th small { display: block; color: var(--text-3); font-weight: 400; }
-  table.fin tr.main td { background: var(--tint-blue); font-weight: 650; }
-  table.fin tr.main td:first-child { background: var(--tint-blue); }
+  table.fin tr.main td { background: var(--fin-main); font-weight: 500; }
+  table.fin tr.main td:first-child { background: var(--fin-main); box-shadow: inset 4px 0 0 var(--acc, transparent); padding-left: 16px; }
+  table.fin td:first-child { border-right: 1px solid var(--surface-2); }
+  table.fin td, table.fin th { font-size: 14px; }
   table.fin tr.sub td { color: var(--text-2); font-size: 12px; }
   table.fin tr.sub td:first-child { padding-left: 28px; }
   table.fin tr.pct td { color: var(--text-3); font-size: 12px; }
   table.fin td .g { display: block; font-size: 11px; font-weight: 500; }
-  table.fin td .g.up { color: var(--good); } table.fin td .g.down { color: var(--bad); }
+  table.fin td .g { font-size: 13px; margin-top: 2px; } table.fin td .g.up { color: var(--up); } table.fin td .g.down { color: var(--down); }
   table.fin tr[data-exp] td:first-child { cursor: pointer; }
   table.fin tr[data-exp] td:first-child::before { content: '▸ '; color: var(--text-3); }
   table.fin tr[data-exp].open td:first-child::before { content: '▾ '; }
   .fin-note { font-size: 12px; color: var(--text-3); margin-top: 10px; line-height: 1.5; }
   .mt { margin-top: 14px; }
   /* luz: las marcas de los gráficos brillan con su propio color */
-  svg .bar, svg .glow { filter: url(#glow); }
-  svg .bar:hover { filter: url(#glow) brightness(1.15); }
+  svg .bar:hover { filter: url(#glow) brightness(1.08); }
   [data-s] { transition: opacity .15s, filter .15s; }
   .apagado { opacity: .1 !important; filter: none !important; }
-  .encendido { filter: url(#glow) brightness(1.2) !important; }
+  .encendido { filter: url(#glow) brightness(1.1) !important; }
   .legend [data-s], .dl [data-s] { cursor: default; }
-  .legend i, .dl i { box-shadow: 0 0 8px -1px color-mix(in srgb, var(--text) 25%, transparent); }
-  .stackbar > div, .cats .fill { box-shadow: inset 0 1px 0 rgba(255,255,255,.25); }
   /* desplegables */
   select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor: pointer; background-repeat: no-repeat; background-position: right 12px center;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a8985' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); transition: background-color .12s, box-shadow .12s; }
@@ -169,7 +171,9 @@
   .legend button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; padding: 4px 0; }
   .legend button.off { opacity: .45; text-decoration: line-through; }
   table.fin thead th[data-p] { cursor: pointer; }
-  table.fin thead th.sel { background: var(--tint-blue); border-radius: 8px 8px 0 0; }
+  table.fin thead th.sel { background: var(--fin-main); border-radius: 8px 8px 0 0; }
+  table.fin thead th { font-size: 14px; color: var(--text); } table.fin thead th small { font-size: 12px; }
+  #finLegend i { border-radius: 50%; }
   table.fin td .g { color: var(--text-3); }
   .stackbar { display: flex; height: 16px; border-radius: 5px; overflow: hidden; gap: 2px; }
   .cats .chev { font-style: normal; color: var(--text-3); display: inline-block; width: 14px; }
@@ -274,7 +278,7 @@
         </div>
         <div class="card" id="finCascCard">
           <h2 id="finCascTitle"></h2>
-          <div class="hint">Cada escalón resta (naranja) o suma (verde). Para ver otro periodo, clica su columna en la tabla o sus barras.</div>
+          <div class="hint">Cada escalón resta (rojo) o suma (verde). Para ver otro periodo, clica su columna en la tabla o sus barras.</div>
           <div id="finCasc"></div>
         </div>
       </div>
@@ -664,7 +668,7 @@ function render() {
     ['Invertido', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes · aportaciones netas`],
     ['Variación de caja', sel.caja, 'yellow', 'beneficio − invertido: lo que sube o baja tu dinero en cuentas'],
     ['Beneficio trabajo', sel.ingT - sel.gasT, 'gray', `sueldo ${fmt(sel.ingT)} − gastos ${fmt(sel.gasT)}`],
-    ['Saldo en cuentas hoy', D.saldo_total, 'gray', 'último extracto de cada cuenta, conjunta al 50 %', true],
+    ['Saldo en cuentas hoy', D.saldo_total, 'pink', 'último extracto de cada cuenta, conjunta al 50 %', true],
   ];
   $('tiles').innerHTML = t.map(([l,v,c,s,sinP]) => tileHTML(l, v, c, s, sinP ? '' : periodo)).join(''); hoverTips($('tiles'));
 
@@ -843,47 +847,47 @@ function renderConjunta() {
 }
 
 // ---- estados financieros (cuenta de resultados, balance, flujo de caja) por año, trimestre o mes, al estilo de TradingView
-const FIN = { tab: 'resultados', gran: 'trimestral', open: {}, sel: null, vista: '', off: { resultados: new Set(['operativo', 'antes_impuestos']), balance: new Set(), flujo: new Set() } };
+const FIN = { tab: 'resultados', gran: 'trimestral', open: {}, sel: null, vista: '', off: { resultados: new Set(), balance: new Set(), flujo: new Set() } };
 const FIN_DEF = {
   resultados: {
-    serie: [{ k: 'ingresos', l: 'Ingresos', c: 'var(--s1)' }, { k: 'margen_bruto', l: 'Margen bruto', c: 'var(--s7)' }, { k: 'operativo', l: 'Resultado operativo', c: 'var(--s4)' }, { k: 'antes_impuestos', l: 'Antes de impuestos', c: 'var(--s9)' }, { k: 'neto', l: 'Beneficio neto', c: 'var(--s3)' }],
+    serie: [{ k: 'ingresos', l: 'Ingresos', c: 'var(--tv1)' }, { k: 'margen_bruto', l: 'Margen bruto', c: 'var(--tv2)' }, { k: 'operativo', l: 'Resultado operativo', c: 'var(--tv3)' }, { k: 'antes_impuestos', l: 'Antes de impuestos', c: 'var(--tv4)' }, { k: 'neto', l: 'Beneficio neto', c: 'var(--tv5)' }],
     filas: [
-      { k: 'ingresos', l: 'Ingresos', main: 1, exp: 'ingresos|' },
+      { k: 'ingresos', l: 'Ingresos', main: 1, exp: 'ingresos|', a: 'var(--tv1)' },
       { k: 'esencial', l: 'Coste de vida esencial', neg: 1, exp: 'esencial|' },
-      { k: 'margen_bruto', l: 'Margen bruto', main: 1 },
+      { k: 'margen_bruto', l: 'Margen bruto', main: 1, a: 'var(--tv2)' },
       { k: 'margen_bruto_pct', l: 'Margen bruto sobre ingresos', pct: 1 },
       { k: 'noesencial', l: 'Gasto no esencial', neg: 1, exp: 'noesencial|' },
-      { k: 'operativo', l: 'Resultado operativo', main: 1 },
+      { k: 'operativo', l: 'Resultado operativo', main: 1, a: 'var(--tv3)' },
       { k: 'operativo_pct', l: 'Margen operativo', pct: 1 },
       { k: 'extra', l: 'Extraordinarios (Otros y reembolsos)', exp: 'extra|' },
-      { k: 'antes_impuestos', l: 'Resultado antes de impuestos', main: 1 },
+      { k: 'antes_impuestos', l: 'Resultado antes de impuestos', main: 1, a: 'var(--tv4)' },
       { k: 'impuestos', l: 'Impuestos', neg: 1, exp: 'impuestos|' },
-      { k: 'neto', l: 'Beneficio neto', main: 1 },
+      { k: 'neto', l: 'Beneficio neto', main: 1, a: 'var(--tv5)' },
       { k: 'neto_pct', l: 'Tasa de ahorro', pct: 1 },
     ],
     nota: 'Criterio de caja: cada movimiento cuenta en el periodo en que se cobra o se paga, en tu parte (la conjunta al 50 %). El beneficio neto es el mismo que el Beneficio del dashboard. Coste esencial = vivienda, salud y deporte, transporte, gestoría y herramientas. No esencial = hábitos, ocio, viajes, suscripciones y formación.',
   },
   balance: {
-    serie: [{ k: 'caja', l: 'Caja', c: 'var(--s1)', t: 'stack' }, { k: 'hucha', l: 'Huchas', c: 'var(--s10)', t: 'stack' }, { k: 'inversiones', l: 'Inversiones', c: 'var(--s7)', t: 'stack' }, { k: 'pasivos', l: 'Pasivos (en negativo)', c: 'var(--s8)', t: 'stack', neg: 1 }, { k: 'patrimonio', l: 'Patrimonio neto', c: 'var(--text)', t: 'line' }],
+    serie: [{ k: 'caja', l: 'Caja', c: 'var(--tv1)', t: 'stack' }, { k: 'hucha', l: 'Huchas', c: 'var(--tv2)', t: 'stack' }, { k: 'inversiones', l: 'Inversiones', c: 'var(--tv4)', t: 'stack' }, { k: 'pasivos', l: 'Pasivos (en negativo)', c: 'var(--tv3)', t: 'stack', neg: 1 }, { k: 'patrimonio', l: 'Patrimonio neto', c: 'var(--tv5)', t: 'line' }],
     filas: [
-      { k: 'activos', l: 'Total activos', main: 1 },
+      { k: 'activos', l: 'Total activos', main: 1, a: 'var(--tv1)' },
       { k: 'caja', l: 'Caja en bancos', sub: 1, exp: 'activos|caja' },
       { k: 'hucha', l: 'Huchas de ahorro Revolut', sub: 1 },
       { k: 'inversiones', l: 'Inversiones (a precio de compra)', sub: 1 },
-      { k: 'pasivos', l: 'Total pasivos', main: 1, malo: 1 },
+      { k: 'pasivos', l: 'Total pasivos', main: 1, malo: 1, a: 'var(--tv3)' },
       { k: 'deuda_hacienda', l: 'Deuda con Hacienda pendiente', sub: 1 },
       { k: 'a_devolver', l: 'Dinero recibido a devolver', sub: 1 },
-      { k: 'patrimonio', l: 'Patrimonio neto', main: 1 },
+      { k: 'patrimonio', l: 'Patrimonio neto', main: 1, a: 'var(--tv5)' },
     ],
     nota: 'Foto al cierre de cada periodo. Caja = último saldo de cada cuenta (conjunta al 50 %); solo existe desde enero de 2026, antes la hoja no guardaba saldos. Inversiones a precio de compra y solo lo aportado desde 2025: no es el valor de mercado ni incluye lo que tuvieras antes. Pasivos = plazos pendientes de los fraccionamientos de Hacienda y el dinero de tu madre a devolver.',
   },
   flujo: {
-    serie: [{ k: 'operativo', l: 'Operativo', c: 'var(--s1)' }, { k: 'inversion', l: 'Inversión', c: 'var(--s7)' }, { k: 'financiacion', l: 'Financiación', c: 'var(--s4)' }, { k: 'variacion', l: 'Variación de caja', c: 'var(--text)', t: 'line' }],
+    serie: [{ k: 'operativo', l: 'Operativo', c: 'var(--tv1)' }, { k: 'inversion', l: 'Inversión', c: 'var(--tv4)' }, { k: 'financiacion', l: 'Financiación', c: 'var(--tv3)' }, { k: 'variacion', l: 'Variación de caja', c: 'var(--tv5)', t: 'line' }],
     filas: [
-      { k: 'operativo', l: 'Flujo operativo', main: 1 },
-      { k: 'inversion', l: 'Flujo de inversión', main: 1, exp: 'inversion|', neutro: 1 },
-      { k: 'financiacion', l: 'Flujo de financiación', main: 1, neutro: 1 },
-      { k: 'variacion', l: 'Variación de caja', main: 1 },
+      { k: 'operativo', l: 'Flujo operativo', main: 1, a: 'var(--tv1)' },
+      { k: 'inversion', l: 'Flujo de inversión', main: 1, exp: 'inversion|', neutro: 1, a: 'var(--tv4)' },
+      { k: 'financiacion', l: 'Flujo de financiación', main: 1, neutro: 1, a: 'var(--tv3)' },
+      { k: 'variacion', l: 'Variación de caja', main: 1, a: 'var(--tv5)' },
       { k: 'inversion_pct', l: 'Invertido sobre ingresos', pct: 1 },
     ],
     nota: 'Operativo = beneficio neto más los plazos de deuda (que aquí van como financiación). Inversión = compras menos ventas de activos (negativo = has invertido). Financiación = plazos de Hacienda pagados. Variación de caja = la suma: cuánto sube o baja tu dinero en cuentas.',
@@ -894,11 +898,11 @@ function finFmt(v) { return v == null ? '–' : (v < 0 ? '−' : '') + fmt(Math.
 function finDelta(v, prev, malo, enCurso) {
   if (enCurso || v == null || prev == null) return '';
   const diff = v - prev; if (Math.abs(diff) < 1) return '<span class="g">= igual</span>';
-  const bueno = malo ? diff < 0 : diff > 0, cls = bueno ? 'up' : 'down', fl = diff > 0 ? '▲ +' : '▼ −';
+  const bueno = malo ? diff < 0 : diff > 0, cls = bueno ? 'up' : 'down', fl = diff > 0 ? '+' : '−';
   if (prev < 200) return `<span class="g ${cls}">${fl}${fmt(Math.abs(diff))}</span>`;
   const d = diff / prev;
   if (Math.abs(d) < 0.005) return '<span class="g">= 0 %</span>';
-  return `<span class="g ${cls}">${fl}${Math.abs(Math.round(d * 100))} %</span>`;
+  return `<span class="g ${cls}">${fl}${Math.abs(d * 100).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} %</span>`;
 }
 function renderEstados() {
   const E = D.estados; if (!E) return;
@@ -922,7 +926,7 @@ function renderEstados() {
     if (vals.every(v => v == null || v === 0) && !f.main) continue;
     const cls = f.main ? 'main' : f.pct ? 'pct' : f.sub ? 'sub' : '';
     const open = !!(f.exp && FIN.open[f.exp]);
-    h += `<tr class="${cls} ${open ? 'open' : ''}" ${f.exp ? `data-exp="${f.exp}" tabindex="0" aria-expanded="${open}"` : ''}><td>${f.l}</td>` + vals.map((v, i) => {
+    h += `<tr class="${cls} ${open ? 'open' : ''}" ${f.a ? `style="--acc:${f.a}"` : ''} ${f.exp ? `data-exp="${f.exp}" tabindex="0" aria-expanded="${open}"` : ''}><td>${f.l}</td>` + vals.map((v, i) => {
       if (f.pct) return `<td>${v == null ? '–' : Math.round(v) + ' %'}</td>`;
       const shown = v == null ? null : (f.neg ? -v : v);
       const g = f.main && !f.neutro && i > 0 ? finDelta(v, vals[i - 1], f.malo, lista[i].en_curso) : '';
@@ -990,7 +994,7 @@ function finCascada(el, e) {
   ticks.forEach(v => s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL - 6}" y="${y(v) + 4}" text-anchor="end">${fmtK(v)}</text>`);
   tramos.forEach((t, i) => {
     const cx = padL + i * gw + gw / 2, x = cx - bw / 2;
-    const col = t.tot ? (i === 0 ? 'var(--s1)' : i === tramos.length - 1 ? (t.b >= 0 ? 'var(--s3)' : 'var(--bad)') : 'var(--s7)') : (t.v < 0 ? 'var(--s2)' : 'var(--s3)');
+    const col = t.tot ? (i === 0 ? 'var(--tv1)' : i === tramos.length - 1 ? 'var(--tv5)' : /bruto/i.test(t.l) ? 'var(--tv2)' : 'var(--tv3)') : (t.v < 0 ? 'var(--down)' : 'var(--up)');
     s += `<rect class="bar" data-tip="${t.l}|${fmt2(t.v)}${t.tot || !r.ingresos ? '' : ' · ' + Math.round(Math.abs(t.v) / r.ingresos * 100) + ' % de los ingresos'}" x="${x}" y="${Math.min(y(t.a), y(t.b))}" width="${bw}" height="${Math.max(1, Math.abs(y(t.a) - y(t.b)))}" rx="2" fill="${col}"/>`;
     if (i < tramos.length - 1) s += `<line x1="${x + bw}" x2="${x + gw}" y1="${y(t.b)}" y2="${y(t.b)}" stroke="var(--text-3)" stroke-dasharray="2 2"/>`;
     s += `<text class="axis" x="${cx}" y="${Math.min(y(t.a), y(t.b)) - 5}" text-anchor="middle" style="fill:var(--text);font-weight:600">${t.v < 0 ? '−' : ''}${fmtK(Math.abs(t.v))}</text>`;

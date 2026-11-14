@@ -896,7 +896,7 @@ const FIN_DEF = {
 function finFmt(v) { return v == null ? '–' : (v < 0 ? '−' : '') + fmt(Math.abs(v)); }
 // variación frente al periodo anterior: en % solo si la base es positiva y suficiente; si no, en euros. El periodo en curso no se compara.
 function finDelta(v, prev, malo, enCurso) {
-  if (enCurso || v == null || prev == null) return '';
+  if (enCurso || v == null || prev == null) return '<span class="g">–</span>';  // sin nada comparable: guion
   const diff = v - prev; if (Math.abs(diff) < 1) return '<span class="g">= igual</span>';
   const bueno = malo ? diff < 0 : diff > 0, cls = bueno ? 'up' : 'down', fl = diff > 0 ? '+' : '−';
   if (prev < 200) return `<span class="g ${cls}">${fl}${fmt(Math.abs(diff))}</span>`;
@@ -908,7 +908,12 @@ function renderEstados() {
   const E = D.estados; if (!E) return;
   const def = FIN_DEF[FIN.tab], off = FIN.off[FIN.tab];
   const cuantos = { anual: 99, trimestral: 8, mensual: 12 }[FIN.gran];
-  const lista = (E[FIN.gran] || []).filter(e => FIN.tab !== 'balance' || e.balance.caja_conocida).slice(-cuantos);
+  const todos = (E[FIN.gran] || []).filter(e => FIN.tab !== 'balance' || e.balance.caja_conocida);
+  const lista = todos.slice(-cuantos);
+  // con qué se compara: flujos (resultados y caja) con el mismo periodo del año anterior, como las empresas;
+  // el balance, que es una foto, con el cierre del periodo anterior
+  const porP = Object.fromEntries(todos.map((e, i) => [e.periodo, i]));
+  const anterior = e => FIN.tab === 'balance' ? todos[porP[e.periodo] - 1] : todos[porP[(+e.periodo.slice(0, 4) - 1) + e.periodo.slice(4)]];
   const val = (e, k) => FIN.tab === 'resultados' ? e.resultados[k] : FIN.tab === 'flujo' ? e.flujo[k] : e.balance[k];
   if (!lista.find(e => e.periodo === FIN.sel)) { const comp = lista.filter(e => !e.en_curso); FIN.sel = (comp[comp.length - 1] || lista[lista.length - 1] || {}).periodo; }
   // evolución
@@ -929,7 +934,8 @@ function renderEstados() {
     h += `<tr class="${cls} ${open ? 'open' : ''}" ${f.a ? `style="--acc:${f.a}"` : ''} ${f.exp ? `data-exp="${f.exp}" tabindex="0" aria-expanded="${open}"` : ''}><td>${f.l}</td>` + vals.map((v, i) => {
       if (f.pct) return `<td>${v == null ? '–' : Math.round(v) + ' %'}</td>`;
       const shown = v == null ? null : (f.neg ? -v : v);
-      const g = f.main && !f.neutro && i > 0 ? finDelta(v, vals[i - 1], f.malo, lista[i].en_curso) : '';
+      const pe = anterior(lista[i]);
+      const g = f.main && !f.neutro ? finDelta(v, pe ? val(pe, f.k) : null, f.malo, lista[i].en_curso) : '';
       return `<td>${finFmt(shown)}${g}</td>`;
     }).join('') + '</tr>';
     if (open) {
@@ -943,7 +949,7 @@ function renderEstados() {
   $('finTable').innerHTML = h + '</tbody>';
   const vista = FIN.tab + FIN.gran + innerWidth;
   const w = $('finTable').parentElement; if (vista !== FIN.vista && w.offsetParent) { w.scrollLeft = w.scrollWidth; FIN.vista = vista; }  // como TradingView: el periodo más reciente a la vista
-  $('finNote').textContent = def.nota + ' Incluye todo (personal y trabajo, todas las cuentas). * = periodo en curso: no se compara con el anterior.';
+  $('finNote').textContent = def.nota + ' Incluye todo (personal y trabajo, todas las cuentas). Variación: ' + (FIN.tab === 'balance' ? 'frente al cierre del periodo anterior.' : 'frente al mismo periodo del año anterior (' + { anual: 'año contra año', trimestral: 'T3 2026 contra T3 2025', mensual: 'oct 26 contra oct 25' }[FIN.gran] + '); guion si no hay con qué comparar.') + ' * = periodo en curso, sin comparar.';
 }
 function finChart(el, lista, series) {
   if (!lista.length) { el.innerHTML = '<p class="muted">Sin datos</p>'; return; }

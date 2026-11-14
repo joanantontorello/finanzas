@@ -155,6 +155,16 @@
   .dd-op.on { font-weight: 650; color: var(--s1); }
   .dd-op.on::before { content: '✓'; position: absolute; left: 11px; }
   .dd-g { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--text-3); padding: 10px 12px 4px; }
+  button.selbtn { border: 0; color: var(--text); font: inherit; font-size: 12px; font-weight: 600; padding: 6px 30px 6px 12px; border-radius: 999px; cursor: pointer; max-width: min(360px, 70vw); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    background: var(--surface-2) no-repeat right 11px center url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a8985' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+  button.selbtn:hover { background-color: var(--surface-3); }
+  button.selbtn.abierto { box-shadow: 0 0 0 2px color-mix(in srgb, var(--s1) 50%, transparent); }
+  .dd-op.multi::before { content: ''; position: absolute; left: 10px; top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 4px; box-shadow: inset 0 0 0 1.5px var(--text-3); }
+  .dd-op.multi.on { color: var(--text); }
+  .dd-op.multi.on::before { content: '✓'; background: var(--s1); color: #fff; box-shadow: 0 0 8px color-mix(in srgb, var(--s1) 60%, transparent); font-size: 10px; font-weight: 700; line-height: 14px; text-align: center; }
+  .dd-op.grupo { font-weight: 650; }
+  .dd-pie { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 6px 2px; border-top: 1px solid var(--surface-2); margin-top: 6px; font-size: 12px; color: var(--text-3); }
+  .dd-pie button { border: 0; background: none; color: var(--s1); font: inherit; cursor: pointer; padding: 4px 6px; }
   .dd-q { width: 100%; margin-bottom: 6px; border-radius: 10px; min-height: 34px; }
   .legend button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; padding: 4px 0; }
   .legend button.off { opacity: .45; text-decoration: line-through; }
@@ -226,7 +236,7 @@
       </div>
       <div class="grid cards two mt">
         <div class="card">
-          <h2>Evolución de <select id="evoCat" aria-label="Categoría"></select></h2>
+          <h2>Evolución de <button class="selbtn" id="evoCat" aria-haspopup="listbox" aria-label="Elegir categorías"></button></h2>
           <div class="hint" id="evoHint"></div>
           <div id="chartEvo"></div>
         </div>
@@ -394,7 +404,7 @@ const mesLargo = m => MESES_L[+m.slice(5,7)-1] + ' ' + m.slice(0,4);
 const SERIES = ['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)','var(--s6)','var(--s7)','var(--s8)'];
 const $ = id => document.getElementById(id);
 
-let D, state = { year: null, desde: null, hasta: null, ambito: 'Todo', cuenta: '', view: 'dashboard', evoCat: '', cat: '', tipo: '', q: '' };
+let D, state = { year: null, desde: null, hasta: null, ambito: 'Todo', cuenta: '', view: 'dashboard', evoCats: [], cat: '', tipo: '', q: '' };
 const GH = { repo: '', path: 'data/overrides.json' };
 let overrides = {}, ovSha = null, cambios = {};
 const catTipo = {}, CI = {};
@@ -563,12 +573,12 @@ function init() {
   $('cuenta').innerHTML += cuentas.map(c => `<option value="${c}">${c === 'Histórico' ? 'Hoja antigua (2025)' : c}</option>`).join('');
   $('cuenta').onchange = e => { state.cuenta = e.target.value; render(); };
   $('fcat').innerHTML += optsCategorias('', false);
-  $('donutBack').onclick = () => { state.donutGrupo = null; state.evoCat = ''; renderDonut(agg(base()), periodoLabel()); renderEvo(); };
+  $('donutBack').onclick = () => { state.donutGrupo = null; state.evoCats = []; renderDonut(agg(base()), periodoLabel()); renderEvo(); };
   $('fcat').onchange = e => { state.cat = e.target.value; renderTable(); };
   $('ftipo').onchange = e => { state.tipo = e.target.value; renderTable(); };
   $('q').oninput = e => { state.q = e.target.value.toLowerCase(); renderTable(); };
   $('clear').onclick = () => { state.cat=''; state.tipo=''; state.q=''; $('fcat').value=''; $('ftipo').value=''; $('q').value=''; renderTable(); };
-  $('evoCat').onchange = e => { state.evoCat = e.target.value; renderEvo(); };
+  $('evoCat').onclick = e => { if (dd && dd.sel === e.currentTarget) cerrarDD(); else abrirMultiCat(e.currentTarget); };
   document.querySelectorAll('nav a[data-view]').forEach(a => a.onclick = e => { e.preventDefault(); showView(a.dataset.view); });
   $('meta').textContent = 'Actualizado ' + D.generado;
   $('defs').textContent = D.definiciones;
@@ -758,8 +768,8 @@ function renderDonut(sel, periodo) {
                   : Object.entries(sel.grupos).filter(([c,v]) => v > 0 && c !== reembG).sort((a,b) => b[1]-a[1]);
   donut($('donutGasto'), $('donutLegend'), items, name => {
     if (name === 'Resto') return;
-    if (!g) { state.donutGrupo = name; renderDonut(sel, periodo); state.evoCat = 'g:' + name; renderEvo(); return; }
-    state.evoCat = name; renderEvo(); $('chartEvo').scrollIntoView({behavior:'smooth', block:'center'});
+    if (!g) { state.donutGrupo = name; renderDonut(sel, periodo); state.evoCats = ['g:' + name]; renderEvo(); return; }
+    state.evoCats = [name]; renderEvo(); $('chartEvo').scrollIntoView({behavior:'smooth', block:'center'});
   }, g ? null : colorGrupo, g ? 'total' : 'gasto bruto');
 }
 function renderCats(sel, periodo) {
@@ -776,15 +786,17 @@ function renderCats(sel, periodo) {
   $('cats').onclick = e => { const r = e.target.closest('.row'); if (!r) return; if (r.dataset.g) { state.catsOpen[r.dataset.g] = !state.catsOpen[r.dataset.g]; renderCats(sel, periodo); return; } state.cat = r.dataset.cat; $('fcat').value = state.cat; showView('movimientos'); };
 }
 function renderEvo() {
-  $('evoCat').innerHTML = '<option value="">todo el gasto neto</option>' + optsCategorias(state.evoCat, true);
+  const sel = state.evoCats, nombre = sel.map(c => c.replace(/^g:/, ''));
+  const etiqueta = !sel.length ? 'todo el gasto neto' : sel.length <= 3 ? nombre.join(' + ') : `${sel.length} categorías`;
+  $('evoCat').textContent = etiqueta; $('evoCat').title = nombre.join(' + ');
   const meses = mesesAnio();
-  const rowsY = base(m => m.mes.startsWith(state.year) && (m.tipo === 'Gasto' || m.tipo === 'Reembolso') && matchCat(m, state.evoCat));
+  const rowsY = base(m => m.mes.startsWith(state.year) && (m.tipo === 'Gasto' || m.tipo === 'Reembolso') && (!sel.length || sel.some(c => matchCat(m, c))));
   const pm = meses.map(mes => ({ mes, v: -rowsY.filter(m => m.mes === mes).reduce((a, m) => a + m.mio, 0) }));
   const enP = pm.filter(enPeriodo); const media = enP.length ? enP.reduce((a,p) => a + p.v, 0)/enP.length : 0;
   const tot = enP.reduce((a,p) => a + p.v, 0);
   const ing = agg(base()).ingresos;
   $('evoHint').textContent = `${periodoLabel()}: ${fmt(tot)} en total, ${fmt(media)} al mes` + (ing ? ` (${Math.round(tot/ing*100)} % de los ingresos)` : '') + `. Barras atenuadas = fuera del periodo.`;
-  barChart($('chartEvo'), pm, [{key:'v', color:'var(--s8)', label: (state.evoCat || 'Gasto neto').replace(/^g:/, '')}], {media, h: 200});
+  barChart($('chartEvo'), pm, [{key:'v', color:'var(--s8)', label: sel.length ? nombre.join(' + ') : 'Gasto neto'}], {media, h: 200});
 }
 function renderFijos(sel, n) {
   const noEss = (D.grupos || []).filter(g => g.esencial === false).map(g => [g.nombre, sel.grupos[g.nombre] || 0]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]);
@@ -1016,6 +1028,12 @@ document.addEventListener('pointerout', e => { const l = e.target.closest('.lege
 const punteroFino = matchMedia('(pointer: fine)').matches;
 let dd = null;
 function cerrarDD() { if (dd) { dd.el.remove(); dd.sel.classList.remove('abierto'); dd = null; } }
+// abre el panel hacia donde haya más sitio y ajusta el alto de la lista para que quepa entero en pantalla
+function colocarDD(el, r, extra) {
+  const abajo = innerHeight - r.bottom - 14, arriba = r.top - 14, haciaArriba = abajo < 320 && arriba > abajo;
+  if (haciaArriba) el.style.bottom = (innerHeight - r.top + 6) + 'px'; else el.style.top = (r.bottom + 6) + 'px';
+  el.querySelector('.dd-list').style.maxHeight = Math.max(140, Math.min(360, (haciaArriba ? arriba : abajo) - extra)) + 'px';
+}
 function abrirDD(sel) {
   cerrarDD();
   const el = document.createElement('div'); el.className = 'dd'; el.setAttribute('role', 'listbox');
@@ -1027,7 +1045,7 @@ function abrirDD(sel) {
   const r = sel.getBoundingClientRect();
   el.style.minWidth = Math.max(r.width, 190) + 'px';
   el.style.left = Math.max(8, Math.min(r.left, innerWidth - el.offsetWidth - 8)) + 'px';
-  if (innerHeight - r.bottom < 300 && r.top > innerHeight - r.bottom) el.style.bottom = (innerHeight - r.top + 6) + 'px'; else el.style.top = (r.bottom + 6) + 'px';
+  colocarDD(el, r, items.length > 14 ? 50 : 10);
   sel.classList.add('abierto');
   const elegir = i => { const o = items[i]; if (!o) return; const cambia = sel.value !== o.value; sel.value = o.value; cerrarDD(); sel.focus(); if (cambia) sel.dispatchEvent(new Event('change', { bubbles: true })); };
   dd = { el, sel, elegir };
@@ -1044,7 +1062,7 @@ function abrirDD(sel) {
 document.addEventListener('mousedown', e => {
   const s = e.target.closest('select');
   if (s && punteroFino && !s.disabled) { e.preventDefault(); if (dd && dd.sel === s) cerrarDD(); else { s.focus(); abrirDD(s); } return; }
-  if (dd && !dd.el.contains(e.target)) cerrarDD();
+  if (dd && !dd.el.contains(e.target) && !dd.sel.contains(e.target)) cerrarDD();
 });
 document.addEventListener('keydown', e => {
   if (dd) {
@@ -1060,6 +1078,41 @@ document.addEventListener('keydown', e => {
 });
 addEventListener('scroll', e => { if (dd && !dd.el.contains(e.target)) cerrarDD(); }, true);
 addEventListener('resize', () => cerrarDD());
+
+// ---- selector múltiple de categorías para la evolución (grupos enteros o subcategorías sueltas)
+function abrirMultiCat(btn) {
+  cerrarDD();
+  const el = document.createElement('div'); el.className = 'dd'; el.setAttribute('role', 'listbox'); el.setAttribute('aria-multiselectable', 'true');
+  const items = []; let h = '';
+  const op = (v, txt, cls) => { items.push(v); const on = state.evoCats.includes(v); return `<div class="dd-op multi ${cls || ''} ${on ? 'on' : ''}" role="option" aria-selected="${on}" data-i="${items.length - 1}">${txt}</div>`; };
+  (D.grupos || []).filter(g => g.tipo === 'Gasto' || g.tipo === 'Reembolso').forEach(g => {
+    h += `<div class="dd-g">${g.nombre}</div>` + (g.sub.length > 1 ? op('g:' + g.nombre, g.nombre + ' (todo)', 'grupo') : '') + g.sub.map(c => op(c, c)).join('');
+  });
+  el.innerHTML = '<input class="dd-q" placeholder="Buscar categoría…" aria-label="Buscar categoría">' + `<div class="dd-list">${h}</div><div class="dd-pie"><span id="ddN"></span><button id="ddLimpiar">Todo el gasto</button><button id="ddListo">Listo</button></div>`;
+  document.body.appendChild(el);
+  const r = btn.getBoundingClientRect();
+  el.style.minWidth = Math.min(300, innerWidth - 16) + 'px';
+  el.style.left = Math.max(8, Math.min(r.left, innerWidth - el.offsetWidth - 8)) + 'px';
+  colocarDD(el, r, 96);
+  btn.classList.add('abierto');
+  const pintar = () => { el.querySelectorAll('.dd-op').forEach(d => { const on = state.evoCats.includes(items[+d.dataset.i]); d.classList.toggle('on', on); d.setAttribute('aria-selected', on); }); el.querySelector('#ddN').textContent = state.evoCats.length ? state.evoCats.length + ' elegidas' : 'Todo el gasto neto'; };
+  const alternar = i => { const v = items[i]; state.evoCats = state.evoCats.includes(v) ? state.evoCats.filter(x => x !== v) : [...state.evoCats, v]; pintar(); renderEvo(); };
+  dd = { el, sel: btn, elegir: alternar };
+  pintar();
+  el.onmousedown = e => { if (!e.target.matches('.dd-q')) e.preventDefault(); };
+  el.onclick = e => {
+    const d = e.target.closest('.dd-op'); if (d) { alternar(+d.dataset.i); return; }
+    if (e.target.id === 'ddLimpiar') { state.evoCats = []; pintar(); renderEvo(); }
+    if (e.target.id === 'ddListo') { cerrarDD(); btn.focus(); }
+  };
+  const q = el.querySelector('.dd-q');
+  if (punteroFino) q.focus();
+  q.oninput = () => {
+    const t = q.value.toLowerCase();
+    el.querySelectorAll('.dd-op').forEach(d => d.hidden = !d.textContent.toLowerCase().includes(t));
+    el.querySelectorAll('.dd-g').forEach(g => { const todo = t && g.textContent.toLowerCase().includes(t); let n = g.nextElementSibling, vis = false; while (n && n.classList.contains('dd-op')) { if (todo) n.hidden = false; if (!n.hidden) vis = true; n = n.nextElementSibling; } g.hidden = !vis; });  // si el texto coincide con el grupo, se ve el grupo entero
+  };
+}
 const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 function fechaLarga(f) { const d = new Date(f + 'T12:00:00'); return DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES_L[d.getMonth()].toLowerCase() + ' ' + d.getFullYear(); }
 function renderPend() {

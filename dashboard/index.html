@@ -450,21 +450,20 @@ fetch('data.json').then(r => r.json()).then(async d => { D = d; const pf = D.per
 async function cargarPresupuesto() {
   try { P = await (await fetch('presupuesto.json')).json(); } catch (e) { P = null; }
   if (!P) P = { grupos: {}, inversion_mensual: 0, colchon_objetivo: 0, metas: [] };
-  if (!token()) { P.grupos = P.grupos || {}; return; }
   try {
-    const r = await fetch(`https://api.github.com/repos/${GH.repo}/contents/${GHP.path}`, { headers: ghHeaders() });
-    if (!r.ok) return;
+    const r = await gh(GHP.path);
+    if (!r || !r.ok) { P.grupos = P.grupos || {}; return; }
     const j = await r.json(); pSha = j.sha;
-    const Pg = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
+    const Pg = decodificar(j.content);
     if (Pg.grupos) P = Pg;  // una versión antigua (por bloques) en GitHub no pisa la nueva
   } catch (e) { console.warn('presupuesto', e); }
   P.grupos = P.grupos || {};
 }
 async function guardarPresupuesto() {
-  const body = { message: 'Presupuesto actualizado desde el dashboard', content: btoa(unescape(encodeURIComponent(JSON.stringify(P, null, 1)))) };
+  const body = { message: 'Presupuesto actualizado desde el dashboard', content: codificar(P) };
   if (pSha) body.sha = pSha;
-  const r = await fetch(`https://api.github.com/repos/${GH.repo}/contents/${GHP.path}`, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders()), body: JSON.stringify(body) });
-  if (!r.ok) { alert('No se pudo guardar el presupuesto en GitHub (' + r.status + ').'); return false; }
+  const r = await gh(GHP.path, body);
+  if (!r || !r.ok) { alert('No se pudo guardar el presupuesto en GitHub (' + (r ? r.status : 'sin conexión') + ').'); return false; }
   pSha = (await r.json()).content.sha; pDirty = false; return true;
 }
 function marcarPres() { pDirty = true; const n = Object.keys(cambios).length; $('savemsg').textContent = (n ? n + ' correcciones y ' : '') + 'presupuesto sin guardar'; $('savebar').style.display = 'flex'; }
@@ -526,14 +525,30 @@ document.addEventListener('click', e => {
 // ---- correcciones hechas desde aquí: se guardan en GitHub (data/overrides.json) y se aplican a la base en el próximo cierre
 function token() { try { return localStorage.getItem('gh_token') || ''; } catch (e) { return ''; } }
 function ghHeaders() { return { Authorization: 'Bearer ' + token(), Accept: 'application/vnd.github+json' }; }
+// Lectura y escritura en GitHub: primero por la función del servidor (/api/github, con el token guardado en Vercel,
+// así ningún dispositivo necesita token); si no está disponible (p. ej. en local), con el token de este navegador.
+let modoAPI = null;
+async function gh(path, body) {
+  const opts = body ? { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {};
+  if (modoAPI !== false) {
+    try {
+      const r = await fetch('/api/github?path=' + encodeURIComponent(path), opts);
+      if (r.headers.get('x-finanzas-api') === '1') { modoAPI = true; return r; }
+    } catch (e) {}
+    modoAPI = false;
+  }
+  if (!token()) return null;
+  return fetch(`https://api.github.com/repos/${GH.repo}/contents/${path}`, body ? Object.assign({}, opts, { headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders()) }) : { headers: ghHeaders() });
+}
+const decodificar = c => JSON.parse(decodeURIComponent(escape(atob(c.replace(/\n/g, '')))) || '{}');
+const codificar = o => btoa(unescape(encodeURIComponent(JSON.stringify(o, null, 1))));
 async function cargarOverrides() {
-  if (!token()) return;
   try {
-    const r = await fetch(`https://api.github.com/repos/${GH.repo}/contents/${GH.path}`, { headers: ghHeaders() });
+    const r = await gh(GH.path); if (!r) return;
     if (r.status === 404) { overrides = {}; ovSha = null; return; }
     if (!r.ok) throw new Error(r.status);
     const j = await r.json(); ovSha = j.sha;
-    overrides = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))) || '{}');
+    overrides = decodificar(j.content);
     aplicar(overrides);
   } catch (e) { console.warn('overrides', e); }
 }
@@ -561,14 +576,14 @@ function editar(id, campo, valor) {
   render();
 }
 async function guardar() {
-  if (!token()) { pedirToken(); if (!token()) return; }
+  if (!modoAPI && !token()) { pedirToken(); if (!token()) return; }
   if (pDirty) { const ok = await guardarPresupuesto(); if (!ok) return; }
   if (!Object.keys(cambios).length) { $('savebar').style.display = 'none'; $('meta').textContent = 'Presupuesto guardado.'; return; }
   const merged = Object.assign({}, overrides, cambios);
-  const body = { message: 'Correcciones desde el dashboard (' + Object.keys(cambios).length + ')', content: btoa(unescape(encodeURIComponent(JSON.stringify(merged, null, 1)))) };
+  const body = { message: 'Correcciones desde el dashboard (' + Object.keys(cambios).length + ')', content: codificar(merged) };
   if (ovSha) body.sha = ovSha;
-  const r = await fetch(`https://api.github.com/repos/${GH.repo}/contents/${GH.path}`, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders()), body: JSON.stringify(body) });
-  if (!r.ok) { alert('No se pudo guardar en GitHub (' + r.status + '). Revisa el token: necesita permiso Contents: Read and write sobre el repo finanzas.'); return; }
+  const r = await gh(GH.path, body);
+  if (!r || !r.ok) { alert('No se pudo guardar en GitHub (' + (r ? r.status : 'sin conexión') + ').' + (r && r.status === 409 ? ' Alguien guardó antes desde otro dispositivo: recarga la página y vuelve a hacer el cambio.' : '')); return; }
   const j = await r.json(); ovSha = j.content.sha; overrides = merged; cambios = {};
   $('savebar').style.display = 'none';
   $('meta').textContent = 'Correcciones guardadas. Se aplican en el próximo cierre.';
@@ -612,7 +627,7 @@ function init() {
   $('defs').textContent = D.definiciones;
   $('save').onclick = guardar;
   $('discard').onclick = () => location.reload();
-  $('tok').innerHTML = token() ? 'Token de GitHub configurado · <a href="#" id="deltok">quitar</a>' : 'Para guardar correcciones hace falta un token de GitHub · <a href="#" id="settok">configurar</a>';
+  $('tok').innerHTML = modoAPI ? 'Las correcciones se guardan en GitHub desde cualquier dispositivo.' : token() ? 'Token de GitHub configurado · <a href="#" id="deltok">quitar</a>' : 'Para guardar correcciones hace falta un token de GitHub · <a href="#" id="settok">configurar</a>';
   const st = $('settok'), dt = $('deltok');
   if (st) st.onclick = () => { pedirToken(); location.reload(); };
   if (dt) dt.onclick = () => { try { localStorage.removeItem('gh_token'); } catch (e) {} location.reload(); };

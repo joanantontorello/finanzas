@@ -167,7 +167,7 @@
   .savebar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; display: none; gap: 12px; align-items: center; z-index: 20; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
   .savebar button { border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; cursor: pointer; background: var(--s1); color: #fff; font-weight: 600; } .savebar button.sec { background: transparent; color: var(--bg); }
   .view { display: none; } .view.on { display: block; }
-  .fin-wrap { overflow-x: auto; }
+  .fin-wrap { overflow-x: auto; } table.fin td[data-tip] * { pointer-events: none; } table.fin td[data-tip] { cursor: help; }
   table.fin { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
   table.fin th, table.fin td { padding: 9px 10px; border-top: 1px solid var(--surface-2); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   table.fin th:first-child, table.fin td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); z-index: 1; min-width: 210px; }
@@ -1273,7 +1273,9 @@ function renderEstados() {
       const shown = v == null ? null : (f.neg ? -v : v);
       const pe = anterior(lista[i]);
       const g = f.main && !f.neutro ? finDelta(v, pe ? val(pe, f.k) : null, f.malo, lista[i].en_curso) : '';
-      return `<td>${finFmt(shown)}${g}</td>`;
+      const pv = pe ? val(pe, f.k) : null;  // al pasar el ratón: con qué periodo y valor se compara
+      const tip = g && pv != null ? ` data-tip="${lista[i].etiqueta} frente a ${pe.etiqueta}|${finFmt(f.neg ? -pv : pv)} → ${finFmt(shown)}"` : '';
+      return `<td${tip}>${finFmt(shown)}${g}</td>`;
     }).join('') + '</tr>';
     if (open) {
       const keys = new Set(); lista.forEach(e => Object.keys(val(e, f.exp) || {}).forEach(x => keys.add(x)));
@@ -1283,7 +1285,7 @@ function renderEstados() {
       });
     }
   }
-  $('finTable').innerHTML = h + '</tbody>';
+  $('finTable').innerHTML = h + '</tbody>'; hoverTips($('finTable'));
   const vista = FIN.tab + FIN.gran + innerWidth;
   const w = $('finTable').parentElement; if (vista !== FIN.vista && w.offsetParent) { w.scrollLeft = w.scrollWidth; FIN.vista = vista; }  // como TradingView: el periodo más reciente a la vista
   $('finNote').textContent = def.nota + ' Incluye todo (personal y trabajo, todas las cuentas). Variación: ' + (FIN.tab === 'balance' ? 'frente al cierre del periodo anterior.' : 'frente al mismo periodo del año anterior (' + { anual: 'año contra año', trimestral: 'T3 2026 contra T3 2025', mensual: 'oct 26 contra oct 25' }[FIN.gran] + '); guion si no hay con qué comparar.') + ' * = periodo en curso, sin comparar.';

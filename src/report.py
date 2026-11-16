@@ -156,6 +156,14 @@ def main():
     if dp.exists():
         for d in yaml.safe_load(dp.read_text(encoding="utf-8")) or []:
             plazos = [{"fecha": str(f), "importe": float(i)} for f, i in d["plazos"]]
+            # cada plazo se busca en el extracto (mismo importe exacto, ±7 días): así se sabe de qué liquidación es cada cargo
+            cta = d.get("cuenta", "BBVA")
+            hasta = next((c["hasta"] for c in cuentas if c["cuenta"] == cta), None)
+            for x in plazos:
+                cargo = con.execute("SELECT fecha FROM movimientos WHERE cuenta=? AND ABS(importe + ?) < 0.006 AND fecha BETWEEN date(?, '-7 day') AND date(?, '+7 day') LIMIT 1",
+                                    (cta, x["importe"], x["fecha"], x["fecha"])).fetchone()
+                x["cargo"] = cargo["fecha"] if cargo else None
+            sin_cargo = [x for x in plazos if not x["cargo"] and x["fecha"] < hoy_s and hasta and x["fecha"] <= hasta]
             pagado = sum(x["importe"] for x in plazos if x["fecha"] < hoy_s)
             restantes = [x for x in plazos if x["fecha"] >= hoy_s]
             for x in restantes:
@@ -163,7 +171,9 @@ def main():
             deudas.append({"nombre": d["nombre"], "total": r2(sum(x["importe"] for x in plazos)), "pagado": r2(pagado),
                            "pendiente": r2(sum(x["importe"] for x in restantes)), "plazos": len(plazos),
                            "plazos_pendientes": len(restantes), "proximo": restantes[0] if restantes else None,
-                           "fin": plazos[-1]["fecha"], "intereses": d.get("intereses")})
+                           "fin": plazos[-1]["fecha"], "intereses": d.get("intereses"), "cuenta": cta,
+                           "confirmados": [{"fecha": x["fecha"], "importe": x["importe"], "cargo": x["cargo"]} for x in plazos if x["cargo"]],
+                           "sin_cargo": [{"fecha": x["fecha"], "importe": x["importe"]} for x in sin_cargo]})
     deudas_calendario = {k: r2(v) for k, v in sorted(calendario.items())}
 
     pend = [{"id": x["id"], "fecha": x["fecha"], "cuenta": x["cuenta"], "concepto": x["concepto"], "importe": x["importe"],

@@ -91,6 +91,29 @@
   .card h2 { font-size: 15px; margin: 0 0 4px; font-weight: 650; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .card h2 select { padding: 4px 10px; font-size: 12px; }
   .card .hint { color: var(--text-3); font-size: 12px; margin-bottom: 10px; }
+  .card > .hint { display: none; }  /* las descripciones viven en la «i» junto al título */
+  .card h2 { margin-bottom: 10px; }
+  .card h2 button.info { width: 18px; height: 18px; font-size: 11px; line-height: 18px; }
+  i.gsq { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: 0; flex: none; }
+  .bloques { display: grid; grid-template-columns: 1fr; column-gap: 32px; }
+  @media (min-width: 900px) { .bloques { grid-template-columns: 1fr 1fr; } .plist { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; align-items: start; } .plist > :nth-child(even) { background: none; } .plist > :nth-child(4n+1), .plist > :nth-child(4n+2) { background: color-mix(in srgb, var(--text) 3.5%, transparent); } }
+  .metas { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
+  .meta { --mc: var(--s1); border-radius: 14px; padding: 14px; background: color-mix(in srgb, var(--mc) 13%, var(--surface)); display: flex; flex-direction: column; gap: 8px; font-size: 13px; min-width: 0; }
+  .meta .mhead { display: flex; align-items: center; gap: 6px; }
+  .meta .mhead input { flex: 1; min-width: 0; background: transparent; font-weight: 650; font-size: 14px; padding: 6px 8px; margin-left: -8px; min-height: 0; }
+  .meta .mhead input:hover, .meta .mhead input:focus { background: color-mix(in srgb, var(--text) 8%, transparent); }
+  .meta .mdel { flex: none; border: 0; background: none; color: var(--text-3); cursor: pointer; font-size: 14px; width: 28px; height: 28px; border-radius: 50%; }
+  .meta .mdel:hover { background: color-mix(in srgb, var(--text) 10%, transparent); color: var(--text); }
+  .meta .mval { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; } .meta .mval b { font-size: 22px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .meta .mval .pct { margin-left: auto; font-weight: 650; color: color-mix(in srgb, var(--mc) 75%, var(--text)); }
+  .meta .mtrack { height: 8px; border-radius: 4px; overflow: hidden; background: color-mix(in srgb, var(--text) 9%, transparent); } .meta .mtrack div { height: 100%; border-radius: 4px; background: var(--mc); }
+  .meta .mline { display: flex; align-items: center; gap: 6px; color: var(--text-2); font-size: 12px; }
+  .meta .mf { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; } .meta .mf .ancho { grid-column: 1 / -1; }
+  .meta .mf input, .meta .mf select { width: 100%; min-width: 0; background-color: color-mix(in srgb, var(--text) 7%, transparent); }
+  .meta .mcol { display: flex; gap: 6px; margin-top: 2px; } .meta .mcol button { width: 18px; height: 18px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: var(--c); }
+  .meta .mcol button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--c); }
+  button.meta.nueva { border: 0; cursor: pointer; align-items: center; justify-content: center; min-height: 120px; color: var(--text-2); font: inherit; font-size: 14px; background: color-mix(in srgb, var(--text) 4%, transparent); }
+  button.meta.nueva:hover { color: var(--text); background: color-mix(in srgb, var(--text) 8%, transparent); }
   .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--text-2); margin-bottom: 8px; }
   .legend i, .dl i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
   svg { display: block; width: 100%; height: auto; }
@@ -328,23 +351,20 @@
     <!-- ================= PRESUPUESTO -->
     <section class="view" id="v-presupuesto">
       <div class="grid tiles" id="tilesPres"></div>
-      <div class="grid cards half">
-        <div class="card">
-          <h2>Presupuesto por grupo</h2>
-          <div class="hint" id="presHint"></div>
-          <div id="bloques"></div>
-        </div>
-        <div class="card">
-          <h2>Metas de ahorro</h2>
-          <div class="hint">Cuánto te falta y cuánto tendrías que apartar al mes para llegar a la fecha.</div>
-          <div id="metas"></div>
-          <button class="amb" id="addMeta" style="margin-top:10px;padding:8px 14px;font-size:13px">+ Nueva meta</button>
-        </div>
+      <div class="card">
+        <h2>Presupuesto por grupo</h2>
+        <div class="hint" id="presHint"></div>
+        <div id="bloques" class="bloques"></div>
       </div>
       <div class="card mt">
         <h2>Configurar presupuesto</h2>
-        <div class="hint">Importe mensual por grupo. Los cambios se guardan en GitHub con el botón de abajo, igual que las correcciones.</div>
+        <div class="hint">Importe mensual por grupo. «Repartir» reparte el total entre las subcategorías que quieras; lo que no repartas queda para el resto del grupo. Los cambios se guardan en GitHub con el botón de abajo.</div>
         <div class="plist" id="presConfig"></div>
+      </div>
+      <div class="card mt">
+        <h2>Metas de ahorro</h2>
+        <div class="hint">Cuánto te falta y cuánto tendrías que apartar al mes para llegar a la fecha. El progreso puede ser manual o salir solo del saldo de una cuenta; si varias metas usan la misma cuenta, se llenan en orden.</div>
+        <div id="metas" class="metas"></div>
       </div>
     </section>
 
@@ -386,7 +406,7 @@
       </div>
       <div class="card mt" id="deudasCard">
         <h2>Deudas con Hacienda</h2>
-        <div class="hint">Fraccionamientos en vigor. Lo que vence antes de hoy se da por pagado; los cargos reales entran por BBVA como Impuestos.</div>
+        <div class="hint">Fraccionamientos en vigor. Cada cargo de Hacienda en BBVA se asocia a su liquidación por el importe exacto del plazo (cada plazo tiene un importe distinto). Las fechas de los plazos son las del acuerdo de fraccionamiento.</div>
         <div class="kv" id="deudasResumen"></div>
         <div id="deudasLista" style="margin-top:12px"></div>
         <details style="margin-top:10px"><summary class="muted" style="cursor:pointer">Calendario de cargos mes a mes</summary><div class="kv" id="deudasCal" style="margin-top:8px"></div></details>
@@ -523,15 +543,16 @@ function renderPresupuesto(sinConfig) {
   const mesesP = mesesAnio().filter(m => m >= state.desde && m <= state.hasta);
   const transc = mesesP.reduce((t, m) => t + (m < mesHoy ? 1 : m === mesHoy ? hoy0.getDate() / new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate() : 0), 0);
   const ritmo = mesesP.length ? transc / mesesP.length : 1;
-  $('presHint').textContent = (n > 1 ? `Periodo de ${n} meses: el presupuesto se multiplica por ${n}. ` : 'Presupuesto del mes frente a lo gastado. ') + 'Verde bien, ámbar por encima del 80 %, rojo pasado.' + (ritmo < 0.995 ? ` La raya marca lo que llevarías gastado a ritmo constante (ha pasado el ${Math.round(ritmo * 100)} % del periodo).` : '');
+  $('presHint').textContent = (n > 1 ? `Periodo de ${n} meses: el presupuesto se multiplica por ${n}. ` : 'Presupuesto del mes frente a lo gastado. ') + 'Verde bien, ámbar por encima del 80 %, rojo pasado. Pasa el ratón por una barra para ver en qué se fue.' + (ritmo < 0.995 ? ` La raya marca lo que llevarías gastado a ritmo constante (ha pasado el ${Math.round(ritmo * 100)} % del periodo).` : '');
   $('bloques').innerHTML = gGasto.map(g => {
     const pres = (+P.grupos[g.nombre] || 0) * n, gs = a.grupos[g.nombre] || 0, p = pres ? gs / pres : (gs > 0 ? 2 : 0);
     const col = p > 1 ? 'var(--s2)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
     const top = g.sub.filter(c => a.cats[c]).sort((x, y) => a.cats[y] - a.cats[x]).slice(0, 4).map(c => `${c.toLowerCase()} ${fmt(a.cats[c])}`).join(' · ');
-    return `<div style="margin:10px 0 14px"><div style="display:flex;justify-content:space-between;font-size:13px"><b>${g.nombre} <small class="muted">${g.esencial === true ? 'esencial' : g.esencial === false ? 'no esencial' : ''}</small></b><span><b>${fmt(gs)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
-      <div class="track" style="position:relative;height:12px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:4px 0"><div style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div>${ritmo < 0.995 ? `<div style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
-      <div class="muted" style="font-size:12px">${gs > pres ? 'Pasado en ' + fmt(gs - pres) : 'Quedan ' + fmt(pres - gs)}${top && !subsCon(g).length ? ' · ' + top : ''}</div>${subBarras(g, n, a, pres, gs)}</div>`;
-  }).join('');
+    const tip = `${esc(g.nombre)}|${top ? top.split(' · ').join('<br>') : 'Sin gasto en el periodo'}`.replace(/"/g, '&quot;');
+    return `<div style="margin:8px 0 14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center;min-width:0"><i class="gsq" style="background:${colorGrupo(g.nombre) || 'var(--s9)'}"></i>${g.nombre}</b><span style="white-space:nowrap"><b>${fmt(gs)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
+      <div class="track" data-tip="${tip}" style="position:relative;height:12px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tip}" style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div>${ritmo < 0.995 ? `<div data-tip="${tip}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
+      <div class="muted" style="font-size:12px">${gs > pres ? 'Pasado en ' + fmt(gs - pres) : 'Quedan ' + fmt(pres - gs)}</div>${subBarras(g, n, a, pres, gs)}</div>`;
+  }).join(''); hoverTips($('bloques'));
   // metas: el progreso puede ser manual o salir solo del saldo de una cuenta (o de todas). Si varias metas
   // tiran de la misma fuente, se llenan en orden: la primera hasta su objetivo y lo que sobra pasa a la siguiente.
   const hoy = new Date();
@@ -543,23 +564,29 @@ function renderPresupuesto(sinConfig) {
     const p = m.objetivo ? Math.min(1, res / m.objetivo) : 0;
     const opts = [['', 'Manual'], ['total', 'Todas las cuentas']].concat((D.cuentas || []).map(c => ['cuenta:' + c.cuenta, 'Saldo de ' + c.cuenta]))
       .map(([v, t]) => `<option value="${v}"${(m.fuente || '') === v ? ' selected' : ''}>${t}</option>`).join('');
-    return `<div style="margin:10px 0 14px;font-size:13px">
-      <div class="metarow"><input data-meta="${i}" data-k="nombre" value="${(m.nombre || '').replace(/"/g, '&quot;')}" style="flex:1;min-width:0;font-weight:600" aria-label="Nombre de la meta"><button class="amb" data-delmeta="${i}" title="Quitar meta" aria-label="Quitar meta" style="padding:8px 12px">✕</button></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><label class="fld">Objetivo (€)<input data-meta="${i}" data-k="objetivo" type="number" value="${m.objetivo}" style="width:110px"></label><label class="fld">Fecha<input data-meta="${i}" data-k="fecha" type="date" value="${m.fecha || ''}" style="width:150px"></label><label class="fld">Progreso<select data-meta="${i}" data-k="fuente" style="width:190px">${opts}</select></label>${f ? '' : `<label class="fld">Ya reservado (€)<input data-meta="${i}" data-k="reservado" type="number" value="${m.reservado || 0}" style="width:110px"></label>`}</div>
-      <div class="track" style="height:10px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:6px 0"><div style="height:100%;width:${p * 100}%;background:var(--s1);border-radius:4px"></div></div>
-      <div class="muted" style="font-size:12px">${fmt(res)} de ${fmt(m.objetivo)} · ${falta ? 'faltan ' + fmt(falta) : 'conseguida'}${meses && falta ? ` · ${meses} ${meses === 1 ? 'mes' : 'meses'} · ${fmt(falta / meses)} al mes` : ''}</div>${f ? `<div class="muted" style="font-size:11.5px;margin-top:2px">Automático: ${f.texto}</div>` : ''}</div>`;
-  }).join('') || '<p class="muted">Sin metas. Añade una.</p>';
+    const c = colorMeta(m, i);
+    const info = `${falta ? `Faltan ${fmt(falta)}` : 'Meta conseguida'}${meses && falta ? `. Para llegar el ${m.fecha.split('-').reverse().join('/')} tendrías que apartar ${fmt(falta / meses)} al mes durante ${meses} ${meses === 1 ? 'mes' : 'meses'}` : ''}.${f ? ' Progreso automático: ' + f.texto + '.' : ' Progreso manual: actualiza «Ya reservado» cuando apartes dinero.'}`.replace(/"/g, '&quot;');
+    return `<div class="meta" style="--mc:var(--${c})">
+      <div class="mhead"><input data-meta="${i}" data-k="nombre" value="${(m.nombre || '').replace(/"/g, '&quot;')}" aria-label="Nombre de la meta"><button class="mdel" data-delmeta="${i}" title="Quitar meta" aria-label="Quitar meta">✕</button></div>
+      <div class="mval"><b>${fmt(res)}</b><span class="muted">de ${fmt(m.objetivo)}</span><span class="pct">${Math.round(p * 100)} %</span></div>
+      <div class="mtrack"><div style="width:${p * 100}%"></div></div>
+      <div class="mline"><span>${falta ? (meses ? `${fmt(falta / meses)} al mes · ${meses} ${meses === 1 ? 'mes' : 'meses'}` : 'faltan ' + fmt(falta)) : 'Conseguida'}</span><button class="info" data-tip="${esc(m.nombre || 'Meta')}|${info}" aria-label="${info}">i</button></div>
+      <div class="mf"><label class="fld">Objetivo (€)<input data-meta="${i}" data-k="objetivo" type="number" value="${m.objetivo}"></label><label class="fld">Fecha<input data-meta="${i}" data-k="fecha" type="date" value="${m.fecha || ''}"></label><label class="fld ${f ? 'ancho' : ''}">Progreso<select data-meta="${i}" data-k="fuente">${opts}</select></label>${f ? '' : `<label class="fld">Ya reservado (€)<input data-meta="${i}" data-k="reservado" type="number" value="${m.reservado || 0}"></label>`}</div>
+      <div class="mcol" role="group" aria-label="Color de la meta">${COLORES_META.map(k => `<button style="--c:var(--${k})" data-mcolor="${k}" data-i="${i}" aria-pressed="${k === c}" aria-label="Color ${k}"></button>`).join('')}</div></div>`;
+  }).join('') + '<button class="meta nueva" id="addMeta">+ Nueva meta</button>';
   // config
   if (sinConfig) return;
   if (!presAbiertos) presAbiertos = new Set(gGasto.filter(g => subsCon(g).length).map(g => g.nombre));
   $('presConfig').innerHTML = gGasto.map(g => {
     const n = subsCon(g).length, multi = g.sub.length > 1, ab = presAbiertos.has(g.nombre);
-    return `<div class="pgrp"><label class="prow"><span>${g.nombre}${multi ? `<button class="prep" data-rep="${g.nombre}" aria-expanded="${ab}">${n ? n + (n === 1 ? ' repartida' : ' repartidas') : 'Repartir'} ${ab ? '▴' : '▾'}</button>` : ''}</span><input data-pg="${g.nombre}" type="number" value="${+P.grupos[g.nombre] || 0}"></label>${multi ? `
+    return `<div class="pgrp"><label class="prow"><span><i class="gsq" style="background:${colorGrupo(g.nombre) || 'var(--s9)'}"></i>${g.nombre}${multi ? `<button class="prep" data-rep="${g.nombre}" aria-expanded="${ab}">${n ? n + (n === 1 ? ' repartida' : ' repartidas') : 'Repartir'} ${ab ? '▴' : '▾'}</button>` : ''}</span><input data-pg="${g.nombre}" type="number" value="${+P.grupos[g.nombre] || 0}"></label>${multi ? `
       <div class="psubs"${ab ? '' : ' hidden'}>${g.sub.map(c => `<label class="prow sub"><span>${c}</span><input data-ps="${c}" data-g="${g.nombre}" type="number" min="0" placeholder="—" value="${P.subs[c] != null ? P.subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="${g.nombre}">${resumenReparto(g)}</div></div>` : ''}</div>`;
   }).join('') + `
     <label class="prow sep"><span><b>Inversión objetivo al mes</b></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}"></label>
     <label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>`;
 }
+const COLORES_META = ['s1', 's3', 's4', 's2', 's5', 's7', 's10', 's8'];
+const colorMeta = (m, i) => COLORES_META.includes(m.color) ? m.color : COLORES_META[i % COLORES_META.length];
 function metasProgreso() {
   const saldo = {}, fecha = {};
   (D.cuentas || []).forEach(c => { saldo['cuenta:' + c.cuenta] = Math.max(0, +c.saldo || 0); fecha['cuenta:' + c.cuenta] = c.fecha_saldo; });
@@ -571,7 +598,7 @@ function metasProgreso() {
     const nombre = k === 'total' ? 'dinero en todas las cuentas' : 'saldo de ' + k.slice(7);
     const previo = usadas[k]; usadas[k] = true;
     const fch = fecha[k] ? ' a ' + fecha[k].split('-').reverse().slice(0, 2).join('/') : '';
-    return { valor: v, texto: `${nombre} (${fmt(saldo[k])}${fch})${previo ? ' · lo que sobra después de las metas de arriba' : ''}${!previo && saldo[k] > v ? ' · lo que pase del objetivo va a la siguiente meta de esta cuenta' : ''}` };
+    return { valor: v, texto: `${nombre} (${fmt(saldo[k])}${fch})${previo ? ', lo que sobra después de las metas anteriores' : ''}${!previo && saldo[k] > v ? '; lo que pase del objetivo va a la siguiente meta de esta cuenta' : ''}` };
   });
 }
 function actualizarReparto(k) {
@@ -597,7 +624,8 @@ document.addEventListener('click', e => {
   }
   const aj = e.target.closest('button[data-ajustar]');
   if (aj) { const g = (D.grupos || []).find(x => x.nombre === aj.dataset.ajustar); P.grupos[g.nombre] = repartido(g); marcarPres(); renderPresupuesto(); }
-  if (e.target.id === 'addMeta') { P.metas = P.metas || []; P.metas.push({ nombre: 'Nueva meta', objetivo: 1000, fecha: '', reservado: 0 }); marcarPres(); renderPresupuesto(); }
+  const mc = e.target.closest('button[data-mcolor]'); if (mc) { P.metas[+mc.dataset.i].color = mc.dataset.mcolor; marcarPres(); renderPresupuesto(true); }
+  if (e.target.id === 'addMeta') { P.metas = P.metas || []; const usados = P.metas.map((m, i) => colorMeta(m, i)); P.metas.push({ nombre: 'Nueva meta', objetivo: 1000, fecha: '', reservado: 0, color: COLORES_META.find(k => !usados.includes(k)) || 's1' }); marcarPres(); renderPresupuesto(true); const ins = document.querySelectorAll('.meta .mhead input'); const ult = ins[ins.length - 1]; if (ult) { ult.focus(); ult.select(); } }
 });
 
 // ---- correcciones hechas desde aquí: se guardan en GitHub (data/overrides.json) y se aplican a la base en el próximo cierre
@@ -820,7 +848,7 @@ function escala(vals, H, padT, padB) {
 function fmtK(v) { return Math.abs(v) >= 1000 ? (v/1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : String(Math.round(v)); }
 function ancho(el, def) { return Math.max(300, Math.round(el.clientWidth || def)); }
 let ultimoPuntero = 'mouse';
-function mostrarTip(t, x, y) { const tip = $('tip'); const [a, b] = t.split('|'); tip.innerHTML = `<b>${a}</b>${b || ''}`; tip.style.opacity = 1; tip.style.left = Math.max(8, Math.min(x + 12, innerWidth - tip.offsetWidth - 8)) + 'px'; tip.style.top = Math.max(8, Math.min(y, innerHeight - tip.offsetHeight - 8)) + 'px'; }
+function mostrarTip(t, x, y) { const tip = $('tip'); const [a, b] = t.split('|'); tip.innerHTML = (a ? `<b>${a}</b>` : '') + (b || ''); tip.style.opacity = 1; tip.style.left = Math.max(8, Math.min(x + 12, innerWidth - tip.offsetWidth - 8)) + 'px'; tip.style.top = Math.max(8, Math.min(y, innerHeight - tip.offsetHeight - 8)) + 'px'; }
 function hoverTips(el) {
   const tip = $('tip'), show = mostrarTip;
   el.onpointermove = e => { if (e.pointerType !== 'mouse') return; const t = e.target.dataset && e.target.dataset.tip; if (!t) { tip.style.opacity = 0; return; } show(t, e.clientX, e.clientY + 12); };
@@ -1041,10 +1069,10 @@ function renderEstados() {
   // evolución
   $('finTitle').textContent = { resultados: 'Evolución', balance: 'Activos, pasivos y patrimonio al cierre', flujo: 'Flujos de caja' }[FIN.tab] + ' · ' + { anual: 'por año', trimestral: 'por trimestre', mensual: 'por mes' }[FIN.gran];
   $('finLegend').innerHTML = def.serie.map(x => `<button data-k="${x.k}" data-s="${x.l}" class="${off.has(x.k) ? 'off' : ''}" aria-pressed="${!off.has(x.k)}"><i style="background:${x.c};${x.t === 'line' ? 'height:3px;vertical-align:3px' : ''}"></i>${x.l}</button>`).join('') + '<span class="muted" style="font-size:11px">clic en la leyenda para mostrar u ocultar</span>';
-  finChart($('finChart'), lista, def.serie.map(x => ({ label: x.l, color: x.c, type: x.t || 'bar', off: off.has(x.k), vals: lista.map(e => { const v = val(e, x.k); return v == null ? null : x.neg ? -v : v; }) })));
-  // cascada (solo cuenta de resultados)
   const casc = FIN.tab === 'resultados';
   $('finCascCard').hidden = !casc; $('finCards').classList.toggle('two', casc);
+  finChart($('finChart'), lista, def.serie.map(x => ({ label: x.l, color: x.c, type: x.t || 'bar', off: off.has(x.k), vals: lista.map(e => { const v = val(e, x.k); return v == null ? null : x.neg ? -v : v; }) })));
+  // cascada (solo cuenta de resultados)
   if (casc) finCascada($('finCasc'), lista.find(e => e.periodo === FIN.sel));
   // tabla con periodos en columnas
   let h = `<thead><tr><th>${FIN.tab === 'balance' ? 'Al cierre de' : 'Periodo'}<small>Euros · tu parte</small></th>` + lista.map(e => `<th data-p="${e.periodo}" class="${casc && e.periodo === FIN.sel ? 'sel' : ''}" ${casc ? 'title="Ver su cascada"' : ''}>${e.etiqueta}<small>${e.en_curso ? 'en curso' : e.historico ? 'hoja antigua' : ''}</small></th>`).join('') + '</tr></thead><tbody>';
@@ -1148,6 +1176,19 @@ function tileHTML(l, v, c, desc, periodo) {
   const css = c.startsWith('var(');
   return `<div class="tile ${css ? '' : c}"${css ? ` style="--c:${c}"` : ''}><div class="lbl"><span>${l}</span><button class="info" data-tip="${esc(l)}|${info}" aria-label="Qué es ${esc(l)}: ${info}">i</button></div><div class="val">${fmt(v)}</div></div>`;
 }
+// las descripciones de cada tarjeta (.hint) se muestran en una «i» junto al título, no como texto fijo
+function hintsAInfo() {
+  document.querySelectorAll('.card > .hint').forEach(h => {
+    const h2 = h.parentElement.querySelector(':scope > h2'); if (!h2) return;
+    const txt = h.textContent.trim(); let b = h2.querySelector(':scope > button.hintinfo');
+    if (!txt) { if (b) b.remove(); return; }
+    if (!b) { b = document.createElement('button'); b.className = 'info hintinfo'; b.textContent = 'i'; h2.appendChild(b); }
+    b.dataset.tip = '|' + esc(txt); b.setAttribute('aria-label', txt);
+  });
+}
+document.querySelectorAll('.card > .hint').forEach(h => new MutationObserver(hintsAInfo).observe(h, { childList: true, characterData: true, subtree: true })); hintsAInfo();
+document.addEventListener('pointerover', e => { const b = e.target.closest && e.target.closest('button.info'); if (b && e.pointerType === 'mouse') { const r = b.getBoundingClientRect(); mostrarTip(b.dataset.tip, r.left, r.bottom + 8); } });
+document.addEventListener('pointerout', e => { const b = e.target.closest && e.target.closest('button.info'); if (b && e.pointerType === 'mouse' && !b.contains(e.relatedTarget)) $('tip').style.opacity = 0; });
 document.addEventListener('focusin', e => { if (e.target.matches('button.info')) { const r = e.target.getBoundingClientRect(); mostrarTip(e.target.dataset.tip, r.left, r.bottom + 8); } });
 document.addEventListener('focusout', e => { if (e.target.matches('button.info')) $('tip').style.opacity = 0; });
 
@@ -1341,7 +1382,8 @@ function renderDeudas() {
   $('deudasLista').innerHTML = ds.map(d => { const p = d.total ? (d.total - d.pendiente) / d.total : 0; return `<div style="margin:10px 0;font-size:13px">
     <div style="display:flex;justify-content:space-between;gap:10px"><b>${d.nombre}</b><span><b>${fmt(d.pendiente)}</b> <span class="muted">pendientes</span></span></div>
     <div style="height:10px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:5px 0"><div style="height:100%;width:${p * 100}%;background:var(--s3);border-radius:4px"></div></div>
-    <div class="muted" style="font-size:12px">${d.plazos - d.plazos_pendientes} de ${d.plazos} plazos pagados · ${d.proximo ? 'próximo ' + fmt2(d.proximo.importe) + ' el ' + d.proximo.fecha.split('-').reverse().join('/') : 'liquidada'} · termina ${d.fin.split('-').reverse().join('/')}${d.intereses ? ' · intereses totales ' + fmt2(d.intereses) : ''}</div></div>`; }).join('');
+    ${(d.sin_cargo || []).length ? `<div style="font-size:12px;color:var(--bad);margin-bottom:2px">No aparece el cargo del plazo del ${d.sin_cargo.map(x => x.fecha.split('-').reverse().join('/') + ' (' + fmt2(x.importe) + ')').join(', ')} en ${d.cuenta}</div>` : ''}
+    <div class="muted" style="font-size:12px">${d.plazos - d.plazos_pendientes} de ${d.plazos} plazos pagados${(d.confirmados || []).length ? ` <button class="info" data-tip="Cargos vistos en ${d.cuenta}|${d.confirmados.map(x => x.cargo.split('-').reverse().join('/') + ': ' + fmt2(x.importe)).join('<br>')}" aria-label="Cargos confirmados">i</button>` : ''} · ${d.proximo ? 'próximo ' + fmt2(d.proximo.importe) + ' el ' + d.proximo.fecha.split('-').reverse().join('/') : 'liquidada'} · termina ${d.fin.split('-').reverse().join('/')}${d.intereses ? ' · intereses totales ' + fmt2(d.intereses) : ''}</div></div>`; }).join('');
   $('deudasCal').innerHTML = Object.entries(cal).map(([m, v]) => `<span>${mesLargo(m)}</span><b>${fmt2(v)}</b>`).join('');
 }
 function renderCuentas() {

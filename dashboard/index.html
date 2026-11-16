@@ -112,6 +112,21 @@
   .meta .mf input, .meta .mf select { width: 100%; min-width: 0; background-color: color-mix(in srgb, var(--text) 7%, transparent); }
   .meta .mcol { display: flex; gap: 6px; margin-top: 2px; } .meta .mcol button { width: 18px; height: 18px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: var(--c); }
   .meta .mcol button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--c); }
+  .cgrp .seg { align-self: flex-start; } .cgrp .seg button { padding: 4px 10px; font-size: 12px; min-height: 0; }
+  .csubs { display: flex; flex-direction: column; gap: 2px; margin: 0 -6px; }
+  .csub { display: flex; align-items: center; gap: 6px; padding: 0 6px; border-radius: 8px; }
+  .csub:hover { background: color-mix(in srgb, var(--text) 6%, transparent); }
+  .csub input, .cgrp input.cadd { flex: 1; min-width: 0; background: transparent; padding: 5px 0; min-height: 0; border-radius: 0; font-size: 13px; }
+  .csub input:focus { outline: none; box-shadow: inset 0 -1px 0 var(--mc); }
+  .csub .n { color: var(--text-3); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+  .csub .fija { color: var(--text-3); font-size: 11px; padding: 0 6px; cursor: help; }
+  .csub > span:first-child { flex: 1; padding: 5px 0; }
+  .cgrp input.cadd { flex: none; color: var(--text-2); padding: 6px 6px; margin: 0 -6px; border-radius: 8px; background: color-mix(in srgb, var(--text) 5%, transparent); }
+  .cquitar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px; border-radius: 10px; font-size: 12.5px; background: color-mix(in srgb, var(--bad) 14%, transparent); }
+  .cquitar select { max-width: 100%; }
+  .cquitar button { border: 0; border-radius: 999px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 12.5px; background: var(--surface-2); color: var(--text); }
+  .cquitar button[data-cqok] { background: var(--bad); color: #fff; }
+  .ctipo { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-3); margin: 18px 0 8px; } .ctipo:first-child { margin-top: 4px; }
   button.meta.nueva { border: 0; cursor: pointer; align-items: center; justify-content: center; min-height: 120px; color: var(--text-2); font: inherit; font-size: 14px; background: color-mix(in srgb, var(--text) 4%, transparent); }
   button.meta.nueva:hover { color: var(--text); background: color-mix(in srgb, var(--text) 8%, transparent); }
   .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--text-2); margin-bottom: 8px; }
@@ -270,6 +285,7 @@
     <a href="#cuentas" data-view="cuentas" title="Estado de cuentas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V11M9.5 21V11M14.5 21V11M19 21V11"/><path d="M2.5 9L12 3.5 21.5 9z"/></svg><span class="txt">Estado de cuentas</span></a>
     <a href="#movimientos" data-view="movimientos" title="Movimientos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3L4 7l4 4"/><path d="M4 7h16"/><path d="M16 21l4-4-4-4"/><path d="M20 17H4"/></svg><span class="txt">Movimientos</span></a>
     <a href="#pendientes" data-view="pendientes" title="Pendientes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></svg><span class="txt">Pendientes</span> <small id="npend"></small></a>
+    <a href="#categorias" data-view="categorias" title="Categorías"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><span class="txt">Categorías</span></a>
     </div>
     <div class="tok" id="tok"></div>
   </nav>
@@ -432,6 +448,14 @@
     </section>
 
     <!-- ================= PENDIENTES -->
+    <section class="view" id="v-categorias">
+      <div class="card">
+        <h2>Categorías</h2>
+        <div class="hint">Grupos y subcategorías con las que se clasifican los movimientos. Cambia un nombre escribiendo encima, añade con «+ Añadir» y quita con ✕ eligiendo a dónde pasan sus movimientos. Las marcadas «fija» las usa el sistema. Se guarda en GitHub con el botón de abajo y el cierre lo aplica a la base.</div>
+        <div id="catsEdit"></div>
+      </div>
+    </section>
+
     <section class="view" id="v-pendientes">
       <div class="card">
         <h2>Pendientes de revisar</h2>
@@ -459,7 +483,7 @@ const fmt = n => (n == null ? '–' : new Intl.NumberFormat('de-DE', {style:'cur
 const fmt2 = n => new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR', minimumFractionDigits:2}).format(n);
 // colores fijos por grupo: el mismo grupo tiene el mismo color en todos los gráficos
 const COL_GRUPO = { 'Vivienda y suministros': 'var(--s1)', 'Salud y deporte': 'var(--s3)', 'Transporte': 'var(--s4)', 'Empresa': 'var(--s7)', 'Préstamos y deudas': 'var(--s11)', 'Hábitos diarios': 'var(--s5)', 'Ocio y vida social': 'var(--s2)', 'Viajes': 'var(--s10)', 'Suscripciones': 'var(--s6)', 'Formación': 'var(--s8)', 'Otros': 'var(--s9)' };
-const colorGrupo = g => COL_GRUPO[g];
+const colorGrupo = g => { const x = (D && D.grupos || []).find(z => z.nombre === g); return (x && x.color ? `var(--${x.color})` : null) || COL_GRUPO[g]; };
 const pct = x => (x == null || Math.abs(x) > 5) ? '–' : Math.round(x*100) + ' %';
 const mesLabel = m => MESES[+m.slice(5,7)-1] + ' ' + m.slice(2,4);
 const mesLargo = m => MESES_L[+m.slice(5,7)-1] + ' ' + m.slice(0,4);
@@ -478,8 +502,10 @@ function optsCategorias(selected, soloGasto) {
 }
 
 let P = null, pSha = null, pDirty = false, PAREJA = 'pareja';
+let C = null, cSha = null, cDirty = false, catQuitar = null;  // categorías editables (data/categorias.json)
+const GHC = { path: 'data/categorias.json' };
 const GHP = { path: 'data/presupuesto.json' };
-fetch('data.json').then(r => r.json()).then(async d => { D = d; const pf = D.perfil || {}; GH.repo = pf.github_repo || ''; PAREJA = pf.pareja_nombre || 'pareja'; document.title = 'Finanzas' + (pf.nombre ? ' ' + pf.nombre : ''); D.categorias.forEach(c => { catTipo[c.nombre] = c.tipo; CI[c.nombre] = c; }); await cargarOverrides(); await cargarPresupuesto(); init(); });
+fetch('data.json').then(r => r.json()).then(async d => { D = d; const pf = D.perfil || {}; GH.repo = pf.github_repo || ''; PAREJA = pf.pareja_nombre || 'pareja'; document.title = 'Finanzas' + (pf.nombre ? ' ' + pf.nombre : ''); D.categorias.forEach(c => { catTipo[c.nombre] = c.tipo; CI[c.nombre] = c; }); await cargarCategorias(); await cargarOverrides(); await cargarPresupuesto(); init(); });
 
 // ---- presupuesto: data/presupuesto.json (GitHub si hay token, si no la copia desplegada)
 async function cargarPresupuesto() {
@@ -501,7 +527,160 @@ async function guardarPresupuesto() {
   if (!r || !r.ok) { alert('No se pudo guardar el presupuesto en GitHub (' + (r ? r.status : 'sin conexión') + ').'); return false; }
   pSha = (await r.json()).content.sha; pDirty = false; return true;
 }
-function marcarPres() { pDirty = true; const n = Object.keys(cambios).length; $('savemsg').textContent = (n ? n + ' correcciones y ' : '') + 'presupuesto sin guardar'; $('savebar').style.display = 'flex'; }
+function marcarPres() { pDirty = true; actualizarSavebar(); }
+function actualizarSavebar() {
+  const n = Object.keys(cambios).length, partes = [];
+  if (n) partes.push(n + (n === 1 ? ' corrección' : ' correcciones'));
+  if (pDirty) partes.push('presupuesto'); if (cDirty) partes.push('categorías');
+  $('savemsg').textContent = partes.join(', ').replace(/^./, c => c.toUpperCase()) + ' sin guardar';
+  $('savebar').style.display = partes.length ? 'flex' : 'none';
+}
+
+// ---- categorías: data/categorias.json (GitHub si hay acceso, si no la copia desplegada). Se aplican al momento en el
+// dashboard; el cierre las aplica a la base. _mover guarda a dónde pasan las subcategorías quitadas o renombradas.
+async function cargarCategorias() {
+  try { const r = await fetch('categorias.json'); if (r.ok) C = await r.json(); } catch (e) {}
+  try {
+    const r = await gh(GHC.path);
+    if (r && r.ok) { const j = await r.json(); cSha = j.sha; C = decodificar(j.content); }
+  } catch (e) { console.warn('categorias', e); }
+  aplicarCats();
+}
+const tiposCat = () => Object.keys(C || {}).filter(t => !t.startsWith('_'));
+function moverResuelto() {
+  const m = (C && C._mover) || {}, res = {};
+  for (const k in m) { let v = m[k]; const vistos = new Set([k]); while (m[v] != null && !vistos.has(v)) { vistos.add(v); v = m[v]; } res[k] = v; }
+  return res;
+}
+function aplicarCats() {
+  if (!C) return;
+  const grupos = [], lista = [];
+  tiposCat().forEach(tipo => Object.entries(C[tipo] || {}).forEach(([nombre, p]) => {
+    const es = p.esencial === undefined ? null : p.esencial;
+    grupos.push({ nombre, tipo, esencial: es, color: p.color || null, sub: (p.sub || []).slice() });
+    (p.sub || []).forEach(sb => lista.push({ nombre: sb, grupo: nombre, tipo, esencial: es, ambito: (p.ambito_sub || {})[sb] || p.ambito || null, rol: (p.roles || {})[sb] || null }));
+  }));
+  D.grupos = grupos; D.categorias = lista;
+  for (const k in CI) delete CI[k]; for (const k in catTipo) delete catTipo[k];
+  lista.forEach(c => { catTipo[c.nombre] = c.tipo; CI[c.nombre] = c; });
+  const mv = moverResuelto();
+  D.movimientos.forEach(m => { if (m.categoria && mv[m.categoria]) m.categoria = mv[m.categoria]; });
+}
+async function guardarCategorias() {
+  const body = { message: 'Categorías actualizadas desde el dashboard', content: codificar(C) };
+  if (cSha) body.sha = cSha;
+  const r = await gh(GHC.path, body);
+  if (!r || !r.ok) { alert('No se pudieron guardar las categorías en GitHub (' + (r ? r.status : 'sin conexión') + ').'); return false; }
+  cSha = (await r.json()).content.sha; cDirty = false; return true;
+}
+function catsCambiadas() {
+  cDirty = true; aplicarCats(); actualizarSavebar();
+  const f = $('fcat'); if (f) { const v = f.value; f.innerHTML = '<option value="">Todas las categorías</option>' + optsCategorias('', false); f.value = CI[v] || v.startsWith('g:') ? v : ''; }
+  render();
+}
+const escA = t => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const COLORES_GRUPO = ['s1', 's3', 's4', 's7', 's11', 's5', 's2', 's10', 's6', 's8', 's9'];
+const TIPO_LABEL = { Gasto: 'Gastos', Ingreso: 'Ingresos', Inversion: 'Inversiones', Reembolso: 'Reembolsos', Traspaso: 'Traspasos' };
+function renderCategorias() {
+  const el = $('catsEdit'); if (!el || !C || state.view !== 'categorias') return;
+  const n = {}; D.movimientos.forEach(m => { if (m.categoria) n[m.categoria] = (n[m.categoria] || 0) + 1; });
+  const destinos = (tipo, fuera) => D.categorias.filter(c => (c.tipo === tipo || (tipo === 'Gasto' && c.tipo === 'Reembolso')) && !fuera.includes(c.nombre));
+  const panel = (tipo, quita, texto, def) => {
+    const ops = destinos(tipo, quita), tot = quita.reduce((t, c) => t + (n[c] || 0), 0);
+    if (!ops.length) return `<div class="cquitar">No hay otra subcategoría de este tipo a la que pasar sus movimientos. <button data-cqno>Cancelar</button></div>`;
+    return `<div class="cquitar">${texto}: ${tot ? `sus ${tot} movimientos` : 'lo que entre en el futuro'} pasa${tot === 1 ? '' : 'n'} a <select data-cqdest>${ops.map(c => `<option value="${escA(c.nombre)}"${c.nombre === def ? ' selected' : ''}>${escA(c.grupo)} · ${escA(c.nombre)}</option>`).join('')}</select><button data-cqok>Quitar</button><button data-cqno>Cancelar</button></div>`;
+  };
+  el.innerHTML = tiposCat().map(tipo => {
+    const gs = Object.entries(C[tipo] || {});
+    return `<div class="ctipo">${TIPO_LABEL[tipo] || tipo}</div><div class="metas">` + gs.map(([g, p], gi) => {
+      const roles = p.roles || {}, subs = p.sub || [], col = p.color || COLORES_GRUPO[gi % COLORES_GRUPO.length];
+      const qGrupo = catQuitar && catQuitar.grupo === g && catQuitar.tipo === tipo;
+      const fijo = subs.some(sb => roles[sb]);
+      const es = p.esencial === undefined ? null : p.esencial;
+      const filas = subs.map(sb => {
+        if (catQuitar && catQuitar.sub === sb) { const otra = subs.find(x => x !== sb); return panel(tipo, [sb], `Quitar «${escA(sb)}»`, otra || (D.roles || {}).imprevistos); }
+        return roles[sb] ? `<div class="csub"><span>${escA(sb)}</span><span class="n">${n[sb] || 0}</span><span class="fija" title="La usa el sistema: no se puede renombrar ni quitar">fija</span></div>`
+          : `<div class="csub"><input data-cs="${escA(sb)}" value="${escA(sb)}" aria-label="Nombre de la subcategoría ${escA(sb)}"><span class="n" title="Movimientos">${n[sb] || 0}</span><button class="mdel" data-csdel="${escA(sb)}" title="Quitar subcategoría" aria-label="Quitar ${escA(sb)}">✕</button></div>`;
+      }).join('');
+      return `<div class="meta cgrp" style="--mc:var(--${col})" data-t="${tipo}" data-g="${escA(g)}">
+        <div class="mhead"><i class="gsq" style="background:var(--mc)"></i><input data-cg="${escA(g)}" value="${escA(g)}" aria-label="Nombre del grupo">${fijo ? '<span class="csub"><span class="fija" title="Tiene subcategorías que usa el sistema">fijo</span></span>' : `<button class="mdel" data-cgdel title="Quitar grupo" aria-label="Quitar grupo ${escA(g)}">✕</button>`}</div>
+        ${qGrupo ? panel(tipo, subs, `Quitar el grupo «${escA(g)}»`, (D.roles || {}).imprevistos) : ''}
+        ${tipo === 'Gasto' ? `<div class="seg" role="group" aria-label="Tipo de gasto">${[[true, 'Esencial'], [false, 'No esencial'], [null, 'Fuera del %']].map(([v, t]) => `<button data-cgess="${v}" class="${es === v ? 'on' : ''}" aria-pressed="${es === v}" title="${v === null ? 'No cuenta en el porcentaje de gasto no esencial' : ''}">${t}</button>`).join('')}</div>` : ''}
+        <div class="csubs">${filas}</div>
+        <input class="cadd" data-cadd placeholder="+ Añadir subcategoría" aria-label="Añadir subcategoría a ${escA(g)}">
+        ${tipo === 'Gasto' ? `<div class="mcol" role="group" aria-label="Color del grupo">${COLORES_GRUPO.map(k => `<button style="--c:var(--${k})" data-cgcolor="${k}" aria-pressed="${k === col}" aria-label="Color ${k}"></button>`).join('')}</div>` : ''}
+      </div>`;
+    }).join('') + (['Gasto', 'Ingreso', 'Inversion'].includes(tipo) ? `<button class="meta nueva" data-cgnew="${tipo}">+ Nuevo grupo</button>` : '') + '</div>';
+  }).join('');
+}
+function existeNombre(nombre) { return !!CI[nombre] || (D.grupos || []).some(g => g.nombre === nombre); }
+function moverA(viejo, nuevo) {
+  const m = C._mover = C._mover || {};
+  for (const k in m) if (m[k] === viejo) m[k] = nuevo;
+  if (viejo !== nuevo) m[viejo] = nuevo;
+  delete m[nuevo];
+}
+function renombrarClave(obj, viejo, nuevo) { if (!obj || !(viejo in obj)) return obj; return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k === viejo ? nuevo : k, v])); }
+function quitarSubs(tipo, g, subs, destino) {
+  const p = C[tipo][g];
+  subs.forEach(sb => {
+    moverA(sb, destino);
+    p.sub = p.sub.filter(x => x !== sb);
+    if (p.ambito_sub) delete p.ambito_sub[sb];
+    if (P && P.subs && P.subs[sb] != null) { delete P.subs[sb]; pDirty = true; }
+  });
+}
+document.addEventListener('change', e => {
+  const el = e.target, card = el.closest('.cgrp'); if (!card || !C) return;
+  const tipo = card.dataset.t, g = card.dataset.g, p = C[tipo][g];
+  if (el.dataset.cs != null) {
+    const viejo = el.dataset.cs, nuevo = el.value.trim();
+    if (!nuevo || nuevo === viejo) { el.value = viejo; return; }
+    if (existeNombre(nuevo)) { alert(`Ya existe una categoría o grupo llamado «${nuevo}».`); el.value = viejo; return; }
+    p.sub = p.sub.map(x => x === viejo ? nuevo : x); p.ambito_sub = renombrarClave(p.ambito_sub, viejo, nuevo); if (!p.ambito_sub) delete p.ambito_sub;
+    moverA(viejo, nuevo);
+    if (P && P.subs && P.subs[viejo] != null) { P.subs = renombrarClave(P.subs, viejo, nuevo); pDirty = true; }
+    if (state.cat === viejo) state.cat = nuevo;
+    catsCambiadas();
+  } else if (el.dataset.cg != null) {
+    const nuevo = el.value.trim();
+    if (!nuevo || nuevo === g) { el.value = g; return; }
+    if (existeNombre(nuevo)) { alert(`Ya existe una categoría o grupo llamado «${nuevo}».`); el.value = g; return; }
+    if (!p.color && tipo === 'Gasto') { const c0 = COL_GRUPO[g]; if (c0) p.color = c0.slice(6, -1); }  // conserva el color del nombre viejo
+    C[tipo] = renombrarClave(C[tipo], g, nuevo);
+    if (P && P.grupos && P.grupos[g] != null) { P.grupos = renombrarClave(P.grupos, g, nuevo); pDirty = true; }
+    catsCambiadas();
+  } else if (el.dataset.cadd != null) {
+    const nuevo = el.value.trim(); if (!nuevo) return;
+    if (existeNombre(nuevo)) { alert(`Ya existe una categoría o grupo llamado «${nuevo}».`); return; }
+    p.sub = (p.sub || []).concat(nuevo); if (C._mover) delete C._mover[nuevo];
+    catsCambiadas();
+    const inp = document.querySelector(`.cgrp[data-t="${tipo}"][data-g="${CSS.escape(g)}"] input.cadd`); if (inp) inp.focus();
+  }
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || !C || !b.closest('#catsEdit')) return;
+  const card = b.closest('.cgrp'), tipo = card && card.dataset.t, g = card && card.dataset.g;
+  if (b.dataset.cgnew) {
+    const t = b.dataset.cgnew; let nombre = 'Nuevo grupo', i = 2; while (existeNombre(nombre)) nombre = 'Nuevo grupo ' + i++;
+    const usados = Object.values(C[t]).map(x => x.color);
+    C[t][nombre] = t === 'Gasto' ? { esencial: false, color: COLORES_GRUPO.find(k => !usados.includes(k)) || 's9', sub: [] } : { sub: [] };
+    catsCambiadas();
+    const inp = document.querySelector(`.cgrp[data-t="${t}"][data-g="${CSS.escape(nombre)}"] input[data-cg]`); if (inp) { inp.focus(); inp.select(); }
+  } else if (b.dataset.csdel) { catQuitar = { sub: b.dataset.csdel }; renderCategorias(); }
+  else if (b.hasAttribute('data-cgdel')) {
+    if (!(C[tipo][g].sub || []).length) { delete C[tipo][g]; if (P && P.grupos && P.grupos[g] != null) { delete P.grupos[g]; pDirty = true; } catsCambiadas(); }
+    else { catQuitar = { tipo, grupo: g }; renderCategorias(); }
+  } else if (b.hasAttribute('data-cqno')) { catQuitar = null; renderCategorias(); }
+  else if (b.hasAttribute('data-cqok')) {
+    const dest = b.parentElement.querySelector('select[data-cqdest]').value;
+    if (catQuitar.sub) quitarSubs(tipo, g, [catQuitar.sub], dest);
+    else { quitarSubs(tipo, g, (C[tipo][g].sub || []).slice(), dest); delete C[tipo][g]; if (P && P.grupos && P.grupos[g] != null) { delete P.grupos[g]; pDirty = true; } }
+    catQuitar = null; catsCambiadas();
+  } else if (b.dataset.cgess != null) { C[tipo][g].esencial = JSON.parse(b.dataset.cgess); catsCambiadas(); }
+  else if (b.dataset.cgcolor) { C[tipo][g].color = b.dataset.cgcolor; catsCambiadas(); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('#catsEdit input')) e.target.blur(); });
 // reparto opcional del presupuesto de un grupo entre algunas de sus subcategorías (P.subs: subcategoría → €/mes).
 // Lo no repartido queda como bolsa común para el resto de subcategorías del grupo.
 const subsCon = g => g.sub.filter(c => P.subs && P.subs[c] != null);
@@ -524,6 +703,14 @@ function subBarras(g, n, a, pres, gs) {
   }
   return `<div style="margin-top:6px">${h}</div>`;
 }
+// el KPI Colchón sigue a la meta cuyo nombre empieza por «Colchón» (si no hay, al dinero en cuentas)
+const metaColchon = () => (P.metas || []).findIndex(m => /^\s*colch/i.test(m.nombre || ''));
+function colchonTile() {
+  const i = metaColchon();
+  if (i < 0) return ['Colchón', D.saldo_total, 'aqua', `dinero en cuentas · objetivo ${fmt(P.colchon_objetivo)} · ${D.saldo_total >= P.colchon_objetivo ? 'conseguido' : 'faltan ' + fmt(P.colchon_objetivo - D.saldo_total)}`];
+  const m = P.metas[i], f = metasProgreso()[i], v = f ? f.valor : (m.reservado || 0);
+  return ['Colchón', v, 'aqua', `meta «${m.nombre}»${f ? ', ' + f.texto : ', progreso manual'} · objetivo ${fmt(m.objetivo)} · ${v >= m.objetivo ? 'conseguido' : 'faltan ' + fmt(m.objetivo - v)}`];
+}
 function renderPresupuesto(sinConfig) {
   if (!P) return;
   P.subs = P.subs || {};
@@ -535,7 +722,7 @@ function renderPresupuesto(sinConfig) {
   const t = [
     ['Presupuesto', presTotal, 'blue', `gastado ${fmt(a.gasto)} · ${a.gasto <= presTotal ? 'quedan ' + fmt(presTotal - a.gasto) : 'te has pasado ' + fmt(a.gasto - presTotal)}`],
     ['Inversión objetivo', P.inversion_mensual * n, 'violet', `invertido ${fmt(a.inv)} (${P.inversion_mensual ? Math.round(a.inv / (P.inversion_mensual * n) * 100) : 0} %)`],
-    ['Colchón', D.saldo_total, 'aqua', `objetivo ${fmt(P.colchon_objetivo)} · ${D.saldo_total >= P.colchon_objetivo ? 'conseguido' : 'faltan ' + fmt(P.colchon_objetivo - D.saldo_total)}`],
+    colchonTile(),
     ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'orange', 'ingresos − gasto − inversión objetivo'],
   ];
   $('tilesPres').innerHTML = t.map(([l, v, c, s]) => tileHTML(l, v, c, s, periodo)).join(''); hoverTips($('tilesPres'));
@@ -583,7 +770,7 @@ function renderPresupuesto(sinConfig) {
       <div class="psubs"${ab ? '' : ' hidden'}>${g.sub.map(c => `<label class="prow sub"><span>${c}</span><input data-ps="${c}" data-g="${g.nombre}" type="number" min="0" placeholder="—" value="${P.subs[c] != null ? P.subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="${g.nombre}">${resumenReparto(g)}</div></div>` : ''}</div>`;
   }).join('') + `
     <label class="prow sep"><span><b>Inversión objetivo al mes</b></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}"></label>
-    <label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>`;
+    ${metaColchon() < 0 ? `<label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>` : ''}`;
 }
 const COLORES_META = ['s1', 's3', 's4', 's2', 's5', 's7', 's10', 's8'];
 const colorMeta = (m, i) => COLORES_META.includes(m.color) ? m.color : COLORES_META[i % COLORES_META.length];
@@ -676,15 +863,14 @@ function editar(id, campo, valor) {
   const m = D.movimientos.find(x => x.id === id); if (!m) return;
   cambios[id] = Object.assign({}, overrides[id] || {}, cambios[id] || {}, { [campo]: valor });
   aplicar({ [id]: cambios[id] });
-  const n = Object.keys(cambios).length;
-  $('savemsg').textContent = n + (n === 1 ? ' cambio sin guardar' : ' cambios sin guardar');
-  $('savebar').style.display = 'flex';
+  actualizarSavebar();
   render();
 }
 async function guardar() {
   if (!modoAPI && !token()) { pedirToken(); if (!token()) return; }
+  if (cDirty) { const ok = await guardarCategorias(); if (!ok) return; }
   if (pDirty) { const ok = await guardarPresupuesto(); if (!ok) return; }
-  if (!Object.keys(cambios).length) { $('savebar').style.display = 'none'; $('meta').textContent = 'Presupuesto guardado.'; return; }
+  if (!Object.keys(cambios).length) { $('savebar').style.display = 'none'; $('meta').textContent = 'Guardado. Se aplica a la base en el próximo cierre.'; return; }
   const merged = Object.assign({}, overrides, cambios);
   const body = { message: 'Correcciones desde el dashboard (' + Object.keys(cambios).length + ')', content: codificar(merged) };
   if (ovSha) body.sha = ovSha;
@@ -747,7 +933,7 @@ function showView(v) {
   state.view = v;
   document.querySelectorAll('nav a[data-view]').forEach(a => { a.classList.toggle('on', a.dataset.view === v); if (a.dataset.view === v) a.scrollIntoView({ block: 'nearest', inline: 'nearest' }); });
   document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v));
-  $('filtros').style.display = ['estados', 'cuentas', 'pendientes'].includes(v) ? 'none' : '';  // ahí los filtros no cambian nada
+  $('filtros').style.display = ['estados', 'cuentas', 'pendientes', 'categorias'].includes(v) ? 'none' : '';  // ahí los filtros no cambian nada
   try { history.replaceState(null, '', '#' + v); } catch (e) {}
   window.scrollTo(0, 0);
   if (D) render();  // los gráficos se dibujan al ancho real de la vista visible
@@ -831,6 +1017,7 @@ function render() {
   renderTable();
   renderPresupuesto();
   renderEstados();
+  renderCategorias();
 }
 
 // ---- gráficos
@@ -1057,7 +1244,7 @@ function finDelta(v, prev, malo, enCurso) {
 function renderEstados() {
   const E = D.estados; if (!E) return;
   const def = FIN_DEF[FIN.tab], off = FIN.off[FIN.tab];
-  const cuantos = { anual: 99, trimestral: 8, mensual: 12 }[FIN.gran];
+  const cuantos = 999;  // todos los periodos; la tabla arranca desplazada al más reciente
   const todos = (E[FIN.gran] || []).filter(e => FIN.tab !== 'balance' || e.balance.caja_conocida);
   const lista = todos.slice(-cuantos);
   // con qué se compara: flujos (resultados y caja) con el mismo periodo del año anterior, como las empresas;

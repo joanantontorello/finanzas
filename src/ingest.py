@@ -49,9 +49,21 @@ def cargar_cuentas():
 
 
 def cargar_categorias():
-    """{subcategoría: {tipo, grupo, esencial, ambito, rol}} desde config/categorias.yaml (dos niveles)."""
+    """{subcategoría: {tipo, grupo, esencial, ambito, rol}} desde data/categorias.json (dos niveles)."""
     import cats
     return cats.cargar(ROOT)[0]
+
+
+_MOVER = None
+
+
+def cargar_mover():
+    """Subcategorías quitadas o renombradas desde el dashboard → la que las sustituye (se lee una vez por ejecución)."""
+    global _MOVER
+    if _MOVER is None:
+        import cats
+        _MOVER = cats.mover(ROOT)
+    return _MOVER
 
 
 def rol(categorias, nombre):
@@ -76,6 +88,7 @@ def clasificar(mov, reglas, categorias):
         if not r["_re"].search(mov["concepto"]):
             continue
         cat = r.get("categoria")
+        cat = cargar_mover().get(cat, cat)  # la regla puede apuntar a una subcategoría ya renombrada o quitada
         ambito = r.get("ambito") or categorias.get(cat, {}).get("ambito") or "Personal"
         return {"tipo": r["tipo"], "categoria": cat, "ambito": ambito, "participacion": r.get("participacion"),
                 "estado": r.get("estado", "auto"), "regla": r["id"], "nota": r.get("nota")}
@@ -171,7 +184,7 @@ def aplicar_overrides(con, categorias=None):
     """Correcciones hechas desde el dashboard (data/overrides.json: {id: {categoria, tipo, ambito, nota, participacion, mes}})."""
     import json
     if not OVERRIDES.exists():
-        return 0
+        return aplicar_mover(con)
     data = json.loads(OVERRIDES.read_text(encoding="utf-8") or "{}")
     categorias = categorias or cargar_categorias()
     n = 0
@@ -196,6 +209,15 @@ def aplicar_overrides(con, categorias=None):
         sets = ", ".join(f"{k}=?" for k in campos) + ", estado='revisado', regla='dashboard'"
         con.execute(f"UPDATE movimientos SET {sets} WHERE id=?", (*campos.values(), int(id_)))
         n += 1
+    con.commit()
+    return n + aplicar_mover(con)
+
+
+def aplicar_mover(con):
+    """Los movimientos de subcategorías quitadas o renombradas desde el dashboard pasan a la que las sustituye."""
+    n = 0
+    for viejo, nuevo in cargar_mover().items():
+        n += con.execute("UPDATE movimientos SET categoria=? WHERE categoria=?", (nuevo, viejo)).rowcount
     con.commit()
     return n
 

@@ -93,7 +93,9 @@ def main():
                  "ambito": FLAT[s]["ambito"], "rol": FLAT[s]["rol"]} for g in GRUPOS for s in g["sub"]]
 
     rows = [dict(r) for r in con.execute("SELECT * FROM movimientos ORDER BY fecha, id").fetchall()]
+    mover = catsmod.mover(ROOT)
     for x in rows:
+        x["categoria"] = mover.get(x["categoria"], x["categoria"])
         x["mio"] = r2(x["importe"] * (x["participacion"] or 1.0))
 
     por_mes = defaultdict(list)
@@ -191,7 +193,7 @@ def main():
         "meses": meses,
         "anios": anios,
         "categorias": cat_list,
-        "grupos": [{"nombre": g["nombre"], "tipo": g["tipo"], "esencial": g["esencial"], "sub": g["sub"]} for g in GRUPOS],
+        "grupos": [{"nombre": g["nombre"], "tipo": g["tipo"], "esencial": g["esencial"], "color": g["color"], "sub": g["sub"]} for g in GRUPOS],
         "roles": ROLES,
         "cuentas": cuentas,
         "deudas": deudas,
@@ -208,6 +210,9 @@ def main():
     pres = ROOT / "data" / "presupuesto.json"
     if pres.exists():
         (OUT.parent / "presupuesto.json").write_text(pres.read_text(encoding="utf-8"), encoding="utf-8")
+    cj = ROOT / "data" / "categorias.json"
+    if cj.exists():
+        (OUT.parent / "categorias.json").write_text(cj.read_text(encoding="utf-8"), encoding="utf-8")
 
     # CSV espejo completo + resumen compacto mes x categoría (el resumen es el que se sube a Drive)
     import csv

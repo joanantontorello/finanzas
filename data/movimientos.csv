@@ -1160,7 +1160,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-22,Trade Republic,[Transacción con tarjeta] SHARE.MYCHEFTOOL.COM,-106.0,-106.0,Gasto,Hábitos diarios,Comida a domicilio,Personal,auto
 2026-06-22,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
 2026-06-22,Trade Republic,[Transacción con tarjeta] LLADOS UNIVERSITY,-100.0,-100.0,Gasto,Formación,Mentoría y cursos,Personal,auto
-2026-06-23,Conjunta,[Card Payment] Sam Smak,-9.6,-4.8,Gasto,Ocio y vida social,Restaurantes,Personal,auto
+2026-06-23,Conjunta,[Card Payment] Sam Smak,-9.6,-4.8,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-06-23,Conjunta,[Card Payment] Alcampo,-57.53,-28.77,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-06-23,Trade Republic,[Transacción con tarjeta] SQ *THE MINERS,-3.0,-3.0,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-23,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.804425",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
@@ -1597,7 +1597,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-20,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-12.11,-12.11,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-20,Revolut,[Card Payment] Samba Global Fuencarra,-4.9,-4.9,Gasto,Ocio y vida social,Restaurantes,Personal,revisado
 2026-09-20,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-21,BBVA,Pago de impuestos | Nrc. 082612591968yxvs3rpssf,-108.46,-108.46,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
+2026-09-21,BBVA,Pago de impuestos | Nrc. 082612591968yxvs3rpssf,-108.46,-108.46,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
 2026-09-21,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,29.5,29.5,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-09-21,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to GC RE OCTOPUS ENERGY (FR7617118820080000001536203),-59.01,-29.5,Gasto,Vivienda y suministros,Electricidad,Personal,revisado
 2026-09-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -1675,7 +1675,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-13,Conjunta,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-10-14,Conjunta,[Topup] Apple Pay top-up by *5233,150.0,150.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-10-14,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,150.0,150.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
-2026-10-14,Conjunta,[Card Payment] Sam Smak,-18.1,-9.05,Gasto,Ocio y vida social,Restaurantes,Personal,auto
+2026-10-14,Conjunta,[Card Payment] Sam Smak,-18.1,-9.05,Gasto,Vivienda y suministros,Supermercado,Personal,revisado
 2026-10-14,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-10-15,Revolut,[Transfer] Bizum payment to: Kateryna S. · Ref: Tmb de chilk,-10.0,-10.0,Gasto,Otros,Ajustes con Kate,Personal,auto
 2026-10-15,Revolut,[Card Payment] Muchas Gracias,-5.0,-5.0,Gasto,Otros,Imprevistos,Personal,auto
@@ -1696,7 +1696,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-19,Conjunta,[Transfer] Gc Re Octopus Energy,-62.96,-31.48,Gasto,Vivienda y suministros,Electricidad,Personal,auto
 2026-10-19,Trade Republic,[Transacción con tarjeta] DECATHLON FUENCARRAL,-5.99,-5.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-10-19,Trade Republic,[Transacción con tarjeta] ESPASA CALPE S A,-11.95,-11.95,Gasto,Formación,Libros,Personal,auto
-2026-10-20,BBVA,Pago de impuestos | Nrc. 082612785466hmhlm8kp1a,-108.82,-108.82,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
+2026-10-20,BBVA,Pago de impuestos | Nrc. 082612785466hmhlm8kp1a,-108.82,-108.82,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
 2026-10-20,Conjunta,[Card Payment] Alcampo,-41.27,-20.64,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-21,Conjunta,[Card Payment] Dia,-3.34,-1.67,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -1719,8 +1719,8 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-28,Conjunta,[Card Payment] Selecta,-5.0,-2.5,Gasto,Hábitos diarios,Café,Personal,auto
 2026-10-28,Conjunta,[Card Payment] Pescadería Los Dely,-15.14,-7.57,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-28,Conjunta,[Card Payment] Pollerias Mcarmen Maravil,-7.66,-3.83,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-10-28,Conjunta,[Card Payment] Guasacaca Venezuelan Food,-5.0,-2.5,Gasto,Ocio y vida social,Restaurantes,Personal,auto
-2026-10-28,Conjunta,[Card Payment] Guasacaca Venezuelan Food,-8.0,-4.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
+2026-10-28,Conjunta,[Card Payment] Guasacaca Venezuelan Food,-5.0,-2.5,Gasto,Hábitos diarios,Café,Personal,revisado
+2026-10-28,Conjunta,[Card Payment] Guasacaca Venezuelan Food,-8.0,-4.0,Gasto,Hábitos diarios,Comida a domicilio,Personal,revisado
 2026-10-28,Conjunta,[Card Payment] Lidl,-5.77,-2.88,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-28,Conjunta,[Card Payment] Fruteria Y Verduras Lin,-4.32,-2.16,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto

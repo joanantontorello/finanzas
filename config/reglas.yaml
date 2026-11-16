@@ -1,7 +1,7 @@
 # Reglas de clasificación. Se evalúan EN ORDEN y gana la primera que encaja.
 # Campos: id, cuenta (una o lista), match (regex sobre el concepto, sin distinguir mayúsculas),
 #         desde/hasta (rango de fechas), min/max (importe absoluto), signo (+ o -), participacion,
-#         tipo, categoria (= SUBCATEGORÍA de config/categorias.yaml), ambito (si no, el de la categoría),
+#         tipo, categoria (= SUBCATEGORÍA de data/categorias.json), ambito (si no, el de la categoría),
 #         estado (auto por defecto; "pendiente" = sugerencia a revisar), nota.
 # Las correcciones del dashboard se convierten solas en reglas "auto_*" (sección aprendidas).
 
@@ -79,6 +79,7 @@
 - {id: vuelos,             match: "VUELING|Vueling|RYANAIR|Ryanair|IBERIA|Iberia|EASYJET|easyJet|AIR EUROPA|Air Europa|VOLOTEA|Volotea", tipo: Gasto, categoria: "Vuelos"}
 
 # --- aprendidas de las correcciones del dashboard (van antes que las genéricas para ganarles)
+- {"id": "auto_sam_smak", "match": "Sam\\ Smak", "tipo": "Gasto", "categoria": "Supermercado", "ambito": null, "nota": "aprendida de la corrección #1659"}
 - {"id": "auto_casa_do_a_a", "match": "Casa\\ do\\ Açaí", "tipo": "Gasto", "categoria": "Açaí y brunch", "ambito": "Personal", "nota": "aprendida de la corrección #1120"}
 - {"id": "auto_bizum_payment_to_helibeth_r_q", "match": "Bizum\\ payment\\ to:\\ Helibeth\\ R\\.Q\\.", "tipo": "Gasto", "categoria": "Pádel", "ambito": "Personal", "nota": "aprendida de la corrección #1122"}
 - {"id": "auto_raw_a_a", "match": "Raw\\ Açaí", "tipo": "Gasto", "categoria": "Açaí y brunch", "ambito": "Personal", "nota": "aprendida de la corrección #1123"}

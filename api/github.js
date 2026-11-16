@@ -1,8 +1,8 @@
-// Guarda y lee las correcciones (data/overrides.json) y el presupuesto (data/presupuesto.json) en GitHub
+// Guarda y lee las correcciones (data/overrides.json), el presupuesto (data/presupuesto.json) y las categorías (data/categorias.json) en GitHub
 // con un token que vive en el servidor (variable de entorno GITHUB_TOKEN de Vercel), para que ningún
 // dispositivo tenga que configurar su propio token. El acceso lo protege Vercel Authentication, igual que el dashboard.
 const REPO = 'joanantontorello/finanzas';
-const PERMITIDOS = ['data/overrides.json', 'data/presupuesto.json'];
+const PERMITIDOS = ['data/overrides.json', 'data/presupuesto.json', 'data/categorias.json'];
 
 module.exports = async (req, res) => {
   const path = req.query.path;

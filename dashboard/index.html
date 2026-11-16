@@ -155,7 +155,16 @@
   .act { display: flex; align-items: center; gap: 10px; } .act b { font-weight: 600; } .act small { display: block; color: var(--text-3); font-size: 11px; }
   .plist { margin: 6px -10px 0; font-size: 13px; }
   .prow { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 5px 10px; border-radius: 8px; cursor: text; }
-  .prow:nth-child(even) { background: color-mix(in srgb, var(--text) 3.5%, transparent); }
+  .plist > :nth-child(even) { background: color-mix(in srgb, var(--text) 3.5%, transparent); border-radius: 8px; }
+  .prow.sub { padding-left: 28px; font-size: 12.5px; color: var(--text-2); }
+  .prow.sub input { width: 100px; }
+  button.prep { border: 0; background: none; color: var(--s1); font: inherit; font-size: 12px; cursor: pointer; padding: 2px 6px; margin-left: 6px; border-radius: 6px; }
+  button.prep:hover { background: color-mix(in srgb, var(--s1) 12%, transparent); }
+  .pres-res { padding: 2px 10px 8px 28px; font-size: 12px; color: var(--text-3); }
+  .pres-res .bad { color: var(--bad); } .pres-res button { border: 0; background: none; color: var(--s1); font: inherit; cursor: pointer; padding: 0 4px; }
+  .subbar { display: grid; grid-template-columns: minmax(90px, 1fr) 2fr auto; align-items: center; gap: 10px; font-size: 12px; margin: 4px 0 0 12px; color: var(--text-2); }
+  .subbar .track { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+  .subbar .track div { height: 100%; border-radius: 3px; }
   .prow:hover, .prow:focus-within { background: color-mix(in srgb, var(--s1) 10%, transparent); }
   .prow.sep { margin-top: 8px; }
   .prow input { width: 120px; flex: none; }
@@ -455,7 +464,7 @@ fetch('data.json').then(r => r.json()).then(async d => { D = d; const pf = D.per
 // ---- presupuesto: data/presupuesto.json (GitHub si hay token, si no la copia desplegada)
 async function cargarPresupuesto() {
   try { P = await (await fetch('presupuesto.json')).json(); } catch (e) { P = null; }
-  if (!P) P = { grupos: {}, inversion_mensual: 0, colchon_objetivo: 0, metas: [] };
+  if (!P) P = { grupos: {}, subs: {}, inversion_mensual: 0, colchon_objetivo: 0, metas: [] };
   try {
     const r = await gh(GHP.path);
     if (!r || !r.ok) { P.grupos = P.grupos || {}; return; }
@@ -463,7 +472,7 @@ async function cargarPresupuesto() {
     const Pg = decodificar(j.content);
     if (Pg.grupos) P = Pg;  // una versión antigua (por bloques) en GitHub no pisa la nueva
   } catch (e) { console.warn('presupuesto', e); }
-  P.grupos = P.grupos || {};
+  P.grupos = P.grupos || {}; P.subs = P.subs || {};
 }
 async function guardarPresupuesto() {
   const body = { message: 'Presupuesto actualizado desde el dashboard', content: codificar(P) };
@@ -473,8 +482,31 @@ async function guardarPresupuesto() {
   pSha = (await r.json()).content.sha; pDirty = false; return true;
 }
 function marcarPres() { pDirty = true; const n = Object.keys(cambios).length; $('savemsg').textContent = (n ? n + ' correcciones y ' : '') + 'presupuesto sin guardar'; $('savebar').style.display = 'flex'; }
-function renderPresupuesto() {
+// reparto opcional del presupuesto de un grupo entre algunas de sus subcategorías (P.subs: subcategoría → €/mes).
+// Lo no repartido queda como bolsa común para el resto de subcategorías del grupo.
+const subsCon = g => g.sub.filter(c => P.subs && P.subs[c] != null);
+const repartido = g => subsCon(g).reduce((t, c) => t + (+P.subs[c] || 0), 0);
+let presAbiertos = null;
+function resumenReparto(g) {
+  const tot = +P.grupos[g.nombre] || 0, asig = repartido(g), n = subsCon(g).length;
+  if (!n) return 'Pon importe solo a las subcategorías que quieras controlar; lo que no repartas queda para el resto del grupo.';
+  if (asig <= tot) return `Repartido ${fmt(asig)} de ${fmt(tot)} · ${fmt(tot - asig)} para el resto de ${g.nombre.toLowerCase()}`;
+  return `<span class="bad">Las subcategorías suman ${fmt(asig)}, ${fmt(asig - tot)} más que el total del grupo.</span><button data-ajustar="${g.nombre}">Subir el total a ${fmt(asig)}</button>`;
+}
+function subBarras(g, n, a, pres, gs) {
+  const con = subsCon(g); if (!con.length) return '';
+  const fila = (nombre, pr, gt) => { const p = pr ? gt / pr : (gt > 0 ? 2 : 0), col = p > 1 ? 'var(--s2)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
+    return `<div class="subbar"><span>${nombre}</span><div class="track"><div style="width:${Math.min(100, p * 100)}%;background:${col}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span></div>`; };
+  let h = con.map(c => fila(c, (+P.subs[c] || 0) * n, a.cats[c] || 0)).join('');
+  if (con.length < g.sub.length) {  // bolsa común: lo que queda del grupo para las subcategorías sin importe propio
+    const prR = Math.max(0, pres - repartido(g) * n), gsR = gs - con.reduce((t, c) => t + (a.cats[c] || 0), 0);
+    if (prR || gsR > 0) h += fila('Resto', prR, gsR);
+  }
+  return `<div style="margin-top:6px">${h}</div>`;
+}
+function renderPresupuesto(sinConfig) {
   if (!P) return;
+  P.subs = P.subs || {};
   const rowsP = base(); const n = Math.max(new Set(rowsP.map(m => m.mes)).size, 1);
   const a = agg(rowsP); const periodo = periodoLabel();
   const gGasto = (D.grupos || []).filter(g => g.tipo === 'Gasto');
@@ -498,7 +530,7 @@ function renderPresupuesto() {
     const top = g.sub.filter(c => a.cats[c]).sort((x, y) => a.cats[y] - a.cats[x]).slice(0, 4).map(c => `${c.toLowerCase()} ${fmt(a.cats[c])}`).join(' · ');
     return `<div style="margin:10px 0 14px"><div style="display:flex;justify-content:space-between;font-size:13px"><b>${g.nombre} <small class="muted">${g.esencial === true ? 'esencial' : g.esencial === false ? 'no esencial' : ''}</small></b><span><b>${fmt(gs)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
       <div class="track" style="position:relative;height:12px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:4px 0"><div style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div>${ritmo < 0.995 ? `<div style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
-      <div class="muted" style="font-size:12px">${gs > pres ? 'Pasado en ' + fmt(gs - pres) : 'Quedan ' + fmt(pres - gs)}${top ? ' · ' + top : ''}</div></div>`;
+      <div class="muted" style="font-size:12px">${gs > pres ? 'Pasado en ' + fmt(gs - pres) : 'Quedan ' + fmt(pres - gs)}${top && !subsCon(g).length ? ' · ' + top : ''}</div>${subBarras(g, n, a, pres, gs)}</div>`;
   }).join('');
   // metas
   const hoy = new Date();
@@ -513,18 +545,39 @@ function renderPresupuesto() {
       <div class="muted" style="font-size:12px">${fmt(m.reservado || 0)} de ${fmt(m.objetivo)} · faltan ${fmt(falta)}${meses ? ` · ${meses} ${meses === 1 ? 'mes' : 'meses'} · ${fmt(falta / meses)} al mes` : ''}</div></div>`;
   }).join('') || '<p class="muted">Sin metas. Añade una.</p>';
   // config
-  $('presConfig').innerHTML = (D.grupos || []).filter(g => g.tipo === 'Gasto').map(g => `<label class="prow"><span>${g.nombre}</span><input data-pg="${g.nombre}" type="number" value="${+P.grupos[g.nombre] || 0}"></label>`).join('') + `
+  if (sinConfig) return;
+  if (!presAbiertos) presAbiertos = new Set(gGasto.filter(g => subsCon(g).length).map(g => g.nombre));
+  $('presConfig').innerHTML = gGasto.map(g => {
+    const n = subsCon(g).length, multi = g.sub.length > 1, ab = presAbiertos.has(g.nombre);
+    return `<div class="pgrp"><label class="prow"><span>${g.nombre}${multi ? `<button class="prep" data-rep="${g.nombre}" aria-expanded="${ab}">${n ? n + (n === 1 ? ' repartida' : ' repartidas') : 'Repartir'} ${ab ? '▴' : '▾'}</button>` : ''}</span><input data-pg="${g.nombre}" type="number" value="${+P.grupos[g.nombre] || 0}"></label>${multi ? `
+      <div class="psubs"${ab ? '' : ' hidden'}>${g.sub.map(c => `<label class="prow sub"><span>${c}</span><input data-ps="${c}" data-g="${g.nombre}" type="number" min="0" placeholder="—" value="${P.subs[c] != null ? P.subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="${g.nombre}">${resumenReparto(g)}</div></div>` : ''}</div>`;
+  }).join('') + `
     <label class="prow sep"><span><b>Inversión objetivo al mes</b></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}"></label>
     <label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>`;
 }
+function actualizarReparto(k) {
+  const g = (D.grupos || []).find(x => x.nombre === k); if (!g || g.sub.length < 2) return;
+  const n = subsCon(g).length, ab = presAbiertos.has(k), res = document.querySelector(`.pres-res[data-res="${CSS.escape(k)}"]`), bt = document.querySelector(`button[data-rep="${CSS.escape(k)}"]`);
+  if (res) res.innerHTML = resumenReparto(g);
+  if (bt) bt.textContent = (n ? n + (n === 1 ? ' repartida' : ' repartidas') : 'Repartir') + ' ' + (ab ? '▴' : '▾');
+}
 document.addEventListener('change', e => {
   const el = e.target;
-  if (el.dataset.p) { const [a, b] = el.dataset.p.split('.'); if (b) P[a][b] = +el.value; else P[a] = +el.value; marcarPres(); renderPresupuesto(); }
-  else if (el.dataset.pg) { P.grupos[el.dataset.pg] = +el.value; marcarPres(); renderPresupuesto(); }
+  if (el.dataset.p) { const [a, b] = el.dataset.p.split('.'); if (b) P[a][b] = +el.value; else P[a] = +el.value; marcarPres(); renderPresupuesto(true); }
+  else if (el.dataset.pg) { P.grupos[el.dataset.pg] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.pg); }
+  else if (el.dataset.ps) { if (el.value === '') delete P.subs[el.dataset.ps]; else P.subs[el.dataset.ps] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.g); }
   else if (el.dataset.meta != null) { const m = P.metas[+el.dataset.meta]; const k = el.dataset.k; m[k] = (k === 'nombre' || k === 'fecha') ? el.value : +el.value; marcarPres(); renderPresupuesto(); }
 });
 document.addEventListener('click', e => {
   const d = e.target.closest('button[data-delmeta]'); if (d) { P.metas.splice(+d.dataset.delmeta, 1); marcarPres(); renderPresupuesto(); }
+  const rp = e.target.closest('button[data-rep]');
+  if (rp) {  // abrir o cerrar el reparto sin repintar (no se pierde lo que estás escribiendo)
+    e.preventDefault(); const k = rp.dataset.rep, ab = !presAbiertos.has(k);
+    ab ? presAbiertos.add(k) : presAbiertos.delete(k);
+    rp.closest('.pgrp').querySelector('.psubs').hidden = !ab; rp.setAttribute('aria-expanded', ab); actualizarReparto(k);
+  }
+  const aj = e.target.closest('button[data-ajustar]');
+  if (aj) { const g = (D.grupos || []).find(x => x.nombre === aj.dataset.ajustar); P.grupos[g.nombre] = repartido(g); marcarPres(); renderPresupuesto(); }
   if (e.target.id === 'addMeta') { P.metas = P.metas || []; P.metas.push({ nombre: 'Nueva meta', objetivo: 1000, fecha: '', reservado: 0 }); marcarPres(); renderPresupuesto(); }
 });
 

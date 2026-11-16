@@ -1,25 +1,26 @@
 {
  "grupos": {
-  "Vivienda y suministros": 920,
-  "Salud y deporte": 420,
-  "Transporte": 140,
-  "Empresa": 460,
+  "Vivienda y suministros": 900,
+  "Salud y deporte": 538,
+  "Transporte": 25,
+  "Empresa": 289,
   "Préstamos y deudas": 210,
-  "Hábitos diarios": 110,
-  "Ocio y vida social": 340,
-  "Viajes": 250,
+  "Hábitos diarios": 30,
+  "Ocio y vida social": 100,
+  "Viajes": 0,
   "Suscripciones": 30,
   "Formación": 30,
-  "Otros": 150
+  "Otros": 0
  },
- "inversion_mensual": 1000,
- "colchon_objetivo": 6500,
+ "inversion_mensual": 1200,
+ "colchon_objetivo": 7000,
  "metas": [
   {
    "nombre": "Colchón de 3 meses",
-   "objetivo": 6500,
-   "fecha": "2026-12-31",
-   "reservado": 3382
+   "objetivo": 7000,
+   "fecha": "2027-01-31",
+   "reservado": 3382,
+   "fuente": "cuenta:Trade Republic"
   },
   {
    "nombre": "Setup despacho (silla, mesa, monitor)",
@@ -27,5 +28,8 @@
    "fecha": "2026-12-31",
    "reservado": 0
   }
- ]
+ ],
+ "subs": {
+  "Citas y pareja": 80
+ }
 }

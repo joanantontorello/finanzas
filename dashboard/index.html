@@ -532,17 +532,22 @@ function renderPresupuesto(sinConfig) {
       <div class="track" style="position:relative;height:12px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:4px 0"><div style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div>${ritmo < 0.995 ? `<div style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
       <div class="muted" style="font-size:12px">${gs > pres ? 'Pasado en ' + fmt(gs - pres) : 'Quedan ' + fmt(pres - gs)}${top && !subsCon(g).length ? ' · ' + top : ''}</div>${subBarras(g, n, a, pres, gs)}</div>`;
   }).join('');
-  // metas
+  // metas: el progreso puede ser manual o salir solo del saldo de una cuenta (o de todas). Si varias metas
+  // tiran de la misma fuente, se llenan en orden: la primera hasta su objetivo y lo que sobra pasa a la siguiente.
   const hoy = new Date();
+  const fuentes = metasProgreso();
   $('metas').innerHTML = (P.metas || []).map((m, i) => {
-    const falta = Math.max(0, m.objetivo - (m.reservado || 0));
+    const f = fuentes[i], res = f ? f.valor : (m.reservado || 0);
+    const falta = Math.max(0, m.objetivo - res);
     const meses = m.fecha ? Math.max(1, (new Date(m.fecha).getFullYear() - hoy.getFullYear()) * 12 + new Date(m.fecha).getMonth() - hoy.getMonth()) : null;
-    const p = m.objetivo ? Math.min(1, (m.reservado || 0) / m.objetivo) : 0;
+    const p = m.objetivo ? Math.min(1, res / m.objetivo) : 0;
+    const opts = [['', 'Manual'], ['total', 'Todas las cuentas']].concat((D.cuentas || []).map(c => ['cuenta:' + c.cuenta, 'Saldo de ' + c.cuenta]))
+      .map(([v, t]) => `<option value="${v}"${(m.fuente || '') === v ? ' selected' : ''}>${t}</option>`).join('');
     return `<div style="margin:10px 0 14px;font-size:13px">
       <div class="metarow"><input data-meta="${i}" data-k="nombre" value="${(m.nombre || '').replace(/"/g, '&quot;')}" style="flex:1;min-width:0;font-weight:600" aria-label="Nombre de la meta"><button class="amb" data-delmeta="${i}" title="Quitar meta" aria-label="Quitar meta" style="padding:8px 12px">✕</button></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><label class="fld">Objetivo (€)<input data-meta="${i}" data-k="objetivo" type="number" value="${m.objetivo}" style="width:110px"></label><label class="fld">Fecha<input data-meta="${i}" data-k="fecha" type="date" value="${m.fecha || ''}" style="width:150px"></label><label class="fld">Ya reservado (€)<input data-meta="${i}" data-k="reservado" type="number" value="${m.reservado || 0}" style="width:110px"></label></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><label class="fld">Objetivo (€)<input data-meta="${i}" data-k="objetivo" type="number" value="${m.objetivo}" style="width:110px"></label><label class="fld">Fecha<input data-meta="${i}" data-k="fecha" type="date" value="${m.fecha || ''}" style="width:150px"></label><label class="fld">Progreso<select data-meta="${i}" data-k="fuente" style="width:190px">${opts}</select></label>${f ? '' : `<label class="fld">Ya reservado (€)<input data-meta="${i}" data-k="reservado" type="number" value="${m.reservado || 0}" style="width:110px"></label>`}</div>
       <div class="track" style="height:10px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:6px 0"><div style="height:100%;width:${p * 100}%;background:var(--s1);border-radius:4px"></div></div>
-      <div class="muted" style="font-size:12px">${fmt(m.reservado || 0)} de ${fmt(m.objetivo)} · faltan ${fmt(falta)}${meses ? ` · ${meses} ${meses === 1 ? 'mes' : 'meses'} · ${fmt(falta / meses)} al mes` : ''}</div></div>`;
+      <div class="muted" style="font-size:12px">${fmt(res)} de ${fmt(m.objetivo)} · ${falta ? 'faltan ' + fmt(falta) : 'conseguida'}${meses && falta ? ` · ${meses} ${meses === 1 ? 'mes' : 'meses'} · ${fmt(falta / meses)} al mes` : ''}</div>${f ? `<div class="muted" style="font-size:11.5px;margin-top:2px">Automático: ${f.texto}</div>` : ''}</div>`;
   }).join('') || '<p class="muted">Sin metas. Añade una.</p>';
   // config
   if (sinConfig) return;
@@ -555,6 +560,20 @@ function renderPresupuesto(sinConfig) {
     <label class="prow sep"><span><b>Inversión objetivo al mes</b></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}"></label>
     <label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>`;
 }
+function metasProgreso() {
+  const saldo = {}, fecha = {};
+  (D.cuentas || []).forEach(c => { saldo['cuenta:' + c.cuenta] = Math.max(0, +c.saldo || 0); fecha['cuenta:' + c.cuenta] = c.fecha_saldo; });
+  saldo.total = Math.max(0, +D.saldo_total || 0);
+  const queda = Object.assign({}, saldo), usadas = {};
+  return (P.metas || []).map(m => {
+    const k = m.fuente; if (!k || saldo[k] == null) return null;
+    const v = Math.min(m.objetivo || 0, queda[k]); queda[k] -= v;
+    const nombre = k === 'total' ? 'dinero en todas las cuentas' : 'saldo de ' + k.slice(7);
+    const previo = usadas[k]; usadas[k] = true;
+    const fch = fecha[k] ? ' a ' + fecha[k].split('-').reverse().slice(0, 2).join('/') : '';
+    return { valor: v, texto: `${nombre} (${fmt(saldo[k])}${fch})${previo ? ' · lo que sobra después de las metas de arriba' : ''}${!previo && saldo[k] > v ? ' · lo que pase del objetivo va a la siguiente meta de esta cuenta' : ''}` };
+  });
+}
 function actualizarReparto(k) {
   const g = (D.grupos || []).find(x => x.nombre === k); if (!g || g.sub.length < 2) return;
   const n = subsCon(g).length, ab = presAbiertos.has(k), res = document.querySelector(`.pres-res[data-res="${CSS.escape(k)}"]`), bt = document.querySelector(`button[data-rep="${CSS.escape(k)}"]`);
@@ -566,7 +585,7 @@ document.addEventListener('change', e => {
   if (el.dataset.p) { const [a, b] = el.dataset.p.split('.'); if (b) P[a][b] = +el.value; else P[a] = +el.value; marcarPres(); renderPresupuesto(true); }
   else if (el.dataset.pg) { P.grupos[el.dataset.pg] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.pg); }
   else if (el.dataset.ps) { if (el.value === '') delete P.subs[el.dataset.ps]; else P.subs[el.dataset.ps] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.g); }
-  else if (el.dataset.meta != null) { const m = P.metas[+el.dataset.meta]; const k = el.dataset.k; m[k] = (k === 'nombre' || k === 'fecha') ? el.value : +el.value; marcarPres(); renderPresupuesto(); }
+  else if (el.dataset.meta != null) { const m = P.metas[+el.dataset.meta]; const k = el.dataset.k; m[k] = (k === 'nombre' || k === 'fecha' || k === 'fuente') ? el.value : +el.value; if (k === 'fuente' && !el.value) delete m.fuente; marcarPres(); renderPresupuesto(); }
 });
 document.addEventListener('click', e => {
   const d = e.target.closest('button[data-delmeta]'); if (d) { P.metas.splice(+d.dataset.delmeta, 1); marcarPres(); renderPresupuesto(); }

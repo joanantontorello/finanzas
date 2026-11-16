@@ -19,7 +19,8 @@
    "nombre": "Colchón de 3 meses",
    "objetivo": 7000,
    "fecha": "2027-01-31",
-   "reservado": 3382
+   "reservado": 3382,
+   "fuente": "cuenta:Trade Republic"
   },
   {
    "nombre": "Setup despacho (silla, mesa, monitor)",

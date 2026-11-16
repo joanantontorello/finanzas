@@ -215,4 +215,25 @@ def calcular(rows, flat, roles, root, hoy=None):
                 "balance": balance(fin),
             })
         out[gran] = lista
+
+    # 2025 no tiene saldos de banco (hoja antigua): la caja se estima hacia atrás desde el primer cierre con saldos
+    # reales, restando la variación de caja de cada mes posterior. Esos balances van marcados como estimados.
+    mens = out.get("mensual", [])
+    idx = next((i for i, e in enumerate(mens) if e["balance"]["caja_conocida"]), None)
+    est = {}
+    if idx:
+        c = mens[idx]["balance"]["caja"]
+        for i in range(idx, 0, -1):
+            c -= mens[i]["flujo"]["variacion"]
+            est[mens[i - 1]["periodo"]] = c
+    for lista in out.values():
+        for e in lista:
+            b = e["balance"]
+            mes = e["fin"][:7]
+            if b["caja_conocida"] or mes not in est:
+                continue
+            caja = est[mes]
+            activos = caja + b["hucha"] + b["inversiones"]
+            b.update({"caja": r2(caja), "activos|caja": {"Estimada con los flujos del mes": r2(caja)}, "activos": r2(activos),
+                      "patrimonio": r2(activos - b["pasivos"]), "estimado": True})
     return out

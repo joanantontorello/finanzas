@@ -1245,7 +1245,7 @@ function renderEstados() {
   const E = D.estados; if (!E) return;
   const def = FIN_DEF[FIN.tab], off = FIN.off[FIN.tab];
   const cuantos = 999;  // todos los periodos; la tabla arranca desplazada al más reciente
-  const todos = (E[FIN.gran] || []).filter(e => FIN.tab !== 'balance' || e.balance.caja_conocida);
+  const todos = (E[FIN.gran] || []).filter(e => FIN.tab !== 'balance' || e.balance.caja_conocida || e.balance.estimado);
   const lista = todos.slice(-cuantos);
   // con qué se compara: flujos (resultados y caja) con el mismo periodo del año anterior, como las empresas;
   // el balance, que es una foto, con el cierre del periodo anterior
@@ -1262,7 +1262,7 @@ function renderEstados() {
   // cascada (solo cuenta de resultados)
   if (casc) finCascada($('finCasc'), lista.find(e => e.periodo === FIN.sel));
   // tabla con periodos en columnas
-  let h = `<thead><tr><th>${FIN.tab === 'balance' ? 'Al cierre de' : 'Periodo'}<small>Euros · tu parte</small></th>` + lista.map(e => `<th data-p="${e.periodo}" class="${casc && e.periodo === FIN.sel ? 'sel' : ''}" ${casc ? 'title="Ver su cascada"' : ''}>${e.etiqueta}<small>${e.en_curso ? 'en curso' : e.historico ? 'hoja antigua' : ''}</small></th>`).join('') + '</tr></thead><tbody>';
+  let h = `<thead><tr><th>${FIN.tab === 'balance' ? 'Al cierre de' : 'Periodo'}<small>Euros · tu parte</small></th>` + lista.map(e => `<th data-p="${e.periodo}" class="${casc && e.periodo === FIN.sel ? 'sel' : ''}" ${casc ? 'title="Ver su cascada"' : ''}>${e.etiqueta}<small>${e.en_curso ? 'en curso' : FIN.tab === 'balance' && e.balance.estimado ? 'estimado' : e.historico ? 'hoja antigua' : ''}</small></th>`).join('') + '</tr></thead><tbody>';
   for (const f of def.filas) {
     const vals = lista.map(e => val(e, f.k));
     if (vals.every(v => v == null || v === 0) && !f.main) continue;
@@ -1288,7 +1288,7 @@ function renderEstados() {
   $('finTable').innerHTML = h + '</tbody>'; hoverTips($('finTable'));
   const vista = FIN.tab + FIN.gran + innerWidth;
   const w = $('finTable').parentElement; if (vista !== FIN.vista && w.offsetParent) { w.scrollLeft = w.scrollWidth; FIN.vista = vista; }  // como TradingView: el periodo más reciente a la vista
-  $('finNote').textContent = def.nota + ' Incluye todo (personal y trabajo, todas las cuentas). Variación: ' + (FIN.tab === 'balance' ? 'frente al cierre del periodo anterior.' : 'frente al mismo periodo del año anterior (' + { anual: 'año contra año', trimestral: 'T3 2026 contra T3 2025', mensual: 'oct 26 contra oct 25' }[FIN.gran] + '); guion si no hay con qué comparar.') + ' * = periodo en curso, sin comparar.';
+  $('finNote').textContent = def.nota + ' Incluye todo (personal y trabajo, todas las cuentas). Variación: ' + (FIN.tab === 'balance' ? 'frente al cierre del periodo anterior. Los cierres de 2025 son estimados: no hay saldos de banco de esa época, así que la caja se calcula hacia atrás desde el saldo real de enero de 2026 restando lo que ahorraste cada mes.' : 'frente al mismo periodo del año anterior (' + { anual: 'año contra año', trimestral: 'T3 2026 contra T3 2025', mensual: 'oct 26 contra oct 25' }[FIN.gran] + '); guion si no hay con qué comparar.') + ' * = periodo en curso, sin comparar.';
 }
 function finChart(el, lista, series) {
   if (!lista.length) { el.innerHTML = '<p class="muted">Sin datos</p>'; return; }

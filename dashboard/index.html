@@ -153,6 +153,12 @@
   span.logo { display: inline-grid; place-items: center; background: var(--surface-3); color: var(--text-2); font-size: 11px; font-weight: 700; padding: 0; }
   img.logo.sm, span.logo.sm { width: 16px; height: 16px; border-radius: 4px; padding: 1px; vertical-align: -3px; margin-right: 7px; }
   .act { display: flex; align-items: center; gap: 10px; } .act b { font-weight: 600; } .act small { display: block; color: var(--text-3); font-size: 11px; }
+  .plist { margin: 6px -10px 0; font-size: 13px; }
+  .prow { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 5px 10px; border-radius: 8px; cursor: text; }
+  .prow:nth-child(even) { background: color-mix(in srgb, var(--text) 3.5%, transparent); }
+  .prow:hover, .prow:focus-within { background: color-mix(in srgb, var(--s1) 10%, transparent); }
+  .prow.sep { margin-top: 8px; }
+  .prow input { width: 120px; flex: none; }
   #tbodyInv tr:nth-child(even) td, #tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--text) 3.5%, transparent); }
   #tbodyInv td { padding: 9px 10px; vertical-align: middle; }
   .dd-op img.logo.sm { margin-right: 8px; }
@@ -329,7 +335,7 @@
       <div class="card mt">
         <h2>Configurar presupuesto</h2>
         <div class="hint">Importe mensual por grupo. Los cambios se guardan en GitHub con el botón de abajo, igual que las correcciones.</div>
-        <div class="kv" id="presConfig"></div>
+        <div class="plist" id="presConfig"></div>
       </div>
     </section>
 
@@ -507,9 +513,9 @@ function renderPresupuesto() {
       <div class="muted" style="font-size:12px">${fmt(m.reservado || 0)} de ${fmt(m.objetivo)} · faltan ${fmt(falta)}${meses ? ` · ${meses} ${meses === 1 ? 'mes' : 'meses'} · ${fmt(falta / meses)} al mes` : ''}</div></div>`;
   }).join('') || '<p class="muted">Sin metas. Añade una.</p>';
   // config
-  $('presConfig').innerHTML = (D.grupos || []).filter(g => g.tipo === 'Gasto').map(g => `<span>${g.nombre}</span><input data-pg="${g.nombre}" type="number" value="${+P.grupos[g.nombre] || 0}" style="width:120px">`).join('') + `
-    <span><b>Inversión objetivo al mes</b></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}" style="width:120px">
-    <span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}" style="width:120px">`;
+  $('presConfig').innerHTML = (D.grupos || []).filter(g => g.tipo === 'Gasto').map(g => `<label class="prow"><span>${g.nombre}</span><input data-pg="${g.nombre}" type="number" value="${+P.grupos[g.nombre] || 0}"></label>`).join('') + `
+    <label class="prow sep"><span><b>Inversión objetivo al mes</b></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}"></label>
+    <label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>`;
 }
 document.addEventListener('change', e => {
   const el = e.target;

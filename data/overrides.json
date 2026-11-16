@@ -101,5 +101,14 @@
  "1635": {
   "participacion": 0.5,
   "compensar": true
+ },
+ "1659": {
+  "categoria": "Supermercado"
+ },
+ "1674": {
+  "categoria": "Café"
+ },
+ "1675": {
+  "categoria": "Comida a domicilio"
  }
 }

@@ -283,6 +283,46 @@ def parse_historico(path, anio, cuenta="Histórico"):
 
 
 # --------------------------------------------------------------------------- detección por nombre de fichero
+# --------------------------------------------------------------------------- Trade Republic: extracto del patrimonio neto
+CRIPTO_ISIN = {"BTC": "XF000BTC0017", "ETH": "XF000ETH0019"}
+_NUM = r"\d[\d.]*(?:,\d+)?"
+
+
+def es_patrimonio_tr(path):
+    """El «Extracto del patrimonio neto» de Trade Republic (foto de la cartera a una fecha), no un extracto de movimientos."""
+    if not str(path).lower().endswith(".pdf"):
+        return False
+    import pypdf
+    try:
+        return "EXTRACTO DEL PATRIMONIO NETO" in (pypdf.PdfReader(str(path)).pages[0].extract_text() or "")
+    except Exception:
+        return False
+
+
+def parse_tr_patrimonio(path):
+    """{fecha, valores, crypto, efectivo, total, posiciones: [{isin, nombre, unidades, precio, fecha_precio, valor}]}"""
+    import pypdf
+    texto = " ".join(" ".join((pg.extract_text() or "").split()) for pg in pypdf.PdfReader(str(path)).pages)
+    f = re.search(r"EXTRACTO DEL PATRIMONIO NETO a (\d{2})\.(\d{2})\.(\d{4})", texto)
+    fecha = f"{f.group(3)}-{f.group(2)}-{f.group(1)}"
+    tot = lambda etiqueta: eur(re.search(etiqueta + r" (" + _NUM + ")", texto).group(1))
+    snap = {"fecha": fecha, "valores": tot("Cuenta de valores"), "crypto": tot("Wallet Crypto"), "efectivo": tot("Efectivo"),
+            "total": tot("TOTAL"), "posiciones": []}
+    pos = re.finditer(r"(" + _NUM + r") unidades (.+?) (" + _NUM + r") (\d{2})\.(\d{2})\.(\d{4}) (" + _NUM + r")", texto)
+    for m in pos:
+        nombre = m.group(2)
+        isin = re.search(r"ISIN: ([A-Z]{2}[A-Z0-9]{9}\d)", nombre)
+        sim = nombre.split()[-1]
+        isin = isin.group(1) if isin else CRIPTO_ISIN.get(sim)
+        nombre = re.sub(r" ISIN: .*", "", nombre).strip()
+        snap["posiciones"].append({"isin": isin, "nombre": nombre, "unidades": eur(m.group(1)), "precio": eur(m.group(3)),
+                                   "fecha_precio": f"{m.group(6)}-{m.group(5)}-{m.group(4)}", "valor": eur(m.group(7))})
+    suma = round(sum(x["valor"] for x in snap["posiciones"]), 2)
+    if abs(suma - round(snap["valores"] + snap["crypto"], 2)) > 0.05:
+        raise ValueError(f"Extracto de patrimonio: las posiciones suman {suma} y el total de valores + cripto es {snap['valores'] + snap['crypto']}")
+    return snap
+
+
 def detect(path):
     """Devuelve (parser, cuenta) según el prefijo del nombre del fichero."""
     name = pathlib.Path(path).name.lower()

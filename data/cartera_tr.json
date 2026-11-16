@@ -1,0 +1,91 @@
+{
+ "2026-11-17": {
+  "fecha": "2026-11-17",
+  "valores": 15584.52,
+  "crypto": 2857.0,
+  "efectivo": 1197.94,
+  "total": 19639.46,
+  "posiciones": [
+   {
+    "isin": "US5801351017",
+    "nombre": "McDonald's Corp. Registered Shares DL-,01",
+    "unidades": 3.616615,
+    "precio": 248.9,
+    "fecha_precio": "2026-11-16",
+    "valor": 900.18
+   },
+   {
+    "isin": "US0231351067",
+    "nombre": "Amazon.com Inc. Registered Shares DL -,01",
+    "unidades": 0.489356,
+    "precio": 234.4,
+    "fecha_precio": "2026-11-16",
+    "valor": 114.71
+   },
+   {
+    "isin": "US1921085049",
+    "nombre": "Coeur Mining Inc. Registered Shares DL 0,01",
+    "unidades": 132.498656,
+    "precio": 11.94,
+    "fecha_precio": "2026-11-16",
+    "valor": 1581.37
+   },
+   {
+    "isin": "US4581401001",
+    "nombre": "Intel Corp. Registered Shares DL -,001",
+    "unidades": 1.5,
+    "precio": 49.36,
+    "fecha_precio": "2026-11-16",
+    "valor": 74.04
+   },
+   {
+    "isin": "LU1681045370",
+    "nombre": "MSCI Emerging Markets EUR (Acc)",
+    "unidades": 490.23457,
+    "precio": 7.05,
+    "fecha_precio": "2026-11-16",
+    "valor": 3455.37
+   },
+   {
+    "isin": "IE00BK5BQT80",
+    "nombre": "FTSE All-World USD (Acc)",
+    "unidades": 45.909439,
+    "precio": 167.84,
+    "fecha_precio": "2026-11-16",
+    "valor": 7705.44
+   },
+   {
+    "isin": "US67066G1040",
+    "nombre": "NVIDIA Corp. Registered Shares DL-,001",
+    "unidades": 10.331957,
+    "precio": 141.9,
+    "fecha_precio": "2026-11-16",
+    "valor": 1466.1
+   },
+   {
+    "isin": "US30303M1027",
+    "nombre": "Meta Platforms Inc. Reg.Shares Cl.A DL-,000006",
+    "unidades": 0.506179,
+    "precio": 567.6,
+    "fecha_precio": "2026-11-16",
+    "valor": 287.31
+   },
+   {
+    "isin": "XF000ETH0019",
+    "nombre": "Ethereum ETH",
+    "unidades": 0.766386,
+    "precio": 1653.83,
+    "fecha_precio": "2026-11-16",
+    "valor": 1267.47
+   },
+   {
+    "isin": "XF000BTC0017",
+    "nombre": "Bitcoin BTC",
+    "unidades": 0.026877,
+    "precio": 59141.06,
+    "fecha_precio": "2026-11-16",
+    "valor": 1589.53
+   }
+  ]
+ }
+}

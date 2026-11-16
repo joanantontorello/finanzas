@@ -18,7 +18,7 @@ import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from db import connect, ROOT  # noqa: E402
-from parsers import detect  # noqa: E402
+from parsers import detect, es_patrimonio_tr, parse_tr_patrimonio  # noqa: E402
 
 CONFIG = ROOT / "config"
 INBOX = ROOT / "inbox"
@@ -98,6 +98,20 @@ def clasificar(mov, reglas, categorias):
                 "regla": "fallback_pequeno", "nota": "sin regla, importe pequeño"}
     return {"tipo": "Gasto" if mov["importe"] < 0 else None, "categoria": None,
             "ambito": "Personal", "estado": "pendiente", "regla": None, "nota": None}
+
+
+PATRIMONIO_TR = ROOT / "data" / "cartera_tr.json"
+
+
+def guardar_patrimonio_tr(path):
+    """Guarda el «Extracto del patrimonio neto» de Trade Republic en data/cartera_tr.json (una foto por fecha).
+    Es la referencia del valor de la cartera: los precios diarios de Yahoo se ajustan para cuadrar con estas fotos."""
+    import json
+    snap = parse_tr_patrimonio(path)
+    data = json.loads(PATRIMONIO_TR.read_text(encoding="utf-8")) if PATRIMONIO_TR.exists() else {}
+    data[snap["fecha"]] = snap
+    PATRIMONIO_TR.write_text(json.dumps(dict(sorted(data.items())), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return snap
 
 
 def hash_mov(cuenta, clave):
@@ -353,6 +367,10 @@ def main(argv):
         return
     files = [pathlib.Path(a) for a in argv] or sorted(p for p in INBOX.iterdir() if p.suffix.lower() in (".csv", ".pdf", ".xlsx", ".xls"))
     for f in files:
+        if es_patrimonio_tr(f):  # foto de la cartera (valor de mercado), no movimientos
+            snap = guardar_patrimonio_tr(f)
+            print(f"{f.name}: patrimonio de Trade Republic a {snap['fecha']}: {snap['total']:.2f} € ({len(snap['posiciones'])} posiciones)")
+            continue
         cuenta, n, nuevas, fmin, fmax = importar(str(f), con, reglas, cuentas, categorias)
         print(f"{f.name}: {cuenta} {n} filas, {nuevas} nuevas ({fmin} .. {fmax})")
     print("reclasificados:", reclasificar(con, reglas, cuentas, categorias))

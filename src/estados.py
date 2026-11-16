@@ -19,7 +19,9 @@ Flujo de caja
   Variación de caja = la suma de los tres (= beneficio − invertido)
 
 Balance (al cierre de cada periodo)
-  Activos: caja en cada cuenta (último saldo conocido), huchas de ahorro de Revolut, inversiones a precio de compra (desde 2025)
+  Activos: caja en cada cuenta (último saldo conocido), huchas de ahorro de Revolut, inversiones a valor de mercado
+           (posiciones de los extractos × precios diarios ajustados al «Extracto del patrimonio neto» de Trade Republic;
+           lo que no se puede valorar, a precio de compra)
   Pasivos: deuda con Hacienda pendiente, dinero recibido a devolver
   Patrimonio neto = activos − pasivos
 """
@@ -135,7 +137,9 @@ def calcular(rows, flat, roles, root, hoy=None):
         if x["cuenta"] in CUENTAS_REALES and x["saldo"] is not None:
             saldos[x["cuenta"]].append((x["fecha"], x["saldo"], x["id"]))
     for c in saldos:
-        saldos[c].sort()
+        saldos[c].sort(key=lambda t: (t[0], t[2]))  # por fecha y orden del extracto (no por saldo)
+    import cartera as cartera_mod
+    cart = cartera_mod.Cartera(rows, root)
     huchas = sorted((x["fecha"], -x["importe"] * (0.5 if x["cuenta"] == "Conjunta" else 1.0))
                     for x in rows if x.get("regla") == "ahorro_revolut")
     inversiones = sorted((x["fecha"], -x["mio"]) for x in rows if x["tipo"] == "Inversion")
@@ -164,7 +168,8 @@ def calcular(rows, flat, roles, root, hoy=None):
         if not detalle_caja:
             caja = None
         hucha = acumulado(huchas, fin_s)
-        inv = acumulado(inversiones, fin_s)
+        coste = acumulado(inversiones, fin_s)
+        inv = cart.valor(fin_s)[0]
         deuda = 0.0
         for d in deudas:
             if d["desde"] <= fin_s:
@@ -174,6 +179,7 @@ def calcular(rows, flat, roles, root, hoy=None):
         pasivos = deuda + max(devolver, 0)
         return {
             "activos": r2(activos), "caja": r2(caja), "activos|caja": detalle_caja, "hucha": r2(hucha), "inversiones": r2(inv),
+            "inversiones|": {"Aportado (precio de compra)": r2(coste), "Plusvalías latentes": r2(inv - coste)},
             "pasivos": r2(pasivos), "deuda_hacienda": r2(deuda), "a_devolver": r2(max(devolver, 0)),
             "patrimonio": r2(activos - pasivos) if activos is not None else None, "caja_conocida": "Revolut" in detalle_caja and "Trade Republic" in detalle_caja,  # antes de tener saldos de la cuenta principal el balance no es fiable
         }
@@ -236,4 +242,44 @@ def calcular(rows, flat, roles, root, hoy=None):
             activos = caja + b["hucha"] + b["inversiones"]
             b.update({"caja": r2(caja), "activos|caja": {"Estimada con los flujos del mes": r2(caja)}, "activos": r2(activos),
                       "patrimonio": r2(activos - b["pasivos"]), "estimado": True})
+
+    # ---------------------------------------------------------------- patrimonio neto día a día y velas mensuales
+    # Cada vela es un mes: apertura = patrimonio al cierre del mes anterior, cierre = último día, máximo y mínimo = el
+    # día más alto y más bajo. Antes de tener saldos diarios (2025) las velas son estimadas y sin mecha.
+    inicio = next((d for d in (dt.date.fromisoformat(f) for f in sorted({x["fecha"] for x in rows}))
+                   if all(any(f <= d.isoformat() for f, _, _ in saldos.get(c, [])) for c in ("Revolut", "Trade Republic"))), None)
+    diario = []
+    if inicio:
+        d = inicio
+        while d <= hoy:
+            b = balance(d)
+            diario.append((d.isoformat(), b["patrimonio"], b["caja"], b["hucha"], b["inversiones"], b["pasivos"]))
+            d += dt.timedelta(days=1)
+    velas, previo = [], None
+    for e in mens:
+        b, mes = e["balance"], e["periodo"]
+        dias = [x for x in diario if x[0][:7] == mes]
+        if dias:
+            o = previo if previo is not None else dias[0][1]
+            vals = [o] + [x[1] for x in dias]
+            c = dias[-1][1]
+            velas.append({"mes": mes, "etiqueta": e["etiqueta"], "o": r2(o), "h": r2(max(vals)), "l": r2(min(vals)), "c": r2(c),
+                          "caja": r2(dias[-1][2] + dias[-1][3]), "inversiones": r2(dias[-1][4]), "pasivos": r2(dias[-1][5]),
+                          "aportado": r2(acumulado(inversiones, dias[-1][0])), "en_curso": e["en_curso"]})
+            previo = c
+        elif b.get("patrimonio") is not None:
+            c = b["patrimonio"]
+            o = previo if previo is not None else c
+            velas.append({"mes": mes, "etiqueta": e["etiqueta"], "o": r2(o), "h": r2(max(o, c)), "l": r2(min(o, c)), "c": r2(c),
+                          "caja": b["caja"], "inversiones": b["inversiones"], "pasivos": b["pasivos"],
+                          "aportado": r2(acumulado(inversiones, e["fin"])), "estimado": True, "en_curso": e["en_curso"]})
+            previo = c
+    out["patrimonio"] = {
+        "velas": velas,
+        "diario": [[f, r2(v)] for f, v, *_ in diario],
+        "posiciones": cart.posiciones(hoy.isoformat()),
+        "fotos_tr": [{"fecha": f, "total": x["total"], "valores": x["valores"], "crypto": x["crypto"], "efectivo": x["efectivo"]}
+                     for f, x in sorted(cart.fotos.items())],
+        "descuadres": cart.descuadres,
+    }
     return out

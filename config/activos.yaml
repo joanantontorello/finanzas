@@ -1,0 +1,19 @@
+# ISIN -> ticker de Yahoo Finance para valorar la cartera a precio de mercado (src/cartera.py).
+# Preferible la cotización en euros (Xetra .DE, París .PA); las de dólares se pasan a euros con el cambio del día.
+XF000BTC0017: BTC-EUR
+XF000ETH0019: ETH-EUR
+IE00BK5BQT80: VWCE.DE
+LU1681045370: AEEM.PA
+LU0290358497: XEON.DE
+CA6445351068: NGD
+US67066G1040: NVDA
+US0231351067: AMZN
+US1921085049: CDE
+US4581401001: INTC
+US5801351017: MCD
+US30303M1027: META
+
+# Canjes por fusiones o compras: desde la fecha, la cantidad del ISIN viejo pasa al nuevo multiplicada por el ratio
+# (con su coste). New Gold → Coeur Mining: 0,4959 acciones de Coeur por cada una de New Gold (cerrada el 20/03/2026).
+_canjes:
+  - {de: CA6445351068, a: US1921085049, fecha: 2026-03-20, ratio: 0.4959}

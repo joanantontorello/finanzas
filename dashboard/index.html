@@ -146,6 +146,7 @@
   .cats .track { height: 14px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
   .cats .fill { height: 100%; background: var(--seq); border-radius: 4px; } .cats .fill.neg { background: var(--s3); }
   .cats .num { text-align: right; font-variant-numeric: tabular-nums; }
+  #patCartera .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; } #patCartera tfoot td { border-top: 1px solid var(--surface-3); padding-top: 8px; } #patCartera td.up { color: var(--up); } #patCartera td.down { color: var(--down); } #patCartera small { font-size: 11px; opacity: .85; } #patCartera td:first-child { white-space: normal; }
   .kv { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; font-size: 13px; } .kv b { font-variant-numeric: tabular-nums; }
   .pend { font-size: 13px; } .pend > div { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto auto; gap: 12px; padding: 10px 0; border-top: 1px solid var(--surface-2); align-items: center; }
   @media (max-width: 700px) { .pend > div { grid-template-columns: 1fr; } }
@@ -279,6 +280,7 @@
     <div class="meta" id="meta"></div>
     <div class="links">
     <a href="#dashboard" data-view="dashboard" title="Dashboard" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="txt">Dashboard</span></a>
+    <a href="#patrimonio" data-view="patrimonio" title="Patrimonio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16M18 4v16M12 2v20"/><rect x="4" y="8" width="4" height="7" rx="1"/><rect x="10" y="5" width="4" height="9" rx="1"/><rect x="16" y="9" width="4" height="6" rx="1"/></svg><span class="txt">Patrimonio</span></a>
     <a href="#estados" data-view="estados" title="Estados financieros"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 16v-4M12.5 16V8M17 16v-6"/></svg><span class="txt">Estados financieros</span></a>
     <a href="#presupuesto" data-view="presupuesto" title="Presupuesto"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span class="txt">Presupuesto</span></a>
     <a href="#inversiones" data-view="inversiones" title="Inversiones"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span class="txt">Inversiones</span></a>
@@ -336,6 +338,30 @@
           <h2>Esencial y no esencial</h2>
           <div class="hint">Dónde están las fugas: el gasto no esencial es el que puedes recortar. Otros y reembolsos quedan fuera del porcentaje.</div>
           <div class="kv" id="fijos"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PATRIMONIO -->
+    <section class="view" id="v-patrimonio">
+      <div class="grid tiles" id="tilesPat"></div>
+      <div class="card">
+        <h2>Patrimonio neto <span class="seg" id="patModo" role="group" aria-label="Vista"><button data-v="velas" class="on" aria-pressed="true">Velas por mes</button><button data-v="linea" aria-pressed="false">Día a día</button></span></h2>
+        <div class="hint" id="patHint"></div>
+        <div class="legend" id="patLegend"></div>
+        <div id="patChart"></div>
+        <div id="patVar" style="margin-top:6px"></div>
+      </div>
+      <div class="grid cards two mt">
+        <div class="card">
+          <h2>Cartera de inversiones</h2>
+          <div class="hint" id="patCartHint"></div>
+          <div id="patCartera"></div>
+        </div>
+        <div class="card">
+          <h2>De qué está hecho</h2>
+          <div class="hint">Patrimonio neto = dinero en cuentas y huchas + inversiones a valor de mercado − deudas pendientes (Hacienda y dinero a devolver). Conjunta al 50 %.</div>
+          <div id="patComp"></div>
         </div>
       </div>
     </section>
@@ -933,7 +959,7 @@ function showView(v) {
   state.view = v;
   document.querySelectorAll('nav a[data-view]').forEach(a => { a.classList.toggle('on', a.dataset.view === v); if (a.dataset.view === v) a.scrollIntoView({ block: 'nearest', inline: 'nearest' }); });
   document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v));
-  $('filtros').style.display = ['estados', 'cuentas', 'pendientes', 'categorias'].includes(v) ? 'none' : '';  // ahí los filtros no cambian nada
+  $('filtros').style.display = ['estados', 'cuentas', 'pendientes', 'categorias', 'patrimonio'].includes(v) ? 'none' : '';  // ahí los filtros no cambian nada
   try { history.replaceState(null, '', '#' + v); } catch (e) {}
   window.scrollTo(0, 0);
   if (D) render();  // los gráficos se dibujan al ancho real de la vista visible
@@ -995,10 +1021,10 @@ function render() {
 
   const t = [
     ['Ingresos', sel.ingresos, 'blue', `${fmt(sel.ingresos/n)} / mes ` + delta(sel.ingresos, 'ingresos')],
-    ['Gasto neto', sel.gasto, 'orange', `${fmt(sel.gasto/n)} / mes · no esencial ${pct(sel.pctNoEss)} ` + delta(sel.gasto, 'gasto')],
-    ['Invertido', sel.inv, 'violet', `${fmt(sel.inv/n)} / mes · compras menos ventas de inversiones. No cuenta como gasto: sale del beneficio (lo que te queda tras los gastos)`],
-    ['Beneficio', sel.beneficio, sel.beneficio >= 0 ? 'aqua' : 'orange', `ingresos − gasto · tasa ${pct(sel.tasa)} · ${fmt(sel.beneficio/n)} / mes`],
-    ['Variación de caja', sel.caja, 'yellow', 'beneficio − invertido: lo que sube o baja tu dinero en cuentas'],
+    ['Gasto neto', sel.gasto, 'orange', `lo que has gastado en vivir: esencial, no esencial, impuestos y otros, menos los reembolsos. No incluye lo invertido ni los traspasos entre cuentas. ${fmt(sel.gasto/n)} / mes · no esencial ${pct(sel.pctNoEss)} ` + delta(sel.gasto, 'gasto')],
+    ['Invertido', sel.inv, 'violet', `lo que has metido en inversiones (compras menos ventas). No es gasto: es dinero que sigue siendo tuyo. Gasto neto + invertido = todo lo que ha salido (${fmt(sel.gasto + sel.inv)}). ${fmt(sel.inv/n)} / mes`],
+    ['Beneficio', sel.beneficio, sel.beneficio >= 0 ? 'aqua' : 'orange', `ingresos − gasto neto: lo que te sobra después de vivir, antes de invertir. Tasa de ahorro ${pct(sel.tasa)} · ${fmt(sel.beneficio/n)} / mes`],
+    ['Variación de caja', sel.caja, 'yellow', 'beneficio − invertido (= ingresos − todo lo que ha salido): lo que sube o baja tu dinero en cuentas'],
     ['Beneficio trabajo', sel.ingT - sel.gasT, 'gray', `sueldo ${fmt(sel.ingT)} − gastos ${fmt(sel.gasT)}`],
     ['Saldo en cuentas hoy', D.saldo_total, 'pink', 'último extracto de cada cuenta, conjunta al 50 %', true],
   ];
@@ -1018,6 +1044,105 @@ function render() {
   renderPresupuesto();
   renderEstados();
   renderCategorias();
+  renderPatrimonio();
+}
+
+// ---- patrimonio neto: velas mensuales (como una cotización) o línea diaria
+const PAT = { modo: 'velas' };
+function renderPatrimonio() {
+  const P0 = D.estados && D.estados.patrimonio; if (!P0 || state.view !== 'patrimonio') return;
+  const V = P0.velas || [], dia = P0.diario || [];
+  if (!V.length) { $('patChart').innerHTML = '<p class="muted">Sin datos</p>'; return; }
+  const ult = V[V.length - 1], hoyV = dia.length ? dia[dia.length - 1][1] : ult.c, fHoy = dia.length ? dia[dia.length - 1][0] : null;
+  const anio = (fHoy || ult.mes).slice(0, 4), delAnio = V.filter(v => v.mes.startsWith(anio));
+  const ini = delAnio.length ? delAnio[0].o : V[0].o, varAnio = hoyV - ini;
+  const cerradas = V.filter(v => !v.en_curso && !v.estimado).slice(-6), ritmo = cerradas.length ? cerradas.reduce((t, v) => t + v.c - v.o, 0) / cerradas.length : 0;
+  const plus = ult.inversiones - ult.aportado;
+  const fl = f => f.split('-').reverse().join('/');
+  const t = [
+    ['Patrimonio neto', hoyV, 'blue', `lo que tienes menos lo que debes${fHoy ? ', a ' + fl(fHoy) : ''}`],
+    ['En ' + anio, varAnio, varAnio >= 0 ? 'aqua' : 'orange', `de ${fmt(ini)} a ${fmt(hoyV)}${ini > 0 ? ' (' + (varAnio >= 0 ? '+' : '') + Math.round(varAnio / ini * 100) + ' %)' : ''}`],
+    ['Ritmo medio al mes', ritmo, ritmo >= 0 ? 'violet' : 'orange', `media de lo que ha subido o bajado el patrimonio en los últimos ${cerradas.length} meses cerrados`],
+    ['Plusvalías latentes', plus, plus >= 0 ? 'gray' : 'pink', `valor de mercado de las inversiones (${fmt(ult.inversiones)}) menos lo aportado (${fmt(ult.aportado)}); no son tuyas hasta que vendes`],
+  ];
+  $('tilesPat').innerHTML = t.map(([l, v, c, d]) => tileHTML(l, v, c, d, '')).join(''); hoverTips($('tilesPat'));
+  [...$('patModo').children].forEach(b => { const on = b.dataset.v === PAT.modo; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  $('patModo').onclick = e => { const b = e.target.closest('button[data-v]'); if (b) { PAT.modo = b.dataset.v; renderPatrimonio(); } };
+  const ultFoto = (P0.fotos_tr || []).slice(-1)[0];
+  $('patHint').textContent = (PAT.modo === 'velas'
+    ? 'Cada vela es un mes: abre con el patrimonio al cierre del mes anterior y cierra con el del último día; verde si sube, roja si baja. La mecha marca el día más alto y el más bajo. Las velas claras de 2025 son estimadas (sin saldos diarios). La línea discontinua es la media de 3 meses. Debajo, cuánto ha subido o bajado cada mes.'
+    : 'Patrimonio neto cada día desde que hay saldos de todas las cuentas (enero de 2026).') + (ultFoto ? ` Inversiones ajustadas al extracto de Trade Republic del ${fl(ultFoto.fecha)}.` : '');
+  if (PAT.modo === 'velas') patVelas($('patChart'), V); else patLinea($('patChart'), dia, P0.fotos_tr || []);
+  $('patLegend').innerHTML = PAT.modo === 'velas' ? `<span><i style="background:var(--up)"></i>Mes que sube</span><span><i style="background:var(--down)"></i>Mes que baja</span><span><i style="background:var(--text-3)"></i>Estimado (2025)</span><span><i style="background:var(--tv5);height:3px;vertical-align:3px"></i>Media 3 meses</span>` : `<span><i style="background:var(--tv1);height:3px;vertical-align:3px"></i>Patrimonio neto</span>${(P0.fotos_tr || []).length ? '<span><i style="background:var(--tv5);border-radius:50%"></i>Extracto de Trade Republic</span>' : ''}`;
+  if (PAT.modo === 'velas') patVariacion($('patVar'), V); else $('patVar').innerHTML = '';
+  // cartera
+  const pos = P0.posiciones || [], sumPos = pos.reduce((a, x) => a + x.valor, 0), resto = ult.inversiones - sumPos;
+  const nom = isin => (ACTIVOS[isin] || [isin])[0], dom = isin => (ACTIVOS[isin] || [])[1];
+  const fila = (n, d, v, ap) => { const g = v - ap, pc = ap > 0 ? g / ap * 100 : null; return `<tr><td>${d ? `<img class="logo sm" src="${LOGO(d)}" alt="" loading="lazy">` : ''}${n}</td><td class="num"><b>${fmt(v)}</b></td><td class="num muted">${fmt(ap)}</td><td class="num ${g >= 0 ? 'up' : 'down'}">${g >= 0 ? '+' : '−'}${fmt(Math.abs(g))}${pc == null ? '' : ` <small>(${g >= 0 ? '+' : '−'}${Math.abs(pc).toFixed(1).replace('.', ',')} %)</small>`}</td></tr>`; };
+  const apResto = ult.aportado - pos.reduce((a, x) => a + x.aportado, 0);
+  $('patCartera').innerHTML = `<div class="tablewrap"><table><thead><tr><th>Activo</th><th class="num">Valor</th><th class="num">Aportado</th><th class="num">Ganancia</th></tr></thead><tbody>`
+    + pos.map(x => fila(nom(x.isin), dom(x.isin), x.valor, x.aportado)).join('')
+    + (Math.abs(resto) > 1 ? fila('Sin valorar <small class="muted">(2025, eToro; a coste)</small>', null, resto, apResto) : '')
+    + `</tbody><tfoot><tr><td><b>Total</b></td><td class="num"><b>${fmt(ult.inversiones)}</b></td><td class="num muted">${fmt(ult.aportado)}</td><td class="num ${plus >= 0 ? 'up' : 'down'}"><b>${plus >= 0 ? '+' : '−'}${fmt(Math.abs(plus))}</b></td></tr></tfoot></table></div>`;
+  const desc = P0.descuadres || [];
+  $('patCartHint').textContent = 'Posiciones sacadas de las compras y ventas de los extractos; el valor, con precios diarios ajustados al último «Extracto del patrimonio neto» de Trade Republic (súbelo en cada cierre).'
+    + (desc.length ? ` Ojo: en el extracto del ${fl(desc[0].fecha)} Trade Republic tiene unidades distintas de ${desc.map(d => nom(d.isin)).join(', ')} (seguramente compras posteriores al último extracto importado; se ajusta en el próximo cierre).` : '');
+  // composición
+  const partes = [['Dinero en cuentas y huchas', ult.caja, 'var(--s3)'], ['Inversiones', ult.inversiones, 'var(--s1)']].filter(x => x[1] > 0), act = partes.reduce((a, x) => a + x[1], 0);
+  $('patComp').innerHTML = `<div class="stackbar" role="img" aria-label="${partes.map(([l, v]) => l + ' ' + Math.round(v / act * 100) + ' %').join(', ')}">${partes.map(([l, v, c]) => `<div data-tip="${l}|${fmt2(v)} · ${Math.round(v / act * 100)} %" style="width:${v / act * 100}%;background:${c}"></div>`).join('')}</div>
+    <div class="kv" style="margin-top:12px">${partes.map(([l, v, c]) => `<span><i class="gsq" style="background:${c}"></i>${l}</span><b>${fmt(v)}</b>`).join('')}<span><i class="gsq" style="background:var(--down)"></i>Deudas pendientes</span><b>−${fmt(ult.pasivos)}</b><span><b>Patrimonio neto</b></span><b>${fmt(ult.c)}</b></div>`;
+  hoverTips($('patComp'));
+}
+function patEjeX(n, gw, padL, H, padB, label) {
+  const paso = gw < 46 ? Math.ceil(46 / gw) : 1; let s = '';
+  for (let i = 0; i < n; i++) if ((n - 1 - i) % paso === 0) s += `<text class="axis" x="${padL + i * gw + gw / 2}" y="${H - 8}" text-anchor="middle">${label(i)}</text>`;
+  return s;
+}
+function patVelas(el, V) {
+  const W = ancho(el, 760), narrow = W < 520, H = narrow ? 240 : 300, padL = narrow ? 40 : 54, padB = 28, padT = 14;
+  const ma = V.map((v, i) => i >= 2 ? (V[i].c + V[i - 1].c + V[i - 2].c) / 3 : null);
+  const { y, ticks } = escala(V.flatMap(v => [v.h, v.l]), H, padT, padB);
+  const gw = (W - padL) / V.length, bw = Math.max(3, Math.min(22, gw * 0.62));
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Patrimonio neto por mes en velas">`;
+  ticks.forEach(v => s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL - 6}" y="${y(v) + 4}" text-anchor="end">${fmtK(v)}</text>`);
+  V.forEach((v, i) => {
+    const cx = padL + i * gw + gw / 2, sube = v.c >= v.o, col = v.estimado ? 'var(--text-3)' : sube ? 'var(--up)' : 'var(--down)';
+    const d = v.c - v.o, pc = v.o > 0 ? ` (${d >= 0 ? '+' : '−'}${Math.abs(d / v.o * 100).toFixed(1).replace('.', ',')} %)` : '';
+    const tip = `${mesLargo(v.mes)}${v.estimado ? ' · estimado' : v.en_curso ? ' · en curso' : ''}|Apertura ${fmt(v.o)}<br>Máximo ${fmt(v.h)}<br>Mínimo ${fmt(v.l)}<br>Cierre ${fmt(v.c)}<br>${d >= 0 ? 'Sube' : 'Baja'} ${fmt(Math.abs(d))}${pc}`;
+    s += `<rect class="hit" data-tip="${tip}" x="${padL + i * gw}" y="${padT}" width="${gw}" height="${H - padT - padB}" fill="transparent"/>`;
+    s += `<line data-tip="${tip}" x1="${cx}" x2="${cx}" y1="${y(v.h)}" y2="${y(v.l)}" stroke="${col}" stroke-width="1.5"/>`;
+    const y0 = y(Math.max(v.o, v.c)), h = Math.max(1.5, Math.abs(y(v.o) - y(v.c)));
+    s += `<rect class="bar" data-tip="${tip}" x="${cx - bw / 2}" y="${y0}" width="${bw}" height="${h}" rx="2" fill="${col}" ${v.estimado ? 'opacity=".55"' : ''}/>`;
+  });
+  const pts = ma.map((m, i) => m == null ? null : `${padL + i * gw + gw / 2},${y(m)}`).filter(Boolean);
+  if (pts.length > 1) s += `<polyline points="${pts.join(' ')}" fill="none" stroke="var(--tv5)" stroke-width="2" stroke-dasharray="5 4" pointer-events="none"/>`;
+  s += patEjeX(V.length, gw, padL, H, padB, i => V[i].etiqueta);
+  el.innerHTML = s + '</svg>'; hoverTips(el);
+}
+function patVariacion(el, V) {
+  const W = ancho(el, 760), narrow = W < 520, H = 92, padL = narrow ? 40 : 54, padB = 4, padT = 8;
+  const ds = V.map(v => v.c - v.o), { y, ticks } = escala(ds, H, padT, padB);
+  const gw = (W - padL) / V.length, bw = Math.max(3, Math.min(22, gw * 0.62));
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cuánto sube o baja el patrimonio cada mes">`;
+  s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(0)}" y2="${y(0)}"/><text class="axis" x="${padL - 6}" y="${y(ticks[ticks.length - 1]) + 4}" text-anchor="end">${fmtK(ticks[ticks.length - 1])}</text><text class="axis" x="${padL - 6}" y="${y(ticks[0]) + 4}" text-anchor="end">${fmtK(ticks[0])}</text>`;
+  V.forEach((v, i) => { const d = ds[i], cx = padL + i * gw + gw / 2, col = v.estimado ? 'var(--text-3)' : d >= 0 ? 'var(--up)' : 'var(--down)';
+    s += `<rect class="bar" data-tip="${mesLargo(v.mes)}|${d >= 0 ? 'Sube' : 'Baja'} ${fmt(Math.abs(d))}" x="${cx - bw / 2}" y="${Math.min(y(d), y(0))}" width="${bw}" height="${Math.max(1, Math.abs(y(d) - y(0)))}" rx="2" fill="${col}" ${v.estimado ? 'opacity=".55"' : ''}/>`; });
+  el.innerHTML = s + '</svg>'; hoverTips(el);
+}
+function patLinea(el, dia, fotos) {
+  if (!dia.length) { el.innerHTML = '<p class="muted">Sin datos diarios</p>'; return; }
+  const W = ancho(el, 760), narrow = W < 520, H = narrow ? 240 : 300, padL = narrow ? 40 : 54, padB = 28, padT = 14;
+  const { y, ticks } = escala(dia.map(d => d[1]), H, padT, padB), gw = (W - padL) / dia.length;
+  const x = i => padL + i * gw + gw / 2;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Patrimonio neto día a día">`;
+  ticks.forEach(v => s += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL - 6}" y="${y(v) + 4}" text-anchor="end">${fmtK(v)}</text>`);
+  const pts = dia.map((d, i) => `${x(i)},${y(d[1])}`).join(' ');
+  s += `<polygon points="${x(0)},${y(0)} ${pts} ${x(dia.length - 1)},${y(0)}" fill="var(--tv1)" opacity=".12"/><polyline points="${pts}" fill="none" stroke="var(--tv1)" stroke-width="2"/>`;
+  dia.forEach((d, i) => { if (d[0].endsWith('-01')) s += `<text class="axis" x="${x(i)}" y="${H - 8}" text-anchor="middle">${mesLabel(d[0].slice(0, 7))}</text>`;
+    s += `<rect data-tip="${d[0].split('-').reverse().join('/')}|${fmt(d[1])}" x="${padL + i * gw}" y="${padT}" width="${gw + .5}" height="${H - padT - padB}" fill="transparent"/>`; });
+  const idx = Object.fromEntries(dia.map((d, i) => [d[0], i]));
+  fotos.forEach(f => { const i = idx[f.fecha]; if (i != null) s += `<circle cx="${x(i)}" cy="${y(dia[i][1])}" r="4.5" fill="var(--tv5)" stroke="var(--surface)" stroke-width="2" pointer-events="none"/>`; });
+  el.innerHTML = s + '</svg>'; hoverTips(el);
 }
 
 // ---- gráficos
@@ -1210,13 +1335,13 @@ const FIN_DEF = {
       { k: 'activos', l: 'Total activos', main: 1, a: 'var(--tv1)' },
       { k: 'caja', l: 'Caja en bancos', sub: 1, exp: 'activos|caja' },
       { k: 'hucha', l: 'Huchas de ahorro Revolut', sub: 1 },
-      { k: 'inversiones', l: 'Inversiones (a precio de compra)', sub: 1 },
+      { k: 'inversiones', l: 'Inversiones (valor de mercado)', sub: 1, exp: 'inversiones|' },
       { k: 'pasivos', l: 'Total pasivos', main: 1, malo: 1, a: 'var(--tv2)' },
       { k: 'deuda_hacienda', l: 'Deuda con Hacienda pendiente', sub: 1 },
       { k: 'a_devolver', l: 'Dinero recibido a devolver', sub: 1 },
       { k: 'patrimonio', l: 'Patrimonio neto', main: 1, a: 'var(--tv5)' },
     ],
-    nota: 'Foto al cierre de cada periodo. Caja = último saldo de cada cuenta (conjunta al 50 %); solo existe desde enero de 2026, antes la hoja no guardaba saldos. Inversiones a precio de compra y solo lo aportado desde 2025: no es el valor de mercado ni incluye lo que tuvieras antes. Pasivos = plazos pendientes de los fraccionamientos de Hacienda y el dinero de tu madre a devolver.',
+    nota: 'Foto al cierre de cada periodo. Caja = último saldo de cada cuenta (conjunta al 50 %); solo existe desde enero de 2026, antes la hoja no guardaba saldos. Inversiones a valor de mercado: posiciones de los extractos × precios diarios, ajustados para cuadrar con el «Extracto del patrimonio neto» de Trade Republic; lo que no se puede valorar (hoja de 2025, eToro) va a precio de compra. Pasivos = plazos pendientes de los fraccionamientos de Hacienda y el dinero de tu madre a devolver.',
   },
   flujo: {
     serie: [{ k: 'operativo', l: 'Operativo', c: 'var(--tv1)' }, { k: 'inversion', l: 'Inversión', c: 'var(--tv4)' }, { k: 'financiacion', l: 'Financiación', c: 'var(--tv3)' }, { k: 'variacion', l: 'Variación de caja', c: 'var(--tv5)', t: 'line' }],

@@ -149,9 +149,9 @@
   table.fin tr[data-exp].open td:first-child::before { content: '▾ '; }
   .fin-note { font-size: 12px; color: var(--text-3); margin-top: 10px; line-height: 1.5; }
   .mt { margin-top: 14px; }
-  img.logo, span.logo { width: 24px; height: 24px; border-radius: 7px; flex: none; background: #fff; object-fit: contain; padding: 2px; }
+  img.logo, span.logo { width: 24px; height: 24px; border-radius: 7px; flex: none; object-fit: contain; }
   span.logo { display: inline-grid; place-items: center; background: var(--surface-3); color: var(--text-2); font-size: 11px; font-weight: 700; padding: 0; }
-  img.logo.sm, span.logo.sm { width: 16px; height: 16px; border-radius: 4px; padding: 1px; vertical-align: -3px; margin-right: 7px; }
+  img.logo.sm, span.logo.sm { width: 16px; height: 16px; border-radius: 4px; vertical-align: -3px; margin-right: 7px; }
   .act { display: flex; align-items: center; gap: 10px; } .act b { font-weight: 600; } .act small { display: block; color: var(--text-3); font-size: 11px; }
   .plist { margin: 6px -10px 0; font-size: 13px; }
   .prow { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 5px 10px; border-radius: 8px; cursor: text; }
@@ -356,7 +356,7 @@
         </div>
       </div>
       <div class="card mt">
-        <h2>Operaciones</h2>
+        <h2>Operaciones de <button class="selbtn" id="invAct" aria-haspopup="listbox" aria-label="Filtrar por activo"></button> <span class="muted" id="invOpsRes" style="font-size:12px;font-weight:400"></span></h2>
         <div class="tablewrap"><table><thead><tr><th>Fecha</th><th style="text-align:right">Importe</th><th>Tipo</th><th>Concepto</th></tr></thead><tbody id="tbodyInv"></tbody></table></div>
       </div>
     </section>
@@ -437,7 +437,7 @@ const mesLargo = m => MESES_L[+m.slice(5,7)-1] + ' ' + m.slice(0,4);
 const SERIES = ['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)','var(--s6)','var(--s7)','var(--s8)'];
 const $ = id => document.getElementById(id);
 
-let D, state = { year: null, desde: null, hasta: null, ambito: 'Todo', cuenta: '', view: 'dashboard', evoCats: [], cat: '', tipo: '', q: '' };
+let D, state = { year: null, desde: null, hasta: null, ambito: 'Todo', cuenta: '', view: 'dashboard', evoCats: [], invActs: [], cat: '', tipo: '', q: '' };
 const GH = { repo: '', path: 'data/overrides.json' };
 let overrides = {}, ovSha = null, cambios = {};
 const catTipo = {}, CI = {};
@@ -627,6 +627,7 @@ function init() {
   $('q').oninput = e => { state.q = e.target.value.toLowerCase(); renderTable(); };
   $('clear').onclick = () => { state.cat=''; state.tipo=''; state.q=''; $('fcat').value=''; $('ftipo').value=''; $('q').value=''; renderTable(); };
   $('evoCat').onclick = e => { if (dd && dd.sel === e.currentTarget) cerrarDD(); else abrirMultiCat(e.currentTarget); };
+  $('invAct').onclick = e => { if (dd && dd.sel === e.currentTarget) cerrarDD(); else abrirMultiActivo(e.currentTarget); };
   document.querySelectorAll('nav a[data-view]').forEach(a => a.onclick = e => { e.preventDefault(); showView(a.dataset.view); });
   $('meta').textContent = 'Actualizado ' + D.generado;
   $('navToggle').onclick = () => setNavMin(!document.body.classList.contains('nav-min'));
@@ -873,7 +874,10 @@ function renderInversiones(pm, sel, periodo, rowsP) {
   $('invLegend').innerHTML = series.map(s => `<span data-s="${s.label}"><i style="background:${s.color}"></i>${s.label}</span>`).join('');
   barChart($('chartInv'), pmi, series, {});
   donut($('donutInv'), $('donutInvLegend'), Object.entries(sel.invCats).filter(([c,v]) => v > 0).sort((a,b) => b[1]-a[1]), null, colInv);
-  const ops = rowsP.filter(m => m.tipo === 'Inversion').sort((a,b) => b.fecha.localeCompare(a.fecha));
+  const sel_ = state.invActs;
+  const ops = rowsP.filter(m => m.tipo === 'Inversion' && (!sel_.length || sel_.includes(activo(m).nombre))).sort((a,b) => b.fecha.localeCompare(a.fecha));
+  $('invAct').textContent = !sel_.length ? 'todos los activos' : sel_.length <= 3 ? sel_.join(' + ') : sel_.length + ' activos';
+  $('invOpsRes').textContent = sel_.length ? `· ${ops.length} ${ops.length === 1 ? 'operación' : 'operaciones'} · ${fmt(-ops.reduce((t, m) => t + m.importe, 0))}` : '';
   $('tbodyInv').innerHTML = ops.map(m => { const a = activo(m), col = colInv(m.categoria || 'Sin categoría');
     return `<tr><td>${m.fecha}</td><td class="n ${m.importe>0?'pos':''}">${fmt2(m.importe)}</td><td><span class="pill" style="background:color-mix(in srgb, ${col} 24%, transparent);color:var(--text)">${m.categoria || '–'}</span></td><td title="${m.concepto.replace(/"/g,'&quot;')}"><div class="act">${logoImg(a.dom, a.nombre)}<div><b>${a.nombre}</b><small>${a.detalle}</small></div></div></td></tr>`; }).join('') || '<tr><td colspan="4" class="muted">Sin operaciones en el periodo</td></tr>';
 }
@@ -1135,33 +1139,37 @@ document.addEventListener('keydown', e => {
   }
   if (punteroFino && e.target.matches('select') && [' ', 'Enter', 'ArrowDown'].includes(e.key)) { e.preventDefault(); abrirDD(e.target); }
 });
-addEventListener('scroll', e => { if (dd && !dd.el.contains(e.target)) cerrarDD(); }, true);
+addEventListener('scroll', e => {
+  if (!dd || dd.el.contains(e.target)) return;
+  if (dd.seguir) { const r = dd.sel.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) { dd.seguir(r); return; } }  // el multiselección acompaña al botón (la tabla cambia de alto al filtrar)
+  cerrarDD();
+}, true);
 addEventListener('resize', () => cerrarDD());
 
-// ---- selector múltiple de categorías para la evolución (grupos enteros o subcategorías sueltas)
-function abrirMultiCat(btn) {
+// ---- selector múltiple genérico (categorías de la evolución, activos de las operaciones)
+// cfg: { construir(op) → html con grupos .dd-g y opciones op(valor, html, clase), get() → array, set(array), buscar, todo, resumen(n) }
+function abrirMulti(btn, cfg) {
   cerrarDD();
   const el = document.createElement('div'); el.className = 'dd'; el.setAttribute('role', 'listbox'); el.setAttribute('aria-multiselectable', 'true');
-  const items = []; let h = '';
-  const op = (v, txt, cls) => { items.push(v); const on = state.evoCats.includes(v); return `<div class="dd-op multi ${cls || ''} ${on ? 'on' : ''}" role="option" aria-selected="${on}" data-i="${items.length - 1}">${txt}</div>`; };
-  (D.grupos || []).filter(g => g.tipo === 'Gasto' || g.tipo === 'Reembolso').forEach(g => {
-    h += `<div class="dd-g">${g.nombre}</div>` + (g.sub.length > 1 ? op('g:' + g.nombre, g.nombre + ' (todo)', 'grupo') : '') + g.sub.map(c => op(c, c)).join('');
-  });
-  el.innerHTML = '<input class="dd-q" placeholder="Buscar categoría…" aria-label="Buscar categoría">' + `<div class="dd-list">${h}</div><div class="dd-pie"><span id="ddN"></span><button id="ddLimpiar">Todo el gasto</button><button id="ddListo">Listo</button></div>`;
+  const items = [];
+  const op = (v, txt, cls) => { items.push(v); return `<div class="dd-op multi ${cls || ''}" role="option" data-i="${items.length - 1}">${txt}</div>`; };
+  const h = cfg.construir(op);
+  el.innerHTML = `<input class="dd-q" placeholder="${cfg.buscar}" aria-label="${cfg.buscar}"><div class="dd-list">${h}</div><div class="dd-pie"><span id="ddN"></span><button id="ddLimpiar">${cfg.todo}</button><button id="ddListo">Listo</button></div>`;
   document.body.appendChild(el);
   const r = btn.getBoundingClientRect();
   el.style.minWidth = Math.min(300, innerWidth - 16) + 'px';
   el.style.left = Math.max(8, Math.min(r.left, innerWidth - el.offsetWidth - 8)) + 'px';
   colocarDD(el, r, 96);
   btn.classList.add('abierto');
-  const pintar = () => { el.querySelectorAll('.dd-op').forEach(d => { const on = state.evoCats.includes(items[+d.dataset.i]); d.classList.toggle('on', on); d.setAttribute('aria-selected', on); }); el.querySelector('#ddN').textContent = state.evoCats.length ? state.evoCats.length + ' elegidas' : 'Todo el gasto neto'; };
-  const alternar = i => { const v = items[i]; state.evoCats = state.evoCats.includes(v) ? state.evoCats.filter(x => x !== v) : [...state.evoCats, v]; pintar(); renderEvo(); };
-  dd = { el, sel: btn, elegir: alternar };
+  const pintar = () => { const v = cfg.get(); el.querySelectorAll('.dd-op').forEach(d => { const on = v.includes(items[+d.dataset.i]); d.classList.toggle('on', on); d.setAttribute('aria-selected', on); }); el.querySelector('#ddN').textContent = cfg.resumen(v.length); };
+  const alternar = i => { const x = items[i], v = cfg.get(); cfg.set(v.includes(x) ? v.filter(y => y !== x) : [...v, x]); pintar(); };
+  const seguir = r => { el.style.top = el.style.bottom = ''; colocarDD(el, r, 96); };
+  dd = { el, sel: btn, elegir: alternar, seguir };
   pintar();
   el.onmousedown = e => { if (!e.target.matches('.dd-q')) e.preventDefault(); };
   el.onclick = e => {
     const d = e.target.closest('.dd-op'); if (d) { alternar(+d.dataset.i); return; }
-    if (e.target.id === 'ddLimpiar') { state.evoCats = []; pintar(); renderEvo(); }
+    if (e.target.id === 'ddLimpiar') { cfg.set([]); pintar(); }
     if (e.target.id === 'ddListo') { cerrarDD(); btn.focus(); }
   };
   const q = el.querySelector('.dd-q');
@@ -1171,6 +1179,25 @@ function abrirMultiCat(btn) {
     el.querySelectorAll('.dd-op').forEach(d => d.hidden = !d.textContent.toLowerCase().includes(t));
     el.querySelectorAll('.dd-g').forEach(g => { const todo = t && g.textContent.toLowerCase().includes(t); let n = g.nextElementSibling, vis = false; while (n && n.classList.contains('dd-op')) { if (todo) n.hidden = false; if (!n.hidden) vis = true; n = n.nextElementSibling; } g.hidden = !vis; });  // si el texto coincide con el grupo, se ve el grupo entero
   };
+}
+function abrirMultiCat(btn) {
+  abrirMulti(btn, {
+    construir: op => (D.grupos || []).filter(g => g.tipo === 'Gasto' || g.tipo === 'Reembolso').map(g =>
+      `<div class="dd-g">${g.nombre}</div>` + (g.sub.length > 1 ? op('g:' + g.nombre, g.nombre + ' (todo)', 'grupo') : '') + g.sub.map(c => op(c, c)).join('')).join(''),
+    get: () => state.evoCats, set: v => { state.evoCats = v; renderEvo(); },
+    buscar: 'Buscar categoría…', todo: 'Todo el gasto', resumen: n => n ? n + ' elegidas' : 'Todo el gasto neto',
+  });
+}
+function abrirMultiActivo(btn) {
+  // todos los activos en los que has invertido alguna vez, agrupados por tipo, con su logo
+  const porCat = {};
+  D.movimientos.filter(m => m.tipo === 'Inversion').forEach(m => { const a = activo(m), c = /^Aportación de/.test(a.nombre) ? 'zHistórico' : m.categoria || 'Sin categoría'; (porCat[c] = porCat[c] || {})[a.nombre] = a; });
+  abrirMulti(btn, {
+    construir: op => Object.keys(porCat).sort().map(c => `<div class="dd-g">${c.replace(/^z/, '')}</div>` +
+      Object.values(porCat[c]).sort((x, y) => x.nombre.localeCompare(y.nombre)).map(a => op(a.nombre, logoImg(a.dom, a.nombre, 'sm') + a.nombre.replace(/</g, '&lt;'))).join('')).join(''),
+    get: () => state.invActs, set: v => { state.invActs = v; render(); },
+    buscar: 'Buscar activo…', todo: 'Todos', resumen: n => n ? n + (n === 1 ? ' elegido' : ' elegidos') : 'Todos los activos',
+  });
 }
 
 // ---- logos: bancos y activos (el icono lo sirve el servicio de favicons de Google a partir del dominio)

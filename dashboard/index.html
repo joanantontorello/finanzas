@@ -152,7 +152,10 @@
   .patchart { position: relative; height: 380px; } @media (max-width: 600px) { .patchart { height: 300px; } }
   .patchart.midiendo { cursor: crosshair; }
   .patohlc { position: absolute; left: 8px; top: 4px; z-index: 3; font-size: 12px; color: var(--text-2); pointer-events: none; font-variant-numeric: tabular-nums; } .patohlc b { color: var(--text); font-weight: 600; }
-  .patmed { position: absolute; z-index: 4; pointer-events: none; padding: 6px 9px; border-radius: 8px; font-size: 12px; line-height: 1.45; color: #fff; white-space: nowrap; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+  .patsvg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: visible; }
+  .patmed { position: absolute; z-index: 4; pointer-events: none; padding: 9px 13px; border-radius: 8px; color: #fff; white-space: nowrap; background: rgba(70, 70, 72, .94); box-shadow: 0 6px 20px rgba(0,0,0,.3); }
+  .patmed .pm1 svg { width: 13px; height: 16px; flex: none; display: inline-block; }
+  .patmed .pm1 { display: flex; align-items: center; gap: 10px; font-size: 15px; font-variant-numeric: tabular-nums; } .patmed .pm2 { font-size: 11px; opacity: .75; margin-top: 3px; }
   #patCartera .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; } #patCartera tfoot td { border-top: 1px solid var(--surface-3); padding-top: 8px; } #patCartera td.up { color: var(--up); } #patCartera td.down { color: var(--down); } #patCartera small { font-size: 11px; opacity: .85; } #patCartera td:first-child { white-space: normal; }
   .kv { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; font-size: 13px; } .kv b { font-variant-numeric: tabular-nums; }
   .pend { font-size: 13px; } .pend > div { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto auto; gap: 12px; padding: 10px 0; border-top: 1px solid var(--surface-2); align-items: center; }
@@ -353,13 +356,13 @@
     <section class="view" id="v-patrimonio">
       <div class="grid tiles" id="tilesPat"></div>
       <div class="card">
-        <h2>Patrimonio neto <span class="seg" id="patModo" role="group" aria-label="Vista"><button data-v="mes" class="on" aria-pressed="true">Velas por mes</button><button data-v="dia" aria-pressed="false">Velas por día</button></span></h2>
+        <h2>Patrimonio neto · velas por mes</h2>
         <div class="hint" id="patHint"></div>
         <div class="pattools">
           <div class="legend" id="patLegend"></div>
           <div class="patbtns" role="group" aria-label="Herramientas del gráfico"><button data-z="-" title="Alejar" aria-label="Alejar">−</button><button data-z="+" title="Acercar" aria-label="Acercar">+</button><button data-z="0" title="Ver todo">Ver todo</button><button data-z="m" id="patMedir" aria-pressed="false" title="Medir: clica un punto y luego otro (Esc para salir)">📏 Medir</button></div>
         </div>
-        <div id="patChart" class="patchart"><div class="patohlc" id="patOhlc"></div><div class="patmed" id="patMed" hidden></div></div>
+        <div id="patChart" class="patchart"><div class="patohlc" id="patOhlc"></div><svg class="patsvg" id="patSvg" aria-hidden="true"></svg><div class="patmed" id="patMed" hidden></div></div>
       </div>
       <div class="grid cards two mt">
         <div class="card">
@@ -1057,7 +1060,7 @@ function render() {
 }
 
 // ---- patrimonio neto: velas mensuales (como una cotización) o línea diaria
-const PAT = { modo: 'mes' };
+const PAT = {};
 function renderPatrimonio() {
   const P0 = D.estados && D.estados.patrimonio; if (!P0 || state.view !== 'patrimonio') return;
   const V = P0.velas || [], dia = P0.diario || [];
@@ -1075,13 +1078,9 @@ function renderPatrimonio() {
     ['Plusvalías latentes', plus, plus >= 0 ? 'gray' : 'pink', `valor de mercado de las inversiones (${fmt(ult.inversiones)}) menos lo aportado (${fmt(ult.aportado)}); no son tuyas hasta que vendes`],
   ];
   $('tilesPat').innerHTML = t.map(([l, v, c, d]) => tileHTML(l, v, c, d, '')).join(''); hoverTips($('tilesPat'));
-  [...$('patModo').children].forEach(b => { const on = b.dataset.v === PAT.modo; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
-  $('patModo').onclick = e => { const b = e.target.closest('button[data-v]'); if (b) { PAT.modo = b.dataset.v; renderPatrimonio(); } };
   const ultFoto = (P0.fotos_tr || []).slice(-1)[0];
-  $('patHint').textContent = (PAT.modo === 'mes'
-    ? 'Cada vela es un mes: abre con el patrimonio al cierre del mes anterior y cierra con el del último día; verde si sube, roja si baja, y la mecha marca el día más alto y el más bajo. Las grises de 2025 son estimadas. Media azul = 10 meses (≈ la de 200 sesiones de bolsa); amarilla = 3 meses (≈ la de 50). Abajo, cuánto sube o baja cada mes.'
-    : 'Cada vela es un día: abre con el cierre del día anterior y cierra con el patrimonio de ese día (desde enero de 2026, cuando hay saldos de todas las cuentas). Media azul = 200 días; amarilla = 50 días.') + (ultFoto ? ` Inversiones ajustadas al extracto de Trade Republic del ${fl(ultFoto.fecha)}.` : '');
-  patGrafico(V, dia);
+  $('patHint').textContent = ('Cada vela es un mes: abre con el patrimonio al cierre del mes anterior y cierra con el del último día; verde si sube, roja si baja, y la mecha marca el día más alto y el más bajo. Las grises de 2025 son estimadas. Media azul = 10 meses (≈ la de 200 sesiones de bolsa); amarilla = 3 meses (≈ la de 50). Abajo, cuánto sube o baja cada mes. Rueda o pellizco para hacer zoom, arrastra para moverte y «Medir» para ver la distancia entre dos puntos.') + (ultFoto ? ` Inversiones ajustadas al extracto de Trade Republic del ${fl(ultFoto.fecha)}.` : '');
+  patGrafico(V);
   // cartera
   const pos = P0.posiciones || [], sumPos = pos.reduce((a, x) => a + x.valor, 0), resto = ult.inversiones - sumPos;
   const nom = isin => (ACTIVOS[isin] || [isin])[0], dom = isin => (ACTIVOS[isin] || [])[1];
@@ -1112,72 +1111,74 @@ function cargarLW() {
 const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const tStr = t => typeof t === 'string' ? t : t && typeof t === 'object' ? `${t.year}-${String(t.month).padStart(2, '0')}-${String(t.day).padStart(2, '0')}` : null;
 function media(datos, n) { const out = []; let suma = 0; datos.forEach((d, i) => { suma += d.close; if (i >= n) suma -= datos[i - n].close; if (i >= n - 1) out.push({ time: d.time, value: suma / n }); }); return out; }
-function patDatos(V, dia) {
-  if (PAT.modo === 'mes') {
-    const gris = cssVar('--text-3');
-    return { velas: V.map(v => Object.assign({ time: v.mes + '-01', open: v.o, high: v.h, low: v.l, close: v.c }, v.estimado ? { color: gris, borderColor: gris, wickColor: gris } : {})),
-      medias: [[10, cssVar('--s1'), 'Media 10 meses (≈ 200 sesiones)'], [3, cssVar('--s4'), 'Media 3 meses (≈ 50 sesiones)']], unidad: ['mes', 'meses'],
-      etiqueta: t => mesLargo(t.slice(0, 7)), estimado: t => (V.find(v => v.mes === t.slice(0, 7)) || {}).estimado };
-  }
-  const velas = dia.map((d, i) => { const o = i ? dia[i - 1][1] : d[1], c = d[1]; return { time: d[0], open: o, high: Math.max(o, c), low: Math.min(o, c), close: c }; });
-  return { velas, medias: [[200, cssVar('--s1'), 'Media 200 días'], [50, cssVar('--s4'), 'Media 50 días']], unidad: ['día', 'días'],
-    etiqueta: t => t.split('-').reverse().join('/'), estimado: () => false };
+function patDatos(V) {
+  const gris = cssVar('--text-3');
+  return { velas: V.map(v => Object.assign({ time: v.mes + '-01', open: v.o, high: v.h, low: v.l, close: v.c }, v.estimado ? { color: gris, borderColor: gris, wickColor: gris } : {})),
+    medias: [[10, cssVar('--s1'), 'Media 10 meses (≈ 200 sesiones)'], [3, cssVar('--s4'), 'Media 3 meses (≈ 50 sesiones)']], unidad: ['mes', 'meses'],
+    etiqueta: t => mesLargo(t.slice(0, 7)), estimado: t => (V.find(v => v.mes === t.slice(0, 7)) || {}).estimado };
 }
-async function patGrafico(V, dia) {
+const AZUL_TV = '#2962ff';
+async function patGrafico(V) {
   const el = $('patChart');
   try { await cargarLW(); } catch (e) { el.querySelector('.patohlc').textContent = 'No se pudo cargar la librería del gráfico (sin conexión).'; return; }
-  const clave = PAT.modo + '|' + V.length + '|' + dia.length + '|' + matchMedia('(prefers-color-scheme: dark)').matches;
+  const clave = V.length + '|' + V[V.length - 1].c + '|' + matchMedia('(prefers-color-scheme: dark)').matches;
   if (patLW && patLW.clave === clave && el.contains(patLW.nodo)) return;  // ya está pintado: se conserva el zoom
   if (patLW) { patLW.chart.remove(); patLW = null; }
-  $('patMed').hidden = true; $('patMedir').setAttribute('aria-pressed', false); el.classList.remove('midiendo');
-  const LW = window.LightweightCharts, D0 = patDatos(V, dia);
-  const up = cssVar('--up'), down = cssVar('--down'), txt = cssVar('--text-2'), grid = cssVar('--surface-2');
+  const caja = $('patMed'), svg = $('patSvg');
+  caja.hidden = true; svg.innerHTML = ''; $('patMedir').setAttribute('aria-pressed', false); el.classList.remove('midiendo');
+  const LW = window.LightweightCharts, D0 = patDatos(V);
+  const up = cssVar('--up'), down = cssVar('--down'), txt = cssVar('--text-2'), rejilla = cssVar('--surface-3');
   const chart = LW.createChart(el, {
     autoSize: true,
     layout: { background: { type: 'solid', color: 'transparent' }, textColor: txt, fontFamily: getComputedStyle(document.body).fontFamily, fontSize: 11 },
-    grid: { vertLines: { visible: false }, horzLines: { color: grid } },
+    grid: { vertLines: { color: rejilla, style: LW.LineStyle.Dotted }, horzLines: { color: rejilla, style: LW.LineStyle.Dotted } },  // cuadrícula de puntos, como TradingView
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.1, bottom: 0.22 } },
-    timeScale: { borderVisible: false, rightOffset: 2, barSpacing: PAT.modo === 'mes' ? 26 : 6, minBarSpacing: 1.5 },
+    timeScale: { borderVisible: false, rightOffset: 2, barSpacing: 26, minBarSpacing: 4 },
     crosshair: { mode: LW.CrosshairMode.Normal },
     localization: { locale: 'es-ES', priceFormatter: v => fmt(v), timeFormatter: t => D0.etiqueta(tStr(t)) },
   });
   const velas = chart.addCandlestickSeries({ upColor: up, downColor: down, borderUpColor: up, borderDownColor: down, wickUpColor: up, wickDownColor: down, priceLineVisible: false });
   velas.setData(D0.velas);
-  const medias = D0.medias.map(([n, c, l]) => { const s = chart.addLineSeries({ color: c, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }); const d = media(D0.velas, n); s.setData(d); return { s, l, c, n, d: Object.fromEntries(d.map(x => [x.time, x.value])) }; });
+  const medias = D0.medias.map(([n, c, l]) => { const s = chart.addLineSeries({ color: c, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }); const d = media(D0.velas, n); s.setData(d); return { l, c, d: Object.fromEntries(d.map(x => [x.time, x.value])) }; });
   const vol = chart.addHistogramSeries({ priceScaleId: 'var', priceFormat: { type: 'custom', formatter: v => fmt(v) }, priceLineVisible: false, lastValueVisible: false });
   chart.priceScale('var').applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
   vol.setData(D0.velas.map(v => ({ time: v.time, value: v.close - v.open, color: (D0.estimado(v.time) ? cssVar('--text-3') : v.close >= v.open ? up : down) + '99' })));
-  const regla = chart.addLineSeries({ lineWidth: 2, lineStyle: LW.LineStyle.Dashed, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
-  // vista inicial: los últimos 24 meses o 120 días
-  const n = D0.velas.length, ver = PAT.modo === 'mes' ? 24 : 120;
-  if (n > ver) chart.timeScale().setVisibleLogicalRange({ from: n - ver, to: n + 1 }); else chart.timeScale().fitContent();
-  $('patLegend').innerHTML = medias.map(m => `<span><i style="background:${m.c};height:3px;vertical-align:3px"></i>${m.l}</span>`).join('') + (PAT.modo === 'mes' ? `<span><i style="background:${cssVar('--text-3')}"></i>Estimado (2025)</span>` : '');
+  const n = D0.velas.length;
+  if (n > 24) chart.timeScale().setVisibleLogicalRange({ from: n - 24, to: n + 1 }); else chart.timeScale().fitContent();
+  $('patLegend').innerHTML = medias.map(m => `<span><i style="background:${m.c};height:3px;vertical-align:3px"></i>${m.l}</span>`).join('') + `<span><i style="background:${cssVar('--text-3')}"></i>Estimado (2025)</span>`;
   // datos de la vela bajo el cursor (o la última)
   const porT = Object.fromEntries(D0.velas.map(v => [v.time, v])), ohlc = $('patOhlc');
   const pinta = t => { const v = porT[t] || D0.velas[n - 1]; if (!v) return; const d = v.close - v.open, pc = v.open > 0 ? d / v.open * 100 : null, col = d >= 0 ? up : down;
     ohlc.innerHTML = `<b>${D0.etiqueta(v.time)}</b>${D0.estimado(v.time) ? ' · estimado' : ''} &nbsp;A <b>${fmt(v.open)}</b> M <b>${fmt(v.high)}</b> m <b>${fmt(v.low)}</b> C <b>${fmt(v.close)}</b> <span style="color:${col}">${d >= 0 ? '+' : '−'}${fmt(Math.abs(d))}${pc == null ? '' : ` (${d >= 0 ? '+' : '−'}${Math.abs(pc).toFixed(2).replace('.', ',')} %)`}</span>`
-      + medias.map(m => m.d[v.time] != null ? ` &nbsp;<span style="color:${m.c}">${fmt(m.d[m.n === 200 || m.n === 10 ? v.time : v.time])}</span>` : '').join(''); };
+      + medias.map(m => m.d[v.time] != null ? ` &nbsp;<span style="color:${m.c}">${fmt(m.d[v.time])}</span>` : '').join(''); };
   pinta(null);
-  // regla de medir: primer clic fija A, al mover se ve la distancia y el segundo clic la deja fija
-  const med = { on: false, a: null, b: null }, caja = $('patMed');
-  const punto = p => { if (!p.point || !p.time) return null; const precio = velas.coordinateToPrice(p.point.y); return precio == null ? null : { t: tStr(p.time), p: precio, x: p.point.x, y: p.point.y }; };
-  const dibuja = (a, b) => {
-    if (!a || !b) { regla.setData([]); caja.hidden = true; return; }
-    const [p1, p2] = a.t <= b.t ? [a, b] : [b, a], d = b.p - a.p, pc = a.p ? d / Math.abs(a.p) * 100 : 0;
-    const i1 = D0.velas.findIndex(v => v.time === a.t), i2 = D0.velas.findIndex(v => v.time === b.t), barras = Math.abs(i2 - i1);
-    const col = d >= 0 ? up : down;
-    regla.applyOptions({ color: col });
-    regla.setData(p1.t === p2.t ? [{ time: p1.t, value: p1.p }] : [{ time: p1.t, value: p1.p }, { time: p2.t, value: p2.p }]);
-    caja.style.background = col; caja.hidden = false;
-    caja.innerHTML = `<b>${d >= 0 ? '+' : '−'}${fmt(Math.abs(d))} · ${d >= 0 ? '+' : '−'}${Math.abs(pc).toFixed(2).replace('.', ',')} %</b><br>${fmt(a.p)} → ${fmt(b.p)}<br>${barras} ${barras === 1 ? D0.unidad[0] : D0.unidad[1]} · ${D0.etiqueta(p1.t)} → ${D0.etiqueta(p2.t)}`;
-    const W = el.clientWidth; caja.style.left = Math.min(Math.max(4, b.x + 12), W - caja.offsetWidth - 60) + 'px'; caja.style.top = Math.max(24, b.y - caja.offsetHeight - 10) + 'px';
+  // regla de medir, como la de TradingView: primer clic fija un extremo, la línea se va formando al mover el ratón y el
+  // segundo clic la deja fija. Los puntos se guardan en (posición en el eje de tiempo, euros) y se repintan al hacer zoom.
+  const ts = chart.timeScale(), med = { on: false, a: null, b: null, tmp: null };
+  const punto = p => { if (!p.point) return null; const l = ts.coordinateToLogical(p.point.x), e = velas.coordinateToPrice(p.point.y); return l == null || e == null ? null : { l, p: e }; };
+  const pantalla = q => ({ x: ts.logicalToCoordinate(q.l), y: velas.priceToCoordinate(q.p) });
+  const etiquetaL = l => { const v = D0.velas[Math.max(0, Math.min(n - 1, Math.round(l)))]; return v ? D0.etiqueta(v.time) : ''; };
+  const dibuja = () => {
+    const a = med.a, b = med.b || med.tmp;
+    if (!a || !b) { svg.innerHTML = ''; caja.hidden = true; return; }
+    const A = pantalla(a), B = pantalla(b); if (A.x == null || A.y == null || B.x == null || B.y == null) { svg.innerHTML = ''; caja.hidden = true; return; }
+    const d = b.p - a.p, pc = a.p ? d / Math.abs(a.p) * 100 : 0, meses = Math.abs(Math.round(b.l) - Math.round(a.l));
+    svg.innerHTML = `<line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" stroke="${AZUL_TV}" stroke-width="2.5" stroke-linecap="round"/>`
+      + [A, B].map(P => `<circle cx="${P.x}" cy="${P.y}" r="6" fill="${cssVar('--surface')}" stroke="${AZUL_TV}" stroke-width="2.5"/>`).join('');
+    caja.hidden = false;
+    caja.innerHTML = `<div class="pm1"><svg viewBox="0 0 16 20" width="13" height="16" aria-hidden="true"><path d="M2 1h12M2 19h12M8 4v12M5 7l3-3 3 3M5 13l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>${d >= 0 ? '' : '−'}${Math.abs(pc).toFixed(2).replace('.', ',')} %</span></div><div class="pm2">${d >= 0 ? '+' : '−'}${fmt(Math.abs(d))} · ${meses} ${meses === 1 ? 'mes' : 'meses'} · ${etiquetaL(Math.min(a.l, b.l))} → ${etiquetaL(Math.max(a.l, b.l))}</div>`;
+    const W = el.clientWidth, H = el.clientHeight, cw = caja.offsetWidth, ch = caja.offsetHeight;
+    let x = B.x + 16; if (x + cw > W - 70) x = B.x - cw - 16;
+    caja.style.left = Math.max(4, x) + 'px'; caja.style.top = Math.min(H - ch - 30, Math.max(22, B.y - ch / 2)) + 'px';
   };
   chart.subscribeClick(p => { if (!med.on) return; const q = punto(p); if (!q) return;
-    if (!med.a || med.b) { med.a = q; med.b = null; dibuja(null, null); } else { med.b = q; dibuja(med.a, med.b); } });
-  chart.subscribeCrosshairMove(p => { pinta(p.time ? tStr(p.time) : null); if (med.on && med.a && !med.b) { const q = punto(p); if (q) dibuja(med.a, q); } });
-  const medir = on => { med.on = on; med.a = med.b = null; dibuja(null, null); el.classList.toggle('midiendo', on); $('patMedir').setAttribute('aria-pressed', on); };
+    if (!med.a || med.b) { med.a = q; med.b = null; med.tmp = q; } else { med.b = q; med.tmp = null; } dibuja(); });
+  chart.subscribeCrosshairMove(p => { pinta(p.time ? tStr(p.time) : null); if (med.on && med.a && !med.b) { const q = punto(p); if (q) { med.tmp = q; dibuja(); } } });
+  ts.subscribeVisibleLogicalRangeChange(() => requestAnimationFrame(dibuja));
+  ts.subscribeSizeChange(() => requestAnimationFrame(dibuja));
+  const medir = on => { med.on = on; med.a = med.b = med.tmp = null; dibuja(); el.classList.toggle('midiendo', on); $('patMedir').setAttribute('aria-pressed', on); };
   patLW = { chart, clave, nodo: el.querySelector('.tv-lightweight-charts') || el.lastElementChild, medir, med };
-  document.querySelector('.patbtns').onclick = e => { const b = e.target.closest('button[data-z]'); if (!b || !patLW) return; const ts = patLW.chart.timeScale();
+  document.querySelector('.patbtns').onclick = e => { const b = e.target.closest('button[data-z]'); if (!b || !patLW) return;
     if (b.dataset.z === 'm') return patLW.medir(!patLW.med.on);
     if (b.dataset.z === '0') return ts.fitContent();
     const r = ts.getVisibleLogicalRange(); if (!r) return; const c = (r.from + r.to) / 2, w = (r.to - r.from) * (b.dataset.z === '+' ? 0.6 : 1.6) / 2;
@@ -1349,7 +1350,7 @@ function renderConjunta() {
 }
 
 // ---- estados financieros (cuenta de resultados, balance, flujo de caja) por año, trimestre o mes, al estilo de TradingView
-const FIN = { tab: 'resultados', gran: 'trimestral', open: {}, sel: null, vista: '', off: { resultados: new Set(), balance: new Set(['patrimonio']), flujo: new Set() } };
+const FIN = { tab: 'resultados', gran: 'trimestral', open: {}, sel: null, vista: '', off: { resultados: new Set(), balance: new Set(), flujo: new Set() } };
 const FIN_DEF = {
   resultados: {
     serie: [{ k: 'ingresos', l: 'Ingresos', c: 'var(--tv1)' }, { k: 'margen_bruto', l: 'Margen bruto', c: 'var(--tv2)' }, { k: 'operativo', l: 'Resultado operativo', c: 'var(--tv3)' }, { k: 'antes_impuestos', l: 'Antes de impuestos', c: 'var(--tv4)' }, { k: 'neto', l: 'Beneficio neto', c: 'var(--tv5)' }],

@@ -3,7 +3,7 @@
   "Vivienda y suministros": 900,
   "Salud y deporte": 518,
   "Transporte": 25,
-  "Empresa": 289,
+  "Empresa": 259,
   "Préstamos y deudas": 210,
   "Hábitos diarios": 30,
   "Ocio y vida social": 80,
@@ -43,6 +43,9 @@
   "Gimnasio": 35,
   "Peluquería y autocuidado": 23,
   "Streaming de vídeo": 21,
-  "Almacenamiento": 3
+  "Almacenamiento": 3,
+  "Herramientas de trabajo": 90,
+  "Cuota de autónomos": 88.56,
+  "Gestoría": 80
  }
 }

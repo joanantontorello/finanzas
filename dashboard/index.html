@@ -95,6 +95,7 @@
   .card h2 { margin-bottom: 10px; }
   .card h2 button.info { width: 18px; height: 18px; font-size: 11px; line-height: 18px; }
   i.gsq { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: 0; flex: none; }
+  .presinv { grid-column: 1 / -1; margin: 4px 0 16px; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--s7) 10%, transparent); }
   .bloques { display: grid; grid-template-columns: 1fr; column-gap: 32px; }
   @media (min-width: 900px) { .bloques { grid-template-columns: 1fr 1fr; } .plist { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; align-items: start; } .plist > :nth-child(even) { background: none; } .plist > :nth-child(4n+1), .plist > :nth-child(4n+2) { background: color-mix(in srgb, var(--text) 3.5%, transparent); } }
   .metas { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
@@ -769,7 +770,13 @@ function renderPresupuesto(sinConfig) {
   const transc = mesesP.reduce((t, m) => t + (m < mesHoy ? 1 : m === mesHoy ? hoy0.getDate() / new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate() : 0), 0);
   const ritmo = mesesP.length ? transc / mesesP.length : 1;
   $('presHint').textContent = (n > 1 ? `Periodo de ${n} meses: el presupuesto se multiplica por ${n}. ` : 'Presupuesto del mes frente a lo gastado. ') + 'Verde bien, ámbar por encima del 80 %, rojo pasado. Pasa el ratón por una barra para ver en qué se fue.' + (ritmo < 0.995 ? ` La raya marca lo que llevarías gastado a ritmo constante (ha pasado el ${Math.round(ritmo * 100)} % del periodo).` : '');
-  $('bloques').innerHTML = gGasto.map(g => {
+  // inversión del periodo frente al objetivo (más es mejor: violeta mientras falta, verde al cumplirlo)
+  const objInv = (+P.inversion_mensual || 0) * n, pInv = objInv ? a.inv / objInv : 0;
+  const tipInv = (`Invertido en el periodo|` + (Object.entries(a.invCats).filter(x => Math.abs(x[1]) >= 0.5).sort((x, y) => y[1] - x[1]).map(([c, v]) => `${c.toLowerCase()} ${fmt(v)}`).join('<br>') || 'Nada todavía')).replace(/"/g, '&quot;');
+  const barraInv = objInv || a.inv ? `<div class="presinv"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center"><i class="gsq" style="background:var(--s7)"></i>Inversión</b><span style="white-space:nowrap"><b>${fmt(a.inv)}</b> <span class="muted">de ${fmt(objInv)}</span></span></div>
+      <div class="track" data-tip="${tipInv}" style="position:relative;height:12px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tipInv}" style="height:100%;width:${Math.min(100, Math.max(0, pInv) * 100)}%;background:${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'};border-radius:4px"></div>${ritmo < 0.995 ? `<div data-tip="${tipInv}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
+      <div class="muted" style="font-size:12px">${!objInv ? 'Sin objetivo: ponlo en «Inversión objetivo al mes»' : a.inv >= objInv ? 'Objetivo cumplido' + (a.inv - objInv >= 1 ? ` · ${fmt(a.inv - objInv)} por encima` : '') : `Faltan ${fmt(objInv - a.inv)} para el objetivo · ${Math.round(pInv * 100)} %`}</div></div>` : '';
+  $('bloques').innerHTML = barraInv + gGasto.map(g => {
     const pres = (+P.grupos[g.nombre] || 0) * n, gs = a.grupos[g.nombre] || 0, p = pres ? gs / pres : (gs > 0 ? 2 : 0);
     const col = p > 1 ? 'var(--s2)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
     const top = g.sub.filter(c => a.cats[c]).sort((x, y) => a.cats[y] - a.cats[x]).slice(0, 4).map(c => `${c.toLowerCase()} ${fmt(a.cats[c])}`).join(' · ');

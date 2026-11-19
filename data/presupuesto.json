@@ -8,7 +8,7 @@
   "Hábitos diarios": 30,
   "Ocio y vida social": 80,
   "Viajes": 0,
-  "Suscripciones": 30,
+  "Suscripciones": 24,
   "Formación": 30,
   "Otros": 0,
   "Donaciones": 10
@@ -41,6 +41,8 @@
   "Jiu-jitsu": 100,
   "Psicología": 360,
   "Gimnasio": 35,
-  "Peluquería y autocuidado": 23
+  "Peluquería y autocuidado": 23,
+  "Streaming de vídeo": 21,
+  "Almacenamiento": 3
  }
 }

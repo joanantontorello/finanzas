@@ -95,6 +95,7 @@
   .card h2 { margin-bottom: 10px; }
   .card h2 button.info { width: 18px; height: 18px; font-size: 11px; line-height: 18px; }
   i.gsq { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: 0; flex: none; }
+  .prestot { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 12px; } .prestot div { display: flex; flex-direction: column; gap: 2px; padding: 8px 14px; border-radius: 10px; background: color-mix(in srgb, var(--text) 5%, transparent); font-size: 12px; color: var(--text-2); } .prestot b { font-size: 17px; color: var(--text); font-variant-numeric: tabular-nums; } .prestot .tot { background: color-mix(in srgb, var(--s1) 16%, transparent); }
   .presinv { grid-column: 1 / -1; margin: 4px 0 16px; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--s7) 10%, transparent); }
   .bloques { display: grid; grid-template-columns: 1fr; column-gap: 32px; }
   @media (min-width: 900px) { .bloques { grid-template-columns: 1fr 1fr; } .plist { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; align-items: start; } .plist > :nth-child(even) { background: none; } .plist > :nth-child(4n+1), .plist > :nth-child(4n+2) { background: color-mix(in srgb, var(--text) 3.5%, transparent); } }
@@ -414,6 +415,7 @@
       <div class="card mt">
         <h2>Configurar presupuesto</h2>
         <div class="hint">Importe mensual por grupo. «Repartir» reparte el total entre las subcategorías que quieras; lo que no repartas queda para el resto del grupo. Los cambios se guardan en GitHub con el botón de abajo.</div>
+        <div class="prestot" id="presTot"></div>
         <div class="plist" id="presConfig"></div>
       </div>
       <div class="card mt">
@@ -806,7 +808,9 @@ function renderPresupuesto(sinConfig) {
       <div class="mf"><label class="fld">Objetivo (€)<input data-meta="${i}" data-k="objetivo" type="number" value="${m.objetivo}"></label><label class="fld">Fecha<input data-meta="${i}" data-k="fecha" type="date" value="${m.fecha || ''}"></label><label class="fld ${f ? 'ancho' : ''}">Progreso<select data-meta="${i}" data-k="fuente">${opts}</select></label>${f ? '' : `<label class="fld">Ya reservado (€)<input data-meta="${i}" data-k="reservado" type="number" value="${m.reservado || 0}"></label>`}</div>
       <div class="mcol" role="group" aria-label="Color de la meta">${COLORES_META.map(k => `<button style="--c:var(--${k})" data-mcolor="${k}" data-i="${i}" aria-pressed="${k === c}" aria-label="Color ${k}"></button>`).join('')}</div></div>`;
   }).join('') + '<button class="meta nueva" id="addMeta">+ Nueva meta</button>';
-  // config
+  // config: totales al mes (se actualizan al momento al cambiar cualquier importe)
+  const totG = gGasto.reduce((t, g) => t + (+P.grupos[g.nombre] || 0), 0), totI = +P.inversion_mensual || 0;
+  $('presTot').innerHTML = `<div><span>Gastos al mes</span><b>${fmt(totG)}</b></div><div><span>+ Inversión al mes</span><b>${fmt(totI)}</b></div><div class="tot"><span>= Total al mes</span><b>${fmt(totG + totI)}</b></div>`;
   if (sinConfig) return;
   if (!presAbiertos) presAbiertos = new Set(gGasto.filter(g => subsCon(g).length).map(g => g.nombre));
   $('presConfig').innerHTML = gGasto.map(g => {

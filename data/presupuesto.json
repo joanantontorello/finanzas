@@ -1,7 +1,7 @@
 {
  "grupos": {
   "Vivienda y suministros": 900,
-  "Salud y deporte": 538,
+  "Salud y deporte": 518,
   "Transporte": 25,
   "Empresa": 289,
   "Préstamos y deudas": 210,
@@ -37,6 +37,10 @@
   "Internet y teléfono": 10,
   "Electricidad": 35,
   "Transporte público": 10,
-  "BiciMAD": 15
+  "BiciMAD": 15,
+  "Jiu-jitsu": 100,
+  "Psicología": 360,
+  "Gimnasio": 35,
+  "Peluquería y autocuidado": 23
  }
 }

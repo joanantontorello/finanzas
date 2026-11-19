@@ -31,6 +31,10 @@
   }
  ],
  "subs": {
-  "Citas y pareja": 80
+  "Citas y pareja": 80,
+  "Alquiler": 600,
+  "Supermercado": 220,
+  "Internet y teléfono": 10,
+  "Electricidad": 35
  }
 }

@@ -20,3 +20,14 @@
   importe: 20
   tipo: Gasto
   categoria: Efectivo
+- fecha: 2026-11-19
+  concepto: "Buy trade US67066G1040 NVIDIA CORP., quantity: 1.49479"
+  importe: -200
+  tipo: Inversion
+  categoria: Acciones
+  nota: "Compra en eToro: 1,49479 acciones a 146,87 $ (220,54 $ con el cambio). Los 200 € enteros cuentan como inversión, comisiones incluidas"
+- fecha: 2026-11-19
+  concepto: "Compensación: la compra de NVIDIA se paga con el saldo de eToro (enviado desde Trade Republic el 07/11)"
+  importe: 200
+  tipo: Traspaso
+  categoria: Traspaso entre cuentas

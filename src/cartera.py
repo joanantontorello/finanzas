@@ -65,6 +65,7 @@ class Cartera:
         self.movs = defaultdict(list)   # isin -> [(fecha, cantidad +/-)]
         self.coste_sin_cantidad = []    # [(fecha, € aportados)] de lo que no se puede valorar
         self.coste = []                 # [(fecha, € aportados netos)] de todo, para comparar
+        self.fuera_tr = defaultdict(list)  # isin -> [(fecha, cantidad)] comprada fuera de Trade Republic (eToro…)
         for x in rows:
             if x["tipo"] != "Inversion":
                 continue
@@ -74,6 +75,8 @@ class Cartera:
             if m:
                 q = float(m.group(3)) * (-1 if m.group(1) == "Sell trade" else 1)
                 self.movs[m.group(2)].append((x["fecha"], q, v))
+                if x.get("cuenta") != "Trade Republic":
+                    self.fuera_tr[m.group(2)].append((x["fecha"], q))
             else:
                 self.coste_sin_cantidad.append((x["fecha"], v))
         self.coste.sort()
@@ -169,7 +172,7 @@ class Cartera:
                     i = bisect_right(fechas, x["fecha_precio"])
                     if i:
                         ajustes[isin].append((x["fecha_precio"], x["precio"] / precios[i - 1]))
-                q = sum(c for f, c, _ in self.movs.get(isin, []) if f <= fecha)
+                q = sum(c for f, c, _ in self.movs.get(isin, []) if f <= fecha) - sum(c for f, c in self.fuera_tr.get(isin, []) if f <= fecha)
                 if abs(q - x["unidades"]) > 1e-6:
                     self.descuadres.append({"fecha": fecha, "isin": isin, "nombre": x["nombre"], "tr": x["unidades"], "extractos": round(q, 6)})
         self.ajustes = dict(ajustes)

@@ -1762,7 +1762,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-11-05,Revolut,[Transfer] Bizum payment to: Kateryna S. · Ref: Andorra compras,-16.58,-16.58,Gasto,Otros,Ajustes con Kate,Personal,auto
 2026-11-06,BBVA,Transferencia recibida | De eva maria lopez trujillo,25.0,25.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
 2026-11-07,Conjunta,[Card Payment] Mercadona,-23.74,-11.87,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-11-07,Trade Republic,[Transacción con tarjeta] eToro EU LTD,-200.0,-200.0,Inversion,Inversiones,Acciones,Personal,revisado
+2026-11-07,Trade Republic,[Transacción con tarjeta] eToro EU LTD,-200.0,-200.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
 2026-11-08,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-11-08,Conjunta,[Card Payment] Alcampo,-16.02,-8.01,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-11-08,Conjunta,[Card Payment] Alcampo,-65.81,-32.91,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1787,3 +1787,5 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-11-13,Trade Republic,[Transferencia] Incoming transfer from POL TORELLO LOPEZ (ES2601820238440201914730),352.5,352.5,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-11-14,Conjunta,[Transfer] To Instant Access Savings,-96.22,-96.22,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-14,Revolut,[Transfer] To EUR Flexible Cash Funds,-61.43,-61.43,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
+2026-11-19,Ajustes,"Buy trade US67066G1040 NVIDIA CORP., quantity: 1.49479",-200.0,-200.0,Inversion,Inversiones,Acciones,Personal,revisado
+2026-11-19,Ajustes,Compensación: la compra de NVIDIA se paga con el saldo de eToro (enviado desde Trade Republic el 07/11),200.0,200.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado

@@ -39,7 +39,7 @@
 - {id: rev_chargeback,     cuenta: [Revolut, Conjunta], match: "^\\[Card Chargeback\\]",                             tipo: Gasto, categoria: "Herramientas de trabajo", ambito: Trabajo, nota: devolución Higgsfield}
 
 # ---------------------------------------------------------------- 4. Inversiones (Trade Republic)
-- {id: etoro,              match: "eToro|ETORO",                                                                     tipo: Inversion, categoria: "Acciones", nota: aportación a eToro}
+- {id: etoro,              match: "eToro|ETORO",                                                                     tipo: Traspaso, categoria: "Traspaso entre cuentas", nota: "dinero enviado a eToro; las compras dentro de eToro van en config/ajustes.yaml"}
 - {id: tr_crypto,          cuenta: Trade Republic, match: "\\[Operar\\] (Buy|Sell) trade XF000",                    tipo: Inversion, categoria: "Criptomonedas"}
 - {id: tr_etf,             cuenta: Trade Republic, match: "\\[Operar\\] .*(UCITS|ETF|Savings plan)",                 tipo: Inversion, categoria: "Fondos indexados y ETF"}
 - {id: tr_acciones,        cuenta: Trade Republic, match: "\\[Operar\\] (Buy|Sell) trade ",                          tipo: Inversion, categoria: "Acciones"}

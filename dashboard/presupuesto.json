@@ -1,16 +1,17 @@
 {
  "grupos": {
   "Vivienda y suministros": 900,
-  "Salud y deporte": 538,
-  "Transporte": 25,
-  "Empresa": 289,
+  "Salud y deporte": 518,
+  "Transporte": 20,
+  "Empresa": 259,
   "Préstamos y deudas": 210,
-  "Hábitos diarios": 30,
-  "Ocio y vida social": 100,
+  "Hábitos diarios": 24,
+  "Ocio y vida social": 80,
   "Viajes": 0,
-  "Suscripciones": 30,
+  "Suscripciones": 3,
   "Formación": 30,
-  "Otros": 0
+  "Otros": 20,
+  "Donaciones": 10
  },
  "inversion_mensual": 1200,
  "colchon_objetivo": 7000,
@@ -30,6 +31,24 @@
   }
  ],
  "subs": {
-  "Citas y pareja": 80
+  "Citas y pareja": 80,
+  "Alquiler": 600,
+  "Supermercado": 220,
+  "Internet y teléfono": 10,
+  "Electricidad": 35,
+  "Transporte público": 10,
+  "BiciMAD": 10,
+  "Jiu-jitsu": 100,
+  "Psicología": 360,
+  "Gimnasio": 35,
+  "Peluquería y autocuidado": 23,
+  "Almacenamiento": 3,
+  "Herramientas de trabajo": 90,
+  "Cuota de autónomos": 88.56,
+  "Gestoría": 80,
+  "Açaí y brunch": 12,
+  "Café": 12,
+  "Libros": 30,
+  "Imprevistos": 20
  }
 }

@@ -1,6 +1,7 @@
 # Reglas de clasificación. Se evalúan EN ORDEN y gana la primera que encaja.
 # Campos: id, cuenta (una o lista), match (regex sobre el concepto, sin distinguir mayúsculas),
 #         desde/hasta (rango de fechas), min/max (importe absoluto), signo (+ o -), participacion,
+#         compensar (true = pagado a medias con Kate y liquidado aparte, como el botón «½ Kate»: tu mitad en la categoría, la suya en Ajustes),
 #         tipo, categoria (= SUBCATEGORÍA de data/categorias.json), ambito (si no, el de la categoría),
 #         estado (auto por defecto; "pendiente" = sugerencia a revisar), nota.
 # Las correcciones del dashboard se convierten solas en reglas "auto_*" (sección aprendidas).
@@ -48,7 +49,7 @@
 - {id: alquiler_kate_ene,  cuenta: Revolut, match: "Bizum payment to: Kateryna", min: 800, hasta: "2026-01-31",      tipo: Gasto, categoria: "Alquiler", nota: alquiler piso anterior}
 - {id: piso_kate_600,      cuenta: Revolut, match: "Bizum payment to: Kateryna", min: 500, max: 700, hasta: "2026-05-31", tipo: Gasto, categoria: "Hogar y equipamiento", estado: pendiente, nota: "600 € a Kate, probablemente del piso (¿fianza?)"}
 - {id: luz_octopus,        match: "OCTOPUS ENERGY",                                                                 tipo: Gasto, categoria: "Electricidad"}
-- {id: internet_digi,      match: "DIGI SPAIN",                                                                     tipo: Gasto, categoria: "Internet y teléfono"}
+- {id: internet_digi,      match: "DIGI SP", compensar: true,                                                       tipo: Gasto, categoria: "Internet y teléfono", nota: "a medias con Kate: tu mitad aquí, la suya en Ajustes con Kate"}
 - {id: seguro_eci,         match: "CENTRO DE SEGUROS",                                                              tipo: Gasto, categoria: "Seguros", nota: seguro (El Corte Inglés)}
 - {id: gestoria,           cuenta: BBVA,     match: "jaime carrasco",                                                tipo: Gasto, categoria: "Gestoría", ambito: Trabajo}
 - {id: fnmt,               match: "FAB\\.NACION\\. DE MONEDA",                                                       tipo: Gasto, categoria: "Gestoría", ambito: Trabajo, nota: certificado digital}

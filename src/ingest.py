@@ -90,7 +90,9 @@ def clasificar(mov, reglas, categorias):
         cat = r.get("categoria")
         cat = cargar_mover().get(cat, cat)  # la regla puede apuntar a una subcategoría ya renombrada o quitada
         ambito = r.get("ambito") or categorias.get(cat, {}).get("ambito") or "Personal"
-        return {"tipo": r["tipo"], "categoria": cat, "ambito": ambito, "participacion": r.get("participacion"),
+        # compensar: pagado a medias con la pareja y liquidado aparte (como el botón «½» del dashboard)
+        return {"tipo": r["tipo"], "categoria": cat, "ambito": ambito, "participacion": 0.5 if r.get("compensar") else r.get("participacion"),
+                "compensar": 1 if r.get("compensar") else 0,
                 "estado": r.get("estado", "auto"), "regla": r["id"], "nota": r.get("nota")}
     # sin regla: gasto si sale dinero. Lo pequeño (<30 €) va a Imprevistos sin molestar; lo grande queda pendiente.
     if mov["importe"] < 0 and abs(mov["importe"]) < 30:
@@ -139,10 +141,10 @@ def importar(path, con, reglas, cuentas, categorias):
             c = clasificar(f, reglas, categorias)
         p = 1.0 if c["tipo"] in ("Traspaso",) else (c.get("participacion") or part)
         con.execute(
-            """INSERT INTO movimientos (hash,cuenta,fecha,mes,concepto,importe,saldo,tipo,categoria,ambito,participacion,estado,regla,nota,fuente)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            """INSERT INTO movimientos (hash,cuenta,fecha,mes,concepto,importe,saldo,tipo,categoria,ambito,participacion,estado,regla,nota,fuente,compensar)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (h, f["cuenta"], f["fecha"], f["fecha"][:7], f["concepto"], f["importe"], f.get("saldo"),
-             c["tipo"], c["categoria"], c["ambito"], p, c["estado"], c["regla"], c["nota"], pathlib.Path(path).name),
+             c["tipo"], c["categoria"], c["ambito"], p, c["estado"], c["regla"], c["nota"], pathlib.Path(path).name, c.get("compensar") or 0),
         )
         nuevas += 1
     fechas = sorted(f["fecha"] for f in filas)
@@ -162,9 +164,10 @@ def reclasificar(con, reglas, cuentas, categorias):
     for row in con.execute("SELECT * FROM movimientos WHERE estado != 'revisado' AND cuenta != 'Histórico'").fetchall():
         c = clasificar(dict(row), reglas, categorias)
         part = 1.0 if c["tipo"] == "Traspaso" else (c.get("participacion") or cuentas.get(row["cuenta"], {}).get("participacion", 1.0))
-        if (c["tipo"], c["categoria"], c["ambito"], c["estado"], c["regla"], part) != (row["tipo"], row["categoria"], row["ambito"], row["estado"], row["regla"], row["participacion"]):
-            con.execute("UPDATE movimientos SET tipo=?,categoria=?,ambito=?,estado=?,regla=?,nota=?,participacion=? WHERE id=?",
-                        (c["tipo"], c["categoria"], c["ambito"], c["estado"], c["regla"], c["nota"], part, row["id"]))
+        comp = c.get("compensar") or 0
+        if (c["tipo"], c["categoria"], c["ambito"], c["estado"], c["regla"], part, comp) != (row["tipo"], row["categoria"], row["ambito"], row["estado"], row["regla"], row["participacion"], row["compensar"] or 0):
+            con.execute("UPDATE movimientos SET tipo=?,categoria=?,ambito=?,estado=?,regla=?,nota=?,participacion=?,compensar=? WHERE id=?",
+                        (c["tipo"], c["categoria"], c["ambito"], c["estado"], c["regla"], c["nota"], part, comp, row["id"]))
             cambios += 1
     con.commit()
     return cambios

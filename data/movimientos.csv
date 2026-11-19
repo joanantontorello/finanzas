@@ -959,7 +959,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-04-28,Trade Republic,"[Transferencia] Incoming transfer from FIDELIO, SLU (AD3700010000419001600100)",2858.66,2858.66,Ingreso,Ingresos,Trabajo,Trabajo,auto
 2026-04-28,Trade Republic,[Transacción con tarjeta] BAR ALESKA,-3.6,-3.6,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
 2026-04-28,Trade Republic,[Transacción con tarjeta] AYTO MADRID DEPORTES,-10.6,-10.6,Gasto,Salud y deporte,Gimnasio,Personal,auto
-2026-04-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-2.58,-2.58,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
+2026-04-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-2.58,-1.29,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-04-29,Trade Republic,[Transacción con tarjeta] WOK TO WALK,-9.45,-9.45,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-04-30,Trade Republic,[Transacción con tarjeta] NOPARRO FILMS SLU,-11.0,-11.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-04-30,Trade Republic,[Transacción con tarjeta] LOS CANDILES DE VINATEROS,-4.0,-4.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
@@ -1046,7 +1046,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-05-27,Trade Republic,[Transacción con tarjeta] MPASS,-2.0,-2.0,Gasto,Transporte,Transporte público,Personal,auto
 2026-05-27,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
 2026-05-28,Revolut,[Card Payment] Playtomic,-9.88,-9.88,Gasto,Salud y deporte,Pádel,Personal,auto
-2026-05-28,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-10.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
+2026-05-28,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-05-28,Trade Republic,[Transacción con tarjeta] ALCAMPO MORATALAZ,-29.29,-29.29,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-05-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
 2026-05-29,Trade Republic,[Transacción con tarjeta] MERCADONA AVDA DEMOCRACIA,-7.35,-7.35,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1190,7 +1190,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-28,Conjunta,[Card Payment] De Tyler Restauraciones S,-5.0,-2.5,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-06-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
 2026-06-29,Revolut,[Transfer] Bizum payment to: Kateryna S.,-10.08,-10.08,Gasto,Otros,Ajustes con Kate,Personal,auto
-2026-06-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-10.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
+2026-06-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-06-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
 2026-06-29,Trade Republic,[Transacción con tarjeta] CHURRERIA LA MEJOR,-5.6,-5.6,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-29,Trade Republic,"[Transacción con tarjeta] DEPARTMENT OF IMMIGRATION, 52,08 $, exchange rate: 0,8807604, ECB rate: 0,8767315448, markup: 0,45953122 %",-45.87,-45.87,Gasto,Viajes,Comida y gastos en destino,Personal,auto
@@ -1350,7 +1350,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-07-30,Conjunta,[Card Payment] Nilmini Laundry,-11.19,-5.59,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-07-30,Conjunta,[Card Payment] N M Ahamed,-11.37,-5.68,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-07-30,Conjunta,[Card Payment] Mellow Hostel,-10.05,-5.03,Gasto,Viajes,Alojamiento,Personal,auto
-2026-07-30,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-10.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
+2026-07-30,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-07-31,BBVA,"Ret. efec. debito t. caj. aut. no eur. com. 3% inc | Comisiones,gastos e inter. pagados | 4603321058244685",-104.76,-104.76,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-07-31,BBVA,"Ret. efec. debito t. caj. aut. no eur. com. 3% inc | Comisiones,gastos e inter. pagados | 4603321058244685",-104.76,-104.76,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-07-31,BBVA,"Ret. efec. debito t. caj. aut. no eur. com. 3% inc | Comisiones,gastos e inter. pagados | 4603321058244685",-69.66,-69.66,Gasto,Viajes,Comida y gastos en destino,Personal,auto
@@ -1508,7 +1508,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-08-27,Revolut,[Transfer] Bizum payment to: Alan leandro K.,-1.75,-1.75,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
 2026-08-27,Trade Republic,[Transferencia] Outgoing transfer for Kateryna Soltuchenko (ES2615860001472321062211),-355.51,-355.51,Gasto,Otros,Ajustes con Kate,Personal,revisado
 2026-08-28,Revolut,[Card Refund] Playtomic,9.88,9.88,Reembolso,Reembolsos,Reembolsos,Personal,auto
-2026-08-28,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-10.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
+2026-08-28,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-08-28,Trade Republic,[Transacción con tarjeta] MEDIA MARKT ONLINE,-853.99,-853.99,Gasto,Otros,Imprevistos,Trabajo,revisado
 2026-08-29,Revolut,[Card Payment] Estación Madrid - Puerta de Atocha,-4.4,-4.4,Gasto,Transporte,Transporte público,Personal,auto
 2026-08-29,Revolut,[Card Payment] Casa do Açaí Brunch & Coffee,-11.7,-11.7,Gasto,Hábitos diarios,Açaí y brunch,Personal,auto
@@ -1597,7 +1597,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-20,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-12.11,-12.11,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-20,Revolut,[Card Payment] Samba Global Fuencarra,-4.9,-4.9,Gasto,Ocio y vida social,Restaurantes,Personal,revisado
 2026-09-20,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-21,BBVA,Pago de impuestos | Nrc. 082612591968yxvs3rpssf,-108.46,-108.46,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
+2026-09-21,BBVA,Pago de impuestos | Nrc. 082612591968yxvs3rpssf,-108.46,-108.46,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
 2026-09-21,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,29.5,29.5,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-09-21,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to GC RE OCTOPUS ENERGY (FR7617118820080000001536203),-59.01,-29.5,Gasto,Vivienda y suministros,Electricidad,Personal,revisado
 2026-09-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -1696,7 +1696,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-19,Conjunta,[Transfer] Gc Re Octopus Energy,-62.96,-31.48,Gasto,Vivienda y suministros,Electricidad,Personal,auto
 2026-10-19,Trade Republic,[Transacción con tarjeta] DECATHLON FUENCARRAL,-5.99,-5.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-10-19,Trade Republic,[Transacción con tarjeta] ESPASA CALPE S A,-11.95,-11.95,Gasto,Formación,Libros,Personal,auto
-2026-10-20,BBVA,Pago de impuestos | Nrc. 082612785466hmhlm8kp1a,-108.82,-108.82,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
+2026-10-20,BBVA,Pago de impuestos | Nrc. 082612785466hmhlm8kp1a,-108.82,-108.82,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
 2026-10-20,Conjunta,[Card Payment] Alcampo,-41.27,-20.64,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-21,Conjunta,[Card Payment] Dia,-3.34,-1.67,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -1724,8 +1724,8 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-28,Conjunta,[Card Payment] Lidl,-5.77,-2.88,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-28,Conjunta,[Card Payment] Fruteria Y Verduras Lin,-4.32,-2.16,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
-2026-10-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-10.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
-2026-10-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-0.17,-0.17,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
+2026-10-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
+2026-10-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-0.17,-0.09,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-10-29,Trade Republic,"[Operar] Buy trade US0231351067 AMAZON.COM INC. DL-,01, quantity: 0.489356",-101.07,-101.07,Inversion,Inversiones,Acciones,Personal,auto
 2026-10-30,BBVA,Google one | Pago con tarjeta,-19.99,-19.99,Gasto,Suscripciones,Almacenamiento,Personal,auto
 2026-10-30,BBVA,Adeudo de cuota de la seguridad social | N 2026301001494998 TGSS. COTIZACION 005 R.E.AUTONOMOS,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto

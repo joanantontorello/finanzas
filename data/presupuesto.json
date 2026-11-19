@@ -5,7 +5,7 @@
   "Transporte": 25,
   "Empresa": 259,
   "Préstamos y deudas": 210,
-  "Hábitos diarios": 30,
+  "Hábitos diarios": 24,
   "Ocio y vida social": 80,
   "Viajes": 0,
   "Suscripciones": 24,
@@ -46,6 +46,8 @@
   "Almacenamiento": 3,
   "Herramientas de trabajo": 90,
   "Cuota de autónomos": 88.56,
-  "Gestoría": 80
+  "Gestoría": 80,
+  "Açaí y brunch": 12,
+  "Café": 12
  }
 }

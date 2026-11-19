@@ -136,6 +136,11 @@
     "Imprevistos": "imprevistos"
    },
    "color": "s9"
+  },
+  "Donaciones": {
+   "esencial": false,
+   "color": "s1",
+   "sub": []
   }
  },
  "Reembolso": {

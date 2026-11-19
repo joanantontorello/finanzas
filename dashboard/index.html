@@ -95,7 +95,7 @@
   .card h2 { margin-bottom: 10px; }
   .card h2 button.info { width: 18px; height: 18px; font-size: 11px; line-height: 18px; }
   i.gsq { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: 0; flex: none; }
-  .prestot { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 12px; } .prestot div { display: flex; flex-direction: column; gap: 2px; padding: 8px 14px; border-radius: 10px; background: color-mix(in srgb, var(--text) 5%, transparent); font-size: 12px; color: var(--text-2); } .prestot b { font-size: 17px; color: var(--text); font-variant-numeric: tabular-nums; } .prestot .tot { background: color-mix(in srgb, var(--s1) 16%, transparent); }
+  .prestot { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 12px; } .prestot div { display: flex; flex-direction: column; gap: 2px; padding: 8px 14px; border-radius: 10px; background: color-mix(in srgb, var(--text) 5%, transparent); font-size: 12px; color: var(--text-2); } .prestot b { font-size: 17px; color: var(--text); font-variant-numeric: tabular-nums; } .prestot .tot { background: color-mix(in srgb, var(--s1) 16%, transparent); } .prestot small { font-size: 11px; color: var(--text-3); } .prestot .aho { background: color-mix(in srgb, var(--s3) 16%, transparent); } .prestot .neg { background: color-mix(in srgb, var(--bad) 16%, transparent); } .prestot .prescap { flex-basis: 100%; margin: 2px 2px 0; font-size: 12.5px; color: var(--text-2); }
   .presinv { grid-column: 1 / -1; margin: 4px 0 16px; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--s7) 10%, transparent); }
   .bloques { display: grid; grid-template-columns: 1fr; column-gap: 32px; }
   @media (min-width: 900px) { .bloques { grid-template-columns: 1fr 1fr; } .plist { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; align-items: start; } .plist > :nth-child(even) { background: none; } .plist > :nth-child(4n+1), .plist > :nth-child(4n+2) { background: color-mix(in srgb, var(--text) 3.5%, transparent); } }
@@ -543,6 +543,7 @@ function optsCategorias(selected, soloGasto) {
 }
 
 let P = null, pSha = null, pDirty = false, PAREJA = 'pareja';
+let PRES_MEDIANA = 0;
 let C = null, cSha = null, cDirty = false, catQuitar = null;  // categorías editables (data/categorias.json)
 const GHC = { path: 'data/categorias.json' };
 const GHP = { path: 'data/presupuesto.json' };
@@ -810,7 +811,15 @@ function renderPresupuesto(sinConfig) {
   }).join('') + '<button class="meta nueva" id="addMeta">+ Nueva meta</button>';
   // config: totales al mes (se actualizan al momento al cambiar cualquier importe)
   const totG = gGasto.reduce((t, g) => t + (+P.grupos[g.nombre] || 0), 0), totI = +P.inversion_mensual || 0;
-  $('presTot').innerHTML = `<div><span>Gastos al mes</span><b>${fmt(totG)}</b></div><div><span>+ Inversión al mes</span><b>${fmt(totI)}</b></div><div class="tot"><span>= Total al mes</span><b>${fmt(totG + totI)}</b></div>`;
+  const totE = t => gGasto.filter(g => g.esencial === t).reduce((x, g) => x + (+P.grupos[g.nombre] || 0), 0), ess = totE(true), noess = totE(false), otros = totG - ess - noess;
+  // ingresos de referencia: el que pongas en la configuración o, si no, la mediana de los últimos 6 meses cerrados
+  const ingMes = {}; D.movimientos.forEach(m => { if (m.tipo === 'Ingreso' && m.mes < mesHoy) ingMes[m.mes] = (ingMes[m.mes] || 0) + m.mio; });
+  const ult6 = Object.keys(ingMes).sort().slice(-6).map(k => ingMes[k]).sort((x, y) => x - y);
+  const mediana = ult6.length ? (ult6.length % 2 ? ult6[(ult6.length - 1) / 2] : (ult6[ult6.length / 2 - 1] + ult6[ult6.length / 2]) / 2) : 0;
+  const ing = +P.ingreso_mensual || mediana, ahorro = ing - totG - totI, capacidad = ing - totG;
+  PRES_MEDIANA = mediana;
+  $('presTot').innerHTML = `<div><span>Esenciales</span><b>${fmt(ess)}</b></div><div><span>+ No esenciales</span><b>${fmt(noess)}</b></div>${Math.abs(otros) >= 0.5 ? `<div title="Grupos fuera del cálculo de esencial / no esencial (Otros…)"><span>+ Otros</span><b>${fmt(otros)}</b></div>` : ''}<div><span>+ Inversión</span><b>${fmt(totI)}</b></div><div class="${ahorro >= 0 ? 'aho' : 'neg'}"><span>+ Para ahorrar</span><b>${fmt(ahorro)}</b></div><div class="tot"><span>= Ingresos al mes</span><b>${fmt(ing)}</b><small>${+P.ingreso_mensual ? 'los que has puesto abajo' : 'mediana de los últimos 6 meses'}</small></div>
+    <p class="prescap">Capacidad de ahorro (ingresos − gastos): <b>${fmt(capacidad)}</b> al mes, el ${ing ? Math.round(capacidad / ing * 100) : 0} % de lo que ingresas · de eso, ${fmt(totI)} a inversión y ${ahorro >= 0 ? fmt(ahorro) + ' para ahorrar' : '<span class="bad">te faltan ' + fmt(-ahorro) + ' para cubrir la inversión</span>'}.</p>`;
   if (sinConfig) return;
   if (!presAbiertos) presAbiertos = new Set(gGasto.filter(g => subsCon(g).length).map(g => g.nombre));
   $('presConfig').innerHTML = gGasto.map(g => {
@@ -819,6 +828,7 @@ function renderPresupuesto(sinConfig) {
       <div class="psubs"${ab ? '' : ' hidden'}>${g.sub.map(c => `<label class="prow sub"><span>${c}</span><input data-ps="${c}" data-g="${g.nombre}" type="number" min="0" placeholder="—" value="${P.subs[c] != null ? P.subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="${g.nombre}">${resumenReparto(g)}</div></div>` : ''}</div>`;
   }).join('') + `
     <label class="prow sep"><span><b>Inversión objetivo al mes</b></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}"></label>
+    <label class="prow"><span><b>Ingresos al mes</b> <small class="muted">vacío = mediana de 6 meses</small></span><input data-p="ingreso_mensual" type="number" placeholder="${Math.round(PRES_MEDIANA)}" value="${+P.ingreso_mensual || ''}"></label>
     ${metaColchon() < 0 ? `<label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>` : ''}`;
 }
 const COLORES_META = ['s1', 's3', 's4', 's2', 's5', 's7', 's10', 's8'];

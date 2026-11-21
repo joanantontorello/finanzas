@@ -238,7 +238,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2025-04-01,Histórico,(histórico 2025) Gasto COMIDA,-7.4,-7.4,Gasto,Vivienda y suministros,Supermercado,Personal,revisado
 2025-04-01,Histórico,(histórico 2025) Gasto TRANSPORTE,-44.0,-44.0,Gasto,Transporte,Transporte público,Personal,revisado
 2025-04-01,Histórico,(histórico 2025) Gasto OCIO,-11.45,-11.45,Gasto,Ocio y vida social,Planes y ocio,Personal,revisado
-2025-04-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-112.0,-112.0,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,revisado
+2025-04-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-112.0,-112.0,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,revisado
 2025-05-01,Histórico,(histórico 2025) Gasto DEPORTE,-16.0,-16.0,Gasto,Salud y deporte,Gimnasio,Personal,revisado
 2025-05-01,Histórico,(histórico 2025) Ingreso REEMBOLSOS,8.0,8.0,Reembolso,Reembolsos,Reembolsos,Personal,revisado
 2025-05-01,Histórico,(histórico 2025) Ingreso PAGA,65.0,65.0,Ingreso,Ingresos,Otros ingresos,Personal,revisado
@@ -302,7 +302,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2025-05-01,Histórico,(histórico 2025) Ingreso INTERESES,1.19,1.19,Ingreso,Ingresos,Dividendos e intereses,Personal,revisado
 2025-05-01,Histórico,(histórico 2025) Ingreso SUELDO,343.52,343.52,Ingreso,Ingresos,Trabajo,Trabajo,revisado
 2025-05-01,Histórico,(histórico 2025) Gasto TRANSPORTE,-30.0,-30.0,Gasto,Transporte,Transporte público,Personal,revisado
-2025-05-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Empresa,Cuota de autónomos,Trabajo,revisado
+2025-05-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Impuestos,Cuota de autónomos,Trabajo,revisado
 2025-06-01,Histórico,(histórico 2025) Gasto IMPREVISTOS,-16.58,-16.58,Gasto,Otros,Imprevistos,Personal,revisado
 2025-06-01,Histórico,(histórico 2025) Gasto CAFÉ,-3.45,-3.45,Gasto,Hábitos diarios,Café,Personal,revisado
 2025-06-01,Histórico,(histórico 2025) Gasto COMIDA,-24.6,-24.6,Gasto,Vivienda y suministros,Supermercado,Personal,revisado
@@ -359,7 +359,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2025-06-01,Histórico,(histórico 2025) Ingreso INTERESES,0.52,0.52,Ingreso,Ingresos,Dividendos e intereses,Personal,revisado
 2025-06-01,Histórico,(histórico 2025) Ingreso SUELDO,244.27,244.27,Ingreso,Ingresos,Trabajo,Trabajo,revisado
 2025-06-01,Histórico,(histórico 2025) Ingreso REEMBOLSOS,534.0,534.0,Reembolso,Reembolsos,Reembolsos,Personal,revisado
-2025-06-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Empresa,Cuota de autónomos,Trabajo,revisado
+2025-06-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Impuestos,Cuota de autónomos,Trabajo,revisado
 2025-06-01,Histórico,(histórico 2025) Gasto TRANSPORTE,-26.8,-26.8,Gasto,Transporte,Transporte público,Personal,revisado
 2025-07-01,Histórico,(histórico 2025) Gasto CITAS/PAREJA,-8.05,-8.05,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
 2025-07-01,Histórico,(histórico 2025) Gasto ALQUILER,-14.21,-14.21,Gasto,Vivienda y suministros,Alquiler,Personal,revisado
@@ -389,7 +389,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2025-07-01,Histórico,(histórico 2025) Gasto COMIDA,-11.06,-11.06,Gasto,Vivienda y suministros,Supermercado,Personal,revisado
 2025-07-01,Histórico,(histórico 2025) Gasto DEPORTE,-5.29,-5.29,Gasto,Salud y deporte,Gimnasio,Personal,revisado
 2025-07-01,Histórico,(histórico 2025) Gasto TRABAJO,-2225.72,-2225.72,Gasto,Empresa,Herramientas de trabajo,Trabajo,revisado
-2025-07-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-1234.31,-1234.31,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,revisado
+2025-07-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-1234.31,-1234.31,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,revisado
 2025-07-01,Histórico,(histórico 2025) Gasto CAFÉ,-6.43,-6.43,Gasto,Hábitos diarios,Café,Personal,revisado
 2025-07-01,Histórico,(histórico 2025) Gasto CITAS/PAREJA,-19.75,-19.75,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
 2025-07-01,Histórico,(histórico 2025) Gasto CAFÉ,-15.42,-15.42,Gasto,Hábitos diarios,Café,Personal,revisado
@@ -418,13 +418,13 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2025-07-01,Histórico,(histórico 2025) Gasto COMIDA,-31.43,-31.43,Gasto,Vivienda y suministros,Supermercado,Personal,revisado
 2025-07-01,Histórico,(histórico 2025) Gasto COMIDA,-36.53,-36.53,Gasto,Vivienda y suministros,Supermercado,Personal,revisado
 2025-07-01,Histórico,(histórico 2025) Gasto ALQUILER,-104.5,-104.5,Gasto,Vivienda y suministros,Alquiler,Personal,revisado
-2025-07-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Empresa,Cuota de autónomos,Trabajo,revisado
+2025-07-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Impuestos,Cuota de autónomos,Trabajo,revisado
 2025-08-01,Histórico,(histórico 2025) Ingreso REEMBOLSOS,70.0,70.0,Reembolso,Reembolsos,Reembolsos,Personal,revisado
 2025-08-01,Histórico,(histórico 2025) Gasto TRANSPORTE,-12.07,-12.07,Gasto,Transporte,Transporte público,Personal,revisado
 2025-08-01,Histórico,(histórico 2025) Gasto CAFÉ,-3.0,-3.0,Gasto,Hábitos diarios,Café,Personal,revisado
 2025-08-01,Histórico,(histórico 2025) Gasto TRABAJO,-20.89,-20.89,Gasto,Empresa,Herramientas de trabajo,Trabajo,revisado
 2025-08-01,Histórico,(histórico 2025) Gasto TRANSPORTE,-24.2,-24.2,Gasto,Transporte,Transporte público,Personal,revisado
-2025-08-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-254.1,-254.1,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,revisado
+2025-08-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-254.1,-254.1,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,revisado
 2025-08-01,Histórico,(histórico 2025) Gasto ALQUILER,-326.0,-326.0,Gasto,Vivienda y suministros,Alquiler,Personal,revisado
 2025-08-01,Histórico,(histórico 2025) Gasto IMPREVISTOS,-28.37,-28.37,Gasto,Otros,Imprevistos,Personal,revisado
 2025-08-01,Histórico,(histórico 2025) Ingreso SUELDO,3076.0,3076.0,Ingreso,Ingresos,Trabajo,Trabajo,revisado
@@ -459,7 +459,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2025-08-01,Histórico,(histórico 2025) Gasto OCIO,-37.0,-37.0,Gasto,Ocio y vida social,Planes y ocio,Personal,revisado
 2025-08-01,Histórico,(histórico 2025) Gasto TRANSPORTE,-20.26,-20.26,Gasto,Transporte,Transporte público,Personal,revisado
 2025-08-01,Histórico,(histórico 2025) Gasto CITAS/PAREJA,-32.5,-32.5,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
-2025-08-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Empresa,Cuota de autónomos,Trabajo,revisado
+2025-08-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Impuestos,Cuota de autónomos,Trabajo,revisado
 2025-08-01,Histórico,(histórico 2025) Ingreso PAGA,20.0,20.0,Ingreso,Ingresos,Otros ingresos,Personal,revisado
 2025-09-01,Histórico,(histórico 2025) Gasto TRABAJO,-38.61,-38.61,Gasto,Empresa,Herramientas de trabajo,Trabajo,revisado
 2025-09-01,Histórico,(histórico 2025) Ingreso PAGA,60.0,60.0,Ingreso,Ingresos,Otros ingresos,Personal,revisado
@@ -503,13 +503,13 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2025-09-01,Histórico,(histórico 2025) Gasto OCIO,-10.2,-10.2,Gasto,Ocio y vida social,Planes y ocio,Personal,revisado
 2025-09-01,Histórico,(histórico 2025) Gasto COMIDA,-31.97,-31.97,Gasto,Vivienda y suministros,Supermercado,Personal,revisado
 2025-09-01,Histórico,(histórico 2025) Ingreso REEMBOLSOS,591.7,591.7,Reembolso,Reembolsos,Reembolsos,Personal,revisado
-2025-09-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Empresa,Cuota de autónomos,Trabajo,revisado
+2025-09-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Impuestos,Cuota de autónomos,Trabajo,revisado
 2025-10-01,Histórico,(histórico 2025) Ingreso PAGA,80.0,80.0,Ingreso,Ingresos,Otros ingresos,Personal,revisado
 2025-10-01,Histórico,(histórico 2025) Gasto TRABAJO,-88.53,-88.53,Gasto,Empresa,Herramientas de trabajo,Trabajo,revisado
 2025-10-01,Histórico,(histórico 2025) Gasto DEPORTE,-55.0,-55.0,Gasto,Salud y deporte,Gimnasio,Personal,revisado
 2025-10-01,Histórico,(histórico 2025) Gasto IMPREVISTOS,-86.41,-86.41,Gasto,Otros,Imprevistos,Personal,revisado
 2025-10-01,Histórico,(histórico 2025) Gasto TRABAJO,-580.0,-580.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,revisado
-2025-10-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-178.59,-178.59,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,revisado
+2025-10-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-178.59,-178.59,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,revisado
 2025-10-01,Histórico,(histórico 2025) Gasto DEPORTE,-20.0,-20.0,Gasto,Salud y deporte,Gimnasio,Personal,revisado
 2025-10-01,Histórico,(histórico 2025) Gasto COMIDA,-15.0,-15.0,Gasto,Vivienda y suministros,Supermercado,Personal,revisado
 2025-10-01,Histórico,(histórico 2025) Gasto TRABAJO,-25.37,-25.37,Gasto,Empresa,Herramientas de trabajo,Trabajo,revisado
@@ -542,7 +542,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2025-10-01,Histórico,(histórico 2025) Ingreso REEMBOLSOS,60.0,60.0,Reembolso,Reembolsos,Reembolsos,Personal,revisado
 2025-10-01,Histórico,(histórico 2025) Gasto TRABAJO,-17.0,-17.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,revisado
 2025-10-01,Histórico,(histórico 2025) Gasto TRANSPORTE,-20.0,-20.0,Gasto,Transporte,Transporte público,Personal,revisado
-2025-10-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Empresa,Cuota de autónomos,Trabajo,revisado
+2025-10-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Impuestos,Cuota de autónomos,Trabajo,revisado
 2025-11-01,Histórico,(histórico 2025) Gasto TRABAJO,-124.65,-124.65,Gasto,Empresa,Herramientas de trabajo,Trabajo,revisado
 2025-11-01,Histórico,(histórico 2025) Gasto DEPORTE,-55.0,-55.0,Gasto,Salud y deporte,Gimnasio,Personal,revisado
 2025-11-01,Histórico,(histórico 2025) Gasto DEPORTE,-51.0,-51.0,Gasto,Salud y deporte,Gimnasio,Personal,revisado
@@ -581,7 +581,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2025-11-01,Histórico,(histórico 2025) Gasto DEPORTE,-25.7,-25.7,Gasto,Salud y deporte,Gimnasio,Personal,revisado
 2025-11-01,Histórico,(histórico 2025) Gasto DEPORTE,-20.0,-20.0,Gasto,Salud y deporte,Gimnasio,Personal,revisado
 2025-11-01,Histórico,(histórico 2025) Gasto TRABAJO,-101.49,-101.49,Gasto,Empresa,Herramientas de trabajo,Trabajo,revisado
-2025-11-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Empresa,Cuota de autónomos,Trabajo,revisado
+2025-11-01,Histórico,(histórico 2025) Gasto IMPUESTOS,-87.61,-87.61,Gasto,Impuestos,Cuota de autónomos,Trabajo,revisado
 2025-12-01,Histórico,(histórico 2025) Gasto CITAS/PAREJA,-34.7,-34.7,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
 2025-12-01,Histórico,(histórico 2025) Gasto COMIDA,-73.43,-73.43,Gasto,Vivienda y suministros,Supermercado,Personal,revisado
 2025-12-01,Histórico,(histórico 2025) Gasto CAFÉ,-2.3,-2.3,Gasto,Hábitos diarios,Café,Personal,revisado
@@ -690,7 +690,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-01-28,Revolut,[Topup] Money added via BIZUM,13.11,13.11,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-01-29,Revolut,[Card Payment] Supermercats Sapa,-5.74,-5.74,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-01-30,Revolut,[Card Payment] Marina Port Vell,-11.4,-11.4,Gasto,Transporte,"Gasolina, peajes y parking",Personal,auto
-2026-01-30,BBVA,Adeudo de cuota de la seguridad social | N 2026028002057013 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-01-30,BBVA,Adeudo de cuota de la seguridad social | N 2026028002057013 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-01-31,Revolut,[Card Payment] Amazon Prime,-49.9,-49.9,Gasto,Suscripciones,Streaming de vídeo,Personal,auto
 2026-01-31,Revolut,[Card Payment] Intermodalidad Levante,-34.0,-34.0,Gasto,Transporte,Transporte público,Personal,auto
 2026-01-31,Trade Republic,"[Operar] Buy trade XF000ETH0019 Ethereum, quantity: 0.221534",-501.08,-501.08,Inversion,Inversiones,Criptomonedas,Personal,auto
@@ -745,7 +745,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-02-25,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-02-27,Revolut,[Transfer] Bizum payment to: Kateryna S.,-25.7,-25.7,Gasto,Otros,Ajustes con Kate,Personal,auto
 2026-02-27,Revolut,[Card Payment] Rspiro Cafeteria,-5.1,-5.1,Gasto,Hábitos diarios,Café,Personal,auto
-2026-02-27,BBVA,Adeudo de cuota de la seguridad social | N 2026056001923845 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-02-27,BBVA,Adeudo de cuota de la seguridad social | N 2026056001923845 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-02-28,Revolut,"[Card Payment] New York Burger, P. Castellana 89",-30.8,-30.8,Gasto,Ocio y vida social,Citas y pareja,Personal,auto
 2026-02-28,Revolut,[Card Payment] Sqrups Principe Pio,-1.84,-1.84,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-02-28,Revolut,[Card Payment] Carrefour,-4.36,-4.36,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -807,7 +807,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-03-19,Trade Republic,"[Operar] Buy trade CA6445351068 NEW GOLD INC., quantity: 61.0",-493.39,-493.39,Inversion,Inversiones,Acciones,Personal,auto
 2026-03-19,Trade Republic,[Transacción con tarjeta] Madrid coffee lovers s,-2.9,-2.9,Gasto,Hábitos diarios,Café,Personal,auto
 2026-03-20,Revolut,[Topup] Apple Pay top-up by *5233,300.0,300.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-03-20,Revolut,[Transfer] Agencia Tributaria (AEAT),-121.39,-121.39,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
+2026-03-20,Revolut,[Transfer] Agencia Tributaria (AEAT),-121.39,-121.39,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,auto
 2026-03-20,Revolut,[Card Payment] Apple,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
 2026-03-20,Revolut,[Card Payment] Decathlon,-33.98,-33.98,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-03-20,Revolut,[Card Payment] Victoria,-10.6,-10.6,Gasto,Otros,Imprevistos,Personal,auto
@@ -857,7 +857,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-03-31,Trade Republic,"[Operar] Buy trade IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 3",-424.36,-424.36,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-03-31,Trade Republic,[Transacción con tarjeta] VUELING AIRLINES,-235.17,-235.17,Gasto,Transporte,Vuelos,Personal,auto
 2026-03-31,Trade Republic,[Transacción con tarjeta] 11125 MADRID FUENCARRAL 4,-25.99,-25.99,Gasto,Ocio y vida social,Ropa,Personal,auto
-2026-03-31,BBVA,Adeudo de cuota de la seguridad social | N 2026086002331381 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-03-31,BBVA,Adeudo de cuota de la seguridad social | N 2026086002331381 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-04-01,Revolut,[Transfer] Bizum payment to: Chenmin S.,-2.7,-2.7,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
 2026-04-01,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-04-01,Trade Republic,[Bonificación] Cash reward allocation,6.51,6.51,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
@@ -928,7 +928,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-04-19,Trade Republic,[Transacción con tarjeta] SQ *NOVELA BCN,-14.8,-14.8,Gasto,Hábitos diarios,Café,Personal,auto
 2026-04-19,Trade Republic,[Transacción con tarjeta] Gate Gourmet Spain IRYO,-7.5,-7.5,Gasto,Transporte,Trenes y AVE,Personal,auto
 2026-04-19,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
-2026-04-20,Revolut,[Transfer] Agencia Tributaria (AEAT),-121.8,-121.8,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
+2026-04-20,Revolut,[Transfer] Agencia Tributaria (AEAT),-121.8,-121.8,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,auto
 2026-04-20,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-04-20,Revolut,[Card Payment] Apple,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
 2026-04-20,Revolut,[Card Payment] Glovo,-67.15,-67.15,Gasto,Hábitos diarios,Comida a domicilio,Personal,auto
@@ -936,7 +936,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-04-20,Trade Republic,[Transacción con tarjeta] KAPYBAR,-8.9,-8.9,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
 2026-04-20,Trade Republic,[Transferencia] Outgoing transfer for Joan Anton Torelló Lopez (ES7501820238400201914723),-900.0,-900.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-04-20,Trade Republic,"[Operar] Sell trade LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 10.2",70.93,70.93,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-04-20,BBVA,Pago de impuestos | Nrc 1306448293516s7mr2qt1a,-864.23,-864.23,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
+2026-04-20,BBVA,Pago de impuestos | Nrc 1306448293516s7mr2qt1a,-864.23,-864.23,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,auto
 2026-04-20,BBVA,Transferencia recibida | T1 2026,900.0,900.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-04-21,Revolut,[Card Payment] Syra Coffee,-15.2,-15.2,Gasto,Hábitos diarios,Café,Personal,auto
 2026-04-21,Revolut,[Card Payment] Alimentacion,-4.45,-4.45,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -964,7 +964,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-04-30,Trade Republic,[Transacción con tarjeta] NOPARRO FILMS SLU,-11.0,-11.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-04-30,Trade Republic,[Transacción con tarjeta] LOS CANDILES DE VINATEROS,-4.0,-4.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-04-30,Trade Republic,[Transacción con tarjeta] LUCCIANOS MADRID,-4.5,-4.5,Gasto,Hábitos diarios,Café,Personal,auto
-2026-04-30,BBVA,Adeudo de cuota de la seguridad social | N 2026118002439168 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-04-30,BBVA,Adeudo de cuota de la seguridad social | N 2026118002439168 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-05-01,Trade Republic,[Bonificación] Cash reward allocation,5.57,5.57,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-05-01,Trade Republic,[Interés] Interest payment,10.51,10.51,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-05-02,Revolut,[Topup] Apple Pay top-up by *5233,300.0,300.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
@@ -1050,7 +1050,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-05-28,Trade Republic,[Transacción con tarjeta] ALCAMPO MORATALAZ,-29.29,-29.29,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-05-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-29,Trade Republic,[Transacción con tarjeta] MERCADONA AVDA DEMOCRACIA,-7.35,-7.35,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-05-29,BBVA,Adeudo de cuota de la seguridad social | N 2026147002318498 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-05-29,BBVA,Adeudo de cuota de la seguridad social | N 2026147002318498 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-05-30,Trade Republic,[Transacción con tarjeta] CAFE RAICES,-6.0,-6.0,Gasto,Hábitos diarios,Café,Personal,auto
 2026-05-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-30,Trade Republic,[Transacción con tarjeta] KUBOKING MARROQUINA,-16.0,-16.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
@@ -1155,7 +1155,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-22,Revolut,[Topup] Money added via BIZUM,47.2,47.2,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-06-22,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-34.28,-34.28,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-06-22,Revolut,[Transfer] Bizum payment to: Kateryna S.,-13.9,-13.9,Gasto,Otros,Ajustes con Kate,Personal,auto
-2026-06-22,Revolut,[Transfer] Agencia Tributaria (AEAT),-122.62,-122.62,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
+2026-06-22,Revolut,[Transfer] Agencia Tributaria (AEAT),-122.62,-122.62,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,auto
 2026-06-22,Revolut,[Card Payment] Boheme,-3.2,-3.2,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-22,Trade Republic,[Transacción con tarjeta] SHARE.MYCHEFTOOL.COM,-106.0,-106.0,Gasto,Hábitos diarios,Comida a domicilio,Personal,auto
 2026-06-22,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
@@ -1194,7 +1194,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-29,Trade Republic,[Transacción con tarjeta] CHURRERIA LA MEJOR,-5.6,-5.6,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-29,Trade Republic,"[Transacción con tarjeta] DEPARTMENT OF IMMIGRATION, 52,08 $, exchange rate: 0,8807604, ECB rate: 0,8767315448, markup: 0,45953122 %",-45.87,-45.87,Gasto,Viajes,Comida y gastos en destino,Personal,auto
-2026-06-30,BBVA,Adeudo de cuota de la seguridad social | N 2026177002285923 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-06-30,BBVA,Adeudo de cuota de la seguridad social | N 2026177002285923 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-06-30,Revolut,[Card Payment] Mood Brunch,-3.4,-3.4,Gasto,Hábitos diarios,Açaí y brunch,Personal,auto
 2026-06-30,Revolut,[Card Chargeback] Refund from Higgsfield Inc. claim,243.0,243.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-06-30,Trade Republic,[Transacción con tarjeta] METRO BARCELONA,-3.9,-3.9,Gasto,Transporte,Transporte público,Personal,auto
@@ -1293,7 +1293,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-07-20,Conjunta,[Card Payment] Lbk,-12.09,-6.04,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-07-20,Conjunta,[Card Payment] Cartridge World (pvt) L,-7.58,-3.79,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-07-20,Conjunta,[Card Payment] ClearPoint Restaurant,-0.4,-0.2,Gasto,Viajes,Comida y gastos en destino,Personal,auto
-2026-07-20,Revolut,[Transfer] Agencia Tributaria (AEAT),-41.82,-41.82,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
+2026-07-20,Revolut,[Transfer] Agencia Tributaria (AEAT),-41.82,-41.82,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,auto
 2026-07-20,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-07-20,Revolut,[Topup] Apple Pay top-up by *5233,500.0,500.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-07-20,Trade Republic,"[Operar] Sell trade LU0290358497 Xtrackers II - Xtrackers II EUR Overnight Rate Swap UCITS ETF 1C, quantity: 4.031148",602.37,602.37,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
@@ -1371,7 +1371,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-07-31,BBVA,Com. ret. efec. a debito con tarj. en caj. aut. | 4603321058244685,3.13,3.13,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-07-31,BBVA,Com. ret. efec. a debito con tarj. en caj. aut. | 4603321058244685,4.71,4.71,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-07-31,BBVA,Com. ret. efec. a debito con tarj. en caj. aut. | 4603321058244685,4.71,4.71,Gasto,Viajes,Comida y gastos en destino,Personal,auto
-2026-07-31,BBVA,Adeudo de cuota de la seguridad social | N 2026210001274850 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-07-31,BBVA,Adeudo de cuota de la seguridad social | N 2026210001274850 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-07-31,Conjunta,[Card Payment] Iramalingam Pradeepan My,-1.04,-0.52,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-07-31,Conjunta,[Card Payment] Hideaway Resort,-20.72,-10.36,Gasto,Viajes,Alojamiento,Personal,auto
 2026-07-31,Conjunta,[Card Payment] Home Need Super Market,-1.07,-0.54,Gasto,Viajes,Comida y gastos en destino,Personal,auto
@@ -1514,7 +1514,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-08-29,Revolut,[Card Payment] Casa do Açaí Brunch & Coffee,-11.7,-11.7,Gasto,Hábitos diarios,Açaí y brunch,Personal,auto
 2026-08-30,Revolut,[Card Payment] Faeem Alimentacion,-5.0,-5.0,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-08-30,Trade Republic,[Transacción con tarjeta] ARNAL2 COFFEE,-38.2,-38.2,Gasto,Hábitos diarios,Café,Personal,auto
-2026-08-31,BBVA,Adeudo de cuota de la seguridad social | N 2026239001594611 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-08-31,BBVA,Adeudo de cuota de la seguridad social | N 2026239001594611 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-08-31,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-01,Conjunta,[Topup] Apple Pay top-up by *5233,800.0,800.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-01,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,800.0,800.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
@@ -1536,7 +1536,6 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-06,Revolut,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-06,Revolut,[Topup] Money added via BIZUM,353.0,353.0,Reembolso,Otros,Ajustes con Kate,Personal,revisado
 2026-09-06,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
-2026-09-06,Revolut,[Card Payment] Arabay Coffee Roasters,-2.3,-2.3,Gasto,Hábitos diarios,Café,Personal,auto
 2026-09-07,Conjunta,[Card Payment] Mercadona,-70.89,-35.45,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-09-07,Revolut,[Card Payment] circulodejiujitsu.com,-100.0,-100.0,Gasto,Salud y deporte,Jiu-jitsu,Personal,auto
 2026-09-07,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
@@ -1545,7 +1544,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-07,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-08,Revolut,[Card Payment] Carrefour,-3.6,-3.6,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-09-08,Trade Republic,"[Transferencia] Incoming transfer from FIDELIO, SLU (AD3700010000419001600100)",3590.0,3590.0,Ingreso,Ingresos,Trabajo,Trabajo,auto
-2026-09-09,BBVA,Pago de impuestos | Nrc 082622378393rxdhntewz9,-146.65,-146.65,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
+2026-09-09,BBVA,Pago de impuestos | Nrc 082622378393rxdhntewz9,-146.65,-146.65,Gasto,Impuestos,IRPF e IVA trimestral,Trabajo,auto
 2026-09-09,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.69809",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-09-09,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-09,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-17.99,-17.99,Gasto,Suscripciones,Streaming de vídeo,Trabajo,auto
@@ -1597,7 +1596,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-20,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-12.11,-12.11,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-20,Revolut,[Card Payment] Samba Global Fuencarra,-4.9,-4.9,Gasto,Ocio y vida social,Restaurantes,Personal,revisado
 2026-09-20,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
-2026-09-21,BBVA,Pago de impuestos | Nrc. 082612591968yxvs3rpssf,-108.46,-108.46,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
+2026-09-21,BBVA,Pago de impuestos | Nrc. 082612591968yxvs3rpssf,-108.46,-108.46,Gasto,Impuestos,Deuda Hacienda,Trabajo,auto
 2026-09-21,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,29.5,29.5,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-09-21,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to GC RE OCTOPUS ENERGY (FR7617118820080000001536203),-59.01,-29.5,Gasto,Vivienda y suministros,Electricidad,Personal,revisado
 2026-09-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -1631,7 +1630,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-29,Trade Republic,[Transacción con tarjeta] OUIGO Espana,-33.0,-33.0,Gasto,Transporte,Trenes y AVE,Personal,auto
 2026-09-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,revisado
 2026-09-29,Trade Republic,"[Operar] Buy trade US30303M1027 META PLATF. A DL-,000006, quantity: 0.158353",-101.0,-101.0,Inversion,Inversiones,Acciones,Personal,auto
-2026-09-30,BBVA,Adeudo de cuota de la seguridad social | N 2026271002702848 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-09-30,BBVA,Adeudo de cuota de la seguridad social | N 2026271002702848 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-09-30,Conjunta,[Transfer] To Diana Aracil Diana,-80.0,-40.0,Gasto,Salud y deporte,Psicología,Personal,revisado
 2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
@@ -1696,7 +1695,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-19,Conjunta,[Transfer] Gc Re Octopus Energy,-62.96,-31.48,Gasto,Vivienda y suministros,Electricidad,Personal,auto
 2026-10-19,Trade Republic,[Transacción con tarjeta] DECATHLON FUENCARRAL,-5.99,-5.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-10-19,Trade Republic,[Transacción con tarjeta] ESPASA CALPE S A,-11.95,-11.95,Gasto,Formación,Libros,Personal,auto
-2026-10-20,BBVA,Pago de impuestos | Nrc. 082612785466hmhlm8kp1a,-108.82,-108.82,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
+2026-10-20,BBVA,Pago de impuestos | Nrc. 082612785466hmhlm8kp1a,-108.82,-108.82,Gasto,Impuestos,Deuda Hacienda,Trabajo,auto
 2026-10-20,Conjunta,[Card Payment] Alcampo,-41.27,-20.64,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-21,Conjunta,[Card Payment] Dia,-3.34,-1.67,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -1728,7 +1727,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-0.17,-0.09,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-10-29,Trade Republic,"[Operar] Buy trade US0231351067 AMAZON.COM INC. DL-,01, quantity: 0.489356",-101.07,-101.07,Inversion,Inversiones,Acciones,Personal,auto
 2026-10-30,BBVA,Google one | Pago con tarjeta,-19.99,-19.99,Gasto,Suscripciones,Almacenamiento,Personal,auto
-2026-10-30,BBVA,Adeudo de cuota de la seguridad social | N 2026301001494998 TGSS. COTIZACION 005 R.E.AUTONOMOS,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
+2026-10-30,BBVA,Adeudo de cuota de la seguridad social | N 2026301001494998 TGSS. COTIZACION 005 R.E.AUTONOMOS,-88.56,-88.56,Gasto,Impuestos,Cuota de autónomos,Trabajo,auto
 2026-10-30,Conjunta,[Topup] Apple Pay top-up by *5233,200.0,200.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-10-30,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,200.0,200.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-10-30,Conjunta,[Transfer] To Diana Aracil Diana · Ref: Joan y Kate,-360.0,-180.0,Gasto,Salud y deporte,Psicología,Personal,revisado
@@ -1799,7 +1798,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-11-15,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,revisado
 2026-11-15,Trade Republic,[Transacción con tarjeta] ANTHROPIC* CLAUDE SUB,-90.0,-90.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-11-15,Conjunta,[Card Payment] Cinesa,-27.8,-13.9,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
-2026-11-16,Trade Republic,[Transacción con tarjeta] CAFE DEL ART,-8.2,-8.2,Gasto,Hábitos diarios,Café,Personal,auto
+2026-11-16,Trade Republic,[Transacción con tarjeta] CAFE DEL ART,-8.2,-8.2,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
 2026-11-16,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 6.948304",-50.0,-50.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-11-16,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.296376",-50.0,-50.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-11-17,Trade Republic,[Transacción con tarjeta] MERCADONA MANUEL MACHADO,-65.3,-65.3,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1822,6 +1821,6 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-11-19,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO · Ref: To JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-19,Conjunta,[Transfer] Gc Re Octopus Energy,-59.01,-29.5,Gasto,Vivienda y suministros,Electricidad,Personal,auto
 2026-11-19,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ · Ref: From Joan Anton T,100.0,100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-11-20,BBVA,Pago de impuestos | Nrc. 552611147639mjwc22dka0,-109.19,-109.19,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
+2026-11-20,BBVA,Pago de impuestos | Nrc. 552611147639mjwc22dka0,-109.19,-109.19,Gasto,Impuestos,Deuda Hacienda,Trabajo,auto
 2026-11-20,Trade Republic,[Transferencia] Incoming transfer from Kateryna Soltuchenko (ES2615860001472321062211),625.0,625.0,Reembolso,Formación,Mentoría y cursos,Personal,revisado
 2026-11-21,Revolut,[Transfer] Bizum payment to: Eva Maria L.T. · Ref: No me hagas transferencias que ahora ñas he visto,-50.0,-50.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto

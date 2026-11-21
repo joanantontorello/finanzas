@@ -50,28 +50,30 @@
    "esencial": true,
    "ambito": "Trabajo",
    "sub": [
-    "Cuota de autónomos",
-    "IRPF e IVA trimestral",
     "Gestoría",
     "Herramientas de trabajo"
    ],
-   "roles": {
-    "Cuota de autónomos": "impuesto",
-    "IRPF e IVA trimestral": "impuesto"
-   },
    "color": "s7"
   },
   "Préstamos y deudas": {
    "esencial": true,
    "sub": [
-    "Deuda Hacienda",
     "Financiaciones",
     "Otras deudas"
    ],
-   "ambito_sub": {
-    "Deuda Hacienda": "Trabajo"
-   },
+   "color": "s9"
+  },
+  "Impuestos": {
+   "esencial": "impuestos",
+   "ambito": "Trabajo",
+   "sub": [
+    "Cuota de autónomos",
+    "IRPF e IVA trimestral",
+    "Deuda Hacienda"
+   ],
    "roles": {
+    "Cuota de autónomos": "impuesto",
+    "IRPF e IVA trimestral": "impuesto",
     "Deuda Hacienda": "deuda"
    },
    "color": "s11"

@@ -138,6 +138,27 @@ def calcular(rows, flat, roles, root, hoy=None):
             saldos[x["cuenta"]].append((x["fecha"], x["saldo"], x["id"]))
     for c in saldos:
         saldos[c].sort(key=lambda t: (t[0], t[2]))  # por fecha y orden del extracto (no por saldo)
+    # Saldo de cada cuenta a una fecha = saldo de apertura + suma de sus movimientos hasta ese día. No se usa «el último
+    # saldo del extracto» porque, con varios movimientos el mismo día, el orden de los extractos no siempre es el real
+    # (en julio la conjunta daba 937 € en vez de 19 €). La apertura es la que cuadra con la mayoría de saldos del banco.
+    from collections import Counter
+    apertura, movs_cta = {}, defaultdict(list)
+    for x in sorted((x for x in rows if x["cuenta"] in CUENTAS_REALES), key=lambda x: (x["fecha"], x["id"])):
+        movs_cta[x["cuenta"]].append((x["fecha"], x["importe"], x["saldo"]))
+    for c, ms in movs_cta.items():
+        cum, votos = 0.0, Counter()
+        for f, imp, sal in ms:
+            cum += imp
+            if sal is not None:
+                votos[round(sal - cum, 2)] += 1
+        if votos:
+            apertura[c] = votos.most_common(1)[0][0]
+
+    def saldo_cuenta(c, fin_s):
+        ms = movs_cta.get(c)
+        if c not in apertura or not ms or ms[0][0] > fin_s:
+            return None
+        return apertura[c] + sum(imp for f, imp, _ in ms if f <= fin_s)
     import cartera as cartera_mod
     cart = cartera_mod.Cartera(rows, root)
     huchas = sorted((x["fecha"], -x["importe"] * (0.5 if x["cuenta"] == "Conjunta" else 1.0))
@@ -160,16 +181,15 @@ def calcular(rows, flat, roles, root, hoy=None):
         fin_s = fin.isoformat()
         caja, detalle_caja = 0.0, {}
         for c in CUENTAS_REALES:
-            previos = [s for f, s, _ in saldos.get(c, []) if f <= fin_s]
-            if previos:
-                v = previos[-1] * (0.5 if c == "Conjunta" else 1.0)
+            sc = saldo_cuenta(c, fin_s)
+            if sc is not None:
+                v = sc * (0.5 if c == "Conjunta" else 1.0)
                 detalle_caja[c + (" (tu 50 %)" if c == "Conjunta" else "")] = r2(v)
                 caja += v
         if not detalle_caja:
             caja = None
-        hucha = acumulado(huchas, fin_s)
-        coste = acumulado(inversiones, fin_s)
-        inv = cart.valor(fin_s)[0]
+        hucha = max(0.0, acumulado(huchas, fin_s))  # los intereses de la hucha no se registran: no puede quedar en negativo
+        inv, coste = cart.valor(fin_s)
         deuda = 0.0
         for d in deudas:
             if d["desde"] <= fin_s:
@@ -265,14 +285,14 @@ def calcular(rows, flat, roles, root, hoy=None):
             c = dias[-1][1]
             velas.append({"mes": mes, "etiqueta": e["etiqueta"], "o": r2(o), "h": r2(max(vals)), "l": r2(min(vals)), "c": r2(c),
                           "caja": r2(dias[-1][2] + dias[-1][3]), "inversiones": r2(dias[-1][4]), "pasivos": r2(dias[-1][5]),
-                          "aportado": r2(acumulado(inversiones, dias[-1][0])), "en_curso": e["en_curso"]})
+                          "aportado": r2(cart.valor(dias[-1][0])[1]), "en_curso": e["en_curso"]})
             previo = c
         elif b.get("patrimonio") is not None:
             c = b["patrimonio"]
             o = previo if previo is not None else c
             velas.append({"mes": mes, "etiqueta": e["etiqueta"], "o": r2(o), "h": r2(max(o, c)), "l": r2(min(o, c)), "c": r2(c),
                           "caja": b["caja"], "inversiones": b["inversiones"], "pasivos": b["pasivos"],
-                          "aportado": r2(acumulado(inversiones, e["fin"])), "estimado": True, "en_curso": e["en_curso"]})
+                          "aportado": r2(cart.valor(e["fin"])[1]), "estimado": True, "en_curso": e["en_curso"]})
             previo = c
     out["patrimonio"] = {
         "velas": velas,

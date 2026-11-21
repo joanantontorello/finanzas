@@ -6,15 +6,16 @@
     "Vivienda y suministros": 900,
     "Salud y deporte": 518,
     "Transporte": 20,
-    "Empresa": 259,
-    "Préstamos y deudas": 210,
+    "Empresa": 170.44,
+    "Préstamos y deudas": 0,
     "Hábitos diarios": 24,
     "Ocio y vida social": 80,
     "Viajes": 0,
     "Suscripciones": 6,
     "Formación": 30,
     "Otros": 20,
-    "Donaciones": 10
+    "Donaciones": 10,
+    "Impuestos": 298.56
    },
    "subs": {
     "Citas y pareja": 80,
@@ -52,15 +53,16 @@
     "Vivienda y suministros": 870,
     "Salud y deporte": 495,
     "Transporte": 20,
-    "Empresa": 179,
-    "Préstamos y deudas": 210,
+    "Empresa": 90.44,
+    "Préstamos y deudas": 0,
     "Hábitos diarios": 24,
     "Ocio y vida social": 80,
     "Viajes": 140,
     "Suscripciones": 27,
     "Formación": 683,
     "Otros": 20,
-    "Donaciones": 11
+    "Donaciones": 11,
+    "Impuestos": 298.56
    },
    "subs": {
     "Citas y pareja": 80,

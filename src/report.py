@@ -145,9 +145,18 @@ def main():
     cuentas = []
     for c in con.execute("SELECT DISTINCT cuenta FROM movimientos WHERE cuenta NOT IN ('Histórico', 'Ajustes')").fetchall():
         c = c[0]
-        last = con.execute("SELECT fecha, saldo FROM movimientos WHERE cuenta=? AND saldo IS NOT NULL ORDER BY fecha DESC, id DESC LIMIT 1", (c,)).fetchone()
+        # saldo = apertura + suma de movimientos (la apertura que cuadra con la mayoría de saldos del banco): con varios
+        # movimientos el mismo día, «el último saldo» del extracto puede no ser el real
+        ms = con.execute("SELECT fecha, importe, saldo FROM movimientos WHERE cuenta=? ORDER BY fecha, id", (c,)).fetchall()
+        cum, votos = 0.0, {}
+        for r in ms:
+            cum += r["importe"]
+            if r["saldo"] is not None:
+                k = round(r["saldo"] - cum, 2); votos[k] = votos.get(k, 0) + 1
+        saldo = round(max(votos, key=votos.get) + cum, 2) if votos else None
+        last = {"fecha": ms[-1]["fecha"]} if ms else None
         imp = con.execute("SELECT fecha_max, created_at FROM importaciones WHERE cuenta=? ORDER BY id DESC LIMIT 1", (c,)).fetchone()
-        cuentas.append({"cuenta": c, "saldo": last["saldo"] if last else None, "fecha_saldo": last["fecha"] if last else None,
+        cuentas.append({"cuenta": c, "saldo": saldo, "fecha_saldo": last["fecha"] if last else None,
                         "hasta": imp["fecha_max"] if imp else None, "importado": imp["created_at"] if imp else None})
 
     # deudas con calendario (config/deudas.yaml): lo vencido antes de hoy se da por pagado

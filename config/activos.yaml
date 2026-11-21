@@ -17,3 +17,15 @@ US30303M1027: META
 # (con su coste). New Gold → Coeur Mining: 0,4959 acciones de Coeur por cada una de New Gold (cerrada el 20/03/2026).
 _canjes:
   - {de: CA6445351068, a: US1921085049, fecha: 2026-03-20, ratio: 0.4959}
+
+# Posiciones de Trade Republic que no salen de los movimientos importados (que empiezan en 2026). Sacadas del extracto
+# de cuenta completo 01/01/2025-20/11/2026 y del «Extracto del patrimonio neto». historico: true = su coste ya está en
+# la hoja de 2025 (cuenta Histórico), así que solo aportan la cantidad para valorarlas a mercado. Sin coste = compradas
+# antes de 2025 sin registro: cuentan como aportado a su valor en esa fecha.
+_apertura:
+  - {fecha: 2025-01-01, isin: IE00BK5BQT80, cantidad: 2.231602, nota: "All-World comprado antes de 2025 (la cuenta ya tenía saldo el 01/01/2025)"}
+  - {fecha: 2025-01-02, isin: IE00BK5BQT80, cantidad: 0.184665, coste: 25.00, historico: true}
+  - {fecha: 2025-01-02, isin: IE00BK5BQT80, cantidad: 0.034495, coste: 4.67, historico: true}
+  - {fecha: 2025-01-16, isin: IE00BK5BQT80, cantidad: 0.184202, coste: 25.00, historico: true}
+  - {fecha: 2025-02-03, isin: IE00BK5BQT80, cantidad: 0.031599, coste: 4.35, historico: true}
+  - {fecha: 2025-11-21, isin: XF000BTC0017, cantidad: 0.006818, coste: 500.98, historico: true}

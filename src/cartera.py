@@ -84,6 +84,20 @@ class Cartera:
         for k in self.movs:
             self.movs[k].sort()
         self.tickers = self._tickers(descargar)
+        # posiciones previas a los movimientos importados (config/activos.yaml → _apertura)
+        sin_coste = []
+        apertura = self.tickers.pop("_apertura", None) or []
+        for a in apertura:
+            f, isin, q = str(a["fecha"]), a["isin"], float(a["cantidad"])
+            if a.get("coste") is None:
+                sin_coste.append((isin, f, q))
+                continue
+            self.movs[isin].append((f, q, float(a["coste"])))
+            if not a.get("historico"):
+                self.coste.append((f, float(a["coste"])))
+        if any(a.get("historico") for a in apertura):  # la hoja de 2025 ya está valorada por cantidades: fuera de «a coste»
+            self.coste_sin_cantidad = sorted((x["fecha"], -x["mio"]) for x in rows if x["tipo"] == "Inversion"
+                                             and x["cuenta"] != "Histórico" and not PATRON.search(x["concepto"] or ""))
         for c in self.tickers.pop("_canjes", None) or []:  # fusiones: el ISIN viejo pasa al nuevo con su coste
             f, de, a = str(c["fecha"]), c["de"], c["a"]
             q = sum(x for d, x, _ in self.movs.get(de, []) if d < f)
@@ -93,7 +107,18 @@ class Cartera:
                 self.movs[a].append((f, q * float(c["ratio"]), v))
                 self.movs[de].sort()
                 self.movs[a].sort()
+        for isin, f, q in sin_coste:  # sin coste conocido: aportado = su valor ese día
+            self.movs[isin].append((f, q, 0.0))
         self.precios = self._precios(descargar)  # isin -> ([fechas], [precio €])
+        for isin, f, q in sin_coste:
+            fechas, precios = self.precios.get(isin, ([], []))
+            i = bisect_right(fechas, f)
+            p0 = precios[i - 1] if i else (precios[0] if precios else 0.0)
+            self.movs[isin] = [(f2, q2, round(q * p0, 2) if (f2, q2, v2) == (f, q, 0.0) else v2) for f2, q2, v2 in self.movs[isin]]
+            self.coste.append((f, round(q * p0, 2)))
+        self.coste.sort()
+        for k in self.movs:
+            self.movs[k].sort()
         self._ajustar_a_trade_republic()
         # lo que tiene cantidad pero no precio también va a coste
         for isin, ops in self.movs.items():

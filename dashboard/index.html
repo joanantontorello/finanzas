@@ -176,6 +176,14 @@
   .muted { color: var(--text-3); } .defs { font-size: 12px; color: var(--text-3); white-space: pre-line; margin-top: 8px; }
   .up { color: var(--good); } .down { color: var(--bad); }
   select.edit { padding: 3px 6px; border-radius: 6px; font-size: 12px; max-width: 170px; } select.edit.changed { background-color: var(--tint-yellow); }
+  select.ambsel { padding: 3px 6px; border-radius: 6px; font-size: 12px; } select.ambsel.T { background-color: var(--tint-violet); color: var(--text); }
+  label.kate { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px 2px 6px; border-radius: 999px; font-size: 11px; cursor: pointer; color: var(--text-3); background: var(--surface-2); user-select: none; }
+  label.kate input { margin: 0; accent-color: var(--s1); cursor: pointer; } label.kate.on { background: var(--tint-blue); color: var(--text); font-weight: 600; }
+  table.rsz { table-layout: fixed; } table.rsz th { position: sticky; } table.rsz td { overflow: hidden; text-overflow: ellipsis; }
+  table.rsz select.edit { max-width: 100%; width: 100%; }
+  table.rsz th .rz { position: absolute; top: 0; right: -4px; width: 9px; height: 100%; cursor: col-resize; z-index: 2; }
+  table.rsz th .rz::after { content: ''; position: absolute; left: 4px; top: 25%; height: 50%; width: 1px; background: var(--surface-3); }
+  table.rsz th .rz:hover::after, body.rzing table.rsz th .rz::after { background: var(--s1); width: 2px; } body.rzing { cursor: col-resize; user-select: none; }
   button.amb { border: 0; background: var(--surface-2); color: var(--text-2); border-radius: 999px; padding: 2px 8px; font-size: 11px; cursor: pointer; } button.amb.T { background: var(--tint-violet); color: var(--text); }
   .savebar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; display: none; gap: 12px; align-items: center; z-index: 20; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
   .savebar button { border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; cursor: pointer; background: var(--s1); color: #fff; font-weight: 600; } .savebar button.sec { background: transparent; color: var(--bg); }
@@ -236,6 +244,8 @@
   select.abierto { box-shadow: 0 0 0 2px color-mix(in srgb, var(--s1) 50%, transparent); }
   .card h2 select { padding-right: 28px; background-position: right 10px center; }
   select.edit { padding-right: 24px; background-position: right 8px center; }
+  select.ambsel { padding-right: 24px; background-position: right 8px center; min-height: 0; }
+  label.kate { min-height: 0; } label.kate input { min-height: 0; width: 14px; height: 14px; padding: 0; }
   .dd { position: fixed; z-index: 30; background: var(--surface); border-radius: 14px; padding: 6px; max-width: 340px; font-size: 13px;
     box-shadow: 0 14px 44px rgba(0,0,0,.30), 0 0 0 1px var(--surface-3); animation: ddIn .12s ease-out; }
   @keyframes ddIn { from { opacity: 0; transform: translateY(-4px); } }
@@ -272,14 +282,16 @@
   @media (max-width: 700px) {
     #v-movimientos .tablewrap { max-height: none; }
     #v-movimientos thead { display: none; }
-    #v-movimientos tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; padding: 10px 0; border-top: 1px solid var(--surface-2); }
-    #v-movimientos td { border: 0; padding: 0; white-space: normal; }
-    #v-movimientos td:nth-child(3) { grid-area: 1 / 1; font-weight: 600; }
-    #v-movimientos td:nth-child(6) { grid-area: 1 / 2; font-weight: 600; }
-    #v-movimientos td:nth-child(1) { grid-area: 2 / 1; font-size: 12px; color: var(--text-3); }
-    #v-movimientos td:nth-child(7) { grid-area: 2 / 2; font-size: 12px; }
-    #v-movimientos td:nth-child(2), #v-movimientos td:nth-child(8) { display: none; }
-    #v-movimientos td:nth-child(4), #v-movimientos td:nth-child(5) { grid-column: 1 / -1; }
+    #v-movimientos table.rsz { table-layout: auto; width: 100% !important; } #v-movimientos colgroup { display: none; }
+    #v-movimientos tbody tr { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; grid-template-areas: "con con con imp" "fec fec fec par" "cat cat cat cat" "tip amb kat kat"; gap: 6px 10px; padding: 10px 0; border-top: 1px solid var(--surface-2); align-items: center; }
+    #v-movimientos td { border: 0; padding: 0; white-space: normal; overflow: visible; }
+    #v-movimientos td:nth-child(3) { grid-area: con; font-weight: 600; }
+    #v-movimientos td:nth-child(8) { grid-area: imp; font-weight: 600; }
+    #v-movimientos td:nth-child(1) { grid-area: fec; font-size: 12px; color: var(--text-3); }
+    #v-movimientos td:nth-child(9) { grid-area: par; font-size: 12px; }
+    #v-movimientos td:nth-child(4) { grid-area: cat; } #v-movimientos td:nth-child(5) { grid-area: tip; } #v-movimientos td:nth-child(6) { grid-area: amb; } #v-movimientos td:nth-child(7) { grid-area: kat; }
+    #v-movimientos td:nth-child(2), #v-movimientos td:nth-child(10) { display: none; }
+    #v-movimientos #tbody tr:nth-child(even) td { background: none; } #v-movimientos #tbody tr:nth-child(even) { background: color-mix(in srgb, var(--text) 3.5%, transparent); border-radius: 10px; padding-left: 8px; padding-right: 8px; }
     #v-movimientos td:nth-child(4) br { display: none; }
     .mcta { display: inline; }
   }
@@ -484,7 +496,7 @@
           <select id="ftipo" aria-label="Tipo"><option value="">Todos los tipos</option><option>Ingreso</option><option>Gasto</option><option>Reembolso</option><option>Inversion</option><option>Traspaso</option></select>
           <button class="pill" id="clear" style="cursor:pointer;border:0">Limpiar filtros</button>
         </div>
-        <div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Cuenta</th><th>Concepto</th><th>Categoría</th><th>Tipo</th><th style="text-align:right">Importe</th><th style="text-align:right">Tu parte</th><th>Estado</th></tr></thead><tbody id="tbody"></tbody></table></div>
+        <div class="tablewrap"><table id="movTable" class="rsz"><colgroup id="movCols"></colgroup><thead><tr><th>Fecha</th><th>Cuenta</th><th>Concepto</th><th>Categoría</th><th>Tipo</th><th title="Personal o Trabajo">Ámbito</th><th title="Lo pagaste tú entero pero va a medias con Kate: tu mitad queda en la categoría y la suya pasa a Ajustes con Kate">½ Kate</th><th style="text-align:right">Importe</th><th style="text-align:right">Tu parte</th><th>Estado</th></tr></thead><tbody id="tbody"></tbody></table></div>
       </div>
     </section>
 
@@ -947,13 +959,25 @@ function selCat(m) {
   const opts = optsCategorias(m.categoria, 'subs');
   return `<select class="edit ${cambios[m.id] ? 'changed' : ''}" data-id="${m.id}"><option value="" ${!m.categoria ? 'selected' : ''}>– sin categoría –</option>${opts}</select>`;
 }
-function ambBtn(m) { return `<button class="amb ${m.ambito === 'Trabajo' ? 'T' : ''}" data-amb="${m.id}" title="Personal / Trabajo">${m.ambito === 'Trabajo' ? 'Trabajo' : 'Personal'}</button>` + (m.cuenta !== 'Conjunta' && m.tipo === 'Gasto' ? `<button class="amb ${m.compensar ? 'T' : ''}" data-kate="${m.id}" title="Pagado a medias con ${PAREJA} y liquidado aparte: tu mitad queda en la categoría y la otra pasa a Ajustes con ${PAREJA}">½ ${PAREJA}</button>` : ''); }
-document.addEventListener('click', e => { const b = e.target.closest('button[data-kate]'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.kate); const on = !m.compensar; cambios[m.id] = Object.assign({}, overrides[m.id] || {}, cambios[m.id] || {}, { participacion: on ? 0.5 : 1, compensar: on }); editar(m.id, 'compensar', on); } });
+function ambSel(m) {
+  const t = m.ambito === 'Trabajo';
+  return `<select class="ambsel ${t ? 'T' : ''}" data-amb="${m.id}" aria-label="Personal o Trabajo"><option ${t ? '' : 'selected'}>Personal</option><option ${t ? 'selected' : ''}>Trabajo</option></select>`;
+}
+function kateChk(m) {
+  if (m.cuenta === 'Conjunta') return `<span class="muted" style="font-size:11px" title="La cuenta conjunta ya cuenta al 50 %">conjunta 50 %</span>`;
+  if (m.tipo !== 'Gasto') return '';
+  return `<label class="kate ${m.compensar ? 'on' : ''}" title="Pagado a medias con ${PAREJA} y liquidado aparte: tu mitad queda en la categoría y la otra pasa a Ajustes con ${PAREJA}"><input type="checkbox" data-kate="${m.id}" ${m.compensar ? 'checked' : ''}>½ ${PAREJA}</label>`;
+}
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.matches('select.ambsel[data-amb]')) editar(+t.dataset.amb, 'ambito', t.value);
+  if (t.matches('input[data-kate]')) { const m = D.movimientos.find(x => x.id === +t.dataset.kate); const on = t.checked; cambios[m.id] = Object.assign({}, overrides[m.id] || {}, cambios[m.id] || {}, { participacion: on ? 0.5 : 1, compensar: on }); editar(m.id, 'compensar', on); }
+});
 document.addEventListener('change', e => { if (e.target.matches('select.edit')) editar(+e.target.dataset.id, 'categoria', e.target.value); });
-document.addEventListener('click', e => { const b = e.target.closest('button.amb[data-amb]'); if (b) { const m = D.movimientos.find(x => x.id === +b.dataset.amb); editar(m.id, 'ambito', m.ambito === 'Trabajo' ? 'Personal' : 'Trabajo'); } });
 
 // ---- init
 function init() {
+  initResize();
   const years = [...new Set(D.movimientos.map(m => m.mes.slice(0,4)))].sort();
   state.year = years[years.length-1];
   $('years').innerHTML = years.map(y => `<button data-v="${y}" class="${y===state.year?'on':''}">${y}</button>`).join('');
@@ -1739,7 +1763,7 @@ function renderPend() {
     return `<div>
       <span class="muted">${fechaLarga(x.fecha)}<br>${x.cuenta}${tipoBanco ? '<br>' + tipoBanco : ''}</span>
       <span class="c"><b style="color:var(--text)">${texto}</b><br><small class="muted">${x.nota || (x.categoria ? 'sugerido: ' + x.categoria : 'sin categoría')}${x.part && x.part !== 1 ? ' · tu parte ' + fmt2(x.importe * x.part) : ''}</small>${mismoDia ? `<br><small class="muted">Ese día también: ${mismoDia}</small>` : ''}</span>
-      <span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${selCat(m)}${m.categoria ? `<button class="amb ok" data-ok="${x.id}" title="La categoría sugerida es correcta">✓ Es correcto</button>` : ''}${ambBtn(m)}</span>
+      <span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${selCat(m)}${m.categoria ? `<button class="amb ok" data-ok="${x.id}" title="La categoría sugerida es correcta">✓ Es correcto</button>` : ''}${ambSel(m)}${kateChk(m)}</span>
       <b>${fmt2(x.importe)}</b></div>`;
   }).join('') : '<p class="muted">Nada pendiente. Todo clasificado.</p>';
 }
@@ -1765,7 +1789,33 @@ function renderCuentas() {
   renderDeudas();
   $('cuentas').innerHTML = D.cuentas.map(c => `<span>${logoImg(BANCO[c.cuenta], c.cuenta, 'sm')}${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('') + `<span style="margin-top:6px"><b>Total (conjunta al 50 %)</b></span><b style="margin-top:6px">${fmt2(D.saldo_total)}</b>`;
 }
+const COLS_DEF = [100, 135, 260, 200, 95, 110, 95, 100, 85, 60];
+function colsMov() { try { const v = JSON.parse(localStorage.getItem('movCols') || 'null'); if (Array.isArray(v) && v.length === COLS_DEF.length) return v; } catch (e) {} return COLS_DEF.slice(); }
+function aplicarCols(w) {
+  const ancho = $('movTable').parentElement.clientWidth, total = w.reduce((a, b) => a + b, 0);
+  const extra = Math.max(0, ancho - total);  // si sobra sitio, se lo queda el concepto (sin guardarlo)
+  $('movCols').innerHTML = w.map((x, i) => `<col style="width:${x + (i === 2 ? extra : 0)}px">`).join('');
+  $('movTable').style.width = (total + extra) + 'px';
+}
+let movW = null;
+window.addEventListener('resize', () => { if (movW) aplicarCols(movW); });
+function initResize() {
+  const ths = [...document.querySelectorAll('#movTable thead th')];
+  const w = movW = colsMov(); aplicarCols(w);
+  ths.forEach((th, i) => {
+    const h = document.createElement('span'); h.className = 'rz'; h.title = 'Arrastra para cambiar el ancho · doble clic: ancho original'; th.appendChild(h);
+    h.addEventListener('pointerdown', e => {
+      e.preventDefault(); h.setPointerCapture(e.pointerId); document.body.classList.add('rzing');
+      const x0 = e.clientX, w0 = i === 2 ? Math.round(th.getBoundingClientRect().width) : w[i];  // el concepto arranca desde lo que se ve (con el sitio sobrante)
+      const mover = ev => { w[i] = Math.max(48, Math.round(w0 + ev.clientX - x0)); aplicarCols(w); };
+      const soltar = () => { h.removeEventListener('pointermove', mover); document.body.classList.remove('rzing'); try { localStorage.setItem('movCols', JSON.stringify(w)); } catch (e) {} };
+      h.addEventListener('pointermove', mover); h.addEventListener('pointerup', soltar, { once: true }); h.addEventListener('pointercancel', soltar, { once: true });
+    });
+    h.addEventListener('dblclick', () => { w[i] = COLS_DEF[i]; aplicarCols(w); try { localStorage.setItem('movCols', JSON.stringify(w)); } catch (e) {} });
+  });
+}
 function renderTable() {
+  if (movW) requestAnimationFrame(() => aplicarCols(movW));
   let rows = D.movimientos.filter(m => enPeriodo(m)
     && (state.ambito === 'Todo' || m.ambito === state.ambito)
     && (!state.cuenta || m.cuenta === state.cuenta)
@@ -1774,8 +1824,8 @@ function renderTable() {
     && (!state.q || m.concepto.toLowerCase().includes(state.q) || (m.categoria||'').toLowerCase().includes(state.q)));
   rows.sort((a,b) => b.fecha.localeCompare(a.fecha) || b.id - a.id);
   $('nmov').textContent = rows.length + ' · ' + periodoLabel() + (state.cat ? ' · ' + state.cat.replace(/^g:/, '') : '') + ' · tu parte ' + fmt(rows.reduce((t, m) => t + m.mio, 0));
-  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}<span class="mcta"> · ${m.cuenta}</span></td><td>${logoImg(BANCO[m.cuenta], m.cuenta, 'sm')}${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.replace(/^\[[^\]]+\]\s*/, '').slice(0,50)}</td><td><small class="muted">${m.categoria ? grupoDe(m.categoria) : ''}</small><br>${m.cuenta === 'Histórico' ? (m.categoria || '–') : selCat(m)}</td><td><span class="pill">${m.tipo || '?'}</span> ${m.cuenta === 'Histórico' ? '' : ambBtn(m)}</td><td class="n ${m.importe<0?'':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
-    + (rows.length > 600 ? `<tr><td colspan="8" class="muted">… ${rows.length-600} más. Filtra para verlos.</td></tr>` : '');
+  $('tbody').innerHTML = rows.slice(0, 600).map(m => `<tr><td>${m.fecha}<span class="mcta"> · ${m.cuenta}</span></td><td>${logoImg(BANCO[m.cuenta], m.cuenta, 'sm')}${m.cuenta}</td><td title="${m.concepto.replace(/"/g,'&quot;')}">${m.concepto.replace(/^\[[^\]]+\]\s*/, '')}</td><td><small class="muted">${m.categoria ? grupoDe(m.categoria) : ''}</small><br>${m.cuenta === 'Histórico' ? (m.categoria || '–') : selCat(m)}</td><td><span class="pill">${m.tipo || '?'}</span></td><td>${m.cuenta === 'Histórico' ? '' : ambSel(m)}</td><td>${m.cuenta === 'Histórico' ? '' : kateChk(m)}</td><td class="n ${m.importe<0?'':'pos'}">${fmt2(m.importe)}</td><td class="n muted">${m.mio !== m.importe ? fmt2(m.mio) : ''}</td><td>${m.estado==='pendiente' ? '<span class="pill pendiente">pendiente</span>' : m.estado==='revisado' ? '<span class="pill">✓</span>' : ''}</td></tr>`).join('')
+    + (rows.length > 600 ? `<tr><td colspan="10" class="muted">… ${rows.length-600} más. Filtra para verlos.</td></tr>` : '');
 }
 </script>
 </body>

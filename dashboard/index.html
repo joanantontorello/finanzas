@@ -225,7 +225,7 @@
   .subbar .track { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
   .subbar .track div { height: 100%; border-radius: 3px; }
   .prow:hover, .prow:focus-within { background: color-mix(in srgb, var(--s1) 10%, transparent); }
-  .prow.sep { margin-top: 8px; }
+  .prow.sep, .pgrp.sep { margin-top: 8px; }
   .prow input { width: 120px; flex: none; }
   #tbodyInv tr:nth-child(even) td, #tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--text) 3.5%, transparent); }
   #tbodyInv td { padding: 9px 10px; vertical-align: middle; }
@@ -746,6 +746,25 @@ function resumenReparto(g) {
   if (asig <= tot) return `Repartido ${fmt(asig)} de ${fmt(tot)} · ${fmt(tot - asig)} para el resto de ${g.nombre.toLowerCase()}`;
   return `<span class="bad">Las subcategorías suman ${fmt(asig)}, ${fmt(asig - tot)} más que el total del grupo.</span><button data-ajustar="${g.nombre}">Subir el total a ${fmt(asig)}</button>`;
 }
+// reparto de la inversión objetivo por categorías de inversión (P.inv_subs)
+const invSubs = () => ((D.grupos || []).find(g => g.tipo === 'Inversion') || { sub: [] }).sub;
+const invCon = () => invSubs().filter(c => P.inv_subs && P.inv_subs[c] != null);
+const invRepartido = () => invCon().reduce((t, c) => t + (+P.inv_subs[c] || 0), 0);
+function resumenRepartoInv() {
+  const tot = +P.inversion_mensual || 0, asig = invRepartido(), n = invCon().length;
+  if (!n) return 'Pon cuánto quieres invertir al mes en cada categoría; lo que no repartas queda libre.';
+  if (asig <= tot) return `Repartido ${fmt(asig)} de ${fmt(tot)}` + (tot - asig >= 0.5 ? ` · ${fmt(tot - asig)} sin asignar` : '');
+  return `<span class="bad">Las categorías suman ${fmt(asig)}, ${fmt(asig - tot)} más que el objetivo.</span><button data-ajustarinv="1">Subir el objetivo a ${fmt(asig)}</button>`;
+}
+function subBarrasInv(n, a, objInv) {  // en inversión, más es mejor: violeta mientras falta, verde al cumplir
+  const con = invCon(); if (!con.length) return '';
+  const fila = (nombre, pr, gt) => { const p = pr ? gt / pr : (gt > 0 ? 1 : 0);
+    return `<div class="subbar"><span>${nombre}</span><div class="track"><div style="width:${Math.min(100, p * 100)}%;background:${pr && gt >= pr ? 'var(--s3)' : 'var(--s7)'}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span></div>`; };
+  let h = con.map(c => fila(c, (+P.inv_subs[c] || 0) * n, a.invCats[c] || 0)).join('');
+  const prR = Math.max(0, objInv - invRepartido() * n), gsR = a.inv - con.reduce((t, c) => t + (a.invCats[c] || 0), 0);
+  if (prR >= 0.5 || gsR >= 0.5) h += fila(con.length < invSubs().length ? (prR >= 0.5 ? 'Resto' : 'Resto (sin objetivo)') : 'Sin asignar', prR, Math.max(0, gsR));
+  return `<div style="margin-top:6px">${h}</div>`;
+}
 function subBarras(g, n, a, pres, gs) {
   const con = subsCon(g); if (!con.length) return '';
   const fila = (nombre, pr, gt) => { const p = pr ? gt / pr : (gt > 0 ? 2 : 0), col = p > 1 ? 'var(--s2)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
@@ -790,7 +809,7 @@ function renderPresupuesto(sinConfig) {
   const tipInv = (`Invertido en el periodo|` + (Object.entries(a.invCats).filter(x => Math.abs(x[1]) >= 0.5).sort((x, y) => y[1] - x[1]).map(([c, v]) => `${c.toLowerCase()} ${fmt(v)}`).join('<br>') || 'Nada todavía')).replace(/"/g, '&quot;');
   const barraInv = objInv || a.inv ? `<div class="presinv"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center"><i class="gsq" style="background:var(--s7)"></i>Inversión</b><span style="white-space:nowrap"><b>${fmt(a.inv)}</b> <span class="muted">de ${fmt(objInv)}</span></span></div>
       <div class="track" data-tip="${tipInv}" style="position:relative;height:12px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tipInv}" style="height:100%;width:${Math.min(100, Math.max(0, pInv) * 100)}%;background:${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'};border-radius:4px"></div>${ritmo < 0.995 ? `<div data-tip="${tipInv}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
-      <div class="muted" style="font-size:12px">${!objInv ? 'Sin objetivo: ponlo en «Inversión objetivo al mes»' : a.inv >= objInv ? 'Objetivo cumplido' + (a.inv - objInv >= 1 ? ` · ${fmt(a.inv - objInv)} por encima` : '') : `Faltan ${fmt(objInv - a.inv)} para el objetivo · ${Math.round(pInv * 100)} %`}</div></div>` : '';
+      <div class="muted" style="font-size:12px">${!objInv ? 'Sin objetivo: ponlo en «Inversión objetivo al mes»' : a.inv >= objInv ? 'Objetivo cumplido' + (a.inv - objInv >= 1 ? ` · ${fmt(a.inv - objInv)} por encima` : '') : `Faltan ${fmt(objInv - a.inv)} para el objetivo · ${Math.round(pInv * 100)} %`}</div>${subBarrasInv(n, a, objInv)}</div>` : '';
   $('bloques').innerHTML = barraInv + gGasto.map(g => {
     const pres = (+P.grupos[g.nombre] || 0) * n, gs = a.grupos[g.nombre] || 0, p = pres ? gs / pres : (gs > 0 ? 2 : 0);
     const col = p > 1 ? 'var(--s2)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
@@ -833,13 +852,14 @@ function renderPresupuesto(sinConfig) {
   $('presTot').innerHTML = `<div><span>Esenciales</span><b>${fmt(ess)}</b></div><div><span>+ No esenciales</span><b>${fmt(noess)}</b></div>${Math.abs(otros) >= 0.5 ? `<div title="Grupos fuera del cálculo de esencial / no esencial (Otros…)"><span>+ Otros</span><b>${fmt(otros)}</b></div>` : ''}<div><span>+ Inversión</span><b>${fmt(totI)}</b></div><div class="${ahorro >= 0 ? 'aho' : 'neg'}"><span>+ Para ahorrar</span><b>${fmt(ahorro)}</b></div><div class="tot"><span>= Ingresos al mes</span><b>${fmt(ing)}</b><small>${+P.ingreso_mensual ? 'los que has puesto abajo' : 'mediana de los últimos 6 meses'}</small></div>
     <p class="prescap">Capacidad de ahorro (ingresos − gastos): <b>${fmt(capacidad)}</b> al mes, el ${ing ? Math.round(capacidad / ing * 100) : 0} % de lo que ingresas · de eso, ${fmt(totI)} a inversión y ${ahorro >= 0 ? fmt(ahorro) + ' para ahorrar' : '<span class="bad">te faltan ' + fmt(-ahorro) + ' para cubrir la inversión</span>'}.</p>`;
   if (sinConfig) return;
-  if (!presAbiertos) presAbiertos = new Set(gGasto.filter(g => subsCon(g).length).map(g => g.nombre));
+  if (!presAbiertos) { presAbiertos = new Set(gGasto.filter(g => subsCon(g).length).map(g => g.nombre)); if (invCon().length) presAbiertos.add('__inv'); }
   $('presConfig').innerHTML = gGasto.map(g => {
     const n = subsCon(g).length, multi = g.sub.length > 1, ab = presAbiertos.has(g.nombre);
     return `<div class="pgrp"><label class="prow"><span><i class="gsq" style="background:${colorGrupo(g.nombre) || 'var(--s9)'}"></i>${g.nombre}${multi ? `<button class="prep" data-rep="${g.nombre}" aria-expanded="${ab}">${n ? n + (n === 1 ? ' repartida' : ' repartidas') : 'Repartir'} ${ab ? '▴' : '▾'}</button>` : ''}</span><input data-pg="${g.nombre}" type="number" value="${+P.grupos[g.nombre] || 0}"></label>${multi ? `
       <div class="psubs"${ab ? '' : ' hidden'}>${g.sub.map(c => `<label class="prow sub"><span>${c}</span><input data-ps="${c}" data-g="${g.nombre}" type="number" min="0" placeholder="—" value="${P.subs[c] != null ? P.subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="${g.nombre}">${resumenReparto(g)}</div></div>` : ''}</div>`;
   }).join('') + `
-    <label class="prow sep"><span><b>Inversión objetivo al mes</b></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}"></label>
+    <div class="pgrp sep"><label class="prow"><span><i class="gsq" style="background:var(--s7)"></i><b>Inversión objetivo al mes</b><button class="prep" data-rep="__inv" aria-expanded="${presAbiertos.has('__inv')}">${invCon().length ? invCon().length + (invCon().length === 1 ? ' repartida' : ' repartidas') : 'Repartir'} ${presAbiertos.has('__inv') ? '▴' : '▾'}</button></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}"></label>
+      <div class="psubs"${presAbiertos.has('__inv') ? '' : ' hidden'}>${invSubs().map(c => `<label class="prow sub"><span>${c}</span><input data-pinv="${c}" type="number" min="0" placeholder="—" value="${P.inv_subs && P.inv_subs[c] != null ? P.inv_subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="__inv">${resumenRepartoInv()}</div></div></div>
     <label class="prow"><span><b>Ingresos al mes</b> <small class="muted">vacío = mediana de 6 meses</small></span><input data-p="ingreso_mensual" type="number" placeholder="${Math.round(PRES_MEDIANA)}" value="${+P.ingreso_mensual || ''}"></label>
     ${metaColchon() < 0 ? `<label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>` : ''}`;
 }
@@ -860,6 +880,12 @@ function metasProgreso() {
   });
 }
 function actualizarReparto(k) {
+  if (k === '__inv') {
+    const n = invCon().length, ab = presAbiertos.has(k), res = document.querySelector('.pres-res[data-res="__inv"]'), bt = document.querySelector('button[data-rep="__inv"]');
+    if (res) res.innerHTML = resumenRepartoInv();
+    if (bt) bt.textContent = (n ? n + (n === 1 ? ' repartida' : ' repartidas') : 'Repartir') + ' ' + (ab ? '▴' : '▾');
+    return;
+  }
   const g = (D.grupos || []).find(x => x.nombre === k); if (!g || g.sub.length < 2) return;
   const n = subsCon(g).length, ab = presAbiertos.has(k), res = document.querySelector(`.pres-res[data-res="${CSS.escape(k)}"]`), bt = document.querySelector(`button[data-rep="${CSS.escape(k)}"]`);
   if (res) res.innerHTML = resumenReparto(g);
@@ -867,7 +893,8 @@ function actualizarReparto(k) {
 }
 document.addEventListener('change', e => {
   const el = e.target;
-  if (el.dataset.p) { const [a, b] = el.dataset.p.split('.'); if (b) P[a][b] = +el.value; else P[a] = +el.value; marcarPres(); renderPresupuesto(true); }
+  if (el.dataset.p) { const [a, b] = el.dataset.p.split('.'); if (b) P[a][b] = +el.value; else P[a] = +el.value; marcarPres(); renderPresupuesto(true); if (el.dataset.p === 'inversion_mensual') actualizarReparto('__inv'); }
+  else if (el.dataset.pinv) { P.inv_subs = P.inv_subs || {}; if (el.value === '') delete P.inv_subs[el.dataset.pinv]; else P.inv_subs[el.dataset.pinv] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto('__inv'); }
   else if (el.dataset.pg) { P.grupos[el.dataset.pg] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.pg); }
   else if (el.dataset.ps) { if (el.value === '') delete P.subs[el.dataset.ps]; else P.subs[el.dataset.ps] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.g); }
   else if (el.dataset.meta != null) { const m = P.metas[+el.dataset.meta]; const k = el.dataset.k; m[k] = (k === 'nombre' || k === 'fecha' || k === 'fuente') ? el.value : +el.value; if (k === 'fuente' && !el.value) delete m.fuente; marcarPres(); renderPresupuesto(); }
@@ -880,6 +907,7 @@ document.addEventListener('click', e => {
     ab ? presAbiertos.add(k) : presAbiertos.delete(k);
     rp.closest('.pgrp').querySelector('.psubs').hidden = !ab; rp.setAttribute('aria-expanded', ab); actualizarReparto(k);
   }
+  if (e.target.closest('button[data-ajustarinv]')) { P.inversion_mensual = invRepartido(); marcarPres(); renderPresupuesto(); }
   const aj = e.target.closest('button[data-ajustar]');
   if (aj) { const g = (D.grupos || []).find(x => x.nombre === aj.dataset.ajustar); P.grupos[g.nombre] = repartido(g); marcarPres(); renderPresupuesto(); }
   const mc = e.target.closest('button[data-mcolor]'); if (mc) { P.metas[+mc.dataset.i].color = mc.dataset.mcolor; marcarPres(); renderPresupuesto(true); }

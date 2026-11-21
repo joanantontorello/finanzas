@@ -1,19 +1,51 @@
 {
- "grupos": {
-  "Vivienda y suministros": 900,
-  "Salud y deporte": 518,
-  "Transporte": 20,
-  "Empresa": 259,
-  "Préstamos y deudas": 210,
-  "Hábitos diarios": 24,
-  "Ocio y vida social": 80,
-  "Viajes": 0,
-  "Suscripciones": 6,
-  "Formación": 30,
-  "Otros": 20,
-  "Donaciones": 10
- },
- "inversion_mensual": 1200,
+ "versiones": [
+  {
+   "desde": "2025-01",
+   "grupos": {
+    "Vivienda y suministros": 900,
+    "Salud y deporte": 518,
+    "Transporte": 20,
+    "Empresa": 259,
+    "Préstamos y deudas": 210,
+    "Hábitos diarios": 24,
+    "Ocio y vida social": 80,
+    "Viajes": 0,
+    "Suscripciones": 6,
+    "Formación": 30,
+    "Otros": 20,
+    "Donaciones": 10
+   },
+   "subs": {
+    "Citas y pareja": 80,
+    "Alquiler": 600,
+    "Supermercado": 220,
+    "Internet y teléfono": 5,
+    "Electricidad": 35,
+    "Transporte público": 10,
+    "BiciMAD": 10,
+    "Jiu-jitsu": 100,
+    "Psicología": 360,
+    "Gimnasio": 35,
+    "Peluquería y autocuidado": 23,
+    "Almacenamiento": 3,
+    "Herramientas de trabajo": 90,
+    "Cuota de autónomos": 88.56,
+    "Gestoría": 80,
+    "Açaí y brunch": 12,
+    "Café": 12,
+    "Libros": 30,
+    "Imprevistos": 20,
+    "Streaming de vídeo": 3
+   },
+   "inversion_mensual": 1200,
+   "inv_subs": {
+    "Fondos indexados y ETF": 500,
+    "Acciones": 700
+   },
+   "ingreso_mensual": 3500
+  }
+ ],
  "colchon_objetivo": 7000,
  "metas": [
   {
@@ -29,32 +61,5 @@
    "fecha": "2026-12-31",
    "reservado": 0
   }
- ],
- "subs": {
-  "Citas y pareja": 80,
-  "Alquiler": 600,
-  "Supermercado": 220,
-  "Internet y teléfono": 5,
-  "Electricidad": 35,
-  "Transporte público": 10,
-  "BiciMAD": 10,
-  "Jiu-jitsu": 100,
-  "Psicología": 360,
-  "Gimnasio": 35,
-  "Peluquería y autocuidado": 23,
-  "Almacenamiento": 3,
-  "Herramientas de trabajo": 90,
-  "Cuota de autónomos": 88.56,
-  "Gestoría": 80,
-  "Açaí y brunch": 12,
-  "Café": 12,
-  "Libros": 30,
-  "Imprevistos": 20,
-  "Streaming de vídeo": 3
- },
- "ingreso_mensual": 3500,
- "inv_subs": {
-  "Fondos indexados y ETF": 500,
-  "Acciones": 700
- }
+ ]
 }

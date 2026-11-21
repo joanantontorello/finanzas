@@ -217,14 +217,23 @@
   .plist > :nth-child(even) { background: color-mix(in srgb, var(--text) 3.5%, transparent); border-radius: 8px; }
   .prow.sub { padding-left: 28px; font-size: 12.5px; color: var(--text-2); }
   .prow.sub input { width: 100px; }
+  .pver { display: flex; flex-direction: column; gap: 10px; margin: 4px 0 14px; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--s1) 9%, transparent); }
+  .pver-top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; } .pvmes { display: flex; align-items: center; gap: 8px; font-weight: 650; font-size: 14px; }
+  .pver-est { font-size: 12.5px; color: var(--text-2); } .pver-est b { color: var(--text); }
+  .pver-acc { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .pver button.pv { border: 0; border-radius: 999px; padding: 6px 13px; font: inherit; font-size: 12.5px; cursor: pointer; background: var(--surface-2); color: var(--text); } .pver button.pv.pri { background: var(--s1); color: #fff; font-weight: 600; }
+  .pver button.pv.del { background: none; color: var(--bad); padding-left: 4px; }
+  .pvseg { display: inline-flex; background: var(--surface-2); border-radius: 999px; padding: 3px; } .pvseg button { border: 0; background: none; color: var(--text-2); font: inherit; font-size: 12.5px; padding: 4px 12px; border-radius: 999px; cursor: pointer; } .pvseg button[aria-pressed="true"] { background: var(--s1); color: #fff; font-weight: 600; }
+  .pver-hist { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; } .pver-hist button { border: 0; border-radius: 999px; padding: 4px 11px; font: inherit; font-size: 12px; cursor: pointer; background: color-mix(in srgb, var(--text) 6%, transparent); color: var(--text-2); } .pver-hist button small { color: var(--text-3); margin-left: 4px; } .pver-hist button.on { background: var(--tint-blue); color: var(--text); font-weight: 600; }
   button.prep { border: 0; background: none; color: var(--s1); font: inherit; font-size: 12px; cursor: pointer; padding: 2px 6px; margin-left: 6px; border-radius: 6px; }
   button.prep:hover { background: color-mix(in srgb, var(--s1) 12%, transparent); }
   .pres-res { padding: 2px 10px 8px 28px; font-size: 12px; color: var(--text-3); }
   .pres-res .bad { color: var(--bad); } .pres-res button { border: 0; background: none; color: var(--s1); font: inherit; cursor: pointer; padding: 0 4px; }
   #bloques .hl { transition: opacity .15s; } #bloques:has(.hl:hover) .hl:not(:hover) { opacity: .32; }
-  .subbar { display: grid; grid-template-columns: 150px minmax(0, 1fr) 124px; align-items: center; gap: 12px; font-size: 12px; margin: 5px 0 0 12px; color: var(--text-2); }
+  .subbar { display: grid; grid-template-columns: 150px minmax(0, 1fr) 124px 92px; align-items: center; gap: 12px; font-size: 12px; margin: 5px 0 0 12px; color: var(--text-2); }
   .subbar > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .subbar > span:last-child { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  @media (max-width: 560px) { .subbar { grid-template-columns: 96px minmax(0, 1fr) 104px; gap: 8px; margin-left: 4px; } }
+  .subbar .sbq { text-align: right; white-space: nowrap; font-size: 11.5px; color: var(--text-3); font-variant-numeric: tabular-nums; } .subbar .sbq.mal { color: var(--s8); font-weight: 600; } .subbar .sbq.ok { color: var(--s3); }
+  @media (max-width: 560px) { .subbar { grid-template-columns: minmax(0, 1fr) auto 74px; grid-template-areas: "n v q" "b b b"; gap: 3px 8px; margin: 8px 0 0 4px; } .subbar > span:first-child { grid-area: n; } .subbar > .track { grid-area: b; } .subbar > span:nth-child(3) { grid-area: v; } .subbar > .sbq { grid-area: q; font-size: 11px; } }
   .subbar .track { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
   .subbar .track div { height: 100%; border-radius: 4px; }
   .prow:hover, .prow:focus-within { background: color-mix(in srgb, var(--s1) 10%, transparent); }
@@ -429,7 +438,8 @@
       </div>
       <div class="card mt">
         <h2>Configurar presupuesto</h2>
-        <div class="hint">Importe mensual por grupo. «Repartir» reparte el total entre las subcategorías que quieras; lo que no repartas queda para el resto del grupo. Los cambios se guardan en GitHub con el botón de abajo.</div>
+        <div class="hint">Elige el mes arriba. Cada presupuesto vale desde su mes hasta que empieza el siguiente, así que siempre hay uno vigente: «Crear uno solo para…» duplica el actual solo para ese mes (al siguiente vuelve el de antes) y «de … en adelante» lo deja hasta que crees otro. Importe mensual por grupo; «Repartir» lo reparte entre las subcategorías que quieras. Los cambios se guardan en GitHub con el botón de abajo.</div>
+        <div class="pver" id="presVer"></div>
         <div class="prestot" id="presTot"></div>
         <div class="plist" id="presConfig"></div>
       </div>
@@ -567,16 +577,47 @@ fetch('data.json').then(r => r.json()).then(async d => { D = d; const pf = D.per
 // ---- presupuesto: data/presupuesto.json (GitHub si hay token, si no la copia desplegada)
 async function cargarPresupuesto() {
   try { P = await (await fetch('presupuesto.json')).json(); } catch (e) { P = null; }
-  if (!P) P = { grupos: {}, subs: {}, inversion_mensual: 0, colchon_objetivo: 0, metas: [] };
+  if (!P) P = { versiones: [], colchon_objetivo: 0, metas: [] };
   try {
     const r = await gh(GHP.path);
-    if (!r || !r.ok) { P.grupos = P.grupos || {}; return; }
+    if (!r || !r.ok) { normalizarP(); return; }
     const j = await r.json(); pSha = j.sha;
     const Pg = decodificar(j.content);
-    if (Pg.grupos) P = Pg;  // una versión antigua (por bloques) en GitHub no pisa la nueva
+    if (Pg.grupos || Pg.versiones) P = Pg;  // una versión antigua (por bloques) en GitHub no pisa la nueva
   } catch (e) { console.warn('presupuesto', e); }
-  P.grupos = P.grupos || {}; P.subs = P.subs || {};
+  normalizarP();
 }
+// Presupuestos por meses: P.versiones = [{desde: 'AAAA-MM', solo?, grupos, subs, inversion_mensual, inv_subs, ingreso_mensual}].
+// Cada versión vale desde su mes hasta que empieza la siguiente (sin fecha de fin), así que siempre hay una y solo una
+// vigente. Una versión «solo» vale únicamente para su mes; al mes siguiente vuelve la que tocaba. Un mes = como mucho una.
+const VCAMPOS = ['grupos', 'subs', 'inversion_mensual', 'inv_subs', 'ingreso_mensual'];
+let cfgMes = null, cfgClave = null, PV = null;  // mes que se está configurando y su presupuesto
+function normalizarP() {
+  if (!Array.isArray(P.versiones) || !P.versiones.length) {
+    const v = { desde: D.movimientos.reduce((m, x) => x.mes < m ? x.mes : m, '9999-12') };
+    VCAMPOS.forEach(k => { if (P[k] != null) v[k] = P[k]; });
+    P.versiones = [v];
+  }
+  VCAMPOS.forEach(k => delete P[k]);
+  P.versiones.forEach(v => { v.grupos = v.grupos || {}; v.subs = v.subs || {}; v.inv_subs = v.inv_subs || {}; v.inversion_mensual = +v.inversion_mensual || 0; if (!v.solo) delete v.solo; });
+  P.versiones.sort((a, b) => a.desde.localeCompare(b.desde) || (a.solo ? 1 : 0) - (b.solo ? 1 : 0));
+}
+const versionBase = () => P.versiones.find(v => !v.solo) || P.versiones[0];  // la primera: «desde el principio»
+function versionDe(mes) {
+  const vs = P.versiones;
+  return vs.find(v => v.solo && v.desde === mes) || [...vs].reverse().find(v => !v.solo && v.desde <= mes) || versionBase();
+}
+function presPeriodo(meses) {  // suma mes a mes el presupuesto que toca a cada uno
+  const B = { grupos: {}, subs: {}, inv_subs: {}, inversion_mensual: 0 };
+  const sumar = (o, k, x) => { o[k] = (o[k] || 0) + (+x || 0); };
+  meses.forEach(m => { const v = versionDe(m);
+    Object.entries(v.grupos).forEach(([k, x]) => sumar(B.grupos, k, x));
+    Object.entries(v.subs).forEach(([k, x]) => { if (x != null) sumar(B.subs, k, x); });
+    Object.entries(v.inv_subs).forEach(([k, x]) => { if (x != null) sumar(B.inv_subs, k, x); });
+    B.inversion_mensual += v.inversion_mensual; });
+  return B;
+}
+function enVersiones(fn) { if (P && P.versiones) P.versiones.forEach(v => { if (fn(v)) pDirty = true; }); }
 async function guardarPresupuesto() {
   const body = { message: 'Presupuesto actualizado desde el dashboard', content: codificar(P) };
   if (pSha) body.sha = pSha;
@@ -684,7 +725,7 @@ function quitarSubs(tipo, g, subs, destino) {
     moverA(sb, destino);
     p.sub = p.sub.filter(x => x !== sb);
     if (p.ambito_sub) delete p.ambito_sub[sb];
-    if (P && P.subs && P.subs[sb] != null) { delete P.subs[sb]; pDirty = true; }
+    enVersiones(v => { let c = false; if (v.subs[sb] != null) { delete v.subs[sb]; c = true; } if (v.inv_subs[sb] != null) { delete v.inv_subs[sb]; c = true; } return c; });
   });
 }
 document.addEventListener('change', e => {
@@ -696,7 +737,7 @@ document.addEventListener('change', e => {
     if (existeNombre(nuevo)) { alert(`Ya existe una categoría o grupo llamado «${nuevo}».`); el.value = viejo; return; }
     p.sub = p.sub.map(x => x === viejo ? nuevo : x); p.ambito_sub = renombrarClave(p.ambito_sub, viejo, nuevo); if (!p.ambito_sub) delete p.ambito_sub;
     moverA(viejo, nuevo);
-    if (P && P.subs && P.subs[viejo] != null) { P.subs = renombrarClave(P.subs, viejo, nuevo); pDirty = true; }
+    enVersiones(v => { const c = v.subs[viejo] != null || v.inv_subs[viejo] != null; v.subs = renombrarClave(v.subs, viejo, nuevo); v.inv_subs = renombrarClave(v.inv_subs, viejo, nuevo); return c; });
     if (state.cat === viejo) state.cat = nuevo;
     catsCambiadas();
   } else if (el.dataset.cg != null) {
@@ -705,7 +746,7 @@ document.addEventListener('change', e => {
     if (existeNombre(nuevo)) { alert(`Ya existe una categoría o grupo llamado «${nuevo}».`); el.value = g; return; }
     if (!p.color && tipo === 'Gasto') { const c0 = COL_GRUPO[g]; if (c0) p.color = c0.slice(6, -1); }  // conserva el color del nombre viejo
     C[tipo] = renombrarClave(C[tipo], g, nuevo);
-    if (P && P.grupos && P.grupos[g] != null) { P.grupos = renombrarClave(P.grupos, g, nuevo); pDirty = true; }
+    enVersiones(v => { const c = v.grupos[g] != null; v.grupos = renombrarClave(v.grupos, g, nuevo); return c; });
     catsCambiadas();
   } else if (el.dataset.cadd != null) {
     const nuevo = el.value.trim(); if (!nuevo) return;
@@ -726,13 +767,13 @@ document.addEventListener('click', e => {
     const inp = document.querySelector(`.cgrp[data-t="${t}"][data-g="${CSS.escape(nombre)}"] input[data-cg]`); if (inp) { inp.focus(); inp.select(); }
   } else if (b.dataset.csdel) { catQuitar = { sub: b.dataset.csdel }; renderCategorias(); }
   else if (b.hasAttribute('data-cgdel')) {
-    if (!(C[tipo][g].sub || []).length) { delete C[tipo][g]; if (P && P.grupos && P.grupos[g] != null) { delete P.grupos[g]; pDirty = true; } catsCambiadas(); }
+    if (!(C[tipo][g].sub || []).length) { delete C[tipo][g]; enVersiones(v => { const c = v.grupos[g] != null; delete v.grupos[g]; return c; }); catsCambiadas(); }
     else { catQuitar = { tipo, grupo: g }; renderCategorias(); }
   } else if (b.hasAttribute('data-cqno')) { catQuitar = null; renderCategorias(); }
   else if (b.hasAttribute('data-cqok')) {
     const dest = b.parentElement.querySelector('select[data-cqdest]').value;
     if (catQuitar.sub) quitarSubs(tipo, g, [catQuitar.sub], dest);
-    else { quitarSubs(tipo, g, (C[tipo][g].sub || []).slice(), dest); delete C[tipo][g]; if (P && P.grupos && P.grupos[g] != null) { delete P.grupos[g]; pDirty = true; } }
+    else { quitarSubs(tipo, g, (C[tipo][g].sub || []).slice(), dest); delete C[tipo][g]; enVersiones(v => { const c = v.grupos[g] != null; delete v.grupos[g]; return c; }); }
     catQuitar = null; catsCambiadas();
   } else if (b.dataset.cgess != null) { C[tipo][g].esencial = JSON.parse(b.dataset.cgess); catsCambiadas(); }
   else if (b.dataset.cgcolor) { C[tipo][g].color = b.dataset.cgcolor; catsCambiadas(); }
@@ -740,42 +781,44 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('#catsEdit input')) e.target.blur(); });
 // reparto opcional del presupuesto de un grupo entre algunas de sus subcategorías (P.subs: subcategoría → €/mes).
 // Lo no repartido queda como bolsa común para el resto de subcategorías del grupo.
-const subsCon = g => g.sub.filter(c => P.subs && P.subs[c] != null);
-const repartido = g => subsCon(g).reduce((t, c) => t + (+P.subs[c] || 0), 0);
+const subsCon = (g, X = PV) => g.sub.filter(c => X.subs && X.subs[c] != null);
+const repartido = (g, X = PV) => subsCon(g, X).reduce((t, c) => t + (+X.subs[c] || 0), 0);
 let presAbiertos = null;
 function resumenReparto(g) {
-  const tot = +P.grupos[g.nombre] || 0, asig = repartido(g), n = subsCon(g).length;
+  const tot = +PV.grupos[g.nombre] || 0, asig = repartido(g), n = subsCon(g).length;
   if (!n) return 'Pon importe solo a las subcategorías que quieras controlar; lo que no repartas queda para el resto del grupo.';
   if (asig <= tot) return `Repartido ${fmt(asig)} de ${fmt(tot)} · ${fmt(tot - asig)} para el resto de ${g.nombre.toLowerCase()}`;
   return `<span class="bad">Las subcategorías suman ${fmt(asig)}, ${fmt(asig - tot)} más que el total del grupo.</span><button data-ajustar="${g.nombre}">Subir el total a ${fmt(asig)}</button>`;
 }
 // reparto de la inversión objetivo por categorías de inversión (P.inv_subs)
 const invSubs = () => ((D.grupos || []).find(g => g.tipo === 'Inversion') || { sub: [] }).sub;
-const invCon = () => invSubs().filter(c => P.inv_subs && P.inv_subs[c] != null);
-const invRepartido = () => invCon().reduce((t, c) => t + (+P.inv_subs[c] || 0), 0);
+const invCon = (X = PV) => invSubs().filter(c => X.inv_subs && X.inv_subs[c] != null);
+const invRepartido = (X = PV) => invCon(X).reduce((t, c) => t + (+X.inv_subs[c] || 0), 0);
 function resumenRepartoInv() {
-  const tot = +P.inversion_mensual || 0, asig = invRepartido(), n = invCon().length;
+  const tot = +PV.inversion_mensual || 0, asig = invRepartido(), n = invCon().length;
   if (!n) return 'Pon cuánto quieres invertir al mes en cada categoría; lo que no repartas queda libre.';
   if (asig <= tot) return `Repartido ${fmt(asig)} de ${fmt(tot)}` + (tot - asig >= 0.5 ? ` · ${fmt(tot - asig)} sin asignar` : '');
   return `<span class="bad">Las categorías suman ${fmt(asig)}, ${fmt(asig - tot)} más que el objetivo.</span><button data-ajustarinv="1">Subir el objetivo a ${fmt(asig)}</button>`;
 }
-function subBarrasInv(n, a, objInv) {  // en inversión, más es mejor: violeta mientras falta, verde al cumplir
-  const con = invCon(); if (!con.length) return '';
+function subBarrasInv(B, a, objInv) {  // en inversión, más es mejor: violeta mientras falta, verde al cumplir
+  const con = invCon(B); if (!con.length) return '';
   const fila = (nombre, pr, gt) => { const p = pr ? gt / pr : (gt > 0 ? 1 : 0);
     const col = pr && gt >= pr ? 'var(--s3)' : 'var(--s7)';
-    return `<div class="subbar hl"><span title="${nombre}">${nombre}</span><div class="track" style="background:color-mix(in srgb, ${col} 28%, var(--surface-2))"><div style="width:${Math.min(100, Math.max(0, p) * 100)}%;background:${col}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span></div>`; };
-  let h = con.map(c => fila(c, (+P.inv_subs[c] || 0) * n, a.invCats[c] || 0)).join('');
-  const prR = Math.max(0, objInv - invRepartido() * n), gsR0 = a.inv - con.reduce((t, c) => t + (a.invCats[c] || 0), 0), gsR = Math.abs(gsR0) < 0.5 ? 0 : gsR0;
+    return `<div class="subbar hl"><span title="${nombre}">${nombre}</span><div class="track" style="background:color-mix(in srgb, ${col} 28%, var(--surface-2))"><div style="width:${Math.min(100, Math.max(0, p) * 100)}%;background:${col}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span>${pr - gt >= 0.5 ? `<span class="sbq">faltan ${fmt(pr - gt)}</span>` : pr ? '<span class="sbq ok">cumplido</span>' : '<span class="sbq"></span>'}</div>`; };
+  let h = con.map(c => fila(c, +B.inv_subs[c] || 0, a.invCats[c] || 0)).join('');
+  const prR = Math.max(0, objInv - invRepartido(B)), gsR0 = a.inv - con.reduce((t, c) => t + (a.invCats[c] || 0), 0), gsR = Math.abs(gsR0) < 0.5 ? 0 : gsR0;
   if (prR >= 0.5 || gsR >= 0.5) h += fila(con.length < invSubs().length ? (prR >= 0.5 ? 'Resto' : 'Resto (sin objetivo)') : 'Sin asignar', prR, Math.max(0, gsR));
   return `<div style="margin-top:6px">${h}</div>`;
 }
-function subBarras(g, n, a, pres, gs) {
-  const con = subsCon(g); if (!con.length) return '';
+// lo que queda de una subcategoría: «quedan X» / «pasado X» en rojo / «justo»
+const quedaTxt = d => d >= 0.5 ? `<span class="sbq">quedan ${fmt(d)}</span>` : d <= -0.5 ? `<span class="sbq mal">pasado ${fmt(-d)}</span>` : '<span class="sbq">justo</span>';
+function subBarras(g, B, a, pres, gs) {
+  const con = subsCon(g, B); if (!con.length) return '';
   const fila = (nombre, pr, gt) => { const p = pr ? gt / pr : (gt > 0 ? 2 : 0), col = gt - pr >= 0.5 ? 'var(--s8)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
-    return `<div class="subbar hl"><span title="${nombre}">${nombre}</span><div class="track" style="background:color-mix(in srgb, ${col} 28%, var(--surface-2))"><div style="width:${Math.min(100, Math.max(0, p) * 100)}%;background:${col}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span></div>`; };
-  let h = con.map(c => fila(c, (+P.subs[c] || 0) * n, a.cats[c] || 0)).join('');
+    return `<div class="subbar hl"><span title="${nombre}">${nombre}</span><div class="track" style="background:color-mix(in srgb, ${col} 28%, var(--surface-2))"><div style="width:${Math.min(100, Math.max(0, p) * 100)}%;background:${col}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span>${quedaTxt(pr - gt)}</div>`; };
+  let h = con.map(c => fila(c, +B.subs[c] || 0, a.cats[c] || 0)).join('');
   if (con.length < g.sub.length) {  // bolsa común: lo que queda del grupo para las subcategorías sin importe propio
-    const prR = Math.max(0, pres - repartido(g) * n), gsR0 = gs - con.reduce((t, c) => t + (a.cats[c] || 0), 0), gsR = Math.abs(gsR0) < 0.5 ? 0 : gsR0;
+    const prR = Math.max(0, pres - repartido(g, B)), gsR0 = gs - con.reduce((t, c) => t + (a.cats[c] || 0), 0), gsR = Math.abs(gsR0) < 0.5 ? 0 : gsR0;
     if (prR >= 0.5 || gsR >= 0.5) h += fila('Resto', prR, gsR);
   }
   return `<div style="margin-top:6px">${h}</div>`;
@@ -790,12 +833,14 @@ function colchonTile() {
 }
 function renderPresupuesto(sinConfig) {
   if (!P) return;
-  P.subs = P.subs || {};
-  const rowsP = base(); const n = Math.max(new Set(rowsP.map(m => m.mes)).size, 1);
+  const rowsP = base(); const mesesB = [...new Set(rowsP.map(m => m.mes))].sort(); const n = Math.max(mesesB.length, 1);
+  const B = presPeriodo(mesesB.length ? mesesB : [state.hasta]);  // cada mes con el presupuesto que le toca
+  if (cfgClave !== state.desde + state.hasta) { cfgClave = state.desde + state.hasta; cfgMes = state.hasta; }  // al cambiar de periodo se configura su último mes
+  PV = versionDe(cfgMes);
   const a = agg(rowsP); const periodo = periodoLabel();
   const gGasto = (D.grupos || []).filter(g => g.tipo === 'Gasto');
-  const presTotal = gGasto.reduce((t, g) => t + (+P.grupos[g.nombre] || 0), 0) * n;
-  const libre = a.ingresos - a.gasto - P.inversion_mensual * n;
+  const presTotal = gGasto.reduce((t, g) => t + (+B.grupos[g.nombre] || 0), 0);
+  const libre = a.ingresos - a.gasto - B.inversion_mensual;
   const t = [
     ['Disponible para gastar', presTotal - a.gasto, presTotal - a.gasto >= 0 ? 'aqua' : 'orange', `presupuesto ${fmt(presTotal)} · gastado ${fmt(a.gasto)}` + (() => {  // en el mes en curso: cuánto toca por día
       const hoy = new Date(), mes = hoy.toISOString().slice(0, 7), ms = [...new Set(rowsP.map(m => m.mes))];
@@ -803,7 +848,7 @@ function renderPresupuesto(sinConfig) {
       const dias = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate() - hoy.getDate() + 1, d = presTotal - a.gasto;
       return d > 0 ? ` · ${fmt(d / dias)} al día los ${dias} días que quedan` : '';
     })()],
-    ['Inversión objetivo', P.inversion_mensual * n, 'violet', `invertido ${fmt(a.inv)} (${P.inversion_mensual ? Math.round(a.inv / (P.inversion_mensual * n) * 100) : 0} %)`],
+    ['Inversión objetivo', B.inversion_mensual, 'violet', `invertido ${fmt(a.inv)} (${B.inversion_mensual ? Math.round(a.inv / B.inversion_mensual * 100) : 0} %)`],
     colchonTile(),
     ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'orange', 'ingresos − gasto − inversión objetivo'],
   ];
@@ -812,21 +857,21 @@ function renderPresupuesto(sinConfig) {
   const mesesP = mesesAnio().filter(m => m >= state.desde && m <= state.hasta);
   const transc = mesesP.reduce((t, m) => t + (m < mesHoy ? 1 : m === mesHoy ? hoy0.getDate() / new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate() : 0), 0);
   const ritmo = mesesP.length ? transc / mesesP.length : 1;
-  $('presHint').textContent = (n > 1 ? `Periodo de ${n} meses: el presupuesto se multiplica por ${n}. ` : 'Presupuesto del mes frente a lo gastado. ') + 'Verde bien, ámbar por encima del 80 %, rojo pasado. Pasa el ratón por una barra para ver en qué se fue.' + (ritmo < 0.995 ? ` La raya marca lo que llevarías gastado a ritmo constante (ha pasado el ${Math.round(ritmo * 100)} % del periodo).` : '');
+  $('presHint').textContent = (n > 1 ? `Periodo de ${n} meses: cada mes cuenta con el presupuesto que tenía. ` : 'Presupuesto del mes frente a lo gastado. ') + 'Verde bien, ámbar por encima del 80 %, rojo pasado. Pasa el ratón por una barra para ver en qué se fue.' + (ritmo < 0.995 ? ` La raya marca lo que llevarías gastado a ritmo constante (ha pasado el ${Math.round(ritmo * 100)} % del periodo).` : '');
   // inversión del periodo frente al objetivo (más es mejor: violeta mientras falta, verde al cumplirlo)
-  const objInv = (+P.inversion_mensual || 0) * n, pInv = objInv ? a.inv / objInv : 0;
+  const objInv = B.inversion_mensual, pInv = objInv ? a.inv / objInv : 0;
   const tipInv = (`Invertido en el periodo|` + (Object.entries(a.invCats).filter(x => Math.abs(x[1]) >= 0.5).sort((x, y) => y[1] - x[1]).map(([c, v]) => `${c.toLowerCase()} ${fmt(v)}`).join('<br>') || 'Nada todavía')).replace(/"/g, '&quot;');
   const barraInv = objInv || a.inv ? `<div class="presinv"><div class="hl"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center"><i class="gsq" style="background:var(--s7)"></i>Inversión</b><span style="white-space:nowrap"><b>${fmt(a.inv)}</b> <span class="muted">de ${fmt(objInv)}</span></span></div>
       <div class="track" data-tip="${tipInv}" style="position:relative;height:12px;background:color-mix(in srgb, ${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'} 30%, var(--bg));border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tipInv}" style="height:100%;width:${Math.min(100, Math.max(0, pInv) * 100)}%;background:${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'};border-radius:4px"></div>${ritmo < 0.995 ? `<div data-tip="${tipInv}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
-      <div class="muted" style="font-size:12px">${!objInv ? 'Sin objetivo: ponlo en «Inversión objetivo al mes»' : a.inv >= objInv ? 'Objetivo cumplido' + (a.inv - objInv >= 1 ? ` · ${fmt(a.inv - objInv)} por encima` : '') : `Faltan ${fmt(objInv - a.inv)} para el objetivo · ${Math.round(pInv * 100)} %`}</div></div>${subBarrasInv(n, a, objInv)}</div>` : '';
+      <div class="muted" style="font-size:12px">${!objInv ? 'Sin objetivo: ponlo en «Inversión objetivo al mes»' : a.inv >= objInv ? 'Objetivo cumplido' + (a.inv - objInv >= 1 ? ` · ${fmt(a.inv - objInv)} por encima` : '') : `Faltan ${fmt(objInv - a.inv)} para el objetivo · ${Math.round(pInv * 100)} %`}</div></div>${subBarrasInv(B, a, objInv)}</div>` : '';
   $('bloques').innerHTML = barraInv + gGasto.map(g => {
-    const pres = (+P.grupos[g.nombre] || 0) * n, gs = a.grupos[g.nombre] || 0, p = pres ? gs / pres : (gs > 0 ? 2 : 0);
+    const pres = +B.grupos[g.nombre] || 0, gs = a.grupos[g.nombre] || 0, p = pres ? gs / pres : (gs > 0 ? 2 : 0);
     const pasado = gs - pres >= 0.5, col = pasado ? 'var(--s8)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
     const top = g.sub.filter(c => a.cats[c]).sort((x, y) => a.cats[y] - a.cats[x]).slice(0, 4).map(c => `${c.toLowerCase()} ${fmt(a.cats[c])}`).join(' · ');
     const tip = `${esc(g.nombre)}|${top ? top.split(' · ').join('<br>') : 'Sin gasto en el periodo'}`.replace(/"/g, '&quot;');
     return `<div style="margin:8px 0 14px"><div class="hl"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center;min-width:0"><i class="gsq" style="background:${colorGrupo(g.nombre) || 'var(--s9)'}"></i>${g.nombre}</b><span style="white-space:nowrap"><b>${fmt(gs)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
       <div class="track" data-tip="${tip}" style="position:relative;height:12px;background:color-mix(in srgb, ${col} 28%, var(--surface-2));border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tip}" style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div>${ritmo < 0.995 ? `<div data-tip="${tip}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
-      <div class="muted" style="font-size:12px">${pasado ? '<span style="color:var(--s8)">Pasado en ' + fmt(gs - pres) + '</span>' : gs >= pres - 0.5 && pres ? 'Justo en el límite' : 'Quedan ' + fmt(pres - gs)}</div></div>${subBarras(g, n, a, pres, gs)}</div>`;
+      <div class="muted" style="font-size:12px">${pasado ? '<span style="color:var(--s8)">Pasado en ' + fmt(gs - pres) + '</span>' : gs >= pres - 0.5 && pres ? 'Justo en el límite' : 'Quedan ' + fmt(pres - gs)}</div></div>${subBarras(g, B, a, pres, gs)}</div>`;
   }).join(''); hoverTips($('bloques'));
   // metas: el progreso puede ser manual o salir solo del saldo de una cuenta (o de todas). Si varias metas
   // tiran de la misma fuente, se llenan en orden: la primera hasta su objetivo y lo que sobra pasa a la siguiente.
@@ -850,28 +895,66 @@ function renderPresupuesto(sinConfig) {
       <div class="mcol" role="group" aria-label="Color de la meta">${COLORES_META.map(k => `<button style="--c:var(--${k})" data-mcolor="${k}" data-i="${i}" aria-pressed="${k === c}" aria-label="Color ${k}"></button>`).join('')}</div></div>`;
   }).join('') + '<button class="meta nueva" id="addMeta">+ Nueva meta</button>';
   // config: totales al mes (se actualizan al momento al cambiar cualquier importe)
-  const totG = gGasto.reduce((t, g) => t + (+P.grupos[g.nombre] || 0), 0), totI = +P.inversion_mensual || 0;
-  const totE = t => gGasto.filter(g => g.esencial === t).reduce((x, g) => x + (+P.grupos[g.nombre] || 0), 0), ess = totE(true), noess = totE(false), otros = totG - ess - noess;
+  const totG = gGasto.reduce((t, g) => t + (+PV.grupos[g.nombre] || 0), 0), totI = +PV.inversion_mensual || 0;
+  const totE = t => gGasto.filter(g => g.esencial === t).reduce((x, g) => x + (+PV.grupos[g.nombre] || 0), 0), ess = totE(true), noess = totE(false), otros = totG - ess - noess;
   // ingresos de referencia: el que pongas en la configuración o, si no, la mediana de los últimos 6 meses cerrados
   const ingMes = {}; D.movimientos.forEach(m => { if (m.tipo === 'Ingreso' && m.mes < mesHoy) ingMes[m.mes] = (ingMes[m.mes] || 0) + m.mio; });
   const ult6 = Object.keys(ingMes).sort().slice(-6).map(k => ingMes[k]).sort((x, y) => x - y);
   const mediana = ult6.length ? (ult6.length % 2 ? ult6[(ult6.length - 1) / 2] : (ult6[ult6.length / 2 - 1] + ult6[ult6.length / 2]) / 2) : 0;
-  const ing = +P.ingreso_mensual || mediana, ahorro = ing - totG - totI, capacidad = ing - totG;
+  const ing = +PV.ingreso_mensual || mediana, ahorro = ing - totG - totI, capacidad = ing - totG;
   PRES_MEDIANA = mediana;
-  $('presTot').innerHTML = `<div><span>Esenciales</span><b>${fmt(ess)}</b></div><div><span>+ No esenciales</span><b>${fmt(noess)}</b></div>${Math.abs(otros) >= 0.5 ? `<div title="Grupos fuera del cálculo de esencial / no esencial (Otros…)"><span>+ Otros</span><b>${fmt(otros)}</b></div>` : ''}<div><span>+ Inversión</span><b>${fmt(totI)}</b></div><div class="${ahorro >= 0 ? 'aho' : 'neg'}"><span>+ Para ahorrar</span><b>${fmt(ahorro)}</b></div><div class="tot"><span>= Ingresos al mes</span><b>${fmt(ing)}</b><small>${+P.ingreso_mensual ? 'los que has puesto abajo' : 'mediana de los últimos 6 meses'}</small></div>
+  $('presTot').innerHTML = `<div><span>Esenciales</span><b>${fmt(ess)}</b></div><div><span>+ No esenciales</span><b>${fmt(noess)}</b></div>${Math.abs(otros) >= 0.5 ? `<div title="Grupos fuera del cálculo de esencial / no esencial (Otros…)"><span>+ Otros</span><b>${fmt(otros)}</b></div>` : ''}<div><span>+ Inversión</span><b>${fmt(totI)}</b></div><div class="${ahorro >= 0 ? 'aho' : 'neg'}"><span>+ Para ahorrar</span><b>${fmt(ahorro)}</b></div><div class="tot"><span>= Ingresos al mes</span><b>${fmt(ing)}</b><small>${+PV.ingreso_mensual ? 'los que has puesto abajo' : 'mediana de los últimos 6 meses'}</small></div>
     <p class="prescap">Capacidad de ahorro (ingresos − gastos): <b>${fmt(capacidad)}</b> al mes, el ${ing ? Math.round(capacidad / ing * 100) : 0} % de lo que ingresas · de eso, ${fmt(totI)} a inversión y ${ahorro >= 0 ? fmt(ahorro) + ' para ahorrar' : '<span class="bad">te faltan ' + fmt(-ahorro) + ' para cubrir la inversión</span>'}.</p>`;
+  renderVersiones(mesHoy);
   if (sinConfig) return;
   if (!presAbiertos) { presAbiertos = new Set(gGasto.filter(g => subsCon(g).length).map(g => g.nombre)); if (invCon().length) presAbiertos.add('__inv'); }
   $('presConfig').innerHTML = gGasto.map(g => {
     const n = subsCon(g).length, multi = g.sub.length > 1, ab = presAbiertos.has(g.nombre);
-    return `<div class="pgrp"><label class="prow"><span><i class="gsq" style="background:${colorGrupo(g.nombre) || 'var(--s9)'}"></i>${g.nombre}${multi ? `<button class="prep" data-rep="${g.nombre}" aria-expanded="${ab}">${n ? n + (n === 1 ? ' repartida' : ' repartidas') : 'Repartir'} ${ab ? '▴' : '▾'}</button>` : ''}</span><input data-pg="${g.nombre}" type="number" value="${+P.grupos[g.nombre] || 0}"></label>${multi ? `
-      <div class="psubs"${ab ? '' : ' hidden'}>${g.sub.map(c => `<label class="prow sub"><span>${c}</span><input data-ps="${c}" data-g="${g.nombre}" type="number" min="0" placeholder="—" value="${P.subs[c] != null ? P.subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="${g.nombre}">${resumenReparto(g)}</div></div>` : ''}</div>`;
+    return `<div class="pgrp"><label class="prow"><span><i class="gsq" style="background:${colorGrupo(g.nombre) || 'var(--s9)'}"></i>${g.nombre}${multi ? `<button class="prep" data-rep="${g.nombre}" aria-expanded="${ab}">${n ? n + (n === 1 ? ' repartida' : ' repartidas') : 'Repartir'} ${ab ? '▴' : '▾'}</button>` : ''}</span><input data-pg="${g.nombre}" type="number" value="${+PV.grupos[g.nombre] || 0}"></label>${multi ? `
+      <div class="psubs"${ab ? '' : ' hidden'}>${g.sub.map(c => `<label class="prow sub"><span>${c}</span><input data-ps="${c}" data-g="${g.nombre}" type="number" min="0" placeholder="—" value="${PV.subs[c] != null ? PV.subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="${g.nombre}">${resumenReparto(g)}</div></div>` : ''}</div>`;
   }).join('') + `
-    <div class="pgrp sep"><label class="prow"><span><i class="gsq" style="background:var(--s7)"></i><b>Inversión objetivo al mes</b><button class="prep" data-rep="__inv" aria-expanded="${presAbiertos.has('__inv')}">${invCon().length ? invCon().length + (invCon().length === 1 ? ' repartida' : ' repartidas') : 'Repartir'} ${presAbiertos.has('__inv') ? '▴' : '▾'}</button></span><input data-p="inversion_mensual" type="number" value="${P.inversion_mensual}"></label>
-      <div class="psubs"${presAbiertos.has('__inv') ? '' : ' hidden'}>${invSubs().map(c => `<label class="prow sub"><span>${c}</span><input data-pinv="${c}" type="number" min="0" placeholder="—" value="${P.inv_subs && P.inv_subs[c] != null ? P.inv_subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="__inv">${resumenRepartoInv()}</div></div></div>
-    <label class="prow"><span><b>Ingresos al mes</b> <small class="muted">vacío = mediana de 6 meses</small></span><input data-p="ingreso_mensual" type="number" placeholder="${Math.round(PRES_MEDIANA)}" value="${+P.ingreso_mensual || ''}"></label>
+    <div class="pgrp sep"><label class="prow"><span><i class="gsq" style="background:var(--s7)"></i><b>Inversión objetivo al mes</b><button class="prep" data-rep="__inv" aria-expanded="${presAbiertos.has('__inv')}">${invCon().length ? invCon().length + (invCon().length === 1 ? ' repartida' : ' repartidas') : 'Repartir'} ${presAbiertos.has('__inv') ? '▴' : '▾'}</button></span><input data-p="inversion_mensual" type="number" value="${PV.inversion_mensual}"></label>
+      <div class="psubs"${presAbiertos.has('__inv') ? '' : ' hidden'}>${invSubs().map(c => `<label class="prow sub"><span>${c}</span><input data-pinv="${c}" type="number" min="0" placeholder="—" value="${PV.inv_subs[c] != null ? PV.inv_subs[c] : ''}"></label>`).join('')}<div class="pres-res" data-res="__inv">${resumenRepartoInv()}</div></div></div>
+    <label class="prow"><span><b>Ingresos al mes</b> <small class="muted">vacío = mediana de 6 meses</small></span><input data-p="ingreso_mensual" type="number" placeholder="${Math.round(PRES_MEDIANA)}" value="${+PV.ingreso_mensual || ''}"></label>
     ${metaColchon() < 0 ? `<label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>` : ''}`;
 }
+function etiquetaVersion(v) { return v === versionBase() ? 'Desde el principio' : (v.solo ? 'Solo ' : 'Desde ') + mesLargo(v.desde).toLowerCase(); }
+function renderVersiones(mesHoy) {
+  const ini = versionBase().desde, fin = (() => { const [y, m] = mesHoy.split('-').map(Number); const d = new Date(y, m - 1 + 12, 1); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); })();
+  const meses = []; for (let m = ini; m <= fin; ) { meses.push(m); const [y, mm] = m.split('-').map(Number); m = mm === 12 ? (y + 1) + '-01' : y + '-' + String(mm + 1).padStart(2, '0'); }
+  if (!meses.includes(cfgMes)) cfgMes = mesHoy, PV = versionDe(cfgMes);
+  const mesesDe = v => meses.filter(m => versionDe(m) === v);
+  const suyos = mesesDe(PV), rango = !suyos.length ? '' : suyos.length === 1 ? 'solo ' + mesLargo(suyos[0]).toLowerCase()
+    : suyos[suyos.length - 1] === fin && !PV.solo ? 'desde ' + mesLargo(suyos[0]).toLowerCase() + ' en adelante' + (suyos.length < meses.length - meses.indexOf(suyos[0]) ? ' (salvo los meses con presupuesto propio)' : '')
+    : 'de ' + mesLargo(suyos[0]).toLowerCase() + ' a ' + mesLargo(suyos[suyos.length - 1]).toLowerCase();
+  const propio = PV.desde === cfgMes && PV !== versionBase(), mesTxt = mesLargo(cfgMes).toLowerCase();
+  const estado = `<b>${etiquetaVersion(PV)}</b> · se aplica ${rango}${suyos.length > 1 ? '. Lo que cambies abajo cambia todos esos meses' : ''}.`;
+  const acciones = propio
+    ? `<div class="pvseg" role="group" aria-label="Duración"><button data-pvsolo="1" aria-pressed="${!!PV.solo}">Solo ${mesTxt}</button><button data-pvsolo="0" aria-pressed="${!PV.solo}">De ${mesTxt} en adelante</button></div><button class="pv del" data-pvdel="1">Eliminar este presupuesto</button>`
+    : `<button class="pv pri" data-pvnew="solo">Crear uno solo para ${mesTxt}</button><button class="pv" data-pvnew="siempre">Crear uno nuevo de ${mesTxt} en adelante</button>`;
+  $('presVer').innerHTML = `<div class="pver-top"><label class="pvmes">Presupuesto de <select id="cfgMes" aria-label="Mes que configuras">${meses.map(m => `<option value="${m}" ${m === cfgMes ? 'selected' : ''}>${mesLargo(m)}${m === mesHoy ? ' (este mes)' : ''}</option>`).join('')}</select></label><span class="pver-est">${estado}</span></div>
+    <div class="pver-acc">${acciones}</div>
+    <div class="pver-hist"><span class="muted">Tus presupuestos:</span>${P.versiones.map((v, i) => `<button data-pvver="${i}" class="${v === PV ? 'on' : ''}">${etiquetaVersion(v)} <small>${fmt(Object.values(v.grupos).reduce((t, x) => t + (+x || 0), 0))}</small></button>`).join('')}</div>`;
+  $('presVer').dataset.fin = fin;
+}
+document.addEventListener('change', e => { if (e.target.id === 'cfgMes') { cfgMes = e.target.value; renderPresupuesto(); } });
+document.addEventListener('click', e => {
+  const b = e.target.closest('#presVer button'); if (!b) return;
+  if (b.dataset.pvnew) {
+    const v = JSON.parse(JSON.stringify(PV)); v.desde = cfgMes; if (b.dataset.pvnew === 'solo') v.solo = true; else delete v.solo;
+    P.versiones.push(v); normalizarP(); marcarPres(); renderPresupuesto();
+  } else if (b.dataset.pvsolo != null) {
+    if (b.dataset.pvsolo === '1') PV.solo = true; else delete PV.solo;
+    normalizarP(); marcarPres(); renderPresupuesto();
+  } else if (b.dataset.pvdel) {
+    if (!confirm(`¿Eliminar «${etiquetaVersion(PV)}»? Sus meses vuelven al presupuesto anterior.`)) return;
+    P.versiones = P.versiones.filter(v => v !== PV); normalizarP(); marcarPres(); renderPresupuesto();
+  } else if (b.dataset.pvver != null) {
+    const v = P.versiones[+b.dataset.pvver], hoy = new Date().toISOString().slice(0, 7);
+    const ms = []; for (let m = v.desde; m <= ($('presVer').dataset.fin || hoy); ) { if (versionDe(m) === v) ms.push(m); const [y, mm] = m.split('-').map(Number); m = mm === 12 ? (y + 1) + '-01' : y + '-' + String(mm + 1).padStart(2, '0'); }
+    cfgMes = v === versionBase() ? (ms.filter(m => m <= hoy).pop() || ms[0] || v.desde) : v.desde; renderPresupuesto();
+  }
+});
 const COLORES_META = ['s1', 's3', 's4', 's2', 's5', 's7', 's10', 's8'];
 const colorMeta = (m, i) => COLORES_META.includes(m.color) ? m.color : COLORES_META[i % COLORES_META.length];
 function metasProgreso() {
@@ -902,10 +985,10 @@ function actualizarReparto(k) {
 }
 document.addEventListener('change', e => {
   const el = e.target;
-  if (el.dataset.p) { const [a, b] = el.dataset.p.split('.'); if (b) P[a][b] = +el.value; else P[a] = +el.value; marcarPres(); renderPresupuesto(true); if (el.dataset.p === 'inversion_mensual') actualizarReparto('__inv'); }
-  else if (el.dataset.pinv) { P.inv_subs = P.inv_subs || {}; if (el.value === '') delete P.inv_subs[el.dataset.pinv]; else P.inv_subs[el.dataset.pinv] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto('__inv'); }
-  else if (el.dataset.pg) { P.grupos[el.dataset.pg] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.pg); }
-  else if (el.dataset.ps) { if (el.value === '') delete P.subs[el.dataset.ps]; else P.subs[el.dataset.ps] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.g); }
+  if (el.dataset.p) { const [a, b] = el.dataset.p.split('.'); const O = VCAMPOS.includes(a) ? PV : P; if (b) O[a][b] = +el.value; else O[a] = +el.value; marcarPres(); renderPresupuesto(true); if (el.dataset.p === 'inversion_mensual') actualizarReparto('__inv'); }
+  else if (el.dataset.pinv) { if (el.value === '') delete PV.inv_subs[el.dataset.pinv]; else PV.inv_subs[el.dataset.pinv] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto('__inv'); }
+  else if (el.dataset.pg) { PV.grupos[el.dataset.pg] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.pg); }
+  else if (el.dataset.ps) { if (el.value === '') delete PV.subs[el.dataset.ps]; else PV.subs[el.dataset.ps] = +el.value; marcarPres(); renderPresupuesto(true); actualizarReparto(el.dataset.g); }
   else if (el.dataset.meta != null) { const m = P.metas[+el.dataset.meta]; const k = el.dataset.k; m[k] = (k === 'nombre' || k === 'fecha' || k === 'fuente') ? el.value : +el.value; if (k === 'fuente' && !el.value) delete m.fuente; marcarPres(); renderPresupuesto(); }
 });
 document.addEventListener('click', e => {
@@ -916,9 +999,9 @@ document.addEventListener('click', e => {
     ab ? presAbiertos.add(k) : presAbiertos.delete(k);
     rp.closest('.pgrp').querySelector('.psubs').hidden = !ab; rp.setAttribute('aria-expanded', ab); actualizarReparto(k);
   }
-  if (e.target.closest('button[data-ajustarinv]')) { P.inversion_mensual = invRepartido(); marcarPres(); renderPresupuesto(); }
+  if (e.target.closest('button[data-ajustarinv]')) { PV.inversion_mensual = invRepartido(); marcarPres(); renderPresupuesto(); }
   const aj = e.target.closest('button[data-ajustar]');
-  if (aj) { const g = (D.grupos || []).find(x => x.nombre === aj.dataset.ajustar); P.grupos[g.nombre] = repartido(g); marcarPres(); renderPresupuesto(); }
+  if (aj) { const g = (D.grupos || []).find(x => x.nombre === aj.dataset.ajustar); PV.grupos[g.nombre] = repartido(g); marcarPres(); renderPresupuesto(); }
   const mc = e.target.closest('button[data-mcolor]'); if (mc) { P.metas[+mc.dataset.i].color = mc.dataset.mcolor; marcarPres(); renderPresupuesto(true); }
   if (e.target.id === 'addMeta') { P.metas = P.metas || []; const usados = P.metas.map((m, i) => colorMeta(m, i)); P.metas.push({ nombre: 'Nueva meta', objetivo: 1000, fecha: '', reservado: 0, color: COLORES_META.find(k => !usados.includes(k)) || 's1' }); marcarPres(); renderPresupuesto(true); const ins = document.querySelectorAll('.meta .mhead input'); const ult = ins[ins.length - 1]; if (ult) { ult.focus(); ult.select(); } }
 });

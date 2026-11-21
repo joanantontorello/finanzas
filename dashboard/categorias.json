@@ -140,7 +140,9 @@
   "Donaciones": {
    "esencial": false,
    "color": "s1",
-   "sub": []
+   "sub": [
+    "Donacion"
+   ]
   }
  },
  "Reembolso": {

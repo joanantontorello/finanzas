@@ -81,6 +81,10 @@
 - {id: vuelos,             match: "VUELING|Vueling|RYANAIR|Ryanair|IBERIA|Iberia|EASYJET|easyJet|AIR EUROPA|Air Europa|VOLOTEA|Volotea", tipo: Gasto, categoria: "Vuelos"}
 
 # --- aprendidas de las correcciones del dashboard (van antes que las genéricas para ganarles)
+- {"id": "auto_app_crtm", "match": "APP\\ CRTM", "tipo": "Gasto", "categoria": "Transporte público", "ambito": null, "nota": "aprendida de la corrección #1804"}
+- {"id": "auto_noemi_garcia_montoya", "match": "NOEMI\\ GARCIA\\ MONTOYA", "tipo": "Gasto", "categoria": "Citas y pareja", "ambito": null, "nota": "aprendida de la corrección #1806"}
+- {"id": "auto_www_deanschneider_com", "match": "Www\\.deanschneider\\.com", "tipo": "Gasto", "categoria": "Donacion", "ambito": null, "nota": "aprendida de la corrección #1811"}
+- {"id": "auto_cinesa", "match": "Cinesa", "tipo": "Gasto", "categoria": "Citas y pareja", "ambito": null, "nota": "aprendida de la corrección #1820"}
 - {"id": "auto_sam_smak", "match": "Sam\\ Smak", "tipo": "Gasto", "categoria": "Supermercado", "ambito": null, "nota": "aprendida de la corrección #1659"}
 - {"id": "auto_casa_do_a_a", "match": "Casa\\ do\\ Açaí", "tipo": "Gasto", "categoria": "Açaí y brunch", "ambito": "Personal", "nota": "aprendida de la corrección #1120"}
 - {"id": "auto_bizum_payment_to_helibeth_r_q", "match": "Bizum\\ payment\\ to:\\ Helibeth\\ R\\.Q\\.", "tipo": "Gasto", "categoria": "Pádel", "ambito": "Personal", "nota": "aprendida de la corrección #1122"}
@@ -125,6 +129,7 @@
 - {id: bicimad,            match: "Ayuntamiento de Madrid",                                                         tipo: Gasto, categoria: "BiciMAD"}
 - {id: uber_taxi,          match: "\\bUber\\b|\\bUBER\\b|Cabify|CABIFY|\\bTaxi\\b|\\bTAXI\\b|FreeNow|FREENOW|\\bBolt\\b", tipo: Gasto, categoria: "Uber y taxi"}
 - {id: gasolina_parking,   match: "E\\.s\\. |Gasolinera|GASOLINERA|GASOIL|Gasoil|^\\[Card Payment\\] BP$|Repsol|REPSOL|Cepsa|CEPSA|Túnels|AP PL DEL SOL|PORT DE MATARO|Marina Port Vell|\\bSaba\\b|\\bSABA\\b|Parking|PARKING|Autopista|AUTOPISTA", tipo: Gasto, categoria: "Gasolina, peajes y parking"}
+- {id: bicimad_mpass,      match: "MPASS", max: 2, tipo: Gasto, categoria: "BiciMAD", nota: "MPASS de hasta 2 € = BiciMAD (criterio de Joan)"}
 - {id: transporte_publico, match: "Metro de Madrid|METRO DE MADRID|METRO BARCELONA|Alsa|ALSA|Intermodalidad Levante|Transports Metropolitans|Puerta de Atocha|Aeropuerto|MPASS|Ap\\. Cal Rondina|EMT|Cercanias|CERCANIAS", tipo: Gasto, categoria: "Transporte público"}
 - {id: ocio,               match: "Cinesa|Teatro|Babylon|Pub La V|Fnac|4fund|Amar por Se|WhSmith|CIRCUIT RACING|SCAPEROOM|ADORADO BAR|BAR ALESKA|KAPYBAR|GranVia7", tipo: Gasto, categoria: "Planes y ocio"}
 - {id: ropa,               match: "UNIQLO|Zara|ZARA|H&M|Primark|PRIMARK",                                           tipo: Gasto, categoria: "Ropa"}

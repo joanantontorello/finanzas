@@ -721,7 +721,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-02-15,Trade Republic,[Transacción con tarjeta] MERCADONA BARRIO LUCERO,-27.67,-27.67,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-02-15,Trade Republic,[Transacción con tarjeta] ALDI MADRID BARRIO LUCERO,-57.14,-57.14,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-02-15,Trade Republic,[Transacción con tarjeta] DIA MADRID 9833,-0.55,-0.55,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-02-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-02-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-02-16,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 2.711566",-400.0,-400.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-02-18,Revolut,[Card Payment] Madrid Coffee,-2.3,-2.3,Gasto,Hábitos diarios,Café,Personal,auto
 2026-02-20,Revolut,[Card Payment] Apple,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -742,7 +742,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-02-24,Trade Republic,[Transacción con tarjeta] FRUTERIA QUERIDA ESPANA I,-1.96,-1.96,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-02-24,Trade Republic,[Transacción con tarjeta] TOTO ICE PLAZA ESPANA,-5.5,-5.5,Gasto,Hábitos diarios,Café,Personal,auto
 2026-02-25,Revolut,[Card Payment] Brunch Society,-2.8,-2.8,Gasto,Hábitos diarios,Açaí y brunch,Personal,auto
-2026-02-25,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-02-25,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-02-27,Revolut,[Transfer] Bizum payment to: Kateryna S.,-25.7,-25.7,Gasto,Otros,Ajustes con Kate,Personal,auto
 2026-02-27,Revolut,[Card Payment] Rspiro Cafeteria,-5.1,-5.1,Gasto,Hábitos diarios,Café,Personal,auto
 2026-02-27,BBVA,Adeudo de cuota de la seguridad social | N 2026056001923845 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
@@ -754,7 +754,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-03-01,Trade Republic,[Interés] Interest payment,20.3,20.3,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-03-02,Revolut,[Card Payment] Alsa,-30.0,-30.0,Gasto,Transporte,Transporte público,Personal,auto
 2026-03-02,Trade Republic,"[Operar] Savings plan execution LU0290358497 Xtrackers II - Xtrackers II EUR Overnight Rate Swap UCITS ETF 1C, quantity: 0.673287",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-03-02,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-03-02,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-03-02,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 7.276961",-50.0,-50.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-03-02,Trade Republic,"[Transacción con tarjeta] REPLIT, INC., 24,20 $, exchange rate: 0,8483471, ECB rate: 0,847098687, markup: 0,14737515 %",-20.53,-20.53,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-03-02,Trade Republic,[Transacción con tarjeta] CLAUDE.AI SUBSCRIPTION,-18.0,-18.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
@@ -795,7 +795,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-03-14,Revolut,[Card Payment] Max,-6.99,-6.99,Gasto,Suscripciones,Streaming de vídeo,Personal,auto
 2026-03-15,Revolut,[Card Payment] Fidelio Online,-1.0,-1.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-03-15,Trade Republic,[Transacción con tarjeta] MAKAMI RAMEN,-69.7,-69.7,Gasto,Ocio y vida social,Restaurantes,Personal,auto
-2026-03-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-03-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-03-16,Trade Republic,"[Operar] Savings plan execution LU0290358497 Xtrackers II - Xtrackers II EUR Overnight Rate Swap UCITS ETF 1C, quantity: 0.672811",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-03-16,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 7.542388",-50.0,-50.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-03-16,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.352447",-200.0,-200.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
@@ -829,7 +829,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-03-24,Revolut,[Transfer] Bizum payment to: Rolando G.A.,-3.0,-3.0,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
 2026-03-24,Revolut,[Card Payment] Madrid Coffee,-5.4,-5.4,Gasto,Hábitos diarios,Café,Personal,auto
 2026-03-24,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-300.0,-300.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-03-24,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-03-24,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-03-24,Trade Republic,[Transacción con tarjeta] AYTO MADRID DEPORTES,-10.6,-10.6,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-03-24,Trade Republic,[Transacción con tarjeta] IRYOB2C,-97.16,-97.16,Gasto,Transporte,Trenes y AVE,Personal,auto
 2026-03-25,Revolut,[Topup] Apple Pay top-up by *5233,600.0,600.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
@@ -886,7 +886,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-04-06,Trade Republic,[Transacción con tarjeta] IKEA LA GAVIA HFB,-7.8,-7.8,Gasto,Vivienda y suministros,Hogar y equipamiento,Personal,auto
 2026-04-07,Revolut,[Card Payment] Apple,-10.99,-10.99,Gasto,Suscripciones,Streaming de vídeo,Personal,auto
 2026-04-07,Trade Republic,[Transacción con tarjeta] WWW.AMAZON* NI9OQ4O04,-125.98,-125.98,Gasto,Ocio y vida social,Compras impulsivas,Personal,auto
-2026-04-07,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-04-07,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-04-07,Trade Republic,[Transacción con tarjeta] LOS CANDILES DE VINATEROS,-4.0,-4.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-04-08,BBVA,Adeudo jaime carrasco del olmo | Adeudo nº 2026097004469792 | N 2026097004469792 JAIME CARRASCO DEL OLMO,-84.7,-84.7,Gasto,Empresa,Gestoría,Trabajo,auto
 2026-04-09,Revolut,[Card Payment] Apple,-17.99,-17.99,Gasto,Suscripciones,Streaming de vídeo,Trabajo,auto
@@ -902,7 +902,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-04-10,Revolut,[Card Payment] Ayuntamiento de Madrid,-4.15,-4.15,Gasto,Transporte,BiciMAD,Personal,auto
 2026-04-10,Trade Republic,[Transacción con tarjeta] STEAK BURGER PRECIADOS,-36.0,-36.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-04-11,Revolut,[Transfer] Bizum payment to: MARINA.H.L.,-77.0,-77.0,Gasto,Viajes,Comida y gastos en destino,Personal,revisado
-2026-04-12,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-04-12,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-04-13,Revolut,[Card Payment] Playtomic,-2.8,-2.8,Gasto,Salud y deporte,Pádel,Personal,auto
 2026-04-13,Trade Republic,[Transacción con tarjeta] SQ *MORROW COFFEE,-10.9,-10.9,Gasto,Hábitos diarios,Café,Personal,auto
 2026-04-14,Trade Republic,[Transacción con tarjeta] PLAYTOMIC.IO 86E8C4DD,-5.99,-5.99,Gasto,Salud y deporte,Pádel,Personal,auto
@@ -915,19 +915,19 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-04-16,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-300.0,-300.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-04-16,Trade Republic,"[Operar] Savings plan execution LU0290358497 Xtrackers II - Xtrackers II EUR Overnight Rate Swap UCITS ETF 1C, quantity: 0.671578",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-04-16,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 7.148371",-50.0,-50.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-04-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-04-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-04-16,Trade Republic,[Transacción con tarjeta] REDDRAGON HOTPOT,-28.05,-28.05,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-04-16,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.321527",-200.0,-200.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-04-17,Revolut,[Topup] Money added via BIZUM,10.8,10.8,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-04-17,Trade Republic,"[Operar] Sell trade US0231351067 AMAZON.COM INC. DL-,01, quantity: 0.15",31.2,31.2,Inversion,Inversiones,Acciones,Personal,auto
-2026-04-18,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-04-18,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-04-18,Trade Republic,[Transacción con tarjeta] LLIBRERIA PAPERERIA TORRA,-18.6,-18.6,Gasto,Formación,Libros,Personal,auto
 2026-04-18,Trade Republic,[Transacción con tarjeta] ZIQI,-43.15,-43.15,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-04-18,Trade Republic,[Transacción con tarjeta] IVETTES COFFEE,-3.5,-3.5,Gasto,Hábitos diarios,Café,Personal,auto
 2026-04-19,Revolut,[Card Payment] Uber,-21.93,-21.93,Gasto,Transporte,Uber y taxi,Personal,auto
 2026-04-19,Trade Republic,[Transacción con tarjeta] SQ *NOVELA BCN,-14.8,-14.8,Gasto,Hábitos diarios,Café,Personal,auto
 2026-04-19,Trade Republic,[Transacción con tarjeta] Gate Gourmet Spain IRYO,-7.5,-7.5,Gasto,Transporte,Trenes y AVE,Personal,auto
-2026-04-19,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-04-19,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-04-20,Revolut,[Transfer] Agencia Tributaria (AEAT),-121.8,-121.8,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
 2026-04-20,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-04-20,Revolut,[Card Payment] Apple,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -949,13 +949,13 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-04-23,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.301743",-200.0,-200.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-04-24,Trade Republic,[Transacción con tarjeta] Glovo 23APR MJ9PCDHL,-29.53,-29.53,Gasto,Hábitos diarios,Comida a domicilio,Personal,auto
 2026-04-25,Revolut,[Card Payment] Uber,-15.94,-15.94,Gasto,Transporte,Uber y taxi,Personal,auto
-2026-04-25,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-04-25,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-04-25,Trade Republic,[Transacción con tarjeta] CHURRERIA LA MEJOR,-6.05,-6.05,Gasto,Hábitos diarios,Café,Personal,auto
 2026-04-25,Trade Republic,[Transacción con tarjeta] CHURRERIA LA MEJOR,-1.8,-1.8,Gasto,Hábitos diarios,Café,Personal,auto
 2026-04-25,Trade Republic,[Transacción con tarjeta] RAMEN KAGURA MORATALAZ,-20.9,-20.9,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-04-26,Trade Republic,[Transacción con tarjeta] GUASACACA,-6.5,-6.5,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-04-26,Trade Republic,[Transacción con tarjeta] LA SELECTA,-6.0,-6.0,Gasto,Hábitos diarios,Café,Personal,auto
-2026-04-27,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-04-27,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-04-28,Trade Republic,"[Transferencia] Incoming transfer from FIDELIO, SLU (AD3700010000419001600100)",2858.66,2858.66,Ingreso,Ingresos,Trabajo,Trabajo,auto
 2026-04-28,Trade Republic,[Transacción con tarjeta] BAR ALESKA,-3.6,-3.6,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
 2026-04-28,Trade Republic,[Transacción con tarjeta] AYTO MADRID DEPORTES,-10.6,-10.6,Gasto,Salud y deporte,Gimnasio,Personal,auto
@@ -969,7 +969,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-05-01,Trade Republic,[Interés] Interest payment,10.51,10.51,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-05-02,Revolut,[Topup] Apple Pay top-up by *5233,300.0,300.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-05-02,Revolut,[Transfer] Bizum payment to: Miranda A.M.,-24.26,-24.26,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
-2026-05-02,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-02,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-02,Trade Republic,[Transacción con tarjeta] MAS QUE SUSHI MATARO,-26.73,-26.73,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-05-02,Trade Republic,[Transacción con tarjeta] PORT DE MATARO,-6.1,-6.1,Gasto,Transporte,"Gasolina, peajes y parking",Personal,auto
 2026-05-04,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-300.0,-300.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
@@ -989,9 +989,9 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-05-08,Trade Republic,"[Operar] Buy trade US4581401001 INTEL CORP. DL-,001, quantity: 60",-6009.4,-6009.4,Inversion,Inversiones,Acciones,Personal,auto
 2026-05-08,Trade Republic,"[Operar] Sell trade US4581401001 INTEL CORP. DL-,001, quantity: 60",5993.6,5993.6,Inversion,Inversiones,Acciones,Personal,auto
 2026-05-09,Revolut,[Card Payment] Apple,-17.99,-17.99,Gasto,Suscripciones,Streaming de vídeo,Trabajo,auto
-2026-05-09,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-09,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-10,Trade Republic,[Transacción con tarjeta] UNIQLO GranVia,-15.0,-15.0,Gasto,Ocio y vida social,Ropa,Personal,auto
-2026-05-10,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-10,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-10,Trade Republic,[Transacción con tarjeta] MERCADONA C/ FUENCARRAL,-14.43,-14.43,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-05-11,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 6.610958",-50.0,-50.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-05-11,Trade Republic,[Transacción con tarjeta] YUQIN SUN,-6.05,-6.05,Gasto,Otros,Imprevistos,Personal,auto
@@ -1013,76 +1013,76 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-05-18,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.261352",-200.0,-200.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-05-18,BBVA,Transferencia recibida | Regalo cafetera krups para los madriles,100.0,100.0,Ingreso,Ingresos,Otros ingresos,Personal,auto
 2026-05-19,Revolut,[Transfer] Bizum payment to: Jose Ignacio D.M.,-2.6,-2.6,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
-2026-05-19,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-19,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-19,Trade Republic,[Transacción con tarjeta] XOLO ATOCHA,-53.3,-53.3,Gasto,Hábitos diarios,Café,Personal,auto
 2026-05-19,Trade Republic,[Transacción con tarjeta] STARBUCKS COFFEE PENALVER,-4.8,-4.8,Gasto,Hábitos diarios,Café,Personal,auto
 2026-05-19,Trade Republic,[Transacción con tarjeta] EL CORTE INGLES-DEPARTAM.,-94.0,-94.0,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
 2026-05-20,Revolut,[Topup] Apple Pay top-up by *5233,300.0,300.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-05-20,Revolut,[Card Payment] Apple,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
 2026-05-20,Revolut,[Card Payment] Ayuntamiento de Madrid,-10.6,-10.6,Gasto,Transporte,BiciMAD,Personal,auto
-2026-05-20,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-20,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-21,Trade Republic,[Transacción con tarjeta] SQ *MADRID COFFEE LOVERS,-4.6,-4.6,Gasto,Hábitos diarios,Café,Personal,auto
 2026-05-21,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-300.0,-300.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-05-21,Trade Republic,[Transacción con tarjeta] MERCADONA MANUEL MACHADO,-0.7,-0.7,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-05-21,Trade Republic,[Transacción con tarjeta] IKEA GOYA HFB,-42.11,-42.11,Gasto,Vivienda y suministros,Hogar y equipamiento,Personal,auto
 2026-05-22,Revolut,[Topup] Money added via BIZUM,2.7,2.7,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-05-22,Revolut,[Topup] Money added via BIZUM,2.7,2.7,Reembolso,Reembolsos,Reembolsos,Personal,auto
-2026-05-22,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-22,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-22,Trade Republic,[Transacción con tarjeta] LLADOS UNIVERSITY,-100.0,-100.0,Gasto,Formación,Mentoría y cursos,Personal,auto
 2026-05-23,Trade Republic,[Transacción con tarjeta] AYTO MADRID DEPORTES,-10.6,-10.6,Gasto,Salud y deporte,Gimnasio,Personal,auto
-2026-05-23,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-23,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-24,Trade Republic,[Transacción con tarjeta] MyProtein,-107.51,-107.51,Gasto,Salud y deporte,Farmacia y salud,Personal,auto
 2026-05-24,Trade Republic,[Transacción con tarjeta] SQ *SANNA ACAI ALCALA,-10.9,-10.9,Gasto,Hábitos diarios,Açaí y brunch,Personal,auto
 2026-05-24,Trade Republic,[Transacción con tarjeta] MYPROTEIN,99.52,99.52,Gasto,Salud y deporte,Farmacia y salud,Personal,auto
 2026-05-24,Trade Republic,[Transacción con tarjeta] MYPROTEIN,-99.52,-99.52,Gasto,Salud y deporte,Farmacia y salud,Personal,auto
-2026-05-24,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-24,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-24,Trade Republic,[Transacción con tarjeta] MALVON ALCALA,-3.85,-3.85,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-05-25,Trade Republic,[Transacción con tarjeta] SQ *NUEVO SPECIALTY COFFE,-7.6,-7.6,Gasto,Hábitos diarios,Café,Personal,auto
 2026-05-25,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 6.562368",-50.0,-50.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-05-25,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-25,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-25,Trade Republic,[Transacción con tarjeta] ALCAMPO MORATALAZ,-115.0,-115.0,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-05-25,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.228803",-200.0,-200.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-05-26,Trade Republic,[Transacción con tarjeta] AYTO MADRID DEPORTES,-6.9,-6.9,Gasto,Salud y deporte,Gimnasio,Personal,auto
-2026-05-27,Trade Republic,[Transacción con tarjeta] MPASS,-2.0,-2.0,Gasto,Transporte,Transporte público,Personal,auto
-2026-05-27,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-27,Trade Republic,[Transacción con tarjeta] MPASS,-2.0,-2.0,Gasto,Transporte,BiciMAD,Personal,auto
+2026-05-27,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-28,Revolut,[Card Payment] Playtomic,-9.88,-9.88,Gasto,Salud y deporte,Pádel,Personal,auto
 2026-05-28,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-05-28,Trade Republic,[Transacción con tarjeta] ALCAMPO MORATALAZ,-29.29,-29.29,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-05-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-29,Trade Republic,[Transacción con tarjeta] MERCADONA AVDA DEMOCRACIA,-7.35,-7.35,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-05-29,BBVA,Adeudo de cuota de la seguridad social | N 2026147002318498 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
 2026-05-30,Trade Republic,[Transacción con tarjeta] CAFE RAICES,-6.0,-6.0,Gasto,Hábitos diarios,Café,Personal,auto
-2026-05-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-30,Trade Republic,[Transacción con tarjeta] KUBOKING MARROQUINA,-16.0,-16.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
-2026-05-31,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-05-31,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-05-31,Trade Republic,[Transacción con tarjeta] RESTAURANTE MI SHUSI,-27.5,-27.5,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-06-01,Trade Republic,[Bonificación] Cash reward allocation,10.73,10.73,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-06-01,Trade Republic,[Interés] Interest payment,9.19,9.19,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-06-01,Trade Republic,[Transacción con tarjeta] SQ *NUEVO SPECIALTY COFFE,-2.3,-2.3,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-01,Trade Republic,[Transacción con tarjeta] SP ZZEN LABS,-63.0,-63.0,Gasto,Salud y deporte,Farmacia y salud,Personal,revisado
-2026-06-01,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-01,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-01,Trade Republic,[Transacción con tarjeta] SCAPEROOMEXPERIENCES,-100.0,-100.0,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
 2026-06-01,Trade Republic,[Transacción con tarjeta] ALCAMPO MORATALAZ,-95.04,-95.04,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-06-01,Trade Republic,"[Transferencia] Incoming transfer from FIDELIO, SLU (AD3700010000419001600100)",2883.15,2883.15,Ingreso,Ingresos,Trabajo,Trabajo,auto
 2026-06-02,Trade Republic,[Transacción con tarjeta] PLAYTOMIC.IO A8C48294,-7.49,-7.49,Gasto,Salud y deporte,Pádel,Personal,auto
 2026-06-02,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.532270",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-06-02,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-02,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-02,Trade Republic,[Transacción con tarjeta] WWW.AMAZON* N32NA24I4,-82.58,-82.58,Gasto,Ocio y vida social,Compras impulsivas,Personal,auto
 2026-06-02,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.214476",-200.0,-200.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-06-02,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.065164",-10.73,-10.73,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-06-03,Trade Republic,"[Operar] Buy trade XF000ETH0019 Ethereum, quantity: 0.306946",-501.0,-501.0,Inversion,Inversiones,Criptomonedas,Personal,auto
 2026-06-03,Trade Republic,[Transacción con tarjeta] YUQIN SUN,-1.0,-1.0,Gasto,Otros,Imprevistos,Personal,auto
-2026-06-04,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-04,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-04,Trade Republic,[Transacción con tarjeta] MANTECA BURGER,-37.48,-37.48,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-06-04,Trade Republic,[Transacción con tarjeta] AYTO MADRID DEPORTES,-6.9,-6.9,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-06-04,BBVA,Adeudo jaime carrasco del olmo | Adeudo nº 2026154002390834 | N 2026154002390834 JAIME CARRASCO DEL OLMO,-84.7,-84.7,Gasto,Empresa,Gestoría,Trabajo,auto
 2026-06-05,Revolut,[Card Payment] Uber,-8.95,-8.95,Gasto,Transporte,Uber y taxi,Personal,auto
 2026-06-05,Trade Republic,[Transferencia] Outgoing transfer for Joan Anton Torelló Lopez (ES7501820238400201914723),-400.0,-400.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-06-05,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-05,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-05,Trade Republic,[Transacción con tarjeta] MARKET MORATAZ,-6.54,-6.54,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-06-05,BBVA,Transferencia recibida | Joan anton torell  lopez,400.0,400.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-06-07,Trade Republic,[Transacción con tarjeta] DISTRIBUCIONES ALFAOMEGA,-10.75,-10.75,Gasto,Otros,Imprevistos,Personal,auto
-2026-06-07,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-07,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-07,Trade Republic,[Transacción con tarjeta] ABBRAZZAS,-93.6,-93.6,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-06-08,Trade Republic,[Transacción con tarjeta] ADORADO BAR,-50.6,-50.6,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
 2026-06-08,Trade Republic,[Transacción con tarjeta] ALCAMPO MORATALAZ,-89.34,-89.34,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1099,14 +1099,14 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-11,Revolut,[Card Payment] Playtomic,-19.76,-19.76,Gasto,Salud y deporte,Pádel,Personal,auto
 2026-06-12,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-06-12,Trade Republic,[Transacción con tarjeta] SQ *MADRID COFFEE LOVERS,-5.4,-5.4,Gasto,Hábitos diarios,Café,Personal,auto
-2026-06-12,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-12,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-12,Trade Republic,[Transacción con tarjeta] METRO DE MADRID S.A.,-10.0,-10.0,Gasto,Transporte,Transporte público,Personal,auto
 2026-06-12,Trade Republic,[Transacción con tarjeta] IRYOB2C,-15.0,-15.0,Gasto,Transporte,Trenes y AVE,Personal,auto
 2026-06-12,Trade Republic,[Transacción con tarjeta] IRYOB2C,-37.26,-37.26,Gasto,Transporte,Trenes y AVE,Personal,auto
 2026-06-13,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,100.0,100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-06-13,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-06-13,Revolut,[Transfer] Bizum payment to: Álvaro I.M.,-9.0,-9.0,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
-2026-06-13,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-13,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-13,Trade Republic,[Transacción con tarjeta] D P BARBER STUDIO,-22.95,-22.95,Gasto,Salud y deporte,Peluquería y autocuidado,Personal,auto
 2026-06-14,Trade Republic,[Transacción con tarjeta] SQ *FULL OF BEANS SL,-5.4,-5.4,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-14,Trade Republic,[Transacción con tarjeta] FRUTOS SECOS,-2.5,-2.5,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1117,7 +1117,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-15,Trade Republic,[Transacción con tarjeta] HUNDRED,-57.0,-57.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-06-15,Trade Republic,[Transacción con tarjeta] ANTHROPIC* CLAUDE SUB,-90.0,-90.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-06-15,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to GC RE OCTOPUS ENERGY (FR7617118820080000001536203),-6.42,-6.42,Gasto,Vivienda y suministros,Electricidad,Personal,auto
-2026-06-15,Trade Republic,[Transacción con tarjeta] MPASS,-2.0,-2.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-15,Trade Republic,[Transacción con tarjeta] MPASS,-2.0,-2.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-16,Conjunta,[Card Payment] Alcampo,-18.9,-9.45,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-06-16,Revolut,[Card Payment] Playtomic,-8.18,-8.18,Gasto,Salud y deporte,Pádel,Personal,auto
 2026-06-16,Revolut,[Card Payment] Uber,-11.94,-11.94,Gasto,Transporte,Uber y taxi,Personal,auto
@@ -1125,7 +1125,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-16,Trade Republic,[Transacción con tarjeta] OUIGO Espana,-49.0,-49.0,Gasto,Transporte,Trenes y AVE,Personal,auto
 2026-06-16,Trade Republic,[Rentabilidad] Cash Dividend for ISIN US5801351017,0.48,0.48,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-06-16,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.569130",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-06-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-16,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.216545",-200.0,-200.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-06-17,Conjunta,[Card Payment] Amazon,-4.0,-2.0,Gasto,Ocio y vida social,Compras impulsivas,Personal,auto
 2026-06-17,Revolut,[Card Payment] Playtomic,-9.62,-9.62,Gasto,Salud y deporte,Pádel,Personal,auto
@@ -1135,9 +1135,9 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-18,Conjunta,[Card Payment] Ochenta Grados,-32.95,-16.48,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-06-18,Revolut,[Card Refund] Playtomic,9.62,9.62,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-06-18,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to GC RE OCTOPUS ENERGY (FR7617118820080000001536203),-20.13,-20.13,Gasto,Vivienda y suministros,Electricidad,Personal,auto
-2026-06-18,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-18,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-19,Conjunta,[Card Payment] Lidl,-6.67,-3.33,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-06-19,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-19,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-19,Trade Republic,[Transacción con tarjeta] PERFUMERIA PRIMOR,-22.95,-22.95,Gasto,Salud y deporte,Peluquería y autocuidado,Personal,auto
 2026-06-20,Revolut,[Topup] Money added via BIZUM,33.14,33.14,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-06-20,Revolut,[Topup] Money added via BIZUM,33.14,33.14,Reembolso,Reembolsos,Reembolsos,Personal,auto
@@ -1158,7 +1158,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-22,Revolut,[Transfer] Agencia Tributaria (AEAT),-122.62,-122.62,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
 2026-06-22,Revolut,[Card Payment] Boheme,-3.2,-3.2,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-22,Trade Republic,[Transacción con tarjeta] SHARE.MYCHEFTOOL.COM,-106.0,-106.0,Gasto,Hábitos diarios,Comida a domicilio,Personal,auto
-2026-06-22,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-22,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-22,Trade Republic,[Transacción con tarjeta] LLADOS UNIVERSITY,-100.0,-100.0,Gasto,Formación,Mentoría y cursos,Personal,auto
 2026-06-23,Conjunta,[Card Payment] Sam Smak,-9.6,-4.8,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-06-23,Conjunta,[Card Payment] Alcampo,-57.53,-28.77,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1180,18 +1180,18 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-06-26,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-06-26,Trade Republic,[Transacción con tarjeta] PLAYTOMIC.IO 8119C6BE,-5.08,-5.08,Gasto,Salud y deporte,Pádel,Personal,auto
 2026-06-26,Trade Republic,[Rentabilidad] Cash Dividend for ISIN US67066G1040,0.62,0.62,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
-2026-06-26,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-26,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-27,Conjunta,[Card Payment] Nuevo Specialty Coffe,-2.5,-1.25,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-27,Conjunta,[Card Payment] Nuevo Specialty Coffe,-8.2,-4.1,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-27,Conjunta,[Card Payment] Dia,-2.64,-1.32,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-06-27,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-500.0,-500.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-06-27,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-27,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-28,Conjunta,[Card Payment] Bel Mondo,-45.49,-22.75,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-06-28,Conjunta,[Card Payment] De Tyler Restauraciones S,-5.0,-2.5,Gasto,Ocio y vida social,Restaurantes,Personal,auto
-2026-06-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-29,Revolut,[Transfer] Bizum payment to: Kateryna S.,-10.08,-10.08,Gasto,Otros,Ajustes con Kate,Personal,auto
 2026-06-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
-2026-06-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-06-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-06-29,Trade Republic,[Transacción con tarjeta] CHURRERIA LA MEJOR,-5.6,-5.6,Gasto,Hábitos diarios,Café,Personal,auto
 2026-06-29,Trade Republic,"[Transacción con tarjeta] DEPARTMENT OF IMMIGRATION, 52,08 $, exchange rate: 0,8807604, ECB rate: 0,8767315448, markup: 0,45953122 %",-45.87,-45.87,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-06-30,BBVA,Adeudo de cuota de la seguridad social | N 2026177002285923 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
@@ -1206,7 +1206,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-07-01,Trade Republic,[Interés] Interest payment,9.72,9.72,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-07-01,Trade Republic,[Transacción con tarjeta] METRO BARCELONA,-13.0,-13.0,Gasto,Transporte,Transporte público,Personal,auto
 2026-07-01,Trade Republic,[Transacción con tarjeta] HEYMONDO,-147.36,-147.36,Gasto,Viajes,Comida y gastos en destino,Personal,auto
-2026-07-01,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-07-01,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-07-02,Revolut,[Topup] Money added via BIZUM,7.28,7.28,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-07-02,Revolut,[Topup] Money added via BIZUM,7.28,7.28,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-07-02,Revolut,[Card Payment] Casa Figari,-10.0,-10.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
@@ -1422,12 +1422,12 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-08-06,Revolut,[Card Payment] SSP,-12.33,-12.33,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-08-07,Conjunta,[Card Payment] Alcampo,-6.34,-3.17,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-08-07,Conjunta,[Card Payment] Alcampo,-81.11,-40.55,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-08-07,Conjunta,[Card Payment] Cinesa,-32.8,-16.4,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
+2026-08-07,Conjunta,[Card Payment] Cinesa,-32.8,-16.4,Gasto,Ocio y vida social,Citas y pareja,Personal,auto
 2026-08-07,Revolut,[Card Payment] Metro de Madrid,-10.0,-10.0,Gasto,Transporte,Transporte público,Personal,auto
 2026-08-07,Trade Republic,"[Transferencia] Incoming transfer from FIDELIO, SLU (AD3700010000419001600100)",2865.77,2865.77,Ingreso,Ingresos,Trabajo,Trabajo,auto
 2026-08-08,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-08-08,Conjunta,[Topup] Apple Pay top-up by *5233,200.0,200.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-08-08,Conjunta,[Card Payment] Cinesa,-18.2,-9.1,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
+2026-08-08,Conjunta,[Card Payment] Cinesa,-18.2,-9.1,Gasto,Ocio y vida social,Citas y pareja,Personal,auto
 2026-08-08,Conjunta,[Card Payment] Lidl,-43.68,-21.84,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-08-08,Conjunta,[Card Payment] Cash EcoFamilia,-1.78,-0.89,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-08-09,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,100.0,100.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
@@ -1437,7 +1437,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-08-10,Conjunta,[Card Payment] Full Of Beans,-7.2,-3.6,Gasto,Hábitos diarios,Café,Personal,auto
 2026-08-10,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-08-10,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 13.301409",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-08-10,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-08-10,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-08-10,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.186521",-200.0,-200.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-08-11,Conjunta,[Card Payment] Alcampo,-41.98,-20.99,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-08-11,Conjunta,[Card Payment] Churreria La Mejor,-1.8,-0.9,Gasto,Hábitos diarios,Café,Personal,auto
@@ -1445,11 +1445,11 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-08-11,Revolut,[Card Payment] D P Barber Studio,-22.95,-22.95,Gasto,Salud y deporte,Peluquería y autocuidado,Personal,auto
 2026-08-12,Conjunta,[Card Payment] Ayuntamiento de Madrid,-4.15,-2.08,Gasto,Transporte,BiciMAD,Personal,auto
 2026-08-13,Conjunta,[Card Payment] Ayuntamiento de Madrid,-3.6,-1.8,Gasto,Transporte,BiciMAD,Personal,auto
-2026-08-13,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-08-13,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-08-13,Trade Republic,[Transferencia] Incoming transfer from Kateryna Soltuchenko (ES2615860001472321062211),100.0,100.0,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-08-14,Conjunta,[Card Payment] Alcampo,-7.44,-3.72,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-08-14,Conjunta,[Card Payment] Alcampo,-3.0,-1.5,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-08-14,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-08-14,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-08-15,Conjunta,[Card Payment] Amazonia Acai,-8.5,-4.25,Gasto,Hábitos diarios,Açaí y brunch,Personal,auto
 2026-08-15,Conjunta,[Card Payment] El Corte Inglés,-9.36,-4.68,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-08-15,Conjunta,[Card Payment] Carrefour,-4.89,-2.44,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1466,14 +1466,14 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-08-17,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to GC RE OCTOPUS ENERGY (FR7617118820080000001536203),-43.6,-43.6,Gasto,Vivienda y suministros,Electricidad,Personal,auto
 2026-08-17,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.969159",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-08-17,Trade Republic,[Transacción con tarjeta] WWW.AMAZON*1G4T54VP5,-70.76,-70.76,Gasto,Ocio y vida social,Compras impulsivas,Personal,auto
-2026-08-17,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-08-17,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-08-17,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 1.183291",-200.0,-200.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-08-18,Conjunta,[Card Payment] Full Of Beans,-5.4,-2.7,Gasto,Hábitos diarios,Café,Personal,auto
 2026-08-18,Revolut,[Topup] Money added via BIZUM,17.69,17.69,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-08-18,Revolut,[Topup] Money added via BIZUM,18.0,18.0,Reembolso,Reembolsos,Reembolsos,Personal,auto
-2026-08-18,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-08-18,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-08-19,Revolut,[Card Payment] Five Guys,-15.75,-15.75,Gasto,Ocio y vida social,Restaurantes,Personal,auto
-2026-08-19,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-08-19,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-08-20,Trade Republic,[Transacción con tarjeta] RENFE VIRTUAL INTERNET,-34.3,-34.3,Gasto,Transporte,Trenes y AVE,Personal,auto
 2026-08-20,Trade Republic,[Transacción con tarjeta] EL CORTE INGLES-DEPARTAM.,-429.0,-214.5,Gasto,Vivienda y suministros,Hogar y equipamiento,Personal,revisado
 2026-08-21,BBVA,Ret. efectivo  a debito con tarj. en cajero. aut. | Otros | 4603321058244685 01823800 999,-300.0,-300.0,Gasto,Otros,Efectivo,Personal,auto
@@ -1481,7 +1481,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-08-21,Revolut,[Card Payment] Los Reginas,-4.0,-4.0,Gasto,Hábitos diarios,Café,Personal,auto
 2026-08-21,Revolut,[Card Payment] Lyma,-11.0,-11.0,Gasto,Hábitos diarios,Café,Personal,auto
 2026-08-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
-2026-08-21,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-08-21,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-08-22,Revolut,[Card Payment] Posada Playa de Langre,-6.8,-6.8,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-08-23,Revolut,[Card Payment] Posada Playa de Langre,-8.0,-8.0,Gasto,Viajes,Comida y gastos en destino,Personal,auto
 2026-08-23,Revolut,[Card Payment] Helados La Polar,-3.5,-3.5,Gasto,Hábitos diarios,Café,Personal,auto
@@ -1515,7 +1515,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-08-30,Revolut,[Card Payment] Faeem Alimentacion,-5.0,-5.0,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-08-30,Trade Republic,[Transacción con tarjeta] ARNAL2 COFFEE,-38.2,-38.2,Gasto,Hábitos diarios,Café,Personal,auto
 2026-08-31,BBVA,Adeudo de cuota de la seguridad social | N 2026239001594611 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
-2026-08-31,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-08-31,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-01,Conjunta,[Topup] Apple Pay top-up by *5233,800.0,800.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-01,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,800.0,800.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-09-01,Revolut,[Card Payment] Ametller Origen,-4.49,-4.49,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1535,19 +1535,19 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-06,Revolut,[Card Payment] Madrid Coffee Love,-2.3,-2.3,Gasto,Hábitos diarios,Café,Personal,auto
 2026-09-06,Revolut,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-06,Revolut,[Topup] Money added via BIZUM,353.0,353.0,Reembolso,Otros,Ajustes con Kate,Personal,revisado
-2026-09-06,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-06,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-06,Revolut,[Card Payment] Arabay Coffee Roasters,-2.3,-2.3,Gasto,Hábitos diarios,Café,Personal,auto
 2026-09-07,Conjunta,[Card Payment] Mercadona,-70.89,-35.45,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-09-07,Revolut,[Card Payment] circulodejiujitsu.com,-100.0,-100.0,Gasto,Salud y deporte,Jiu-jitsu,Personal,auto
 2026-09-07,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-09-07,Revolut,[Card Payment] Carrefour,-1.55,-1.55,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-09-07,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-09-07,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-07,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-08,Revolut,[Card Payment] Carrefour,-3.6,-3.6,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-09-08,Trade Republic,"[Transferencia] Incoming transfer from FIDELIO, SLU (AD3700010000419001600100)",3590.0,3590.0,Ingreso,Ingresos,Trabajo,Trabajo,auto
 2026-09-09,BBVA,Pago de impuestos | Nrc 082622378393rxdhntewz9,-146.65,-146.65,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
 2026-09-09,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.69809",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-09-09,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-09,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-09,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-17.99,-17.99,Gasto,Suscripciones,Streaming de vídeo,Trabajo,auto
 2026-09-09,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.601322",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-09-10,BBVA,Adeudo jaime carrasco del olmo | Adeudo nº 2026252000868802 | N 2026252000868802 JAIME CARRASCO DEL OLMO,-84.7,-84.7,Gasto,Empresa,Gestoría,Trabajo,auto
@@ -1557,18 +1557,18 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-12,Conjunta,[Card Payment] Mercadona,-19.26,-9.63,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-09-12,Conjunta,[Card Payment] Uber,-26.94,-13.47,Gasto,Transporte,Uber y taxi,Personal,auto
 2026-09-12,Revolut,[Card Payment] Metro de Madrid,-10.0,-10.0,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-12,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-12,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-13,Conjunta,[Card Payment] Alcampo,-97.08,-48.54,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-09-13,Trade Republic,[Transacción con tarjeta] FLORISTERIA BLOOMS,-28.5,-28.5,Gasto,Ocio y vida social,Citas y pareja,Personal,auto
 2026-09-14,Trade Republic,[Transacción con tarjeta] STEAK BURGER ARENAL,-33.4,-33.4,Gasto,Ocio y vida social,Restaurantes,Personal,auto
-2026-09-14,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-14,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-14,Trade Republic,[Transacción con tarjeta] 10399 MADRID PRECIADOS 10,-66.08,-66.08,Gasto,Ocio y vida social,Ropa,Personal,auto
-2026-09-15,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-15,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-15,Trade Republic,[Transacción con tarjeta] ANTHROPIC* CLAUDE SUB,-90.0,-90.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-09-16,Trade Republic,[Rentabilidad] Cash Dividend for ISIN US5801351017,1.44,1.44,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-09-16,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 13.11269",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-09-16,Trade Republic,[Transacción con tarjeta] DISNEY PLUS,-10.99,-10.99,Gasto,Suscripciones,Streaming de vídeo,Personal,auto
-2026-09-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-16,Trade Republic,"[Operar] Buy trade US5801351017 MCDONALDS CORP., quantity: 2.321262",-501.0,-501.0,Inversion,Inversiones,Acciones,Personal,auto
 2026-09-16,Trade Republic,[Transacción con tarjeta] ANTHROPIC,-11.1,-11.1,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-09-16,Trade Republic,[Transacción con tarjeta] ANTHROPIC,-10.4,-10.4,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
@@ -1581,14 +1581,14 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-17,Revolut,[Card Payment] Playtomic,-3.11,-3.11,Gasto,Salud y deporte,Pádel,Personal,auto
 2026-09-17,Revolut,[Card Payment] D P Barber Studio,-22.95,-22.95,Gasto,Salud y deporte,Peluquería y autocuidado,Personal,auto
 2026-09-17,Revolut,[Card Payment] Carrefour,-2.17,-2.17,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-09-17,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-17,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-18,Revolut,[Card Payment] Steak Burger Luchana,-26.18,-26.18,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-09-18,Revolut,[Card Payment] Loomispvergara 8 Madr,-3.9,-3.9,Gasto,Hábitos diarios,Café,Personal,auto
-2026-09-18,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-18,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-19,Conjunta,[Card Payment] Brownie,-6.8,-3.4,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
 2026-09-19,Conjunta,[Card Payment] Brownie,-4.5,-2.25,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
 2026-09-19,Conjunta,[Card Payment] Red Dragon Hot Pot,-60.0,-30.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
-2026-09-19,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-19,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-19,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-70.0,-70.0,Gasto,Salud y deporte,Psicología,Personal,auto
 2026-09-20,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ,12.11,12.11,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-20,Conjunta,[Card Payment] Alcampo,-22.63,-11.31,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1596,8 +1596,8 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-20,Conjunta,[Card Payment] The Cookie Lab,-4.4,-2.2,Gasto,Ocio y vida social,Restaurantes,Personal,revisado
 2026-09-20,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-12.11,-12.11,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-20,Revolut,[Card Payment] Samba Global Fuencarra,-4.9,-4.9,Gasto,Ocio y vida social,Restaurantes,Personal,revisado
-2026-09-20,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-21,BBVA,Pago de impuestos | Nrc. 082612591968yxvs3rpssf,-108.46,-108.46,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
+2026-09-20,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
+2026-09-21,BBVA,Pago de impuestos | Nrc. 082612591968yxvs3rpssf,-108.46,-108.46,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
 2026-09-21,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,29.5,29.5,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-09-21,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to GC RE OCTOPUS ENERGY (FR7617118820080000001536203),-59.01,-29.5,Gasto,Vivienda y suministros,Electricidad,Personal,revisado
 2026-09-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -1614,8 +1614,8 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-26,Revolut,[Card Payment] Loomispvergara 8 Madr,-3.1,-3.1,Gasto,Hábitos diarios,Café,Personal,auto
 2026-09-26,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-09-26,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez,-70.0,-70.0,Gasto,Salud y deporte,Psicología,Personal,auto
-2026-09-26,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-26,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-26,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
+2026-09-26,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-27,Revolut,[Topup] Money added via BIZUM,182.12,182.12,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
 2026-09-27,Revolut,[Card Payment] Playtomic,-3.4,-3.4,Gasto,Salud y deporte,Pádel,Personal,auto
 2026-09-27,Revolut,[Card Payment] Starbucks,-2.9,-2.9,Gasto,Hábitos diarios,Café,Personal,auto
@@ -1624,18 +1624,18 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-09-28,Conjunta,[Topup] Payment from KATERYNA SOLTUCHENKO,600.0,600.0,Traspaso,Traspasos,Aportación de Kate,Personal,auto
 2026-09-28,Revolut,[Topup] Money added via BIZUM,139.12,139.12,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
 2026-09-28,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-600.0,-600.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-09-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-28,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-29,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
+2026-09-28,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
+2026-09-29,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
+2026-09-29,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-29,Trade Republic,[Transacción con tarjeta] OUIGO Espana,-33.0,-33.0,Gasto,Transporte,Trenes y AVE,Personal,auto
 2026-09-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,revisado
 2026-09-29,Trade Republic,"[Operar] Buy trade US30303M1027 META PLATF. A DL-,000006, quantity: 0.158353",-101.0,-101.0,Inversion,Inversiones,Acciones,Personal,auto
 2026-09-30,BBVA,Adeudo de cuota de la seguridad social | N 2026271002702848 tgss. cotizacion 005 r.e.autonomos,-88.56,-88.56,Gasto,Empresa,Cuota de autónomos,Trabajo,auto
 2026-09-30,Conjunta,[Transfer] To Diana Aracil Diana,-80.0,-40.0,Gasto,Salud y deporte,Psicología,Personal,revisado
-2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
-2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
+2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
+2026-09-30,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-09-30,Ajustes,Libros pagados en efectivo (septiembre),-20.0,-20.0,Gasto,Formación,Libros,Personal,revisado
 2026-09-30,Ajustes,Compensación: esos 20 € salieron del efectivo ya contado al sacarlo del cajero,20.0,20.0,Gasto,Otros,Efectivo,Personal,revisado
 2026-09-30,Conjunta,[Card Payment] TKO Tacos,-9.0,-4.5,Gasto,Otros,Imprevistos,Personal,auto
@@ -1647,12 +1647,12 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-02,Conjunta,[Transfer] To Grupo Nautante SL · Ref: Piso Octubre,-1200.0,-600.0,Gasto,Vivienda y suministros,Alquiler,Personal,auto
 2026-10-02,Revolut,[Card Payment] Mercadona,-13.2,-13.2,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-02,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.574187",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-10-02,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-02,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-10-02,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.052978",-9.09,-9.09,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-10-02,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.582501",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-10-03,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez,-70.0,-70.0,Gasto,Salud y deporte,Psicología,Personal,auto
-2026-10-03,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
-2026-10-04,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-03,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
+2026-10-04,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-10-04,Trade Republic,[Transacción con tarjeta] WHOP*FIDELIO SLU,-7.0,-7.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-10-05,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-10-05,Trade Republic,[Transacción con tarjeta] WHOP*FIDELIO SLU,-7.0,-7.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
@@ -1660,7 +1660,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-06,Conjunta,[Card Payment] El Corte Inglés,-2.95,-1.48,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-06,Revolut,[Card Payment] El Corte Inglés,-1.95,-1.95,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-07,BBVA,Adeudo jaime carrasco del olmo | Adeudo nº 2026279002497941 | N 2026279002497941 JAIME CARRASCO DEL OLMO,-84.7,-84.7,Gasto,Empresa,Gestoría,Trabajo,auto
-2026-10-07,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-07,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-10-08,Conjunta,[Card Payment] Barcelona parking,-17.6,-8.8,Gasto,Transporte,"Gasolina, peajes y parking",Personal,auto
 2026-10-09,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 12.620526",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-10-09,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-20.99,-20.99,Gasto,Suscripciones,Streaming de vídeo,Trabajo,auto
@@ -1688,15 +1688,15 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-16,Revolut,[Transfer] Bizum payment to: Álvaro I.M. · Ref: Restaurante: Hundred,-19.0,-19.0,Gasto,Ocio y vida social,Restaurantes,Personal,auto
 2026-10-16,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 13.282682",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-10-16,Trade Republic,[Transferencia] Outgoing transfer for Joan Anton Torelló Lopez (ES7501820238400201914723),-600.0,-600.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-10-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-16,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-10-16,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.585617",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-10-17,Conjunta,[Card Payment] Nuevo Specialty Coffee,-7.0,-3.5,Gasto,Hábitos diarios,Café,Personal,auto
-2026-10-17,Trade Republic,[Transacción con tarjeta] MPASS,-2.0,-2.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-17,Trade Republic,[Transacción con tarjeta] MPASS,-2.0,-2.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-10-17,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-140.0,-140.0,Gasto,Salud y deporte,Psicología,Personal,auto
 2026-10-19,Conjunta,[Transfer] Gc Re Octopus Energy,-62.96,-31.48,Gasto,Vivienda y suministros,Electricidad,Personal,auto
 2026-10-19,Trade Republic,[Transacción con tarjeta] DECATHLON FUENCARRAL,-5.99,-5.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-10-19,Trade Republic,[Transacción con tarjeta] ESPASA CALPE S A,-11.95,-11.95,Gasto,Formación,Libros,Personal,auto
-2026-10-20,BBVA,Pago de impuestos | Nrc. 082612785466hmhlm8kp1a,-108.82,-108.82,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
+2026-10-20,BBVA,Pago de impuestos | Nrc. 082612785466hmhlm8kp1a,-108.82,-108.82,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
 2026-10-20,Conjunta,[Card Payment] Alcampo,-41.27,-20.64,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-21,Conjunta,[Card Payment] Dia,-3.34,-1.67,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-21,Trade Republic,[Transacción con tarjeta] APPLE.COM/BILL,-2.99,-2.99,Gasto,Suscripciones,Almacenamiento,Trabajo,auto
@@ -1705,7 +1705,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-23,Conjunta,[Card Payment] Mercadona,-23.63,-11.81,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-23,Conjunta,[Card Payment] Mercadona,-23.15,-11.57,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-23,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 13.623235",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
-2026-10-23,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-23,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-10-23,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.593603",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-10-24,Conjunta,[Card Payment] Eric Kayser,-6.8,-3.4,Gasto,Hábitos diarios,Café,Personal,auto
 2026-10-24,Conjunta,[Card Payment] Mercadona,-14.3,-7.15,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1713,9 +1713,9 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-24,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-70.0,-70.0,Gasto,Salud y deporte,Psicología,Personal,auto
 2026-10-25,Revolut,[Card Payment] Alcampo,-7.79,-7.79,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-25,Revolut,[Card Payment] Flying Tiger Copenhagen,-13.0,-13.0,Gasto,Vivienda y suministros,Hogar y equipamiento,Personal,auto
-2026-10-25,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-25,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-10-27,Conjunta,[Card Payment] Carrefour,-22.03,-11.02,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-10-27,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-27,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-10-28,Conjunta,[Card Payment] Selecta,-5.0,-2.5,Gasto,Hábitos diarios,Café,Personal,auto
 2026-10-28,Conjunta,[Card Payment] Pescadería Los Dely,-15.14,-7.57,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-28,Conjunta,[Card Payment] Pollerias Mcarmen Maravil,-7.66,-3.83,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1723,7 +1723,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-28,Conjunta,[Card Payment] Guasacaca Venezuelan Food,-8.0,-4.0,Gasto,Hábitos diarios,Comida a domicilio,Personal,revisado
 2026-10-28,Conjunta,[Card Payment] Lidl,-5.77,-2.88,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-10-28,Conjunta,[Card Payment] Fruteria Y Verduras Lin,-4.32,-2.16,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-10-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-28,Trade Republic,[Transacción con tarjeta] MPASS,-1.0,-1.0,Gasto,Transporte,BiciMAD,Personal,auto
 2026-10-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-10.0,-5.0,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-10-29,Trade Republic,[Recibos domiciliados] Sepa Direct Debit transfer to DIGI SPAIN TELECOM SA (ES9521008674140200010616),-0.17,-0.09,Gasto,Vivienda y suministros,Internet y teléfono,Personal,auto
 2026-10-29,Trade Republic,"[Operar] Buy trade US0231351067 AMAZON.COM INC. DL-,01, quantity: 0.489356",-101.07,-101.07,Inversion,Inversiones,Acciones,Personal,auto
@@ -1738,11 +1738,11 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-10-31,Trade Republic,[Transacción con tarjeta] D P BARBER STUDIO,-22.95,-22.95,Gasto,Salud y deporte,Peluquería y autocuidado,Personal,auto
 2026-10-31,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-200.0,-200.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-10-31,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-70.0,-70.0,Gasto,Salud y deporte,Psicología,Personal,auto
-2026-10-31,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-10-31,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,auto
 2026-11-01,Conjunta,[Card Payment] Carrefour,-3.68,-1.84,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-11-01,Trade Republic,[Bonificación] Saveback cash reward,5.41,5.41,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
 2026-11-01,Trade Republic,[Interés] Interest payment,2.69,2.69,Ingreso,Ingresos,Dividendos e intereses,Personal,auto
-2026-11-01,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-11-01,Trade Republic,[Transacción con tarjeta] MPASS,-1.5,-1.5,Gasto,Transporte,BiciMAD,Personal,revisado
 2026-11-02,Revolut,[Topup] Apple Pay top-up by *5233,100.0,100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-02,Revolut,[Transfer] Basic-Fit Spain S.A.U (BNP),-34.99,-34.99,Gasto,Salud y deporte,Gimnasio,Personal,auto
 2026-11-02,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 13.608404",-100.0,-100.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
@@ -1782,7 +1782,7 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-11-12,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-600.0,-600.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-12,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-12,Trade Republic,"[Operar] Buy trade US67066G1040 NVIDIA CORP. DL-,001, quantity: 2.707825",-401.05,-401.05,Inversion,Inversiones,Acciones,Personal,auto
-2026-11-12,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-11-12,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,revisado
 2026-11-13,Conjunta,[Card Payment] Alcampo,-11.08,-5.54,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-11-13,Trade Republic,[Transferencia] Incoming transfer from POL TORELLO LOPEZ (ES2601820238440201914730),352.5,352.5,Reembolso,Reembolsos,Reembolsos,Personal,auto
 2026-11-13,Conjunta,[Card Payment] Dia,-1.78,-0.89,Gasto,Vivienda y suministros,Supermercado,Personal,auto
@@ -1792,19 +1792,19 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-11-14,Trade Republic,[Transacción con tarjeta] MIRO.COM,-12.1,-12.1,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
 2026-11-14,Trade Republic,[Transacción con tarjeta] WHOP*WIT ACADEMY,-38.5,-38.5,Gasto,Formación,Mentoría y cursos,Personal,auto
 2026-11-14,Trade Republic,[Transacción con tarjeta] SumUp *Julian Gimenez de,-70.0,-70.0,Gasto,Salud y deporte,Psicología,Personal,auto
-2026-11-14,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-11-14,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,revisado
 2026-11-14,Conjunta,[Transfer] From Instant Access Savings,96.22,96.22,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-14,Conjunta,[Card Payment] Alcampo,-31.51,-15.76,Gasto,Vivienda y suministros,Supermercado,Personal,auto
 2026-11-15,Trade Republic,[Transacción con tarjeta] CIRCULODEJIUJITSU.COM,-100.0,-100.0,Gasto,Salud y deporte,Jiu-jitsu,Personal,auto
-2026-11-15,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
+2026-11-15,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,revisado
 2026-11-15,Trade Republic,[Transacción con tarjeta] ANTHROPIC* CLAUDE SUB,-90.0,-90.0,Gasto,Empresa,Herramientas de trabajo,Trabajo,auto
-2026-11-15,Conjunta,[Card Payment] Cinesa,-27.8,-13.9,Gasto,Ocio y vida social,Planes y ocio,Personal,auto
+2026-11-15,Conjunta,[Card Payment] Cinesa,-27.8,-13.9,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
 2026-11-16,Trade Republic,[Transacción con tarjeta] CAFE DEL ART,-8.2,-8.2,Gasto,Hábitos diarios,Café,Personal,auto
 2026-11-16,Trade Republic,"[Operar] Savings plan execution LU1681045370 Amundi Index Solutions - Amundi MSCI Emerging Markets Swap UCITS ETF EUR Acc, quantity: 6.948304",-50.0,-50.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-11-16,Trade Republic,"[Operar] Savings plan execution IE00BK5BQT80 Vanguard Funds PLC - Vanguard FTSE All-World UCITS ETF (USD) Accumulating, quantity: 0.296376",-50.0,-50.0,Inversion,Inversiones,Fondos indexados y ETF,Personal,auto
 2026-11-17,Trade Republic,[Transacción con tarjeta] MERCADONA MANUEL MACHADO,-65.3,-65.3,Gasto,Vivienda y suministros,Supermercado,Personal,auto
-2026-11-18,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,Transporte público,Personal,auto
-2026-11-18,Trade Republic,[Transacción con tarjeta] APP CRTM,-10.0,-10.0,Gasto,Otros,Imprevistos,Personal,auto
+2026-11-18,Trade Republic,[Transacción con tarjeta] MPASS,-0.5,-0.5,Gasto,Transporte,BiciMAD,Personal,revisado
+2026-11-18,Trade Republic,[Transacción con tarjeta] APP CRTM,-10.0,-10.0,Gasto,Transporte,Transporte público,Personal,revisado
 2026-11-18,Revolut,[Transfer] From EUR Flexible Cash Funds,61.46,61.46,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-18,Revolut,[Topup] Apple Pay top-up by *5233,890.0,890.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-18,Revolut,[Card Payment] Esquiades.com,-889.0,-889.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
@@ -1815,13 +1815,13 @@ fecha,cuenta,concepto,importe,tu_parte,tipo,grupo,subcategoria,ambito,estado
 2026-11-19,Ajustes,"Buy trade US67066G1040 NVIDIA CORP., quantity: 1.49479",-200.0,-200.0,Inversion,Inversiones,Acciones,Personal,revisado
 2026-11-19,Ajustes,Compensación: la compra de NVIDIA se paga con el saldo de eToro (enviado desde Trade Republic el 07/11),200.0,200.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
 2026-11-19,Trade Republic,[Transacción con tarjeta] Revolut**3407*,-890.0,-890.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-11-19,Trade Republic,[Transacción con tarjeta] NOEMI GARCIA MONTOYA,-5.0,-5.0,Gasto,Otros,Imprevistos,Personal,auto
+2026-11-19,Trade Republic,[Transacción con tarjeta] NOEMI GARCIA MONTOYA,-5.0,-5.0,Gasto,Ocio y vida social,Citas y pareja,Personal,revisado
 2026-11-19,Trade Republic,[Transferencia] Incoming transfer from David Marti Martinez (ES7715830001199074975747),140.31,140.31,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
-2026-11-19,Revolut,[Card Payment] Www.deanschneider.com,-10.85,-10.85,Gasto,Otros,Imprevistos,Personal,auto
+2026-11-19,Revolut,[Card Payment] Www.deanschneider.com,-10.85,-10.85,Gasto,Donaciones,Donacion,Personal,revisado
 2026-11-19,Revolut,[Topup] Money added via BIZUM · Ref: Sky,183.31,183.31,Traspaso,Traspasos,Traspaso entre cuentas,Personal,revisado
 2026-11-19,Revolut,[Transfer] Transfer to JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO · Ref: To JOAN ANTON TORELLO LOPEZ & KATERYNA SOLTUCHENKO,-100.0,-100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
 2026-11-19,Conjunta,[Transfer] Gc Re Octopus Energy,-59.01,-29.5,Gasto,Vivienda y suministros,Electricidad,Personal,auto
 2026-11-19,Conjunta,[Transfer] Transfer from JOAN ANTON TORELLO LOPEZ · Ref: From Joan Anton T,100.0,100.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto
-2026-11-20,BBVA,Pago de impuestos | Nrc. 552611147639mjwc22dka0,-109.19,-109.19,Gasto,Préstamos y deudas,Deuda Hacienda,Trabajo,auto
+2026-11-20,BBVA,Pago de impuestos | Nrc. 552611147639mjwc22dka0,-109.19,-109.19,Gasto,Empresa,IRPF e IVA trimestral,Trabajo,auto
 2026-11-20,Trade Republic,[Transferencia] Incoming transfer from Kateryna Soltuchenko (ES2615860001472321062211),625.0,625.0,Reembolso,Formación,Mentoría y cursos,Personal,revisado
 2026-11-21,Revolut,[Transfer] Bizum payment to: Eva Maria L.T. · Ref: No me hagas transferencias que ahora ñas he visto,-50.0,-50.0,Traspaso,Traspasos,Traspaso entre cuentas,Personal,auto

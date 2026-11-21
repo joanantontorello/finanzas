@@ -154,6 +154,32 @@ RV_MES = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, 
 RV_FECHA = r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2}), (\d{4})"
 RV_LINEA = re.compile(r"^" + RV_FECHA + r" " + RV_FECHA + r" (.+?) €([\d,]+\.\d{2}) €(-?[\d,]+\.\d{2})$")
 RV_REF_INUTIL = re.compile(r"^(Sent from Revolut|REF-|\d{2}-\d{2}-\d{4} / )", re.I)
+_RV_M = "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
+RV_GB = re.compile(r"^(\d{1,2}) " + _RV_M + r" (\d{4}) (\d{1,2}) " + _RV_M + r" (\d{4}) ")  # "2 Nov 2026" (extracto en-gb)
+RV_INICIO = re.compile(r"^" + RV_FECHA + r" " + RV_FECHA + r" ")
+
+
+def _rv_lineas(lineas):
+    """Pasa las fechas en-gb ("2 Nov 2026") al formato en-us ("Nov 2, 2026") y une las descripciones largas que el PDF
+    parte en varias líneas, con los importes en la última."""
+    out, buf = [], None
+    for l in lineas:
+        l = RV_GB.sub(r"\2 \1, \3 \5 \4, \6 ", l.strip())
+        if buf is not None:
+            buf = " ".join((buf + " " + l).split())
+            if RV_LINEA.match(buf):
+                out.append(buf); buf = None
+                continue
+            if buf.count(" ") > 40:  # no era una fila partida
+                out.append(buf); buf = None
+            continue
+        if RV_INICIO.match(l) and not RV_LINEA.match(l):
+            buf = l
+            continue
+        out.append(l)
+    if buf is not None:
+        out.append(buf)
+    return out
 
 
 def _rv_num(x):
@@ -164,7 +190,7 @@ def parse_revolut_pdf(path, cuenta):
     """Extracto PDF de Revolut. Solo la sección "Account transactions": se salta los pendientes (una sola fecha) y el
     apartado "Deposit transactions", que repite los traspasos a la hucha de ahorro. El signo sale de la cadena de saldos."""
     import pypdf
-    lineas = "\n".join(pg.extract_text() for pg in pypdf.PdfReader(str(path)).pages).splitlines()
+    lineas = _rv_lineas("\n".join(pg.extract_text() for pg in pypdf.PdfReader(str(path)).pages).splitlines())
     m0 = next((re.search(r"Account \(Current Account\) €(-?[\d,]+\.\d{2})", l) for l in lineas if l.startswith("Account (Current Account)")), None)
     saldo_prev = _rv_num(m0.group(1)) if m0 else None
     rows, dentro, actual = [], False, None

@@ -31,3 +31,18 @@
   importe: 200
   tipo: Traspaso
   categoria: Traspaso entre cuentas
+- fecha: 2026-11-18
+  concepto: "Esquiada 21-23/12 (tu parte): forfait 84 € + seguro 8 €"
+  importe: -92
+  tipo: Gasto
+  categoria: Actividades
+- fecha: 2026-11-18
+  concepto: "Esquiada 21-23/12 (tu parte): hotel 46,33 € + tasa turística 1,98 €"
+  importe: -48.31
+  tipo: Gasto
+  categoria: Alojamiento
+- fecha: 2026-11-18
+  concepto: "Compensación: tu parte de la esquiada sale de lo pagado a Esquiades (113 € + 889 €, fuera de métricas con los Bizums de los amigos)"
+  importe: 140.31
+  tipo: Traspaso
+  categoria: Traspaso entre cuentas

@@ -87,5 +87,94 @@
     "valor": 1589.53
    }
   ]
+ },
+ "2026-11-21": {
+  "fecha": "2026-11-21",
+  "valores": 14168.0,
+  "crypto": 2557.04,
+  "efectivo": 989.46,
+  "total": 17714.5,
+  "posiciones": [
+   {
+    "isin": "US5801351017",
+    "nombre": "McDonald's Corp. Registered Shares DL-,01",
+    "unidades": 3.616615,
+    "precio": 245.9,
+    "fecha_precio": "2026-11-20",
+    "valor": 889.33
+   },
+   {
+    "isin": "US0231351067",
+    "nombre": "Amazon.com Inc. Registered Shares DL -,01",
+    "unidades": 0.489356,
+    "precio": 225.9,
+    "fecha_precio": "2026-11-20",
+    "valor": 110.55
+   },
+   {
+    "isin": "US1921085049",
+    "nombre": "Coeur Mining Inc. Registered Shares DL 0,01",
+    "unidades": 132.498656,
+    "precio": 9.69,
+    "fecha_precio": "2026-11-20",
+    "valor": 1284.18
+   },
+   {
+    "isin": "US4581401001",
+    "nombre": "Intel Corp. Registered Shares DL -,001",
+    "unidades": 1.5,
+    "precio": 47.84,
+    "fecha_precio": "2026-11-20",
+    "valor": 71.76
+   },
+   {
+    "isin": "LU1681045370",
+    "nombre": "MSCI Emerging Markets EUR (Acc)",
+    "unidades": 490.23457,
+    "precio": 6.4,
+    "fecha_precio": "2026-11-20",
+    "valor": 3135.05
+   },
+   {
+    "isin": "IE00BK5BQT80",
+    "nombre": "FTSE All-World USD (Acc)",
+    "unidades": 45.909439,
+    "precio": 156.94,
+    "fecha_precio": "2026-11-20",
+    "valor": 7205.03
+   },
+   {
+    "isin": "US67066G1040",
+    "nombre": "NVIDIA Corp. Registered Shares DL-,001",
+    "unidades": 10.331957,
+    "precio": 117.24,
+    "fecha_precio": "2026-11-20",
+    "valor": 1211.32
+   },
+   {
+    "isin": "US30303M1027",
+    "nombre": "Meta Platforms Inc. Reg.Shares Cl.A DL-,000006",
+    "unidades": 0.506179,
+    "precio": 515.2,
+    "fecha_precio": "2026-11-20",
+    "valor": 260.78
+   },
+   {
+    "isin": "XF000ETH0019",
+    "nombre": "Ethereum ETH",
+    "unidades": 0.766386,
+    "precio": 1487.1,
+    "fecha_precio": "2026-11-21",
+    "valor": 1139.69
+   },
+   {
+    "isin": "XF000BTC0017",
+    "nombre": "Bitcoin BTC",
+    "unidades": 0.026877,
+    "precio": 52734.52,
+    "fecha_precio": "2026-11-21",
+    "valor": 1417.35
+   }
+  ]
  }
 }

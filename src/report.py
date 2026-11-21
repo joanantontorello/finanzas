@@ -184,8 +184,51 @@ def main():
                            "plazos_pendientes": len(restantes), "proximo": restantes[0] if restantes else None,
                            "fin": plazos[-1]["fecha"], "intereses": d.get("intereses"), "cuenta": cta,
                            "confirmados": [{"fecha": x["fecha"], "importe": x["importe"], "cargo": x["cargo"]} for x in plazos if x["cargo"]],
-                           "sin_cargo": [{"fecha": x["fecha"], "importe": x["importe"]} for x in sin_cargo]})
+                           "sin_cargo": [{"fecha": x["fecha"], "importe": x["importe"]} for x in sin_cargo], "_plazos": plazos})
     deudas_calendario = {k: r2(v) for k, v in sorted(calendario.items())}
+
+    # aviso de saldo: cuentas con saldo_minimo en config/cuentas.yaml (en BBVA se pagan autónomos, impuestos y gestoría)
+    from datetime import date, timedelta
+    def mes_mas(f, n=1):
+        y, m = f.year + (f.month - 1 + n) // 12, (f.month - 1 + n) % 12 + 1
+        dias = [31, 29 if y % 4 == 0 and (y % 100 or y % 400 == 0) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m - 1]
+        return date(y, m, min(f.day, dias))
+    cfg_c = yaml.safe_load((ROOT / "config" / "cuentas.yaml").read_text(encoding="utf-8")) or {}
+    hoy_d, avisos = date.today(), []
+    tope = hoy_d + timedelta(days=31)
+    for cta, cfg in cfg_c.items():
+        if not isinstance(cfg, dict) or cfg.get("saldo_minimo") is None:
+            continue
+        info = next((c for c in cuentas if c["cuenta"] == cta), None)
+        if not info or info["saldo"] is None:
+            continue
+        hasta = date.fromisoformat(info["hasta"]) if info.get("hasta") else hoy_d
+        previstos = []
+        for d in deudas:
+            if d["cuenta"] == cta:
+                for x in d.get("_plazos", []):
+                    f = date.fromisoformat(x["fecha"])
+                    if hasta < f <= tope:
+                        previstos.append({"concepto": "Plazo " + d["nombre"].split("(")[0].strip(), "fecha": x["fecha"], "importe": r2(x["importe"])})
+        for sub in cfg.get("recurrentes") or []:
+            ult = con.execute("SELECT fecha, importe FROM movimientos WHERE cuenta=? AND categoria=? AND importe<0 ORDER BY fecha DESC LIMIT 1", (cta, sub)).fetchone()
+            if not ult or (hoy_d - date.fromisoformat(ult["fecha"])).days > 62:  # ya no se cobra
+                continue
+            f = mes_mas(date.fromisoformat(ult["fecha"]))
+            while f <= tope:
+                if f > hasta:
+                    previstos.append({"concepto": sub, "fecha": f.isoformat(), "importe": r2(-ult["importe"])})
+                f = mes_mas(f)
+        previstos.sort(key=lambda x: x["fecha"])
+        necesario = r2(sum(x["importe"] for x in previstos))
+        umbral = max(float(cfg["saldo_minimo"]), necesario)
+        av = {"cuenta": cta, "saldo": info["saldo"], "minimo": float(cfg["saldo_minimo"]), "necesario": necesario, "umbral": r2(umbral),
+              "falta": r2(max(0.0, umbral - info["saldo"])), "ok": info["saldo"] >= umbral, "previstos": previstos, "hasta": info.get("hasta")}
+        avisos.append(av)
+        print(("⚠ " if not av["ok"] else "") + f"Saldo {cta}: {info['saldo']:.2f} € · próximos 31 días {necesario:.2f} € · mínimo {cfg['saldo_minimo']} €"
+              + (f" → AÑADE AL MENOS {av['falta']:.2f} €" if not av["ok"] else " → ok"))
+    for d in deudas:
+        d.pop("_plazos", None)
 
     pend = [{"id": x["id"], "fecha": x["fecha"], "cuenta": x["cuenta"], "concepto": x["concepto"], "importe": x["importe"],
              "tipo": x["tipo"], "categoria": x["categoria"], "nota": x["nota"]} for x in rows if x["estado"] == "pendiente"]
@@ -207,6 +250,7 @@ def main():
         "cuentas": cuentas,
         "deudas": deudas,
         "deudas_calendario": deudas_calendario,
+        "avisos_saldo": avisos,
         "saldo_total": r2(saldo_total),
         "conjunta": conjunta,
         "estados": estados.calcular(rows, FLAT, ROLES, ROOT),

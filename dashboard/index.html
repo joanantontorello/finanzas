@@ -187,6 +187,11 @@
   table.rsz th .rz::after { content: ''; position: absolute; left: 4px; top: 25%; height: 50%; width: 1px; background: var(--surface-3); }
   table.rsz th .rz:hover::after, body.rzing table.rsz th .rz::after { background: var(--s1); width: 2px; } body.rzing { cursor: col-resize; user-select: none; }
   button.amb { border: 0; background: var(--surface-2); color: var(--text-2); border-radius: 999px; padding: 2px 8px; font-size: 11px; cursor: pointer; } button.amb.T { background: var(--tint-violet); color: var(--text); }
+  .aviso { margin: 0 0 12px; padding: 11px 16px; border-radius: 12px; background: color-mix(in srgb, #d93545 22%, var(--surface)); border: 1px solid color-mix(in srgb, #d93545 55%, transparent); font-size: 13.5px; line-height: 1.5; }
+  .aviso a { color: var(--text); font-weight: 600; margin-left: 4px; }
+  .smin { margin-top: 14px; padding: 10px 12px; border-radius: 10px; font-size: 12.5px; background: color-mix(in srgb, var(--s3) 12%, transparent); }
+  .smin.justo { background: color-mix(in srgb, var(--s4) 16%, transparent); } .smin.mal { background: color-mix(in srgb, #d93545 18%, transparent); }
+  .smin .smh { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 13px; } .smin .smd { color: var(--text-2); margin-top: 4px; line-height: 1.45; }
   .savebar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; display: none; gap: 12px; align-items: center; z-index: 20; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
   .savebar button { border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; cursor: pointer; background: var(--s1); color: #fff; font-weight: 600; } .savebar button.sec { background: transparent; color: var(--bg); }
   .view { display: none; } .view.on { display: block; }
@@ -351,6 +356,7 @@
     <div class="tok" id="tok"></div>
   </nav>
   <main>
+    <div id="avisos"></div>
     <div class="bar-top" id="filtros">
       <div class="seg" id="years" role="group" aria-label="Año"></div>
       <span class="periodo">de <select id="desde" aria-label="Desde"></select> a <select id="hasta" aria-label="Hasta"></select></span>
@@ -499,8 +505,9 @@
       <div class="grid cards half">
         <div class="card">
           <h2>Cuentas</h2>
-          <div class="hint">Último saldo del extracto importado.</div>
+          <div class="hint">Saldo según el último extracto importado.</div>
           <div class="kv" id="cuentas"></div>
+          <div id="saldoMin"></div>
         </div>
         <div class="card">
           <h2 id="conjTitle">Cuenta conjunta</h2>
@@ -1201,7 +1208,8 @@ document.addEventListener('change', e => { if (e.target.matches('select.edit')) 
 
 // ---- init
 function init() {
-  initResize();
+  initResize(); renderAvisos();
+  $('avisos').onclick = e => { const l = e.target.closest('a[data-view]'); if (l) { e.preventDefault(); showView(l.dataset.view); } };
   const years = [...new Set(D.movimientos.map(m => m.mes.slice(0,4)))].sort();
   state.year = years[years.length-1];
   $('years').innerHTML = years.map(y => `<button data-v="${y}" class="${y===state.year?'on':''}">${y}</button>`).join('');
@@ -2028,8 +2036,18 @@ function renderDeudas() {
     <div class="muted" style="font-size:12px">${d.plazos - d.plazos_pendientes} de ${d.plazos} plazos pagados${(d.confirmados || []).length ? ` <button class="info" data-tip="Cargos vistos en ${d.cuenta}|${d.confirmados.map(x => x.cargo.split('-').reverse().join('/') + ': ' + fmt2(x.importe)).join('<br>')}" aria-label="Cargos confirmados">i</button>` : ''} · ${d.proximo ? 'próximo ' + fmt2(d.proximo.importe) + ' el ' + d.proximo.fecha.split('-').reverse().join('/') : 'liquidada'} · termina ${d.fin.split('-').reverse().join('/')}${d.intereses ? ' · intereses totales ' + fmt2(d.intereses) : ''}</div></div>`; }).join('');
   $('deudasCal').innerHTML = Object.entries(cal).map(([m, v]) => `<span>${mesLargo(m)}</span><b>${fmt2(v)}</b>`).join('');
 }
+// aviso de saldo mínimo (BBVA: autónomos, impuestos y gestoría): lo calcula report.py con config/cuentas.yaml
+function renderAvisos() {
+  const malos = (D.avisos_saldo || []).filter(a => !a.ok);
+  $('avisos').innerHTML = malos.map(a => `<div class="aviso" role="alert"><b>⚠ Añade saldo en ${a.cuenta}</b> · tienes ${fmt2(a.saldo)} y en los próximos 31 días se cargan ${fmt2(a.necesario)} (mínimo ${fmt(a.minimo)}). Pon al menos <b>${fmt2(a.falta)}</b>. <a href="#cuentas" data-view="cuentas">Ver cargos</a></div>`).join('');
+}
+function renderSaldoMin() {
+  $('saldoMin').innerHTML = (D.avisos_saldo || []).map(a => `<div class="smin ${a.ok ? (a.saldo - a.umbral < 100 ? 'justo' : 'ok') : 'mal'}">
+    <div class="smh"><b>${a.ok ? (a.saldo - a.umbral < 100 ? 'Justo' : 'Bien') : '⚠ Falta saldo'} en ${a.cuenta}</b><span>${fmt2(a.saldo)} de ${fmt2(a.umbral)} necesarios${a.ok ? '' : ' · añade ' + fmt2(a.falta)}</span></div>
+    <div class="smd">Próximos 31 días (desde el extracto del ${(a.hasta || '').split('-').reverse().join('/')}): ${a.previstos.length ? a.previstos.map(x => `${x.concepto} ${fmt2(x.importe)} el ${x.fecha.split('-').reverse().slice(0, 2).join('/')}`).join(' · ') : 'nada previsto'}. Mínimo fijo ${fmt(a.minimo)} (config/cuentas.yaml).</div></div>`).join('');
+}
 function renderCuentas() {
-  renderDeudas();
+  renderDeudas(); renderSaldoMin();
   $('cuentas').innerHTML = D.cuentas.map(c => `<span>${logoImg(BANCO[c.cuenta], c.cuenta, 'sm')}${c.cuenta} <small class="muted">hasta ${c.hasta || '–'}</small></span><b>${c.saldo != null ? fmt2(c.saldo) : '–'}</b>`).join('') + `<span style="margin-top:6px"><b>Total (conjunta al 50 %)</b></span><b style="margin-top:6px">${fmt2(D.saldo_total)}</b>`;
 }
 const COLS_DEF = [100, 135, 260, 200, 95, 110, 95, 100, 85, 60];

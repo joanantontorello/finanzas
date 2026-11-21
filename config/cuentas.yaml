@@ -15,6 +15,10 @@ BBVA:
   tipo: Cuenta de autónomo (gestoría, Seguridad Social, AEAT)
   participacion: 1.0
   export: Web BBVA > Cuentas > Movimientos > filtrar fechas > Exportar Excel. Renombrar a bbva_AAAA-MM-DD_AAAA-MM-DD.xlsx
+  # aviso en el dashboard si el saldo no cubre lo que se carga aquí: el mínimo de abajo o, si es más, lo previsto para
+  # los próximos 31 días (plazos de config/deudas.yaml + los cargos recurrentes de estas subcategorías al mismo día del mes)
+  saldo_minimo: 300
+  recurrentes: [Cuota de autónomos, Gestoría]
 Histórico:
   tipo: Datos importados de la hoja de años anteriores (sin concepto ni día)
   participacion: 1.0

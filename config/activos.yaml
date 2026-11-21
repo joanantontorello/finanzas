@@ -21,9 +21,12 @@ _canjes:
 # Posiciones de Trade Republic que no salen de los movimientos importados (que empiezan en 2026). Sacadas del extracto
 # de cuenta completo 01/01/2025-20/11/2026 y del «Extracto del patrimonio neto». historico: true = su coste ya está en
 # la hoja de 2025 (cuenta Histórico), así que solo aportan la cantidad para valorarlas a mercado. Sin coste = compradas
-# antes de 2025 sin registro: cuentan como aportado a su valor en esa fecha.
+# sin registro: cuentan como aportado a su valor en esa fecha.
 _apertura:
-  - {fecha: 2025-01-01, isin: IE00BK5BQT80, cantidad: 2.231602, nota: "All-World comprado antes de 2025 (la cuenta ya tenía saldo el 01/01/2025)"}
+  # 2024 (extracto 05/03/2024-16/01/2025): compra directa del 14/05/2024 (25,99 €, 0,209942 uds: el extracto no da la
+  # cantidad, sale de cuadrar con Trade Republic) + planes de ahorro de sep a dic (263,09 €, 2,02166 uds). NVIDIA y AVAX
+  # de 2024 se vendieron enteras ese año.
+  - {fecha: 2024-12-16, isin: IE00BK5BQT80, cantidad: 2.231602, coste: 289.08, nota: "All-World comprado en 2024"}
   - {fecha: 2025-01-02, isin: IE00BK5BQT80, cantidad: 0.184665, coste: 25.00, historico: true}
   - {fecha: 2025-01-02, isin: IE00BK5BQT80, cantidad: 0.034495, coste: 4.67, historico: true}
   - {fecha: 2025-01-16, isin: IE00BK5BQT80, cantidad: 0.184202, coste: 25.00, historico: true}

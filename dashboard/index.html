@@ -797,7 +797,12 @@ function renderPresupuesto(sinConfig) {
   const presTotal = gGasto.reduce((t, g) => t + (+P.grupos[g.nombre] || 0), 0) * n;
   const libre = a.ingresos - a.gasto - P.inversion_mensual * n;
   const t = [
-    ['Presupuesto', presTotal, 'blue', `gastado ${fmt(a.gasto)} · ${a.gasto <= presTotal ? 'quedan ' + fmt(presTotal - a.gasto) : 'te has pasado ' + fmt(a.gasto - presTotal)}`],
+    ['Disponible para gastar', presTotal - a.gasto, presTotal - a.gasto >= 0 ? 'aqua' : 'orange', `presupuesto ${fmt(presTotal)} · gastado ${fmt(a.gasto)}` + (() => {  // en el mes en curso: cuánto toca por día
+      const hoy = new Date(), mes = hoy.toISOString().slice(0, 7), ms = [...new Set(rowsP.map(m => m.mes))];
+      if (n !== 1 || ms[0] !== mes) return '';
+      const dias = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate() - hoy.getDate() + 1, d = presTotal - a.gasto;
+      return d > 0 ? ` · ${fmt(d / dias)} al día los ${dias} días que quedan` : '';
+    })()],
     ['Inversión objetivo', P.inversion_mensual * n, 'violet', `invertido ${fmt(a.inv)} (${P.inversion_mensual ? Math.round(a.inv / (P.inversion_mensual * n) * 100) : 0} %)`],
     colchonTile(),
     ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'orange', 'ingresos − gasto − inversión objetivo'],

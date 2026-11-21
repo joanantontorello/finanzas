@@ -161,7 +161,8 @@ def importar(path, con, reglas, cuentas, categorias):
 def reclasificar(con, reglas, cuentas, categorias):
     """Vuelve a aplicar las reglas a todo lo que no se haya revisado a mano."""
     cambios = 0
-    for row in con.execute("SELECT * FROM movimientos WHERE estado != 'revisado' AND cuenta != 'Histórico'").fetchall():
+    # los plazos de deuda (marcar_plazos) no se tocan: si no, cada reclasificación los devolvía a «IRPF e IVA trimestral»
+    for row in con.execute("SELECT * FROM movimientos WHERE estado != 'revisado' AND cuenta != 'Histórico' AND COALESCE(regla, '') != 'deuda_plazo'").fetchall():
         c = clasificar(dict(row), reglas, categorias)
         part = 1.0 if c["tipo"] == "Traspaso" else (c.get("participacion") or cuentas.get(row["cuenta"], {}).get("participacion", 1.0))
         comp = c.get("compensar") or 0

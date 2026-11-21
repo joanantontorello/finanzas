@@ -81,6 +81,7 @@
   .tile { --c: var(--s9); position: relative; border-radius: var(--radius); padding: 14px 16px; background: color-mix(in srgb, var(--c) var(--mix), var(--surface)); }
   .tile .lbl { color: color-mix(in srgb, var(--text) 78%, transparent); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   button.info { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 0; padding: 0; cursor: help; font: italic 600 12px/20px Georgia, serif; color: var(--text-2); background: color-mix(in srgb, var(--text) 12%, transparent); }
+  .finfo { display: inline-block; width: 17px; height: 17px; border-radius: 50%; margin-left: 6px; vertical-align: 1px; cursor: help; font: italic 600 11px/17px Georgia, serif; text-align: center; color: var(--text-2); background: color-mix(in srgb, var(--text) 12%, transparent); }
   button.info:hover { color: var(--text); background: color-mix(in srgb, var(--text) 24%, transparent); }
   .tile .val { font-size: 24px; font-weight: 700; margin-top: 4px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
   .tile .sub { color: var(--text-3); font-size: 12px; margin-top: 2px; }
@@ -150,6 +151,7 @@
   .cats .num { text-align: right; font-variant-numeric: tabular-nums; }
   .pattools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; } .pattools .legend { margin: 0; }
   .patbtns { display: inline-flex; gap: 4px; } .patbtns button { border: 0; border-radius: 8px; padding: 5px 10px; min-width: 32px; cursor: pointer; font: inherit; font-size: 12.5px; background: var(--surface-2); color: var(--text-2); }
+  .patseg { display: inline-flex; background: var(--surface-2); border-radius: 8px; padding: 2px; margin-right: 6px; } .patseg button { background: none !important; min-width: 0; padding: 3px 10px; } .patseg button[aria-pressed="true"] { background: var(--s1) !important; color: #fff; }
   .patbtns button:hover { color: var(--text); background: var(--surface-3); } .patbtns button[aria-pressed="true"] { background: var(--s1); color: #fff; }
   .patchart { position: relative; height: 380px; } @media (max-width: 600px) { .patchart { height: 300px; } }
   .patchart.midiendo { cursor: crosshair; }
@@ -223,6 +225,8 @@
   .ptipo { display: inline-block; font-size: 11px; padding: 2px 9px; border-radius: 999px; background: var(--tint-blue); color: var(--text); white-space: nowrap; } .ptipo.lim { background: var(--tint-yellow); }
   .pusa { font-size: 10.5px; color: var(--s3); font-weight: 600; margin-left: 4px; }
   table.ptabla tbody tr { cursor: pointer; } table.ptabla tbody tr:hover td, table.ptabla tbody tr:focus td { background: color-mix(in srgb, var(--text) 5%, transparent); } table.ptabla tr.on td:first-child { box-shadow: inset 3px 0 0 var(--s3); }
+  table.ptabla td.pahorro { color: var(--s3); font-weight: 600; } .tile .sub .tmal { color: var(--s8); font-weight: 600; }
+  #tilesPres { grid-template-columns: repeat(4, 1fr); } @media (max-width: 700px) { #tilesPres { grid-template-columns: repeat(2, 1fr); } }
   table.ptabla th.n, table.ptabla td.n { text-align: right; font-variant-numeric: tabular-nums; }
   #presTabla .pv { margin-top: 12px; }
   button.pv { border: 0; border-radius: 999px; padding: 7px 15px; font: inherit; font-size: 13px; cursor: pointer; background: var(--surface-2); color: var(--text); } button.pv.pri { background: var(--s1); color: #fff; font-weight: 600; } button.pv.del { background: none; color: var(--bad); }
@@ -398,11 +402,11 @@
     <section class="view" id="v-patrimonio">
       <div class="grid tiles" id="tilesPat"></div>
       <div class="card">
-        <h2>Patrimonio neto · velas por mes</h2>
+        <h2 id="patTit">Patrimonio neto · velas por mes</h2>
         <div class="hint" id="patHint"></div>
         <div class="pattools">
           <div class="legend" id="patLegend"></div>
-          <div class="patbtns" role="group" aria-label="Herramientas del gráfico"><button data-z="-" title="Alejar" aria-label="Alejar">−</button><button data-z="+" title="Acercar" aria-label="Acercar">+</button><button data-z="0" title="Ver todo">Ver todo</button><button data-z="m" id="patMedir" aria-pressed="false" title="Medir: clica un punto y luego otro (Esc para salir)">📏 Medir</button></div>
+          <div class="patbtns" role="group" aria-label="Herramientas del gráfico"><span class="patseg" role="group" aria-label="Tamaño de vela"><button data-pm="mes" aria-pressed="true">Mes</button><button data-pm="semana" aria-pressed="false">Semana</button></span><button data-z="-" title="Alejar" aria-label="Alejar">−</button><button data-z="+" title="Acercar" aria-label="Acercar">+</button><button data-z="0" title="Ver todo">Ver todo</button><button data-z="m" id="patMedir" aria-pressed="false" title="Medir: clica un punto y luego otro (Esc para salir)">📏 Medir</button></div>
         </div>
         <div id="patChart" class="patchart"><div class="patohlc" id="patOhlc"></div><svg class="patsvg" id="patSvg" aria-hidden="true"></svg><div class="patmed" id="patMed" hidden></div></div>
       </div>
@@ -858,19 +862,21 @@ function renderPresupuesto(sinConfig) {
   const a = agg(rowsP); const periodo = mesLargo(presMes);
   const gGasto = (D.grupos || []).filter(g => g.tipo === 'Gasto');
   const presTotal = gGasto.reduce((t, g) => t + (+B.grupos[g.nombre] || 0), 0);
-  const libre = a.ingresos - a.gasto - B.inversion_mensual;
-  const t = [
-    ['Disponible para gastar', presTotal - a.gasto, presTotal - a.gasto >= 0 ? 'aqua' : 'orange', `presupuesto ${fmt(presTotal)} · gastado ${fmt(a.gasto)}` + (() => {  // en el mes en curso: cuánto toca por día
-      const hoy = new Date();
-      if (presMes !== mesHoy) return '';
-      const dias = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate() - hoy.getDate() + 1, d = presTotal - a.gasto;
-      return d > 0 ? ` · ${fmt(d / dias)} al día los ${dias} días que quedan` : '';
-    })()],
-    ['Inversión objetivo', B.inversion_mensual, 'violet', `invertido ${fmt(a.inv)} (${B.inversion_mensual ? Math.round(a.inv / B.inversion_mensual * 100) : 0} %)`],
-    colchonTile(),
-    ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'orange', 'ingresos − gasto − inversión objetivo'],
+  PRES_MEDIANA = medianaIngresos(mesHoy);
+  const K = kpisVersion(vig), libre = a.ingresos - a.gasto - K.inv, disp = presTotal - a.gasto;
+  const dia = (() => { if (presMes !== mesHoy || disp <= 0) return ''; const dias = new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate() - hoy0.getDate() + 1; return ` · ${fmt(disp / dias)}/día`; })();
+  const gast = (r, pl) => `<span class="${r - pl >= 0.5 ? 'tmal' : ''}">gastado ${fmt(r)}</span>`;
+  const t = [  // el presupuesto del mes (fórmula: esenciales + no esenciales + otros + inversión + para ahorrar = ingresos) y cómo vas
+    ['Esenciales', K.ess, 'blue', gast(a.ess, K.ess), 'Presupuesto de gastos esenciales del mes y lo gastado hasta ahora'],
+    ['No esenciales', K.noess, 'orange', gast(a.noess, K.noess), 'Presupuesto de gastos no esenciales del mes y lo gastado hasta ahora'],
+    ['Otros', K.otros, 'gray', gast(a.otros, K.otros), 'Grupos fuera de esencial / no esencial (Otros…): presupuesto y gastado'],
+    ['Inversión', K.inv, 'violet', `invertido ${fmt(a.inv)}${K.inv ? ' · ' + Math.round(a.inv / K.inv * 100) + ' %' : ''}`, 'Inversión objetivo del mes y lo invertido hasta ahora'],
+    ['Para ahorrar', K.ahorro, K.ahorro >= 0 ? 'aqua' : 'pink', 'ingresos − gastos − inversión', 'Lo que el presupuesto deja para ahorrar: ingresos al mes menos todos los gastos presupuestados y la inversión'],
+    ['Ingresos al mes', K.ing, 'yellow', `ingresado ${fmt(a.ingresos)}${K.mediana ? ' · mediana' : ''}`, K.mediana ? 'No has puesto ingresos en este presupuesto: se usa la mediana de los últimos 6 meses cerrados' : 'Los ingresos que pusiste en el presupuesto, y lo ingresado este mes'],
+    ['Disponible para gastar', disp, disp >= 0 ? 'aqua' : 'pink', `de ${fmt(presTotal)}${dia}`, 'Lo que te queda del presupuesto de gastos del mes: presupuesto menos gastado' + (dia ? ', y cuánto toca al día los días que quedan' : '')],
+    ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'pink', 'ingresado − gastado − inversión', 'Lo que te sobra de verdad este mes: ingresos reales menos gasto real menos la inversión objetivo. Es el «para ahorrar» real'],
   ];
-  $('tilesPres').innerHTML = t.map(([l, v, c, s]) => tileHTML(l, v, c, s, periodo)).join(''); hoverTips($('tilesPres'));
+  $('tilesPres').innerHTML = t.map(([l, v, c, sub, desc]) => tileHTML(l, v, c, desc, periodo).replace(/<\/div>$/, `<div class="sub">${sub}</div></div>`)).join(''); hoverTips($('tilesPres'));
   const ritmo = presMes < mesHoy ? 1 : presMes > mesHoy ? 0 : hoy0.getDate() / new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate();
   renderPresBar(mesHoy, vig);
   $('presHint').textContent = 'Presupuesto del mes frente a lo gastado. ' + 'Verde bien, ámbar por encima del 80 %, rojo pasado. Pasa el ratón por una barra para ver en qué se fue.' + (ritmo < 0.995 ? ` La raya marca lo que llevarías gastado a ritmo constante (ha pasado el ${Math.round(ritmo * 100)} % del periodo).` : '');
@@ -926,14 +932,28 @@ function rangoVersion(v) {  // a qué meses afecta, en texto
   return (sig ? (v === versionBase() ? 'Hasta ' + mesCorto(mesAnt(sig)) : mesCorto(v.desde) + ' – ' + mesCorto(mesAnt(sig))) : (v === versionBase() ? 'Todos los meses' : 'Desde ' + desde + ' en adelante')) + salvo;
 }
 const totalGasto = v => Object.entries(v.grupos).reduce((t, [g, x]) => t + ((D.grupos || []).some(y => y.nombre === g && y.tipo === 'Gasto') ? (+x || 0) : 0), 0);
+function medianaIngresos(mesHoy) {
+  const ingMes = {}; D.movimientos.forEach(m => { if (m.tipo === 'Ingreso' && m.mes < mesHoy) ingMes[m.mes] = (ingMes[m.mes] || 0) + m.mio; });
+  const u = Object.keys(ingMes).sort().slice(-6).map(k => ingMes[k]).sort((x, y) => x - y);
+  return u.length ? (u.length % 2 ? u[(u.length - 1) / 2] : (u[u.length / 2 - 1] + u[u.length / 2]) / 2) : 0;
+}
+function kpisVersion(v) {
+  const gG = (D.grupos || []).filter(g => g.tipo === 'Gasto'), sum = f => gG.filter(f).reduce((t, g) => t + (+v.grupos[g.nombre] || 0), 0);
+  const ess = sum(g => g.esencial === true), noess = sum(g => g.esencial === false), otros = sum(g => g.esencial !== true && g.esencial !== false);
+  const ing = +v.ingreso_mensual || PRES_MEDIANA, inv = +v.inversion_mensual || 0;
+  return { ess, noess, otros, gasto: ess + noess + otros, inv, ing, mediana: !+v.ingreso_mensual, ahorro: ing - ess - noess - otros - inv };
+}
 function renderPresBar(mesHoy, vig) {
   const meses = mesesLista(mesHoy).filter(m => m <= (() => { let f = mesHoy; for (let i = 0; i < 3; i++) f = mesSig(f); return f; })());
-  $('presBar').innerHTML = `<label class="pbmes">Mes <select id="presMes" aria-label="Mes del presupuesto">${meses.slice().reverse().map(m => `<option value="${m}" ${m === presMes ? 'selected' : ''}>${mesLargo(m)}${m === mesHoy ? ' (este mes)' : ''}</option>`).join('')}</select></label>
+  const anios = [...new Set(meses.map(m => m.slice(0, 4)))].reverse(), anio = presMes.slice(0, 4);
+  $('presBar').innerHTML = `<label class="pbmes">Año <select id="presAnio" aria-label="Año">${anios.map(y => `<option ${y === anio ? 'selected' : ''}>${y}</option>`).join('')}</select></label>
+    <label class="pbmes">Mes <select id="presMesN" aria-label="Mes">${meses.filter(m => m.startsWith(anio)).map(m => `<option value="${m}" ${m === presMes ? 'selected' : ''}>${MESES_L[+m.slice(5) - 1]}${m === mesHoy ? ' (este mes)' : ''}</option>`).join('')}</select></label>
     <span class="pbusa">Se calcula con <button class="pblink" data-abrirver="${P.versiones.indexOf(vig)}">${esc(vig.nombre)}</button> <span class="ptipo ${vig.solo ? 'lim' : ''}">${vig.solo ? 'Limitado' : 'Indefinido'}</span></span>`;
 }
 function renderTablaPres(mesHoy, vig) {
-  const filas = P.versiones.map((v, i) => `<tr data-abrirver="${i}" tabindex="0" class="${v === vig ? 'on' : ''}"><td><b>${esc(v.nombre)}</b>${v === vig ? ' <span class="pusa">este mes</span>' : ''}</td><td><span class="ptipo ${v.solo ? 'lim' : ''}">${v.solo ? 'Limitado' : 'Indefinido'}</span></td><td>${rangoVersion(v)}</td><td class="n">${fmt(totalGasto(v))}</td><td class="n">${fmt(v.inversion_mensual)}</td><td class="n muted">›</td></tr>`).join('');
-  $('presTabla').innerHTML = `<div class="tablewrap"><table class="ptabla"><thead><tr><th>Presupuesto</th><th>Tipo</th><th>Meses</th><th class="n">Gasto al mes</th><th class="n">Inversión</th><th></th></tr></thead><tbody>${filas}</tbody></table></div>
+  const filas = P.versiones.map((v, i) => { const k = kpisVersion(v);
+    return `<tr data-abrirver="${i}" tabindex="0" class="${v === vig ? 'on' : ''}"><td><b>${esc(v.nombre)}</b>${v === vig ? ' <span class="pusa">este mes</span>' : ''}</td><td><span class="ptipo ${v.solo ? 'lim' : ''}">${v.solo ? 'Limitado' : 'Indefinido'}</span></td><td>${rangoVersion(v)}</td><td class="n" ${k.mediana ? 'title="Mediana de los últimos 6 meses (no has puesto ingresos)"' : ''}>${k.mediana ? '≈ ' : ''}${fmt(k.ing)}</td><td class="n">${fmt(k.ess)}</td><td class="n">${fmt(k.noess)}</td><td class="n">${fmt(k.otros)}</td><td class="n">${fmt(k.inv)}</td><td class="n ${k.ahorro >= 0 ? 'pahorro' : 'bad'}">${fmt(k.ahorro)}</td><td class="n muted">›</td></tr>`; }).join('');
+  $('presTabla').innerHTML = `<div class="tablewrap"><table class="ptabla"><thead><tr><th>Presupuesto</th><th>Tipo</th><th>Meses</th><th class="n">Ingresos</th><th class="n">Esenciales</th><th class="n">No esenciales</th><th class="n">Otros</th><th class="n">Inversión</th><th class="n">Para ahorrar</th><th></th></tr></thead><tbody>${filas}</tbody></table></div>
     <button class="pv pri" id="presNuevo">+ Nuevo presupuesto</button>`;
 }
 function abrirEditor(v) {
@@ -995,7 +1015,9 @@ function renderEditor(sinConfig, gGasto, mesHoy) {
 }
 document.addEventListener('change', e => {
   const el = e.target;
-  if (el.id === 'presMes') { presMes = el.value; renderPresupuesto(); return; }
+  if (el.id === 'presMesN') { presMes = el.value; renderPresupuesto(); return; }
+  if (el.id === 'presAnio') { const ms = mesesLista(new Date().toISOString().slice(0, 7)).filter(m => m.startsWith(el.value)); const q = el.value + presMes.slice(4);
+    presMes = ms.includes(q) ? q : (q < ms[0] ? ms[0] : ms[ms.length - 1]); renderPresupuesto(); return; }
   if (!EDIT || !el.dataset.pmk) return;
   const k = el.dataset.pmk;
   if (k === 'mes') { EDIT.mes = el.value; EDIT.base = P.versiones.indexOf(versionDe(el.value)); renderPresupuesto(); }
@@ -1318,7 +1340,7 @@ function renderPatrimonio() {
   ];
   $('tilesPat').innerHTML = t.map(([l, v, c, d]) => tileHTML(l, v, c, d, '')).join(''); hoverTips($('tilesPat'));
   const ultFoto = (P0.fotos_tr || []).slice(-1)[0];
-  $('patHint').textContent = ('Cada vela es un mes: abre con el patrimonio al cierre del mes anterior y cierra con el del último día; verde si sube, roja si baja, y la mecha marca el día más alto y el más bajo. Las grises de 2025 son estimadas. Media azul = 10 meses (≈ la de 200 sesiones de bolsa); amarilla = 3 meses (≈ la de 50). Abajo, cuánto sube o baja cada mes. Rueda o pellizco para hacer zoom, arrastra para moverte y «Medir» para ver la distancia entre dos puntos.') + (ultFoto ? ` Inversiones ajustadas al extracto de Trade Republic del ${fl(ultFoto.fecha)}.` : '');
+  $('patHint').textContent = (patModo === 'semana' ? 'Cada vela es una semana (de lunes a domingo): abre con el patrimonio al cierre de la semana anterior y cierra con el del último día; la mecha marca el día más alto y el más bajo. Solo desde enero de 2026, que es desde cuando hay saldos diarios. Media azul = 40 semanas (≈ 200 sesiones); amarilla = 10 semanas (≈ 50). Abajo, cuánto sube o baja cada semana. Rueda o pellizco para hacer zoom, arrastra para moverte y «Medir» para ver la distancia entre dos puntos.' : 'Cada vela es un mes: abre con el patrimonio al cierre del mes anterior y cierra con el del último día; verde si sube, roja si baja, y la mecha marca el día más alto y el más bajo. Las grises de 2025 son estimadas. Media azul = 10 meses (≈ la de 200 sesiones de bolsa); amarilla = 3 meses (≈ la de 50). Abajo, cuánto sube o baja cada mes. Rueda o pellizco para hacer zoom, arrastra para moverte y «Medir» para ver la distancia entre dos puntos.') + (ultFoto ? ` Inversiones ajustadas al extracto de Trade Republic del ${fl(ultFoto.fecha)}.` : '');
   patGrafico(V);
   // cartera
   const pos = P0.posiciones || [], sumPos = pos.reduce((a, x) => a + x.valor, 0), resto = ult.inversiones - sumPos;
@@ -1350,8 +1372,23 @@ function cargarLW() {
 const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const tStr = t => typeof t === 'string' ? t : t && typeof t === 'object' ? `${t.year}-${String(t.month).padStart(2, '0')}-${String(t.day).padStart(2, '0')}` : null;
 function media(datos, n) { const out = []; let suma = 0; datos.forEach((d, i) => { suma += d.close; if (i >= n) suma -= datos[i - n].close; if (i >= n - 1) out.push({ time: d.time, value: suma / n }); }); return out; }
+let patModo = 'mes';
+function patSemanas() {  // velas semanales (lunes a domingo) a partir del patrimonio diario: abre con el cierre de la semana anterior
+  const dia = (D.estados.patrimonio.diario || []), sem = [];
+  const lunes = f => { const d = new Date(f + 'T12:00:00'); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return d.toISOString().slice(0, 10); };
+  let prev = null;
+  dia.forEach(([f, v]) => { const k = lunes(f); let w = sem[sem.length - 1];
+    if (!w || w.time !== k) { w = { time: k, open: prev != null ? prev : v, high: prev != null ? Math.max(prev, v) : v, low: prev != null ? Math.min(prev, v) : v, close: v }; sem.push(w); }
+    w.high = Math.max(w.high, v); w.low = Math.min(w.low, v); w.close = v; prev = v; });
+  return sem;
+}
 function patDatos(V) {
   const gris = cssVar('--text-3');
+  if (patModo === 'semana') {
+    const fdm = t => t.split('-').reverse().join('/');
+    return { velas: patSemanas(), medias: [[40, cssVar('--s1'), 'Media 40 semanas (≈ 200 sesiones)'], [10, cssVar('--s4'), 'Media 10 semanas (≈ 50 sesiones)']], unidad: ['semana', 'semanas'],
+      etiqueta: t => 'Semana del ' + fdm(t), estimado: () => false };
+  }
   return { velas: V.map(v => Object.assign({ time: v.mes + '-01', open: v.o, high: v.h, low: v.l, close: v.c }, v.estimado ? { color: gris, borderColor: gris, wickColor: gris } : {})),
     medias: [[10, cssVar('--s1'), 'Media 10 meses (≈ 200 sesiones)'], [3, cssVar('--s4'), 'Media 3 meses (≈ 50 sesiones)']], unidad: ['mes', 'meses'],
     etiqueta: t => mesLargo(t.slice(0, 7)), estimado: t => (V.find(v => v.mes === t.slice(0, 7)) || {}).estimado };
@@ -1360,7 +1397,7 @@ const AZUL_TV = '#2962ff';
 async function patGrafico(V) {
   const el = $('patChart');
   try { await cargarLW(); } catch (e) { el.querySelector('.patohlc').textContent = 'No se pudo cargar la librería del gráfico (sin conexión).'; return; }
-  const clave = V.length + '|' + V[V.length - 1].c + '|' + matchMedia('(prefers-color-scheme: dark)').matches;
+  const clave = patModo + '|' + V.length + '|' + V[V.length - 1].c + '|' + matchMedia('(prefers-color-scheme: dark)').matches;
   if (patLW && patLW.clave === clave && el.contains(patLW.nodo)) return;  // ya está pintado: se conserva el zoom
   if (patLW) { patLW.chart.remove(); patLW = null; }
   const caja = $('patMed'), svg = $('patSvg');
@@ -1384,7 +1421,8 @@ async function patGrafico(V) {
   vol.setData(D0.velas.map(v => ({ time: v.time, value: v.close - v.open, color: (D0.estimado(v.time) ? cssVar('--text-3') : v.close >= v.open ? up : down) + '99' })));
   const n = D0.velas.length;
   if (n > 24) chart.timeScale().setVisibleLogicalRange({ from: n - 24, to: n + 1 }); else chart.timeScale().fitContent();
-  $('patLegend').innerHTML = medias.map(m => `<span><i style="background:${m.c};height:3px;vertical-align:3px"></i>${m.l}</span>`).join('') + `<span><i style="background:${cssVar('--text-3')}"></i>Estimado (2025)</span>`;
+  $('patLegend').innerHTML = medias.map(m => `<span><i style="background:${m.c};height:3px;vertical-align:3px"></i>${m.l}</span>`).join('') + (patModo === 'mes' ? `<span><i style="background:${cssVar('--text-3')}"></i>Estimado (2025)</span>` : '');
+  $('patTit').textContent = 'Patrimonio neto · velas por ' + (patModo === 'mes' ? 'mes' : 'semana');
   // datos de la vela bajo el cursor (o la última)
   const porT = Object.fromEntries(D0.velas.map(v => [v.time, v])), ohlc = $('patOhlc');
   const pinta = t => { const v = porT[t] || D0.velas[n - 1]; if (!v) return; const d = v.close - v.open, pc = v.open > 0 ? d / v.open * 100 : null, col = d >= 0 ? up : down;
@@ -1405,7 +1443,7 @@ async function patGrafico(V) {
     svg.innerHTML = `<line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" stroke="${AZUL_TV}" stroke-width="2.5" stroke-linecap="round"/>`
       + [A, B].map(P => `<circle cx="${P.x}" cy="${P.y}" r="6" fill="${cssVar('--surface')}" stroke="${AZUL_TV}" stroke-width="2.5"/>`).join('');
     caja.hidden = false;
-    caja.innerHTML = `<div class="pm1"><svg viewBox="0 0 16 20" width="13" height="16" aria-hidden="true"><path d="M2 1h12M2 19h12M8 4v12M5 7l3-3 3 3M5 13l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>${d >= 0 ? '' : '−'}${Math.abs(pc).toFixed(2).replace('.', ',')} %</span></div><div class="pm2">${d >= 0 ? '+' : '−'}${fmt(Math.abs(d))} · ${meses} ${meses === 1 ? 'mes' : 'meses'} · ${etiquetaL(Math.min(a.l, b.l))} → ${etiquetaL(Math.max(a.l, b.l))}</div>`;
+    caja.innerHTML = `<div class="pm1"><svg viewBox="0 0 16 20" width="13" height="16" aria-hidden="true"><path d="M2 1h12M2 19h12M8 4v12M5 7l3-3 3 3M5 13l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>${d >= 0 ? '' : '−'}${Math.abs(pc).toFixed(2).replace('.', ',')} %</span></div><div class="pm2">${d >= 0 ? '+' : '−'}${fmt(Math.abs(d))} · ${meses} ${meses === 1 ? D0.unidad[0] : D0.unidad[1]} · ${etiquetaL(Math.min(a.l, b.l))} → ${etiquetaL(Math.max(a.l, b.l))}</div>`;
     const W = el.clientWidth, H = el.clientHeight, cw = caja.offsetWidth, ch = caja.offsetHeight;
     let x = B.x + 16; if (x + cw > W - 70) x = B.x - cw - 16;
     caja.style.left = Math.max(4, x) + 'px'; caja.style.top = Math.min(H - ch - 30, Math.max(22, B.y - ch / 2)) + 'px';
@@ -1424,6 +1462,8 @@ async function patGrafico(V) {
     ts.setVisibleLogicalRange({ from: c - w, to: c + w }); };
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && patLW && patLW.med.on) patLW.medir(false); });
+document.addEventListener('click', e => { const b = e.target.closest('button[data-pm]'); if (!b || b.dataset.pm === patModo) return;
+  patModo = b.dataset.pm; document.querySelectorAll('button[data-pm]').forEach(x => x.setAttribute('aria-pressed', x.dataset.pm === patModo)); renderPatrimonio(); });
 
 // ---- gráficos
 function niceStep(max) { const p = Math.pow(10, Math.floor(Math.log10(max))); const f = max/p; return (f<=2?0.5:f<=5?1:2)*p; }
@@ -1615,7 +1655,7 @@ const FIN_DEF = {
       { k: 'activos', l: 'Total activos', main: 1, a: 'var(--tv1)' },
       { k: 'caja', l: 'Caja en bancos', sub: 1, exp: 'activos|caja' },
       { k: 'hucha', l: 'Huchas de ahorro Revolut', sub: 1 },
-      { k: 'inversiones', l: 'Inversiones (valor de mercado)', sub: 1, exp: 'inversiones|' },
+      { k: 'inversiones', l: 'Inversiones (valor de mercado)', sub: 1, exp: 'inversiones|', d: 'Lo que valen hoy tus inversiones. Despliega para ver lo aportado (lo que pagaste) y las plusvalías latentes = valor de mercado − aportado: lo que ganas o pierdes si vendieras hoy.' },
       { k: 'pasivos', l: 'Total pasivos', main: 1, malo: 1, a: 'var(--tv2)' },
       { k: 'deuda_hacienda', l: 'Deuda con Hacienda pendiente', sub: 1 },
       { k: 'a_devolver', l: 'Dinero recibido a devolver', sub: 1 },
@@ -1626,13 +1666,13 @@ const FIN_DEF = {
   flujo: {
     serie: [{ k: 'operativo', l: 'Operativo', c: 'var(--tv1)' }, { k: 'inversion', l: 'Inversión', c: 'var(--tv4)' }, { k: 'financiacion', l: 'Financiación', c: 'var(--tv3)' }, { k: 'variacion', l: 'Variación de caja', c: 'var(--tv5)', t: 'line' }],
     filas: [
-      { k: 'operativo', l: 'Flujo operativo', main: 1, a: 'var(--tv1)' },
-      { k: 'inversion', l: 'Flujo de inversión', main: 1, exp: 'inversion|', neutro: 1, a: 'var(--tv4)' },
-      { k: 'financiacion', l: 'Flujo de financiación', main: 1, neutro: 1, a: 'var(--tv3)' },
-      { k: 'variacion', l: 'Variación de caja', main: 1, a: 'var(--tv5)' },
-      { k: 'inversion_pct', l: 'Invertido sobre ingresos', pct: 1 },
+      { k: 'operativo', l: 'Flujo operativo', main: 1, a: 'var(--tv1)', d: 'El dinero que genera tu día a día: lo que entra (sueldo, reembolsos…) menos lo que gastas en vivir ese periodo. Es el beneficio neto, pero sin restar los plazos de deudas antiguas, que van abajo en financiación.' },
+      { k: 'inversion', l: 'Flujo de inversión', main: 1, exp: 'inversion|', neutro: 1, a: 'var(--tv4)', d: 'Dinero que sale de tus cuentas hacia activos (ETF, acciones, cripto): compras menos ventas. Negativo = has invertido; no es gasto, sigue siendo tuyo.' },
+      { k: 'financiacion', l: 'Flujo de financiación', main: 1, neutro: 1, a: 'var(--tv3)', d: 'Pagos de deudas que vienen de antes: los plazos del aplazamiento de Hacienda. No son gasto de este mes (la deuda se generó en el pasado), pero sí sacan dinero de la cuenta.' },
+      { k: 'variacion', l: 'Variación de caja', main: 1, a: 'var(--tv5)', d: 'La suma de los tres: cuánto ha subido o bajado el dinero en tus cuentas en el periodo.' },
+      { k: 'inversion_pct', l: 'Invertido sobre ingresos', pct: 1, d: 'Qué parte de lo que has ingresado has invertido.' },
     ],
-    nota: 'Operativo = beneficio neto más los plazos de deuda (que aquí van como financiación). Inversión = compras menos ventas de activos (negativo = has invertido). Financiación = plazos de Hacienda pagados. Variación de caja = la suma: cuánto sube o baja tu dinero en cuentas.',
+    nota: 'Cómo se mueve tu dinero, en tres cajones. Operativo: lo que genera tu día a día (ingresos menos gastos de vivir). Inversión: lo que mandas a activos. Financiación: los plazos de deudas antiguas (Hacienda). Variación de caja = la suma: cuánto sube o baja tu dinero en cuentas. Pasa el ratón por la «i» de cada fila.',
   },
 };
 function finFmt(v) { return v == null ? '–' : (v < 0 ? '−' : '') + fmt(Math.abs(v)); }
@@ -1672,7 +1712,7 @@ function renderEstados() {
     if (vals.every(v => v == null || v === 0) && !f.main) continue;
     const cls = f.main ? 'main' : f.pct ? 'pct' : f.sub ? 'sub' : '';
     const open = !!(f.exp && FIN.open[f.exp]);
-    h += `<tr class="${cls} ${open ? 'open' : ''}" ${f.a ? `style="--acc:${f.a}"` : ''} ${f.exp ? `data-exp="${f.exp}" tabindex="0" aria-expanded="${open}"` : ''}><td>${f.l}</td>` + vals.map((v, i) => {
+    h += `<tr class="${cls} ${open ? 'open' : ''}" ${f.a ? `style="--acc:${f.a}"` : ''} ${f.exp ? `data-exp="${f.exp}" tabindex="0" aria-expanded="${open}"` : ''}><td>${f.l}${f.d ? ` <span class="finfo" data-tip="${esc(f.l)}|${esc(f.d)}">i</span>` : ''}</td>` + vals.map((v, i) => {
       if (f.pct) return `<td>${v == null ? '–' : Math.round(v) + ' %'}</td>`;
       const shown = v == null ? null : (f.neg ? -v : v);
       const pe = anterior(lista[i]);

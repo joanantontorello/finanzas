@@ -81,6 +81,7 @@
 - {id: vuelos,             match: "VUELING|Vueling|RYANAIR|Ryanair|IBERIA|Iberia|EASYJET|easyJet|AIR EUROPA|Air Europa|VOLOTEA|Volotea", tipo: Gasto, categoria: "Vuelos"}
 
 # --- aprendidas de las correcciones del dashboard (van antes que las genéricas para ganarles)
+- {"id": "auto_vi_to_be", "match": "Vi\\ To\\ Be", "tipo": "Gasto", "categoria": "Café", "ambito": null, "nota": "aprendida de la corrección #1684"}
 - {"id": "auto_app_crtm", "match": "APP\\ CRTM", "tipo": "Gasto", "categoria": "Transporte público", "ambito": null, "nota": "aprendida de la corrección #1804"}
 - {"id": "auto_noemi_garcia_montoya", "match": "NOEMI\\ GARCIA\\ MONTOYA", "tipo": "Gasto", "categoria": "Citas y pareja", "ambito": null, "nota": "aprendida de la corrección #1806"}
 - {"id": "auto_www_deanschneider_com", "match": "Www\\.deanschneider\\.com", "tipo": "Gasto", "categoria": "Donacion", "ambito": null, "nota": "aprendida de la corrección #1811"}

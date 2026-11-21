@@ -52,5 +52,9 @@
   "Imprevistos": 20,
   "Streaming de vídeo": 3
  },
- "ingreso_mensual": 3500
+ "ingreso_mensual": 3500,
+ "inv_subs": {
+  "Fondos indexados y ETF": 500,
+  "Acciones": 700
+ }
 }

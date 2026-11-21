@@ -217,14 +217,31 @@
   .plist > :nth-child(even) { background: color-mix(in srgb, var(--text) 3.5%, transparent); border-radius: 8px; }
   .prow.sub { padding-left: 28px; font-size: 12.5px; color: var(--text-2); }
   .prow.sub input { width: 100px; }
-  .pver { display: flex; flex-direction: column; gap: 10px; margin: 4px 0 14px; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--s1) 9%, transparent); }
-  .pver-top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; } .pvmes { display: flex; align-items: center; gap: 8px; font-weight: 650; font-size: 14px; }
-  .pver-est { font-size: 12.5px; color: var(--text-2); } .pver-est b { color: var(--text); }
-  .pver-acc { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .pver button.pv { border: 0; border-radius: 999px; padding: 6px 13px; font: inherit; font-size: 12.5px; cursor: pointer; background: var(--surface-2); color: var(--text); } .pver button.pv.pri { background: var(--s1); color: #fff; font-weight: 600; }
-  .pver button.pv.del { background: none; color: var(--bad); padding-left: 4px; }
-  .pvseg { display: inline-flex; background: var(--surface-2); border-radius: 999px; padding: 3px; } .pvseg button { border: 0; background: none; color: var(--text-2); font: inherit; font-size: 12.5px; padding: 4px 12px; border-radius: 999px; cursor: pointer; } .pvseg button[aria-pressed="true"] { background: var(--s1); color: #fff; font-weight: 600; }
-  .pver-hist { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; } .pver-hist button { border: 0; border-radius: 999px; padding: 4px 11px; font: inherit; font-size: 12px; cursor: pointer; background: color-mix(in srgb, var(--text) 6%, transparent); color: var(--text-2); } .pver-hist button small { color: var(--text-3); margin-left: 4px; } .pver-hist button.on { background: var(--tint-blue); color: var(--text); font-weight: 600; }
+  .presbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 14px; }
+  .pbmes { display: flex; align-items: center; gap: 10px; font-weight: 650; font-size: 15px; } .pbusa { font-size: 13px; color: var(--text-2); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .pblink { border: 0; background: none; color: var(--s1); font: inherit; font-weight: 600; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+  .ptipo { display: inline-block; font-size: 11px; padding: 2px 9px; border-radius: 999px; background: var(--tint-blue); color: var(--text); white-space: nowrap; } .ptipo.lim { background: var(--tint-yellow); }
+  .pusa { font-size: 10.5px; color: var(--s3); font-weight: 600; margin-left: 4px; }
+  table.ptabla tbody tr { cursor: pointer; } table.ptabla tbody tr:hover td, table.ptabla tbody tr:focus td { background: color-mix(in srgb, var(--text) 5%, transparent); } table.ptabla tr.on td:first-child { box-shadow: inset 3px 0 0 var(--s3); }
+  table.ptabla th.n, table.ptabla td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  #presTabla .pv { margin-top: 12px; }
+  button.pv { border: 0; border-radius: 999px; padding: 7px 15px; font: inherit; font-size: 13px; cursor: pointer; background: var(--surface-2); color: var(--text); } button.pv.pri { background: var(--s1); color: #fff; font-weight: 600; } button.pv.del { background: none; color: var(--bad); }
+  body.pmodal-on { overflow: hidden; }
+  .pmodal { position: fixed; inset: 0; z-index: 30; background: rgba(0, 0, 0, .55); display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .pmodal[hidden] { display: none; }
+  .pmbox { background: var(--surface); border-radius: 16px; width: min(560px, 100%); max-height: calc(100vh - 48px); display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, .45); }
+  .pmbox.ancho { width: min(1040px, 100%); }
+  .pmhead { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-bottom: 1px solid var(--surface-2); font-size: 15px; } .pmhead .muted { font-size: 12px; }
+  .pmhead .pmx { margin-left: auto; border: 0; background: none; color: var(--text-2); font-size: 16px; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
+  .pmnom { font-size: 15px; font-weight: 650; min-width: 0; flex: 0 1 280px; }
+  .pmbody { padding: 16px 20px; overflow: auto; }
+  .pmfoot { display: flex; align-items: center; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--surface-2); }
+  .pmq { font-weight: 650; margin-bottom: 10px; }
+  .pmopts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pmopt { border: 2px solid transparent; background: color-mix(in srgb, var(--text) 5%, transparent); color: var(--text); border-radius: 12px; padding: 12px 14px; text-align: left; font: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+  .pmopt span { font-size: 12px; color: var(--text-2); line-height: 1.4; } .pmopt.on { border-color: var(--s1); background: color-mix(in srgb, var(--s1) 12%, transparent); }
+  .pmfields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; } .pmfields .fld { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--text-2); } .pmfields .fld:last-child { grid-column: 1 / -1; }
+  @media (max-width: 560px) { .pmodal { padding: 0; align-items: stretch; } .pmbox, .pmbox.ancho { width: 100%; max-height: 100vh; border-radius: 0; } .pmopts, .pmfields { grid-template-columns: 1fr; } .pmrango { display: none; } }
   button.prep { border: 0; background: none; color: var(--s1); font: inherit; font-size: 12px; cursor: pointer; padding: 2px 6px; margin-left: 6px; border-radius: 6px; }
   button.prep:hover { background: color-mix(in srgb, var(--s1) 12%, transparent); }
   .pres-res { padding: 2px 10px 8px 28px; font-size: 12px; color: var(--text-3); }
@@ -429,6 +446,7 @@
 
     <!-- ================= PRESUPUESTO -->
     <section class="view" id="v-presupuesto">
+      <div class="presbar" id="presBar"></div>
       <div class="grid tiles" id="tilesPres"></div>
       <div class="card">
         <h2>Presupuesto por grupo</h2>
@@ -436,11 +454,9 @@
         <div id="bloques" class="bloques"></div>
       </div>
       <div class="card mt">
-        <h2>Configurar presupuesto</h2>
-        <div class="hint">Elige el mes arriba. Cada presupuesto vale desde su mes hasta que empieza el siguiente, así que siempre hay uno vigente: «Crear uno solo para…» duplica el actual solo para ese mes (al siguiente vuelve el de antes) y «de … en adelante» lo deja hasta que crees otro. Importe mensual por grupo; «Repartir» lo reparte entre las subcategorías que quieras. Los cambios se guardan en GitHub con el botón de abajo.</div>
-        <div class="pver" id="presVer"></div>
-        <div class="prestot" id="presTot"></div>
-        <div class="plist" id="presConfig"></div>
+        <h2>Mis presupuestos</h2>
+        <div class="hint">Cada mes se calcula con uno de estos. Indefinido: vale desde su mes hasta que empieza el siguiente indefinido. Limitado: vale solo para su mes y gana al indefinido. Haz clic en uno para ver o cambiar sus importes.</div>
+        <div id="presTabla"></div>
       </div>
       <div class="card mt">
         <h2>Metas de ahorro</h2>
@@ -537,6 +553,7 @@
     <feMerge><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter></defs></svg>
 <div class="tip" id="tip"></div>
+<div class="pmodal" id="presModal" hidden></div>
 <div class="savebar" id="savebar"><span id="savemsg"></span><button class="sec" id="discard">Descartar</button><button id="save">Guardar en GitHub</button></div>
 
 <script>
@@ -590,7 +607,7 @@ async function cargarPresupuesto() {
 // Cada versión vale desde su mes hasta que empieza la siguiente (sin fecha de fin), así que siempre hay una y solo una
 // vigente. Una versión «solo» vale únicamente para su mes; al mes siguiente vuelve la que tocaba. Un mes = como mucho una.
 const VCAMPOS = ['grupos', 'subs', 'inversion_mensual', 'inv_subs', 'ingreso_mensual'];
-let cfgMes = null, cfgClave = null, PV = null;  // mes que se está configurando y su presupuesto
+let presMes = null, PV = null, EDIT = null;  // mes que se mira en Presupuesto, presupuesto que se edita y estado del editor
 function normalizarP() {
   if (!Array.isArray(P.versiones) || !P.versiones.length) {
     const v = { desde: D.movimientos.reduce((m, x) => x.mes < m ? x.mes : m, '9999-12') };
@@ -598,7 +615,7 @@ function normalizarP() {
     P.versiones = [v];
   }
   VCAMPOS.forEach(k => delete P[k]);
-  P.versiones.forEach(v => { v.grupos = v.grupos || {}; v.subs = v.subs || {}; v.inv_subs = v.inv_subs || {}; v.inversion_mensual = +v.inversion_mensual || 0; if (!v.solo) delete v.solo; });
+  P.versiones.forEach(v => { if (!v.nombre) v.nombre = v === P.versiones[0] && !v.solo ? 'Presupuesto estándar' : (v.solo ? 'Solo ' : 'Desde ') + mesLargo(v.desde).toLowerCase(); v.grupos = v.grupos || {}; v.subs = v.subs || {}; v.inv_subs = v.inv_subs || {}; v.inversion_mensual = +v.inversion_mensual || 0; if (!v.solo) delete v.solo; });
   P.versiones.sort((a, b) => a.desde.localeCompare(b.desde) || (a.solo ? 1 : 0) - (b.solo ? 1 : 0));
 }
 const versionBase = () => P.versiones.find(v => !v.solo) || P.versiones[0];  // la primera: «desde el principio»
@@ -624,7 +641,7 @@ async function guardarPresupuesto() {
   if (!r || !r.ok) { alert('No se pudo guardar el presupuesto en GitHub (' + (r ? r.status : 'sin conexión') + ').'); return false; }
   pSha = (await r.json()).content.sha; pDirty = false; return true;
 }
-function marcarPres() { pDirty = true; actualizarSavebar(); }
+function marcarPres() { if (EDIT) return; pDirty = true; actualizarSavebar(); }  // en el editor se guarda con su botón
 function actualizarSavebar() {
   const n = Object.keys(cambios).length, partes = [];
   if (n) partes.push(n + (n === 1 ? ' corrección' : ' correcciones'));
@@ -832,18 +849,20 @@ function colchonTile() {
 }
 function renderPresupuesto(sinConfig) {
   if (!P) return;
-  const rowsP = base(); const mesesB = [...new Set(rowsP.map(m => m.mes))].sort(); const n = Math.max(mesesB.length, 1);
-  const B = presPeriodo(mesesB.length ? mesesB : [state.hasta]);  // cada mes con el presupuesto que le toca
-  if (cfgClave !== state.desde + state.hasta) { cfgClave = state.desde + state.hasta; cfgMes = state.hasta; }  // al cambiar de periodo se configura su último mes
-  PV = versionDe(cfgMes);
-  const a = agg(rowsP); const periodo = periodoLabel();
+  const hoy0 = new Date(), mesHoy = hoy0.toISOString().slice(0, 7);
+  if (!presMes) presMes = mesHoy;
+  // el presupuesto es mensual: se mira un mes cada vez, con el presupuesto que le toca (sin filtros de periodo ni cuenta)
+  const rowsP = D.movimientos.filter(m => m.tipo && m.tipo !== 'Traspaso' && m.mes === presMes), n = 1;
+  const vig = versionDe(presMes), B = presPeriodo([presMes]);
+  PV = EDIT ? EDIT.draft : vig;
+  const a = agg(rowsP); const periodo = mesLargo(presMes);
   const gGasto = (D.grupos || []).filter(g => g.tipo === 'Gasto');
   const presTotal = gGasto.reduce((t, g) => t + (+B.grupos[g.nombre] || 0), 0);
   const libre = a.ingresos - a.gasto - B.inversion_mensual;
   const t = [
     ['Disponible para gastar', presTotal - a.gasto, presTotal - a.gasto >= 0 ? 'aqua' : 'orange', `presupuesto ${fmt(presTotal)} · gastado ${fmt(a.gasto)}` + (() => {  // en el mes en curso: cuánto toca por día
-      const hoy = new Date(), mes = hoy.toISOString().slice(0, 7), ms = [...new Set(rowsP.map(m => m.mes))];
-      if (n !== 1 || ms[0] !== mes) return '';
+      const hoy = new Date();
+      if (presMes !== mesHoy) return '';
       const dias = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate() - hoy.getDate() + 1, d = presTotal - a.gasto;
       return d > 0 ? ` · ${fmt(d / dias)} al día los ${dias} días que quedan` : '';
     })()],
@@ -852,16 +871,14 @@ function renderPresupuesto(sinConfig) {
     ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'orange', 'ingresos − gasto − inversión objetivo'],
   ];
   $('tilesPres').innerHTML = t.map(([l, v, c, s]) => tileHTML(l, v, c, s, periodo)).join(''); hoverTips($('tilesPres'));
-  const hoy0 = new Date(), mesHoy = hoy0.toISOString().slice(0, 7);
-  const mesesP = mesesAnio().filter(m => m >= state.desde && m <= state.hasta);
-  const transc = mesesP.reduce((t, m) => t + (m < mesHoy ? 1 : m === mesHoy ? hoy0.getDate() / new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate() : 0), 0);
-  const ritmo = mesesP.length ? transc / mesesP.length : 1;
-  $('presHint').textContent = (n > 1 ? `Periodo de ${n} meses: cada mes cuenta con el presupuesto que tenía. ` : 'Presupuesto del mes frente a lo gastado. ') + 'Verde bien, ámbar por encima del 80 %, rojo pasado. Pasa el ratón por una barra para ver en qué se fue.' + (ritmo < 0.995 ? ` La raya marca lo que llevarías gastado a ritmo constante (ha pasado el ${Math.round(ritmo * 100)} % del periodo).` : '');
+  const ritmo = presMes < mesHoy ? 1 : presMes > mesHoy ? 0 : hoy0.getDate() / new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate();
+  renderPresBar(mesHoy, vig);
+  $('presHint').textContent = 'Presupuesto del mes frente a lo gastado. ' + 'Verde bien, ámbar por encima del 80 %, rojo pasado. Pasa el ratón por una barra para ver en qué se fue.' + (ritmo < 0.995 ? ` La raya marca lo que llevarías gastado a ritmo constante (ha pasado el ${Math.round(ritmo * 100)} % del periodo).` : '');
   // inversión del periodo frente al objetivo (más es mejor: violeta mientras falta, verde al cumplirlo)
   const objInv = B.inversion_mensual, pInv = objInv ? a.inv / objInv : 0;
   const tipInv = (`Invertido en el periodo|` + (Object.entries(a.invCats).filter(x => Math.abs(x[1]) >= 0.5).sort((x, y) => y[1] - x[1]).map(([c, v]) => `${c.toLowerCase()} ${fmt(v)}`).join('<br>') || 'Nada todavía')).replace(/"/g, '&quot;');
   const barraInv = objInv || a.inv ? `<div class="presinv"><div class="hl"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center"><i class="gsq" style="background:var(--s7)"></i>Inversión</b><span style="white-space:nowrap"><b>${fmt(a.inv)}</b> <span class="muted">de ${fmt(objInv)}</span></span></div>
-      <div class="track" data-tip="${tipInv}" style="position:relative;height:12px;background:color-mix(in srgb, ${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'} 30%, var(--bg));border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tipInv}" style="height:100%;width:${Math.min(100, Math.max(0, pInv) * 100)}%;background:${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'};border-radius:4px"></div>${ritmo < 0.995 ? `<div data-tip="${tipInv}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
+      <div class="track" data-tip="${tipInv}" style="position:relative;height:12px;background:color-mix(in srgb, ${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'} 30%, var(--bg));border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tipInv}" style="height:100%;width:${Math.min(100, Math.max(0, pInv) * 100)}%;background:${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'};border-radius:4px"></div>${ritmo > 0 && ritmo < 0.995 ? `<div data-tip="${tipInv}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
       <div class="muted" style="font-size:12px">${!objInv ? 'Sin objetivo: ponlo en «Inversión objetivo al mes»' : a.inv >= objInv ? 'Objetivo cumplido' + (a.inv - objInv >= 1 ? ` · ${fmt(a.inv - objInv)} por encima` : '') : `Faltan ${fmt(objInv - a.inv)} para el objetivo · ${Math.round(pInv * 100)} %`}</div></div>${subBarrasInv(B, a, objInv)}</div>` : '';
   $('bloques').innerHTML = barraInv + gGasto.map(g => {
     const pres = +B.grupos[g.nombre] || 0, gs = a.grupos[g.nombre] || 0, p = pres ? gs / pres : (gs > 0 ? 2 : 0);
@@ -869,7 +886,7 @@ function renderPresupuesto(sinConfig) {
     const top = g.sub.filter(c => a.cats[c]).sort((x, y) => a.cats[y] - a.cats[x]).slice(0, 4).map(c => `${c.toLowerCase()} ${fmt(a.cats[c])}`).join(' · ');
     const tip = `${esc(g.nombre)}|${top ? top.split(' · ').join('<br>') : 'Sin gasto en el periodo'}`.replace(/"/g, '&quot;');
     return `<div style="margin:8px 0 14px"><div class="hl"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center;min-width:0"><i class="gsq" style="background:${colorGrupo(g.nombre) || 'var(--s9)'}"></i>${g.nombre}</b><span style="white-space:nowrap"><b>${fmt(gs)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
-      <div class="track" data-tip="${tip}" style="position:relative;height:12px;background:color-mix(in srgb, ${col} 28%, var(--surface-2));border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tip}" style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div>${ritmo < 0.995 ? `<div data-tip="${tip}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
+      <div class="track" data-tip="${tip}" style="position:relative;height:12px;background:color-mix(in srgb, ${col} 28%, var(--surface-2));border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tip}" style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div>${ritmo > 0 && ritmo < 0.995 ? `<div data-tip="${tip}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
       <div class="muted" style="font-size:12px">${pasado ? '<span style="color:var(--s8)">Pasado en ' + fmt(gs - pres) + '</span>' : gs >= pres - 0.5 && pres ? 'Justo en el límite' : 'Quedan ' + fmt(pres - gs)}</div></div>${subBarras(g, B, a, pres, gs)}</div>`;
   }).join(''); hoverTips($('bloques'));
   // metas: el progreso puede ser manual o salir solo del saldo de una cuenta (o de todas). Si varias metas
@@ -893,7 +910,68 @@ function renderPresupuesto(sinConfig) {
       <div class="mf"><label class="fld">Objetivo (€)<input data-meta="${i}" data-k="objetivo" type="number" value="${m.objetivo}"></label><label class="fld">Fecha<input data-meta="${i}" data-k="fecha" type="date" value="${m.fecha || ''}"></label><label class="fld ${f ? 'ancho' : ''}">Progreso<select data-meta="${i}" data-k="fuente">${opts}</select></label>${f ? '' : `<label class="fld">Ya reservado (€)<input data-meta="${i}" data-k="reservado" type="number" value="${m.reservado || 0}"></label>`}</div>
       <div class="mcol" role="group" aria-label="Color de la meta">${COLORES_META.map(k => `<button style="--c:var(--${k})" data-mcolor="${k}" data-i="${i}" aria-pressed="${k === c}" aria-label="Color ${k}"></button>`).join('')}</div></div>`;
   }).join('') + '<button class="meta nueva" id="addMeta">+ Nueva meta</button>';
-  // config: totales al mes (se actualizan al momento al cambiar cualquier importe)
+  renderTablaPres(mesHoy, vig);
+  if (EDIT) renderEditor(sinConfig, gGasto, mesHoy);
+}
+// ---- Mis presupuestos: tabla, asistente para crear uno y editor (ventana aparte)
+const mesSig = m => { const [y, mm] = m.split('-').map(Number); return mm === 12 ? (y + 1) + '-01' : y + '-' + String(mm + 1).padStart(2, '0'); };
+const mesAnt = m => { const [y, mm] = m.split('-').map(Number); return mm === 1 ? (y - 1) + '-12' : y + '-' + String(mm - 1).padStart(2, '0'); };
+const mesCorto = m => MESES_L[+m.slice(5, 7) - 1].slice(0, 3).toLowerCase() + ' ' + m.slice(0, 4);
+function mesesLista(mesHoy) { const out = []; for (let m = versionBase().desde, fin = (() => { let f = mesHoy; for (let i = 0; i < 12; i++) f = mesSig(f); return f; })(); m <= fin; m = mesSig(m)) out.push(m); return out; }
+function rangoVersion(v) {  // a qué meses afecta, en texto
+  if (v.solo) return mesLargo(v.desde);
+  const sig = P.versiones.filter(x => !x.solo && x.desde > v.desde).map(x => x.desde).sort()[0];
+  const desde = v === versionBase() ? 'el principio' : mesCorto(v.desde);
+  const salvo = P.versiones.some(x => x.solo && x.desde >= v.desde && (!sig || x.desde < sig)) ? ' (salvo los limitados)' : '';
+  return (sig ? (v === versionBase() ? 'Hasta ' + mesCorto(mesAnt(sig)) : mesCorto(v.desde) + ' – ' + mesCorto(mesAnt(sig))) : (v === versionBase() ? 'Todos los meses' : 'Desde ' + desde + ' en adelante')) + salvo;
+}
+const totalGasto = v => Object.entries(v.grupos).reduce((t, [g, x]) => t + ((D.grupos || []).some(y => y.nombre === g && y.tipo === 'Gasto') ? (+x || 0) : 0), 0);
+function renderPresBar(mesHoy, vig) {
+  const meses = mesesLista(mesHoy).filter(m => m <= (() => { let f = mesHoy; for (let i = 0; i < 3; i++) f = mesSig(f); return f; })());
+  $('presBar').innerHTML = `<label class="pbmes">Mes <select id="presMes" aria-label="Mes del presupuesto">${meses.slice().reverse().map(m => `<option value="${m}" ${m === presMes ? 'selected' : ''}>${mesLargo(m)}${m === mesHoy ? ' (este mes)' : ''}</option>`).join('')}</select></label>
+    <span class="pbusa">Se calcula con <button class="pblink" data-abrirver="${P.versiones.indexOf(vig)}">${esc(vig.nombre)}</button> <span class="ptipo ${vig.solo ? 'lim' : ''}">${vig.solo ? 'Limitado' : 'Indefinido'}</span></span>`;
+}
+function renderTablaPres(mesHoy, vig) {
+  const filas = P.versiones.map((v, i) => `<tr data-abrirver="${i}" tabindex="0" class="${v === vig ? 'on' : ''}"><td><b>${esc(v.nombre)}</b>${v === vig ? ' <span class="pusa">este mes</span>' : ''}</td><td><span class="ptipo ${v.solo ? 'lim' : ''}">${v.solo ? 'Limitado' : 'Indefinido'}</span></td><td>${rangoVersion(v)}</td><td class="n">${fmt(totalGasto(v))}</td><td class="n">${fmt(v.inversion_mensual)}</td><td class="n muted">›</td></tr>`).join('');
+  $('presTabla').innerHTML = `<div class="tablewrap"><table class="ptabla"><thead><tr><th>Presupuesto</th><th>Tipo</th><th>Meses</th><th class="n">Gasto al mes</th><th class="n">Inversión</th><th></th></tr></thead><tbody>${filas}</tbody></table></div>
+    <button class="pv pri" id="presNuevo">+ Nuevo presupuesto</button>`;
+}
+function abrirEditor(v) {
+  EDIT = v ? { paso: 2, original: v, draft: JSON.parse(JSON.stringify(v)) }
+           : { paso: 1, original: null, solo: true, mes: presMes, nombre: '', nombreTocado: false, base: P.versiones.indexOf(versionDe(presMes)) };
+  presAbiertos = null; document.body.classList.add('pmodal-on'); renderPresupuesto();
+}
+function cerrarEditor() { EDIT = null; $('presModal').hidden = true; $('presModal').innerHTML = ''; document.body.classList.remove('pmodal-on'); presAbiertos = null; renderPresupuesto(); }
+function nombrePorDefecto(E) { return (E.solo ? 'Solo ' : 'Desde ') + mesLargo(E.mes).toLowerCase(); }
+function renderEditor(sinConfig, gGasto, mesHoy) {
+  const M = $('presModal'); M.hidden = false;
+  if (EDIT.paso === 1) {  // paso 1: qué tipo de presupuesto, desde qué mes y en cuál se basa
+    if (!EDIT.nombreTocado) EDIT.nombre = nombrePorDefecto(EDIT);
+    const meses = mesesLista(mesHoy);
+    M.innerHTML = `<div class="pmbox" role="dialog" aria-modal="true" aria-label="Nuevo presupuesto"><div class="pmhead"><b>Nuevo presupuesto</b><span class="muted">Paso 1 de 2</span><button class="pmx" data-pmcancel="1" aria-label="Cerrar">✕</button></div>
+      <div class="pmbody">
+        <div class="pmq">¿Para cuándo es?</div>
+        <div class="pmopts">
+          <button class="pmopt ${EDIT.solo ? 'on' : ''}" data-pmsolo="1"><b>Solo un mes</b><span>Limitado: vale solo para el mes que elijas. Al mes siguiente vuelve el que tocaba (p. ej. un mes con viaje).</span></button>
+          <button class="pmopt ${!EDIT.solo ? 'on' : ''}" data-pmsolo="0"><b>Nuevo estándar de aquí en adelante</b><span>Indefinido: vale desde el mes que elijas hasta que crees otro.</span></button>
+        </div>
+        <div class="pmfields">
+          <label class="fld">${EDIT.solo ? 'Mes' : 'Desde'}<select data-pmk="mes">${meses.map(m => `<option value="${m}" ${m === EDIT.mes ? 'selected' : ''}>${mesLargo(m)}${m === mesHoy ? ' (este mes)' : ''}</option>`).join('')}</select></label>
+          <label class="fld">Nombre<input data-pmk="nombre" value="${esc(EDIT.nombre)}"></label>
+          <label class="fld">Partir de<select data-pmk="base">${P.versiones.map((v, i) => `<option value="${i}" ${i === EDIT.base ? 'selected' : ''}>${esc(v.nombre)}</option>`).join('')}</select></label>
+        </div>
+        <p class="muted" style="font-size:12px;margin:10px 0 0">Se copian sus importes y en el paso 2 cambias lo que quieras.</p>
+      </div>
+      <div class="pmfoot"><button class="pv" data-pmcancel="1">Cancelar</button><button class="pv pri" data-pmnext="1">Siguiente</button></div></div>`;
+    return;
+  }
+  const v = EDIT.draft, nuevo = !EDIT.original, esBase = EDIT.original === versionBase();
+  if (!sinConfig) {
+    M.innerHTML = `<div class="pmbox ancho" role="dialog" aria-modal="true" aria-label="Editar presupuesto"><div class="pmhead"><input class="pmnom" data-pmk="dnombre" value="${esc(v.nombre)}" aria-label="Nombre del presupuesto"><span class="ptipo ${v.solo ? 'lim' : ''}">${v.solo ? 'Limitado' : 'Indefinido'}</span><span class="muted pmrango">${v.solo ? mesLargo(v.desde) : esBase ? 'desde el principio' : 'desde ' + mesLargo(v.desde).toLowerCase()}</span>${nuevo ? '<span class="muted">Paso 2 de 2</span>' : ''}<button class="pmx" data-pmcancel="1" aria-label="Cerrar">✕</button></div>
+      <div class="pmbody"><div class="prestot" id="presTot"></div><div class="plist" id="presConfig"></div></div>
+      <div class="pmfoot">${!nuevo && !esBase ? '<button class="pv del" data-pmdel="1">Eliminar presupuesto</button>' : ''}<span style="flex:1"></span>${nuevo ? '<button class="pv" data-pmback="1">Atrás</button>' : ''}<button class="pv" data-pmcancel="1">Cancelar</button><button class="pv pri" data-pmsave="1">Guardar presupuesto</button></div></div>`;
+  }
+  // fórmula del presupuesto que se edita: totales al mes (se actualizan al momento al cambiar cualquier importe)
   const totG = gGasto.reduce((t, g) => t + (+PV.grupos[g.nombre] || 0), 0), totI = +PV.inversion_mensual || 0;
   const totE = t => gGasto.filter(g => g.esencial === t).reduce((x, g) => x + (+PV.grupos[g.nombre] || 0), 0), ess = totE(true), noess = totE(false), otros = totG - ess - noess;
   // ingresos de referencia: el que pongas en la configuración o, si no, la mediana de los últimos 6 meses cerrados
@@ -904,8 +982,6 @@ function renderPresupuesto(sinConfig) {
   PRES_MEDIANA = mediana;
   $('presTot').innerHTML = `<div><span>Esenciales</span><b>${fmt(ess)}</b></div><div><span>+ No esenciales</span><b>${fmt(noess)}</b></div>${Math.abs(otros) >= 0.5 ? `<div title="Grupos fuera del cálculo de esencial / no esencial (Otros…)"><span>+ Otros</span><b>${fmt(otros)}</b></div>` : ''}<div><span>+ Inversión</span><b>${fmt(totI)}</b></div><div class="${ahorro >= 0 ? 'aho' : 'neg'}"><span>+ Para ahorrar</span><b>${fmt(ahorro)}</b></div><div class="tot"><span>= Ingresos al mes</span><b>${fmt(ing)}</b><small>${+PV.ingreso_mensual ? 'los que has puesto abajo' : 'mediana de los últimos 6 meses'}</small></div>
     <p class="prescap">Capacidad de ahorro (ingresos − gastos): <b>${fmt(capacidad)}</b> al mes, el ${ing ? Math.round(capacidad / ing * 100) : 0} % de lo que ingresas · de eso, ${fmt(totI)} a inversión y ${ahorro >= 0 ? fmt(ahorro) + ' para ahorrar' : '<span class="bad">te faltan ' + fmt(-ahorro) + ' para cubrir la inversión</span>'}.</p>`;
-  renderVersiones(mesHoy);
-  if (sinConfig) return;
   if (!presAbiertos) { presAbiertos = new Set(gGasto.filter(g => subsCon(g).length).map(g => g.nombre)); if (invCon().length) presAbiertos.add('__inv'); }
   $('presConfig').innerHTML = gGasto.map(g => {
     const n = subsCon(g).length, multi = g.sub.length > 1, ab = presAbiertos.has(g.nombre);
@@ -917,43 +993,42 @@ function renderPresupuesto(sinConfig) {
     <label class="prow"><span><b>Ingresos al mes</b> <small class="muted">vacío = mediana de 6 meses</small></span><input data-p="ingreso_mensual" type="number" placeholder="${Math.round(PRES_MEDIANA)}" value="${+PV.ingreso_mensual || ''}"></label>
     ${metaColchon() < 0 ? `<label class="prow"><span>Colchón objetivo (dinero en cuentas)</span><input data-p="colchon_objetivo" type="number" value="${P.colchon_objetivo}"></label>` : ''}`;
 }
-function etiquetaVersion(v) { return v === versionBase() ? 'Desde el principio' : (v.solo ? 'Solo ' : 'Desde ') + mesLargo(v.desde).toLowerCase(); }
-function renderVersiones(mesHoy) {
-  const ini = versionBase().desde, fin = (() => { const [y, m] = mesHoy.split('-').map(Number); const d = new Date(y, m - 1 + 12, 1); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); })();
-  const meses = []; for (let m = ini; m <= fin; ) { meses.push(m); const [y, mm] = m.split('-').map(Number); m = mm === 12 ? (y + 1) + '-01' : y + '-' + String(mm + 1).padStart(2, '0'); }
-  if (!meses.includes(cfgMes)) cfgMes = mesHoy, PV = versionDe(cfgMes);
-  const mesesDe = v => meses.filter(m => versionDe(m) === v);
-  const suyos = mesesDe(PV), rango = !suyos.length ? '' : suyos.length === 1 ? 'solo ' + mesLargo(suyos[0]).toLowerCase()
-    : suyos[suyos.length - 1] === fin && !PV.solo ? 'desde ' + mesLargo(suyos[0]).toLowerCase() + ' en adelante' + (suyos.length < meses.length - meses.indexOf(suyos[0]) ? ' (salvo los meses con presupuesto propio)' : '')
-    : 'de ' + mesLargo(suyos[0]).toLowerCase() + ' a ' + mesLargo(suyos[suyos.length - 1]).toLowerCase();
-  const propio = PV.desde === cfgMes && PV !== versionBase(), mesTxt = mesLargo(cfgMes).toLowerCase();
-  const estado = `<b>${etiquetaVersion(PV)}</b> · se aplica ${rango}${suyos.length > 1 ? '. Lo que cambies abajo cambia todos esos meses' : ''}.`;
-  const acciones = propio
-    ? `<div class="pvseg" role="group" aria-label="Duración"><button data-pvsolo="1" aria-pressed="${!!PV.solo}">Solo ${mesTxt}</button><button data-pvsolo="0" aria-pressed="${!PV.solo}">De ${mesTxt} en adelante</button></div><button class="pv del" data-pvdel="1">Eliminar este presupuesto</button>`
-    : `<button class="pv pri" data-pvnew="solo">Crear uno solo para ${mesTxt}</button><button class="pv" data-pvnew="siempre">Crear uno nuevo de ${mesTxt} en adelante</button>`;
-  $('presVer').innerHTML = `<div class="pver-top"><label class="pvmes">Presupuesto de <select id="cfgMes" aria-label="Mes que configuras">${meses.map(m => `<option value="${m}" ${m === cfgMes ? 'selected' : ''}>${mesLargo(m)}${m === mesHoy ? ' (este mes)' : ''}</option>`).join('')}</select></label><span class="pver-est">${estado}</span></div>
-    <div class="pver-acc">${acciones}</div>
-    <div class="pver-hist"><span class="muted">Tus presupuestos:</span>${P.versiones.map((v, i) => `<button data-pvver="${i}" class="${v === PV ? 'on' : ''}">${etiquetaVersion(v)} <small>${fmt(Object.values(v.grupos).reduce((t, x) => t + (+x || 0), 0))}</small></button>`).join('')}</div>`;
-  $('presVer').dataset.fin = fin;
-}
-document.addEventListener('change', e => { if (e.target.id === 'cfgMes') { cfgMes = e.target.value; renderPresupuesto(); } });
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.id === 'presMes') { presMes = el.value; renderPresupuesto(); return; }
+  if (!EDIT || !el.dataset.pmk) return;
+  const k = el.dataset.pmk;
+  if (k === 'mes') { EDIT.mes = el.value; EDIT.base = P.versiones.indexOf(versionDe(el.value)); renderPresupuesto(); }
+  else if (k === 'base') EDIT.base = +el.value;
+  else if (k === 'nombre') { EDIT.nombre = el.value.trim() || nombrePorDefecto(EDIT); EDIT.nombreTocado = !!el.value.trim(); }
+  else if (k === 'dnombre') EDIT.draft.nombre = el.value.trim() || EDIT.draft.nombre;
+});
 document.addEventListener('click', e => {
-  const b = e.target.closest('#presVer button'); if (!b) return;
-  if (b.dataset.pvnew) {
-    const v = JSON.parse(JSON.stringify(PV)); v.desde = cfgMes; if (b.dataset.pvnew === 'solo') v.solo = true; else delete v.solo;
-    P.versiones.push(v); normalizarP(); marcarPres(); renderPresupuesto();
-  } else if (b.dataset.pvsolo != null) {
-    if (b.dataset.pvsolo === '1') PV.solo = true; else delete PV.solo;
-    normalizarP(); marcarPres(); renderPresupuesto();
-  } else if (b.dataset.pvdel) {
-    if (!confirm(`¿Eliminar «${etiquetaVersion(PV)}»? Sus meses vuelven al presupuesto anterior.`)) return;
-    P.versiones = P.versiones.filter(v => v !== PV); normalizarP(); marcarPres(); renderPresupuesto();
-  } else if (b.dataset.pvver != null) {
-    const v = P.versiones[+b.dataset.pvver], hoy = new Date().toISOString().slice(0, 7);
-    const ms = []; for (let m = v.desde; m <= ($('presVer').dataset.fin || hoy); ) { if (versionDe(m) === v) ms.push(m); const [y, mm] = m.split('-').map(Number); m = mm === 12 ? (y + 1) + '-01' : y + '-' + String(mm + 1).padStart(2, '0'); }
-    cfgMes = v === versionBase() ? (ms.filter(m => m <= hoy).pop() || ms[0] || v.desde) : v.desde; renderPresupuesto();
+  const ab = e.target.closest('[data-abrirver]'); if (ab && !EDIT) { abrirEditor(P.versiones[+ab.dataset.abrirver]); return; }
+  if (e.target.id === 'presNuevo') { abrirEditor(null); return; }
+  const b = e.target.closest('#presModal button'); if (!b || !EDIT) return;
+  if (b.dataset.pmcancel) cerrarEditor();
+  else if (b.dataset.pmsolo != null) { EDIT.solo = b.dataset.pmsolo === '1'; renderPresupuesto(); }
+  else if (b.dataset.pmnext) {
+    const v = JSON.parse(JSON.stringify(P.versiones[EDIT.base] || versionDe(EDIT.mes)));
+    v.desde = EDIT.mes; v.nombre = EDIT.nombre || nombrePorDefecto(EDIT); if (EDIT.solo) v.solo = true; else delete v.solo;
+    EDIT = { paso: 2, original: null, draft: v, paso1: EDIT }; presAbiertos = null; renderPresupuesto();
+  } else if (b.dataset.pmback) { EDIT = EDIT.paso1; renderPresupuesto(); }
+  else if (b.dataset.pmdel) {
+    if (!confirm(`¿Eliminar «${EDIT.original.nombre}»? Sus meses vuelven al presupuesto que tocaba antes.`)) return;
+    P.versiones = P.versiones.filter(x => x !== EDIT.original); normalizarP(); cerrarEditor(); pDirty = true; guardar();
+  } else if (b.dataset.pmsave) {
+    const v = EDIT.draft;
+    if (!EDIT.original) {  // un mes = como mucho un presupuesto de cada tipo
+      const choca = P.versiones.find(x => x.desde === v.desde && !!x.solo === !!v.solo && x !== versionBase());
+      if (choca && !confirm(`Ya tienes «${choca.nombre}» ${v.solo ? 'para ' : 'desde '}${mesLargo(v.desde).toLowerCase()}. ¿Sustituirlo por este?`)) return;
+      if (v.desde <= versionBase().desde && !v.solo) { alert('Un presupuesto indefinido tiene que empezar después del estándar.'); return; }
+      P.versiones = P.versiones.filter(x => x !== choca).concat(v);
+    } else P.versiones[P.versiones.indexOf(EDIT.original)] = v;
+    normalizarP(); presMes = v.desde > presMes || v.solo ? v.desde : presMes; cerrarEditor(); pDirty = true; guardar();
   }
 });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && EDIT) cerrarEditor(); if (e.key === 'Enter' && e.target.matches('tr[data-abrirver]')) e.target.click(); });
 const COLORES_META = ['s1', 's3', 's4', 's2', 's5', 's7', 's10', 's8'];
 const colorMeta = (m, i) => COLORES_META.includes(m.color) ? m.color : COLORES_META[i % COLORES_META.length];
 function metasProgreso() {
@@ -1135,7 +1210,7 @@ function showView(v) {
   state.view = v;
   document.querySelectorAll('nav a[data-view]').forEach(a => { a.classList.toggle('on', a.dataset.view === v); if (a.dataset.view === v) a.scrollIntoView({ block: 'nearest', inline: 'nearest' }); });
   document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v));
-  $('filtros').style.display = ['estados', 'cuentas', 'pendientes', 'categorias', 'patrimonio'].includes(v) ? 'none' : '';  // ahí los filtros no cambian nada
+  $('filtros').style.display = ['estados', 'cuentas', 'pendientes', 'categorias', 'patrimonio', 'presupuesto'].includes(v) ? 'none' : '';  // ahí los filtros no cambian nada
   try { history.replaceState(null, '', '#' + v); } catch (e) {}
   window.scrollTo(0, 0);
   if (D) render();  // los gráficos se dibujan al ancho real de la vista visible

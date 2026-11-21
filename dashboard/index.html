@@ -225,8 +225,11 @@
   .ptipo { display: inline-block; font-size: 11px; padding: 2px 9px; border-radius: 999px; background: var(--tint-blue); color: var(--text); white-space: nowrap; } .ptipo.lim { background: var(--tint-yellow); }
   .pusa { font-size: 10.5px; color: var(--s3); font-weight: 600; margin-left: 4px; }
   table.ptabla tbody tr { cursor: pointer; } table.ptabla tbody tr:hover td, table.ptabla tbody tr:focus td { background: color-mix(in srgb, var(--text) 5%, transparent); } table.ptabla tr.on td:first-child { box-shadow: inset 3px 0 0 var(--s3); }
-  table.ptabla td.pahorro { color: var(--s3); font-weight: 600; } .tile .sub .tmal { color: var(--s8); font-weight: 600; }
-  #tilesPres { grid-template-columns: repeat(4, 1fr); } @media (max-width: 700px) { #tilesPres { grid-template-columns: repeat(2, 1fr); } }
+  table.ptabla td.pahorro { color: var(--s3); font-weight: 600; }
+  #tilesPres { grid-template-columns: repeat(4, 1fr); } #tilesPres .tile:last-child { grid-column: span 2; }
+  @media (max-width: 700px) { #tilesPres { grid-template-columns: repeat(2, 1fr); } }
+  #tilesPres .tile .sub { color: color-mix(in srgb, var(--text) 88%, transparent); font-size: 13px; font-weight: 500; margin-top: 4px; }
+  #tilesPres .tile .sub .tmal { display: inline-block; background: #d93545; color: #fff; font-weight: 700; font-size: 11.5px; padding: 1px 7px; border-radius: 999px; margin-left: 4px; }
   table.ptabla th.n, table.ptabla td.n { text-align: right; font-variant-numeric: tabular-nums; }
   #presTabla .pv { margin-top: 12px; }
   button.pv { border: 0; border-radius: 999px; padding: 7px 15px; font: inherit; font-size: 13px; cursor: pointer; background: var(--surface-2); color: var(--text); } button.pv.pri { background: var(--s1); color: #fff; font-weight: 600; } button.pv.del { background: none; color: var(--bad); }
@@ -865,16 +868,17 @@ function renderPresupuesto(sinConfig) {
   PRES_MEDIANA = medianaIngresos(mesHoy);
   const K = kpisVersion(vig), libre = a.ingresos - a.gasto - K.inv, disp = presTotal - a.gasto;
   const dia = (() => { if (presMes !== mesHoy || disp <= 0) return ''; const dias = new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate() - hoy0.getDate() + 1; return ` · ${fmt(disp / dias)}/día`; })();
-  const gast = (r, pl) => `<span class="${r - pl >= 0.5 ? 'tmal' : ''}">gastado ${fmt(r)}</span>`;
-  const t = [  // el presupuesto del mes (fórmula: esenciales + no esenciales + otros + inversión + para ahorrar = ingresos) y cómo vas
-    ['Esenciales', K.ess, 'blue', gast(a.ess, K.ess), 'Presupuesto de gastos esenciales del mes y lo gastado hasta ahora'],
-    ['No esenciales', K.noess, 'orange', gast(a.noess, K.noess), 'Presupuesto de gastos no esenciales del mes y lo gastado hasta ahora'],
-    ['Otros', K.otros, 'gray', gast(a.otros, K.otros), 'Grupos fuera de esencial / no esencial (Otros…): presupuesto y gastado'],
-    ['Inversión', K.inv, 'violet', `invertido ${fmt(a.inv)}${K.inv ? ' · ' + Math.round(a.inv / K.inv * 100) + ' %' : ''}`, 'Inversión objetivo del mes y lo invertido hasta ahora'],
-    ['Para ahorrar', K.ahorro, K.ahorro >= 0 ? 'aqua' : 'pink', 'ingresos − gastos − inversión', 'Lo que el presupuesto deja para ahorrar: ingresos al mes menos todos los gastos presupuestados y la inversión'],
-    ['Ingresos al mes', K.ing, 'yellow', `ingresado ${fmt(a.ingresos)}${K.mediana ? ' · mediana' : ''}`, K.mediana ? 'No has puesto ingresos en este presupuesto: se usa la mediana de los últimos 6 meses cerrados' : 'Los ingresos que pusiste en el presupuesto, y lo ingresado este mes'],
+  // lo real del mes, debajo de cada cifra; si te pasas, una etiqueta roja con cuánto
+  const gast = (r, pl) => `gastado ${fmt(r)}` + (r - pl >= 0.5 ? ` <span class="tmal">+${fmt(r - pl)}</span>` : '');
+  const ahorroReal = a.ingresos - a.gasto - a.inv;
+  const t = [  // fórmula del presupuesto: ingresos = esenciales + no esenciales + otros + inversión + para ahorrar
+    ['Ingresos al mes', K.ing, 'yellow', `ingresado ${fmt(a.ingresos)}${K.mediana ? ' · mediana' : ''}`, K.mediana ? 'No has puesto ingresos en este presupuesto: se usa la mediana de los últimos 6 meses cerrados. Debajo, lo ingresado este mes' : 'Los ingresos que pusiste en el presupuesto y, debajo, lo ingresado este mes'],
+    ['Esenciales', K.ess, 'blue', gast(a.ess, K.ess), 'Presupuesto de gastos esenciales del mes y, debajo, lo gastado'],
+    ['No esenciales', K.noess, 'orange', gast(a.noess, K.noess), 'Presupuesto de gastos no esenciales del mes y, debajo, lo gastado'],
+    ['Otros', K.otros, 'gray', gast(a.otros, K.otros), 'Grupos fuera de esencial / no esencial (Otros…): presupuesto y, debajo, lo gastado'],
+    ['Inversión', K.inv, 'violet', `invertido ${fmt(a.inv)}${K.inv ? ' · ' + Math.round(a.inv / K.inv * 100) + ' %' : ''}`, 'Inversión objetivo del mes y, debajo, lo invertido'],
+    ['Para ahorrar', K.ahorro, K.ahorro >= 0 ? 'aqua' : 'pink', `llevas ${fmt(ahorroReal)}`, 'Arriba, lo que el presupuesto deja para ahorrar: ingresos − gastos − inversión previstos. Debajo, lo que llevas de verdad este mes: ingresado − gastado − invertido (a principio de mes sale alto porque el sueldo ya ha entrado y aún quedan gastos)'],
     ['Disponible para gastar', disp, disp >= 0 ? 'aqua' : 'pink', `de ${fmt(presTotal)}${dia}`, 'Lo que te queda del presupuesto de gastos del mes: presupuesto menos gastado' + (dia ? ', y cuánto toca al día los días que quedan' : '')],
-    ['Libre tras invertir', libre, libre >= 0 ? 'gray' : 'pink', 'ingresado − gastado − inversión', 'Lo que te sobra de verdad este mes: ingresos reales menos gasto real menos la inversión objetivo. Es el «para ahorrar» real'],
   ];
   $('tilesPres').innerHTML = t.map(([l, v, c, sub, desc]) => tileHTML(l, v, c, desc, periodo).replace(/<\/div>$/, `<div class="sub">${sub}</div></div>`)).join(''); hoverTips($('tilesPres'));
   const ritmo = presMes < mesHoy ? 1 : presMes > mesHoy ? 0 : hoy0.getDate() / new Date(hoy0.getFullYear(), hoy0.getMonth() + 1, 0).getDate();

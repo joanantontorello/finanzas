@@ -221,6 +221,7 @@
   button.prep:hover { background: color-mix(in srgb, var(--s1) 12%, transparent); }
   .pres-res { padding: 2px 10px 8px 28px; font-size: 12px; color: var(--text-3); }
   .pres-res .bad { color: var(--bad); } .pres-res button { border: 0; background: none; color: var(--s1); font: inherit; cursor: pointer; padding: 0 4px; }
+  #bloques .hl { transition: opacity .15s; } #bloques:has(.hl:hover) .hl:not(:hover) { opacity: .32; }
   .subbar { display: grid; grid-template-columns: 150px minmax(0, 1fr) 124px; align-items: center; gap: 12px; font-size: 12px; margin: 5px 0 0 12px; color: var(--text-2); }
   .subbar > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .subbar > span:last-child { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   @media (max-width: 560px) { .subbar { grid-template-columns: 96px minmax(0, 1fr) 104px; gap: 8px; margin-left: 4px; } }
@@ -762,7 +763,7 @@ function subBarrasInv(n, a, objInv) {  // en inversión, más es mejor: violeta 
   const con = invCon(); if (!con.length) return '';
   const fila = (nombre, pr, gt) => { const p = pr ? gt / pr : (gt > 0 ? 1 : 0);
     const col = pr && gt >= pr ? 'var(--s3)' : 'var(--s7)';
-    return `<div class="subbar"><span title="${nombre}">${nombre}</span><div class="track" style="background:color-mix(in srgb, ${col} 28%, var(--surface-2))"><div style="width:${Math.min(100, Math.max(0, p) * 100)}%;background:${col}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span></div>`; };
+    return `<div class="subbar hl"><span title="${nombre}">${nombre}</span><div class="track" style="background:color-mix(in srgb, ${col} 28%, var(--surface-2))"><div style="width:${Math.min(100, Math.max(0, p) * 100)}%;background:${col}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span></div>`; };
   let h = con.map(c => fila(c, (+P.inv_subs[c] || 0) * n, a.invCats[c] || 0)).join('');
   const prR = Math.max(0, objInv - invRepartido() * n), gsR0 = a.inv - con.reduce((t, c) => t + (a.invCats[c] || 0), 0), gsR = Math.abs(gsR0) < 0.5 ? 0 : gsR0;
   if (prR >= 0.5 || gsR >= 0.5) h += fila(con.length < invSubs().length ? (prR >= 0.5 ? 'Resto' : 'Resto (sin objetivo)') : 'Sin asignar', prR, Math.max(0, gsR));
@@ -770,8 +771,8 @@ function subBarrasInv(n, a, objInv) {  // en inversión, más es mejor: violeta 
 }
 function subBarras(g, n, a, pres, gs) {
   const con = subsCon(g); if (!con.length) return '';
-  const fila = (nombre, pr, gt) => { const p = pr ? gt / pr : (gt > 0 ? 2 : 0), col = p > 1 ? 'var(--s2)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
-    return `<div class="subbar"><span title="${nombre}">${nombre}</span><div class="track" style="background:color-mix(in srgb, ${col} 28%, var(--surface-2))"><div style="width:${Math.min(100, Math.max(0, p) * 100)}%;background:${col}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span></div>`; };
+  const fila = (nombre, pr, gt) => { const p = pr ? gt / pr : (gt > 0 ? 2 : 0), col = gt - pr >= 0.5 ? 'var(--s8)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
+    return `<div class="subbar hl"><span title="${nombre}">${nombre}</span><div class="track" style="background:color-mix(in srgb, ${col} 28%, var(--surface-2))"><div style="width:${Math.min(100, Math.max(0, p) * 100)}%;background:${col}"></div></div><span><b>${fmt(gt)}</b> <span class="muted">de ${fmt(pr)}</span></span></div>`; };
   let h = con.map(c => fila(c, (+P.subs[c] || 0) * n, a.cats[c] || 0)).join('');
   if (con.length < g.sub.length) {  // bolsa común: lo que queda del grupo para las subcategorías sin importe propio
     const prR = Math.max(0, pres - repartido(g) * n), gsR0 = gs - con.reduce((t, c) => t + (a.cats[c] || 0), 0), gsR = Math.abs(gsR0) < 0.5 ? 0 : gsR0;
@@ -810,17 +811,17 @@ function renderPresupuesto(sinConfig) {
   // inversión del periodo frente al objetivo (más es mejor: violeta mientras falta, verde al cumplirlo)
   const objInv = (+P.inversion_mensual || 0) * n, pInv = objInv ? a.inv / objInv : 0;
   const tipInv = (`Invertido en el periodo|` + (Object.entries(a.invCats).filter(x => Math.abs(x[1]) >= 0.5).sort((x, y) => y[1] - x[1]).map(([c, v]) => `${c.toLowerCase()} ${fmt(v)}`).join('<br>') || 'Nada todavía')).replace(/"/g, '&quot;');
-  const barraInv = objInv || a.inv ? `<div class="presinv"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center"><i class="gsq" style="background:var(--s7)"></i>Inversión</b><span style="white-space:nowrap"><b>${fmt(a.inv)}</b> <span class="muted">de ${fmt(objInv)}</span></span></div>
+  const barraInv = objInv || a.inv ? `<div class="presinv"><div class="hl"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center"><i class="gsq" style="background:var(--s7)"></i>Inversión</b><span style="white-space:nowrap"><b>${fmt(a.inv)}</b> <span class="muted">de ${fmt(objInv)}</span></span></div>
       <div class="track" data-tip="${tipInv}" style="position:relative;height:12px;background:color-mix(in srgb, ${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'} 30%, var(--bg));border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tipInv}" style="height:100%;width:${Math.min(100, Math.max(0, pInv) * 100)}%;background:${pInv >= 1 ? 'var(--s3)' : 'var(--s7)'};border-radius:4px"></div>${ritmo < 0.995 ? `<div data-tip="${tipInv}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
-      <div class="muted" style="font-size:12px">${!objInv ? 'Sin objetivo: ponlo en «Inversión objetivo al mes»' : a.inv >= objInv ? 'Objetivo cumplido' + (a.inv - objInv >= 1 ? ` · ${fmt(a.inv - objInv)} por encima` : '') : `Faltan ${fmt(objInv - a.inv)} para el objetivo · ${Math.round(pInv * 100)} %`}</div>${subBarrasInv(n, a, objInv)}</div>` : '';
+      <div class="muted" style="font-size:12px">${!objInv ? 'Sin objetivo: ponlo en «Inversión objetivo al mes»' : a.inv >= objInv ? 'Objetivo cumplido' + (a.inv - objInv >= 1 ? ` · ${fmt(a.inv - objInv)} por encima` : '') : `Faltan ${fmt(objInv - a.inv)} para el objetivo · ${Math.round(pInv * 100)} %`}</div></div>${subBarrasInv(n, a, objInv)}</div>` : '';
   $('bloques').innerHTML = barraInv + gGasto.map(g => {
     const pres = (+P.grupos[g.nombre] || 0) * n, gs = a.grupos[g.nombre] || 0, p = pres ? gs / pres : (gs > 0 ? 2 : 0);
-    const col = p > 1 ? 'var(--s2)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
+    const pasado = gs - pres >= 0.5, col = pasado ? 'var(--s8)' : p > .8 ? 'var(--s4)' : 'var(--s3)';
     const top = g.sub.filter(c => a.cats[c]).sort((x, y) => a.cats[y] - a.cats[x]).slice(0, 4).map(c => `${c.toLowerCase()} ${fmt(a.cats[c])}`).join(' · ');
     const tip = `${esc(g.nombre)}|${top ? top.split(' · ').join('<br>') : 'Sin gasto en el periodo'}`.replace(/"/g, '&quot;');
-    return `<div style="margin:8px 0 14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center;min-width:0"><i class="gsq" style="background:${colorGrupo(g.nombre) || 'var(--s9)'}"></i>${g.nombre}</b><span style="white-space:nowrap"><b>${fmt(gs)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
+    return `<div style="margin:8px 0 14px"><div class="hl"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px"><b style="display:flex;align-items:center;min-width:0"><i class="gsq" style="background:${colorGrupo(g.nombre) || 'var(--s9)'}"></i>${g.nombre}</b><span style="white-space:nowrap"><b>${fmt(gs)}</b> <span class="muted">de ${fmt(pres)}</span></span></div>
       <div class="track" data-tip="${tip}" style="position:relative;height:12px;background:color-mix(in srgb, ${col} 28%, var(--surface-2));border-radius:4px;overflow:hidden;margin:5px 0"><div data-tip="${tip}" style="height:100%;width:${Math.min(100, p * 100)}%;background:${col};border-radius:4px"></div>${ritmo < 0.995 ? `<div data-tip="${tip}" style="position:absolute;top:0;bottom:0;left:calc(${ritmo * 100}% - 1px);width:2px;background:var(--text)"></div>` : ''}</div>
-      <div class="muted" style="font-size:12px">${gs > pres ? 'Pasado en ' + fmt(gs - pres) : 'Quedan ' + fmt(pres - gs)}</div>${subBarras(g, n, a, pres, gs)}</div>`;
+      <div class="muted" style="font-size:12px">${pasado ? '<span style="color:var(--s8)">Pasado en ' + fmt(gs - pres) + '</span>' : gs >= pres - 0.5 && pres ? 'Justo en el límite' : 'Quedan ' + fmt(pres - gs)}</div></div>${subBarras(g, n, a, pres, gs)}</div>`;
   }).join(''); hoverTips($('bloques'));
   // metas: el progreso puede ser manual o salir solo del saldo de una cuenta (o de todas). Si varias metas
   // tiran de la misma fuente, se llenan en orden: la primera hasta su objetivo y lo que sobra pasa a la siguiente.
